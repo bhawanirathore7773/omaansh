@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static seo_tags %}
+
+{% block meta_title %}{{ industry.meta_title|default:industry.h1_heading }}{% endblock %}
+{% block meta_description %}{{ industry.meta_description|default:industry.hero_subheading|truncatechars:155 }}{% endblock %}
+{% block meta_keywords %}{{ industry.meta_keywords }}{% endblock %}
+{% block og_title %}{{ industry.meta_title }}{% endblock %}
+{% block og_description %}{{ industry.meta_description|default:industry.hero_subheading }}{% endblock %}
+{% if industry.hero_image %}{% block og_image %}https://hoovale.com{{ industry.hero_image.url }}{% endblock %}{% endif %}
+
+{% block page_schema %}
+    {% breadcrumb_schema breadcrumb_items %}
+    {% if faqs %}{% faq_schema faqs %}{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{# BREADCRUMBS #}
+<div style="background:#f8f9fa; padding:14px 0; font-size:0.9rem;">
+    <div class="container-lg">
+        <a href="/" style="color:#666; text-decoration:none;">Home</a>
+        <span style="color:#999;"> › </span>
+        <a href="{% url 'industries_index' %}" style="color:#666; text-decoration:none;">Industries</a>
+        <span style="color:#999;"> › </span>
+        <span style="color:#0051A3; font-weight:600;">{{ industry.industry_name }}</span>
+    </div>
+</div>
+
+{# HERO #}
+<section style="position:relative; padding:80px 0; background:linear-gradient(135deg,#1a1a1a 0%, #2d2d2d 100%); color:white; overflow:hidden;">
+    {% if industry.hero_image %}
+    <div style="position:absolute; inset:0; background-image:url('{{ industry.hero_image.url }}'); background-size:cover; opacity:0.2;"></div>
+    {% endif %}
+    <div class="container-lg" style="position:relative; z-index:2;">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div style="display:inline-block; background:rgba(255,165,0,0.2); color:#FFA500; padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:700; margin-bottom:16px; border:1px solid #FFA500;">
+                    <i class="{{ industry.icon_class|default:'fas fa-building' }}"></i> {{ industry.industry_name|upper }}
+                </div>
+                <h1 style="font-family:'Montserrat',sans-serif; font-size:2.8rem; font-weight:900; line-height:1.1; margin-bottom:18px;">{{ industry.h1_heading }}</h1>
+                {% if industry.hero_subheading %}<p style="font-size:1.15rem; opacity:0.9; line-height:1.6; margin-bottom:30px;">{{ industry.hero_subheading }}</p>{% endif %}
+
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                    <a href="{% whatsapp_link 'Hi, I need wall clocks for ' %}{{ industry.industry_name }}" target="_blank"
+                       style="background:#25D366; color:white; padding:14px 30px; border-radius:8px; font-weight:700; text-decoration:none;">
+                        <i class="fab fa-whatsapp"></i> WhatsApp for Quote
+                    </a>
+                    <a href="{% call_link %}"
+                       style="background:linear-gradient(135deg,#FFA500,#FF8C00); color:white; padding:14px 30px; border-radius:8px; font-weight:700; text-decoration:none;">
+                        <i class="fas fa-phone-alt"></i> Call Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# INTRO #}
+<section style="padding:60px 0;">
+    <div class="container-lg">
+        <div class="row">
+            <div class="col-lg-9">
+                <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:20px;">
+                    Trusted Wall Clock Supplier for {{ industry.industry_name }}
+                </h2>
+                <div style="font-size:1.05rem; color:#444; line-height:1.8;">{{ industry.intro_content|linebreaks }}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# BENEFITS #}
+{% if industry.benefits_content %}
+<section style="padding:60px 0; background:#f8f9fa;">
+    <div class="container-lg">
+        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:30px; text-align:center;">
+            Why HOOVALE for {{ industry.industry_name }}
+        </h2>
+        <div class="row">
+            <div class="col-lg-9 mx-auto">
+                <div style="font-size:1.05rem; color:#444; line-height:1.8;">{{ industry.benefits_content|linebreaks }}</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# CUSTOMIZATION #}
+{% if industry.customization_content %}
+<section style="padding:60px 0;">
+    <div class="container-lg">
+        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:30px;">
+            Customisation Options for {{ industry.industry_name }}
+        </h2>
+        <div class="row">
+            <div class="col-lg-9">
+                <div style="font-size:1.05rem; color:#444; line-height:1.8;">{{ industry.customization_content|linebreaks }}</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# RECOMMENDED PRODUCTS #}
+{% if products %}
+<section style="padding:60px 0; background:#f8f9fa;">
+    <div class="container-lg">
+        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:30px; text-align:center;">
+            Recommended Wall Clocks for {{ industry.industry_name }}
+        </h2>
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-md-6 col-lg-3">
+                <a href="{{ product.get_absolute_url }}" style="text-decoration:none; color:inherit;">
+                    <div style="background:white; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.06); transition:all 0.3s; height:100%;"
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 30px rgba(0,81,163,0.15)';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.06)';">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }} for {{ industry.industry_name }}" loading="lazy" style="width:100%; height:200px; object-fit:cover;">
+                        <div style="padding:18px;">
+                            <h3 style="font-size:0.95rem; font-weight:700; color:#1a1a1a; margin:0 0 8px;">{{ product.name }}</h3>
+                            {% if product.price %}<p style="color:#0051A3; font-weight:800; margin:0;">₹{{ product.price }} <small style="color:#999; font-weight:400;">MOQ {{ product.moq }}</small></p>{% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# CASE STUDIES #}
+{% if industry.case_study_content %}
+<section style="padding:60px 0;">
+    <div class="container-lg">
+        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:20px;">
+            <i class="fas fa-trophy" style="color:#FFA500;"></i> Recent {{ industry.industry_name }} Projects
+        </h2>
+        <div class="row">
+            <div class="col-lg-9">
+                <div style="background:#f8f9fa; padding:30px; border-left:4px solid #FFA500; border-radius:8px; font-size:1.05rem; color:#444; line-height:1.8;">
+                    {{ industry.case_study_content|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# FAQ #}
+{% if faqs %}
+<section style="padding:60px 0; background:#f8f9fa;">
+    <div class="container-lg">
+        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:30px; text-align:center;">FAQs — {{ industry.industry_name }}</h2>
+        <div class="row">
+            <div class="col-lg-9 mx-auto">
+                <div class="accordion" id="indFaq">
+                    {% for faq in faqs %}
+                    <div class="accordion-item" style="border:1px solid #eee; border-radius:8px; margin-bottom:12px; overflow:hidden;">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#if{{ forloop.counter }}" style="font-weight:600;">{{ faq.question }}</button>
+                        </h3>
+                        <div id="if{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#indFaq">
+                            <div class="accordion-body" style="color:#555;">{{ faq.answer|linebreaks }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# CLOSING CTA #}
+<section style="padding:60px 0; background:linear-gradient(135deg,#FFA500,#FF8C00); color:white; text-align:center;">
+    <div class="container-lg">
+        <h2 style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:2.4rem; margin-bottom:16px;">Ready to Order Wall Clocks for {{ industry.industry_name }}?</h2>
+        <p style="font-size:1.1rem; max-width:700px; margin:0 auto 30px; opacity:0.95;">Talk to us for industry-specific pricing, custom options, and bulk discounts.</p>
+        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+            <a href="{% whatsapp_link 'Hi, I need wall clocks for ' %}{{ industry.industry_name }}" target="_blank" style="background:#25D366; color:white; padding:16px 40px; border-radius:8px; font-weight:800; text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp Quote</a>
+            <a href="{% call_link %}" style="background:white; color:#FF8C00; padding:16px 40px; border-radius:8px; font-weight:800; text-decoration:none;"><i class="fas fa-phone-alt"></i> Call Now</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

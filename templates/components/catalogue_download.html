@@ -1,0 +1,146 @@
+{% load seo_tags %}
+
+{# ================================================== #}
+{# CATALOGUE DOWNLOAD SECTION                          #}
+{# Drop into any page for inline lead capture
+
+{# ================================================== #}
+
+<section class="hv-section hv-section-dark" style="background:linear-gradient(135deg,#0a0a0a 0%, #1a1a1a 100%); position:relative; overflow:hidden;">
+    {# Decorative gold accent #}
+    <div style="position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,#C9A961,transparent);"></div>
+    <div style="position:absolute; top:-100px; right:-100px; width:400px; height:400px; background:radial-gradient(circle, rgba(201,169,97,0.1), transparent 70%); pointer-events:none;"></div>
+
+    <div class="container-lg" style="position:relative; z-index:2;">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="hv-section-eyebrow" style="color:#C9A961; padding:0;">FREE DOWNLOAD</div>
+                <h2 style="color:white; font-family:'Playfair Display',serif; font-weight:800; font-size:2.4rem; line-height:1.15; margin:14px 0 18px;">
+                    Get Our Complete<br>
+                    <span style="background:linear-gradient(135deg,#C9A961,#D4B97A); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Wholesale Catalogue</span>
+                </h2>
+                <p style="color:rgba(255,255,255,0.85); font-size:1.05rem; line-height:1.7; margin-bottom:24px;">
+                    500+ wall clock designs across 14 categories. Wholesale pricing slabs. MOQ details. Customisation options. Everything you need to plan your bulk order.
+                </p>
+
+                <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:24px;">
+                    <div style="display:flex; align-items:center; gap:14px; color:rgba(255,255,255,0.9); font-size:0.95rem;">
+                        <div style="width:32px; height:32px; background:rgba(201,169,97,0.15); border:1px solid #C9A961; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i class="fas fa-check" style="color:#C9A961; font-size:0.85rem;"></i>
+                        </div>
+                        <span>500+ designs across 14 categories</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:14px; color:rgba(255,255,255,0.9); font-size:0.95rem;">
+                        <div style="width:32px; height:32px; background:rgba(201,169,97,0.15); border:1px solid #C9A961; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i class="fas fa-check" style="color:#C9A961; font-size:0.85rem;"></i>
+                        </div>
+                        <span>Bulk pricing slabs (5 to 5000+ pieces)</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:14px; color:rgba(255,255,255,0.9); font-size:0.95rem;">
+                        <div style="width:32px; height:32px; background:rgba(201,169,97,0.15); border:1px solid #C9A961; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i class="fas fa-check" style="color:#C9A961; font-size:0.85rem;"></i>
+                        </div>
+                        <span>Custom logo printing samples</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:14px; color:rgba(255,255,255,0.9); font-size:0.95rem;">
+                        <div style="width:32px; height:32px; background:rgba(201,169,97,0.15); border:1px solid #C9A961; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i class="fas fa-check" style="color:#C9A961; font-size:0.85rem;"></i>
+                        </div>
+                        <span>Industry-specific recommendations</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div style="background:white; border-radius:14px; padding:36px; box-shadow:0 24px 60px rgba(0,0,0,0.3); position:relative; overflow:hidden;">
+                    <div style="position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(135deg,#C9A961,#D4B97A);"></div>
+
+                    <h3 style="font-family:'Playfair Display',serif; color:#0a0a0a; font-weight:800; font-size:1.5rem; margin-bottom:6px;">Send Me the Catalogue</h3>
+                    <p style="color:#6b6b6b; font-size:0.9rem; margin-bottom:24px;">We'll WhatsApp the PDF within 2 hours.</p>
+
+                    <form id="hvCatalogueForm" method="POST" action="{% url 'submit_enquiry' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="message" value="Wholesale catalogue download request">
+
+                        <div style="display:flex; flex-direction:column; gap:12px;">
+                            <input type="text" name="name" required placeholder="Your name *"
+                                   style="padding:14px; border:1.5px solid #e0e0e0; border-radius:6px; font-size:0.95rem; font-family:inherit;"
+                                   onfocus="this.style.borderColor='#C9A961'; this.style.boxShadow='0 0 0 3px rgba(201,169,97,0.15)';"
+                                   onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';">
+
+                            <input type="email" name="email" required placeholder="Email address *"
+                                   style="padding:14px; border:1.5px solid #e0e0e0; border-radius:6px; font-size:0.95rem; font-family:inherit;"
+                                   onfocus="this.style.borderColor='#C9A961'; this.style.boxShadow='0 0 0 3px rgba(201,169,97,0.15)';"
+                                   onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';">
+
+                            <input type="tel" name="phone" required placeholder="WhatsApp number *"
+                                   style="padding:14px; border:1.5px solid #e0e0e0; border-radius:6px; font-size:0.95rem; font-family:inherit;"
+                                   onfocus="this.style.borderColor='#C9A961'; this.style.boxShadow='0 0 0 3px rgba(201,169,97,0.15)';"
+                                   onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';">
+
+                            <select name="city" required
+                                    style="padding:14px; border:1.5px solid #e0e0e0; border-radius:6px; font-size:0.95rem; font-family:inherit; background:white;">
+                                <option value="">Select your business type *</option>
+                                <option value="Retailer">Retailer / Wholesaler</option>
+                                <option value="Corporate">Corporate Buyer</option>
+                                <option value="Hotel">Hotel / Hospitality</option>
+                                <option value="Hospital">Hospital / Healthcare</option>
+                                <option value="School">School / Education</option>
+                                <option value="Real Estate">Real Estate Builder</option>
+                                <option value="Distributor">Distributor</option>
+                                <option value="Other">Other</option>
+                            </select>
+
+                            <button type="submit"
+                                    style="background:#0a0a0a; color:white; border:none; padding:16px; border-radius:6px; font-weight:800; font-size:0.9rem; text-transform:uppercase; letter-spacing:1.5px; cursor:pointer; transition:all 0.2s; margin-top:6px;"
+                                    onmouseover="this.style.background='#C9A961'; this.style.color='#0a0a0a';"
+                                    onmouseout="this.style.background='#0a0a0a'; this.style.color='white';">
+                                <i class="fas fa-download"></i> Get Catalogue Now
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="hvCatalogueResponse"></div>
+
+                    <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:20px; padding-top:18px; border-top:1px solid #f0f0f0; font-size:0.75rem; color:#6b6b6b;">
+                        <span><i class="fas fa-lock" style="color:#10b981;"></i> Secure</span>
+                        <span><i class="fas fa-clock" style="color:#C9A961;"></i> 2 hr response</span>
+                        <span><i class="fas fa-ban" style="color:#0a0a0a;"></i> No spam</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+(function() {
+    const form = document.getElementById('hvCatalogueForm');
+    if (!form) return;
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const responseDiv = document.getElementById('hvCatalogueResponse');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+        try {
+            const response = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+            const data = await response.json();
+            if (data.success) {
+                responseDiv.innerHTML = '<div style="background:#d4edda; color:#155724; padding:14px; border-radius:6px; margin-top:14px; font-size:0.9rem; text-align:center;"><i class="fas fa-check-circle"></i> Thanks! Catalogue will be sent to your WhatsApp shortly.</div>';
+                form.reset();
+            } else {
+                responseDiv.innerHTML = '<div style="background:#f8d7da; color:#721c24; padding:14px; border-radius:6px; margin-top:14px; font-size:0.9rem;"><i class="fas fa-exclamation-circle"></i> ' + (data.error || 'Please try again.') + '</div>';
+            }
+        } catch (err) {
+            responseDiv.innerHTML = '<div style="background:#f8d7da; color:#721c24; padding:14px; border-radius:6px; margin-top:14px; font-size:0.9rem;"><i class="fas fa-exclamation-circle"></i> Network error. WhatsApp us instead.</div>';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }
+    });
+})();
+</script>

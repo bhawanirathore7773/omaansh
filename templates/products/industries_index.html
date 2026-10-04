@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static seo_tags %}
+
+{% block meta_title %}Industries We Serve — Wall Clock Manufacturer for Every Sector | HOOVALE{% endblock %}
+{% block meta_description %}HOOVALE supplies wall clocks for corporate offices, hotels, hospitals, schools, retail stores, and real estate. Industry-specific solutions with bulk pricing.{% endblock %}
+{% block meta_keywords %}wall clock manufacturer industries, corporate clocks, hotel clocks, hospital clocks, school clocks, retail wall clocks{% endblock %}
+
+{% block content %}
+
+<section style="padding:80px 0; background:linear-gradient(135deg,#1a1a1a,#2d2d2d); color:white; text-align:center;">
+    <div class="container-lg">
+        <h1 style="font-family:'Montserrat',sans-serif; font-size:3rem; font-weight:900; margin-bottom:16px;">
+            <i class="fas fa-industry" style="color:#FFA500;"></i> Industries We Serve
+        </h1>
+        <p style="font-size:1.2rem; opacity:0.9; max-width:800px; margin:0 auto;">
+            From corporate offices to luxury hotels, hospitals to schools — we manufacture wall clocks tailored to every industry's specific needs.
+        </p>
+    </div>
+</section>
+
+<section style="padding:60px 0;">
+    <div class="container-lg">
+        <div class="row g-4">
+            {% for industry in industries %}
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ industry.get_absolute_url }}" style="text-decoration:none; color:inherit;">
+                    <div style="background:white; border:1px solid #eee; padding:34px; border-radius:12px; height:100%; transition:all 0.3s;"
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 35px rgba(0,81,163,0.15)'; this.style.borderColor='#FFA500';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee';">
+                        <i class="{{ industry.icon_class|default:'fas fa-building' }}" style="font-size:3rem; color:#FFA500; margin-bottom:18px;"></i>
+                        <h2 style="font-size:1.3rem; font-weight:800; color:#1a1a1a; margin-bottom:10px;">{{ industry.industry_name }}</h2>
+                        <p style="color:#555; font-size:0.95rem; line-height:1.6; margin-bottom:16px;">{{ industry.hero_subheading|truncatewords:20 }}</p>
+                        <span style="color:#FFA500; font-weight:700; font-size:0.9rem;">Learn More <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

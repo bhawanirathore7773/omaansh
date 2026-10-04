@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static seo_tags %}
+
+{% block meta_title %}Wall Clock Services in Jaipur | Bulk, OEM & Custom Branding | HOOVALE{% endblock %}
+{% block meta_description %}HOOVALE provides wall clock services in Jaipur including bulk wholesale supply, custom logo printing, OEM manufacturing, promotional clocks and distributor partnerships.{% endblock %}
+{% block meta_keywords %}wall clock services Jaipur, bulk wall clock supply, custom logo wall clocks, OEM wall clock manufacturing, promotional wall clocks, wall clock distributor{% endblock %}
+
+{% block content %}
+
+<!-- Premium Services Hero -->
+<section class="hv-services-hero">
+    <div class="hv-services-hero-glow hv-services-hero-glow-one"></div>
+    <div class="hv-services-hero-glow hv-services-hero-glow-two"></div>
+
+    <div class="container-lg hv-services-hero-inner">
+        <div class="hv-services-hero-content">
+            <span class="hv-services-eyebrow">
+                <i class="fas fa-layer-group"></i>
+                B2B Wall Clock Solutions
+            </span>
+
+            <h1>Wall Clock Services<br><span>Built for Business</span></h1>
+
+            <p>
+                From bulk supply and custom branding to OEM manufacturing and
+                promotional programs, HOOVALE provides end-to-end wall clock
+                solutions for businesses, retailers and organizations.
+            </p>
+
+            <div class="hv-services-hero-actions">
+                <a href="{% url 'contact' %}" class="btn-hv-gold">
+                    <i class="fas fa-paper-plane"></i> Get a Business Quote
+                </a>
+                <a href="{% url 'products_list' %}" class="btn-hv-outline">
+                    <i class="fas fa-clock"></i> Browse Wall Clocks
+                </a>
+            </div>
+        </div>
+
+        <div class="hv-services-hero-panel">
+            <div class="hv-services-panel-card">
+                <span class="hv-panel-number">01</span>
+                <i class="fas fa-industry"></i>
+                <strong>Manufacturing</strong>
+                <small>Custom & OEM production</small>
+            </div>
+            <div class="hv-services-panel-card">
+                <span class="hv-panel-number">02</span>
+                <i class="fas fa-boxes-stacked"></i>
+                <strong>Bulk Supply</strong>
+                <small>Wholesale & repeat orders</small>
+            </div>
+            <div class="hv-services-panel-card">
+                <span class="hv-panel-number">03</span>
+                <i class="fas fa-pen-ruler"></i>
+                <strong>Branding</strong>
+                <small>Logo & promotional clocks</small>
+            </div>
+            <div class="hv-services-panel-card">
+                <span class="hv-panel-number">04</span>
+                <i class="fas fa-handshake"></i>
+                <strong>Distribution</strong>
+                <small>Partner programs</small>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services -->
+<section class="hv-services-section">
+    <div class="container-lg">
+        <div class="hv-section-header hv-services-header">
+            <span class="hv-section-eyebrow">WHAT WE DO</span>
+            <h2>Solutions for Every Business Requirement</h2>
+            <p>
+                Choose a service based on your order volume, branding needs,
+                product requirements and distribution goals.
+            </p>
+        </div>
+
+        <div class="row g-4 hv-services-grid">
+            {% for service in services %}
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ service.get_absolute_url }}" class="hv-service-card">
+                    <div class="hv-service-card-top">
+                        <span class="hv-service-icon">
+                            <i class="{{ service.icon_class|default:'fas fa-cog' }}"></i>
+                        </span>
+                        <span class="hv-service-number">
+                            {{ forloop.counter|stringformat:"02d" }}
+                        </span>
+                    </div>
+
+                    <h2>{{ service.name }}</h2>
+                    <p>{{ service.short_description|truncatewords:28 }}</p>
+
+                    <span class="hv-service-link">
+                        Explore Service
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="hv-services-empty">
+                    <i class="fas fa-box-open"></i>
+                    <h3>Services coming soon</h3>
+                    <p>Please contact HOOVALE for current B2B wall clock requirements.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- B2B CTA -->
+<section class="hv-services-cta">
+    <div class="container-lg">
+        <div class="hv-services-cta-inner">
+            <div>
+                <span class="hv-services-eyebrow">HAVE A REQUIREMENT?</span>
+                <h2>Tell us what you need.</h2>
+                <p>Share your quantity, design, branding or OEM requirement and our team can guide you through the next step.</p>
+            </div>
+            <a href="{% url 'contact' %}" class="btn-hv-gold">
+                <i class="fas fa-arrow-right"></i> Start an Enquiry
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

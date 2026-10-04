@@ -1,0 +1,2414 @@
+{% extends 'base.html' %}
+{% load static seo_tags %}
+{% include 'components/bulk_inquiry.html' %}
+
+{% block meta_title %}HOOVALE | Wall Clock Manufacturer in Jaipur | Wholesale & Custom Clocks{% endblock %}
+{% block meta_description %}HOOVALE manufactures and supplies wall clocks in Jaipur for homes, offices, retailers and businesses. Explore wholesale, custom logo, corporate and promotional wall clocks across India.{% endblock %}
+{% block meta_keywords %}wall clock manufacturer in Jaipur, wall clock supplier Jaipur, wholesale wall clocks, custom logo wall clocks, corporate wall clocks, promotional wall clocks{% endblock %}
+
+{% block site_navigation_schema %}
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"SiteNavigationElement",
+  "name":["Home","Wall Clocks","Categories","Services","About HOOVALE","Wall Clock Guides","Contact"],
+  "url":[
+    "https://hoovale.com/",
+    "https://hoovale.com/products/",
+    "https://hoovale.com/categories/",
+    "https://hoovale.com/services/",
+    "https://hoovale.com/about/",
+    "https://hoovale.com/blog/",
+    "https://hoovale.com/contact/"
+  ]
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/premium_theme.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   HOOVALE HOME — B2B + RETAIL MARKETPLACE EXPERIENCE
+   ============================================================ */
+.hv-home{background:#fff;color:#151515;overflow-x:clip}
+.hv-home .container-lg{max-width:1220px}
+.hv-home-hero{position:relative;min-height:610px;display:flex;align-items:center;background:radial-gradient(circle at 80% 25%,rgba(201,169,97,.18),transparent 28%),linear-gradient(135deg,#0b0d0f 0%,#15181b 58%,#0b0d0f 100%);color:#fff;overflow:hidden}
+.hv-home-hero:after{content:"";position:absolute;inset:auto -10% -55% 25%;height:420px;background:radial-gradient(circle,rgba(201,169,97,.12),transparent 65%);pointer-events:none}
+.hv-home-eyebrow{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(201,169,97,.5);background:rgba(201,169,97,.09);color:#e1c681;border-radius:999px;padding:8px 14px;font-size:.74rem;font-weight:800;letter-spacing:1.1px;text-transform:uppercase}
+.hv-home-hero h1{font-family:"Playfair Display",serif;font-size:clamp(2.6rem,5vw,4.7rem);line-height:1.03;font-weight:900;margin:22px 0 18px;color:#fff}
+.hv-home-hero h1 span{color:#d9bb72}
+.hv-home-hero-copy{max-width:700px;color:rgba(255,255,255,.8);font-size:1.06rem;line-height:1.75;margin-bottom:26px}
+.hv-home-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hv-home-actions a,.hv-home-actions button{min-height:50px;padding:13px 20px;border-radius:10px;font-weight:800;text-decoration:none}
+.hv-home-primary{background:#25d366;color:#fff;border:1px solid #25d366}
+.hv-home-secondary{background:#fff;color:#111;border:1px solid #fff}
+.hv-home-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45)}
+.hv-home-hero-showcase{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;transform:rotate(-3deg);padding:18px}
+.hv-home-hero-showcase .showcase-card{background:#fff;padding:10px;border-radius:12px;box-shadow:0 25px 60px rgba(0,0,0,.4)}
+.hv-home-hero-showcase img{display:block;width:100%;height:190px;object-fit:cover;border-radius:7px}
+.hv-home-trust{background:#fff;border-bottom:1px solid #e9edf2;box-shadow:0 5px 20px rgba(15,23,42,.04);position:relative;z-index:2}
+.hv-home-trust .trust-item{padding:18px 10px;text-align:center;border-right:1px solid #edf0f4}
+.hv-home-trust .trust-item:last-child{border-right:0}
+.hv-home-trust i{color:#b18a35;font-size:1.2rem;margin-bottom:7px}
+.hv-home-trust strong{display:block;font-size:.9rem}
+.hv-home-trust small{color:#6b7280;font-size:.72rem}
+.hv-home-section{padding:68px 0}
+.hv-home-section.tinted{background:#f7f9fc}
+.hv-home-section.dark{background:#101315;color:#fff}
+.hv-home-section-head{max-width:760px;margin:0 auto 34px;text-align:center}
+.hv-home-kicker{color:#a47b2d;font-size:.72rem;font-weight:900;letter-spacing:1.7px;text-transform:uppercase}
+.hv-home-section-head h2{font-family:"Playfair Display",serif;font-size:clamp(1.8rem,3vw,2.7rem);font-weight:900;margin:8px 0 10px;color:inherit}
+.hv-home-section-head p{color:#6b7280;margin:0;line-height:1.65}
+.dark .hv-home-section-head p{color:rgba(255,255,255,.68)}
+.hv-category-tile{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #e7ebf0;border-radius:14px;overflow:hidden;height:100%;transition:transform .25s ease,box-shadow .25s ease}
+.hv-category-tile:hover{transform:translateY(-5px);box-shadow:0 15px 35px rgba(15,23,42,.1);color:inherit}
+.hv-category-tile .image{height:190px;background:#eef2f6;overflow:hidden}
+.hv-category-tile img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.hv-category-tile:hover img{transform:scale(1.04)}
+.hv-category-tile .body{padding:16px}
+.hv-category-tile h3{font-size:1rem;font-weight:800;margin:0 0 5px}
+.hv-category-tile p{margin:0;color:#6b7280;font-size:.78rem}
+.hv-shelf{padding:55px 0;background:#fff}
+.hv-shelf:nth-of-type(even){background:#f7f9fc}
+.hv-shelf-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:20px}
+.hv-shelf-head h2{font-family:"Playfair Display",serif;font-size:1.8rem;margin:5px 0 0;font-weight:900}
+.hv-shelf-head p{color:#6b7280;margin:0;font-size:.86rem}
+.hv-shelf-link{color:#0051a3;font-weight:800;text-decoration:none;white-space:nowrap}
+.hv-product-card{background:#fff;border:1px solid #e6eaf0;border-radius:14px;overflow:hidden;height:100%;transition:transform .22s ease,box-shadow .22s ease}
+.hv-product-card:hover{transform:translateY(-4px);box-shadow:0 15px 35px rgba(15,23,42,.1)}
+.hv-product-card .image{height:220px;position:relative;background:#f2f4f7;overflow:hidden}
+.hv-product-card img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.hv-product-card:hover img{transform:scale(1.035)}
+.hv-product-card .body{padding:15px}
+.hv-product-card .category{font-size:.66rem;text-transform:uppercase;letter-spacing:1px;color:#a47b2d;font-weight:800}
+.hv-product-card h3{font-size:.95rem;line-height:1.35;margin:6px 0 9px;font-weight:800;color:#151515}
+.hv-product-meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hv-product-price{color:#0051a3;font-size:1.05rem;font-weight:900}
+.hv-product-moq{font-size:.7rem;color:#6b7280}
+.hv-product-card .wa{display:block;margin:0 15px 15px;text-align:center;background:#25d366;color:#fff;border-radius:8px;padding:9px;text-decoration:none;font-weight:800;font-size:.8rem}
+.hv-solution-card{height:100%;border:1px solid rgba(201,169,97,.22);background:linear-gradient(145deg,#181c1f,#101315);border-radius:15px;padding:28px;color:#fff}
+.hv-solution-card i{font-size:1.8rem;color:#d6b86f;margin-bottom:17px}
+.hv-solution-card h3{font-size:1.1rem;margin:0 0 8px}
+.hv-solution-card p{font-size:.86rem;line-height:1.65;color:rgba(255,255,255,.68);margin:0}
+.hv-about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:55px;align-items:center}
+.hv-about-images{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}
+.hv-about-images .image{border-radius:16px;overflow:hidden;background:#e9edf1;min-height:210px}
+.hv-about-images .image:first-child{grid-row:span 2;min-height:430px}
+.hv-about-images img{width:100%;height:100%;object-fit:cover;display:block}
+.hv-about-copy h2{font-family:"Playfair Display",serif;font-size:2.5rem;line-height:1.1;font-weight:900}
+.hv-about-copy p{color:#5f6670;line-height:1.75}
+.hv-checks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:22px 0}
+.hv-check{font-size:.86rem;font-weight:700;display:flex;gap:9px;align-items:flex-start}
+.hv-check i{color:#16a36a;margin-top:3px}
+.hv-process{counter-reset:step}
+.hv-step{position:relative;padding:26px 20px;background:#fff;border:1px solid #e6eaf0;border-radius:14px;height:100%}
+.hv-step:before{counter-increment:step;content:"0" counter(step);display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#0f1720;color:#d8bb74;font-weight:900;margin-bottom:15px}
+.hv-step h3{font-size:1rem;font-weight:800}
+.hv-step p{color:#6b7280;font-size:.82rem;line-height:1.6;margin:0}
+.hv-faq .accordion-item{border:1px solid #e4e8ed;border-radius:10px!important;margin-bottom:10px;overflow:hidden}
+.hv-faq .accordion-button{font-weight:800;box-shadow:none}
+.hv-location-copy{max-width:900px;margin:auto;text-align:center;color:#59616b;line-height:1.8}
+.hv-final-cta{background:linear-gradient(135deg,#0c1013,#16212a);color:#fff;text-align:center;padding:65px 0}
+.hv-final-cta h2{font-family:"Playfair Display",serif;font-size:2.4rem;font-weight:900}
+.hv-final-cta p{color:rgba(255,255,255,.72);max-width:720px;margin:0 auto 22px;line-height:1.7}
+@media(max-width:991px){
+ .hv-home-hero{min-height:auto;padding:75px 0}
+ .hv-home-hero-showcase{margin-top:30px;transform:none}
+ .hv-home-hero-showcase img{height:150px}
+ .hv-about-grid{grid-template-columns:1fr;gap:30px}
+}
+@media(max-width:767px){
+ .hv-home-hero{padding:46px 0 55px}
+ .hv-home-hero h1{font-size:2.35rem}
+ .hv-home-hero-copy{font-size:.94rem;line-height:1.65}
+ .hv-home-actions{display:grid;grid-template-columns:1fr}
+ .hv-home-actions a,.hv-home-actions button{width:100%;text-align:center}
+ .hv-home-trust .trust-item{padding:14px 6px;border-right:0;border-bottom:1px solid #edf0f4}
+ .hv-home-section{padding:48px 0}
+ .hv-home-section-head{margin-bottom:24px}
+ .hv-category-tile .image{height:145px}
+ .hv-shelf{padding:40px 0}
+ .hv-shelf-head h2{font-size:1.45rem}
+ .hv-shelf-head{align-items:start}
+ .hv-shelf-link{font-size:.75rem}
+ .hv-product-card .image{height:175px}
+ .hv-product-card .body{padding:12px}
+ .hv-product-card h3{font-size:.84rem}
+ .hv-product-card .wa{margin:0 12px 12px}
+ .hv-about-images{grid-template-columns:1fr 1fr}
+ .hv-about-images .image:first-child{grid-row:span 2;min-height:320px}
+ .hv-about-images .image{min-height:155px}
+ .hv-about-copy h2{font-size:2rem}
+ .hv-checks{grid-template-columns:1fr}
+ .hv-final-cta h2{font-size:2rem}
+}
+
+/* Mobile-safe homepage fixes: keep content readable on dark sections and avoid broken media-dependent About imagery. */
+.hv-home .hv-home-section.dark h2,
+.hv-home .hv-home-section.dark h3,
+.hv-home .hv-home-section.dark a h3,
+.hv-home .hv-final-cta h2 {
+    color: #fff !important;
+}
+.hv-home .hv-home-section.dark .hv-home-section-head h2 {
+    color: #fff !important;
+}
+.hv-about-profile {
+    min-height: 430px;
+    padding: 42px;
+    border-radius: 20px;
+    border: 1px solid rgba(201,169,97,.35);
+    background:
+        radial-gradient(circle at 80% 15%, rgba(201,169,97,.18), transparent 32%),
+        linear-gradient(145deg,#111518,#0b0d0f);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 20px 50px rgba(15,23,42,.12);
+}
+.hv-about-profile-icon {
+    width: 64px;
+    height: 64px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    background: rgba(201,169,97,.12);
+    border: 1px solid rgba(201,169,97,.35);
+    color: #d9bb72;
+    font-size: 1.7rem;
+    margin-bottom: 24px;
+}
+.hv-about-profile-kicker {
+    color: #d9bb72;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+.hv-about-profile-title {
+    max-width: 420px;
+    font-family: "Playfair Display",serif;
+    font-size: clamp(1.7rem,3vw,2.5rem);
+    line-height: 1.15;
+    font-weight: 900;
+    margin-bottom: 24px;
+}
+.hv-about-profile-list {
+    display: grid;
+    gap: 12px;
+}
+.hv-about-profile-list span {
+    color: rgba(255,255,255,.78);
+    font-size: .9rem;
+}
+.hv-about-profile-list i {
+    color: #d9bb72;
+    margin-right: 8px;
+}
+@media(max-width:767px){
+    .hv-home-hero { padding: 38px 0 44px; }
+    .hv-home-hero h1 { font-size: 2.15rem; line-height: 1.06; }
+    .hv-home-eyebrow { font-size: .68rem; line-height: 1.45; }
+    .hv-home-hero-copy { font-size: .92rem; }
+    .hv-about-profile {
+        min-height: 0;
+        padding: 28px;
+        border-radius: 16px;
+    }
+}
+
+/* Homepage marketplace shelves + responsive rotating banners */
+.hv-home-product-priority { padding-top: 42px; }
+.hv-product-main-link { display:block; color:inherit; text-decoration:none; }
+.hv-product-main-link:hover { color:inherit; }
+.hv-product-badge { position:absolute; top:10px; left:10px; z-index:2; padding:5px 9px; border-radius:7px; font-size:.64rem; font-weight:900; text-transform:uppercase; letter-spacing:.4px; }
+.hv-product-badge.new { background:#111827; color:#fff; }
+.hv-product-badge.best { background:#c9a961; color:#111; }
+.hv-shelf-tinted { background:#f7f9fc; }
+.hv-home-banner-wrap { width:100%; padding:18px 0; background:#fff; }
+.hv-home-banner { width:100%; overflow:hidden; }
+.hv-home-banner .carousel,
+.hv-home-banner .carousel-inner,
+.hv-home-banner .carousel-item { width:100%; }
+.hv-banner-link { display:block; position:relative; width:100%; height:180px; overflow:hidden; background:#111; }
+.hv-banner-link img { display:block; width:100%; height:100%; object-fit:cover; }
+.hv-banner-content { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; padding:25px clamp(20px,7vw,100px); background:linear-gradient(90deg,rgba(0,0,0,.62),rgba(0,0,0,.08)); color:#fff; pointer-events:none; }
+.hv-banner-content h2 { color:#fff!important; font-family:"Playfair Display",serif; font-size:clamp(1.4rem,3vw,2.4rem); margin:0 0 5px; }
+.hv-banner-content p { color:rgba(255,255,255,.88); margin:0 0 8px; max-width:650px; font-size:.9rem; }
+.hv-banner-content span { color:#d9bb72; font-weight:800; font-size:.78rem; }
+.mobile-banner { display:none; }
+@media(max-width:767px){
+ .hv-home-banner-wrap { padding:10px 0; }
+ .desktop-banner { display:none; }
+ .mobile-banner { display:block; }
+ .hv-banner-link { height:118px; }
+ .hv-banner-content { padding:15px 22px; background:linear-gradient(90deg,rgba(0,0,0,.68),rgba(0,0,0,.12)); }
+ .hv-banner-content h2 { font-size:1.25rem; }
+ .hv-banner-content p { font-size:.72rem; line-height:1.35; max-width:75%; }
+ .hv-banner-content span { font-size:.68rem; }
+ .hv-product-card .image { height:175px; }
+ .hv-product-card h3 { min-height:2.25em; }
+}
+
+
+/* =========================================================
+   REFERENCE BANNER — MARKETPLACE STYLE
+   Same wide banner ratio on desktop + mobile, with responsive artwork.
+   ========================================================= */
+.hv-home-banner-wrap{
+    width:100%;
+    padding:16px 0 10px;
+    background:#fff;
+}
+.hv-home-banner{
+    width:100%;
+    max-width:1220px;
+    margin:0 auto;
+    overflow:hidden;
+    border-radius:14px;
+}
+.hv-banner-link{
+    display:block;
+    position:relative;
+    width:100%;
+    aspect-ratio:2.55 / 1;
+    min-height:0;
+    overflow:hidden;
+    background:#f3f4f6;
+    border-radius:14px;
+}
+.hv-banner-link picture,
+.hv-banner-link img{
+    display:block;
+    width:100%;
+    height:100%;
+}
+.hv-banner-link img{
+    object-fit:cover;
+}
+.hv-banner-content{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    padding:clamp(18px,4vw,48px);
+    background:linear-gradient(90deg,rgba(0,0,0,.58),rgba(0,0,0,.04) 72%);
+    color:#fff;
+    pointer-events:none;
+}
+.hv-banner-content h2{
+    color:#fff!important;
+    font-family:"Playfair Display",serif;
+    font-size:clamp(1.25rem,3vw,2.55rem);
+    line-height:1.08;
+    margin:0 0 7px;
+}
+.hv-banner-content p{
+    color:rgba(255,255,255,.92);
+    margin:0 0 9px;
+    max-width:650px;
+    font-size:clamp(.72rem,1.5vw,.98rem);
+    line-height:1.4;
+}
+.hv-banner-content span{
+    color:#fff;
+    background:#b88b32;
+    border-radius:999px;
+    padding:8px 15px;
+    font-size:.75rem;
+    font-weight:800;
+}
+.hv-home-banner .carousel-control-prev,
+.hv-home-banner .carousel-control-next{
+    width:42px;
+    height:42px;
+    top:50%;
+    transform:translateY(-50%);
+    margin:0 10px;
+    border-radius:50%;
+    background:rgba(255,255,255,.94);
+    opacity:.95;
+}
+.hv-home-banner .carousel-control-prev-icon,
+.hv-home-banner .carousel-control-next-icon{
+    filter:invert(1);
+    width:18px;
+    height:18px;
+}
+@media(max-width:767px){
+    .hv-home-banner-wrap{
+        padding:10px 16px 7px;
+    }
+    .hv-home-banner{
+        border-radius:12px;
+    }
+    .hv-banner-link{
+        aspect-ratio:2.55 / 1;
+        border-radius:12px;
+    }
+    .hv-banner-content{
+        padding:14px 18px;
+        background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,.02) 82%);
+    }
+    .hv-banner-content h2{
+        font-size:clamp(1.05rem,5vw,1.4rem);
+        max-width:58%;
+        margin-bottom:4px;
+    }
+    .hv-banner-content p{
+        max-width:58%;
+        font-size:.64rem;
+        line-height:1.3;
+        margin-bottom:6px;
+    }
+    .hv-banner-content span{
+        padding:6px 10px;
+        font-size:.62rem;
+    }
+    .hv-home-banner .carousel-control-prev,
+    .hv-home-banner .carousel-control-next{
+        width:30px;
+        height:30px;
+        margin:0 6px;
+    }
+}
+
+/* =========================================================
+   REFERENCE MOBILE HOME LAYOUT
+   Four trust points in one row, then a short marketplace banner.
+   ========================================================= */
+.hv-home-trust-four-wrap{
+    background:#fff;
+    border-bottom:1px solid #edf0f4;
+    box-shadow:0 5px 20px rgba(15,23,42,.04);
+}
+.hv-home-trust .hv-trust-four{
+    display:flex;
+    flex-wrap:nowrap;
+}
+.hv-home-trust .hv-trust-four .trust-item{
+    flex:1 1 25%;
+    max-width:25%;
+    min-width:0;
+    padding:18px 8px;
+    text-align:center;
+    border-right:1px solid #edf0f4;
+}
+.hv-home-trust .hv-trust-four .trust-item:last-child{border-right:0}
+.hv-home-trust .hv-trust-four i{
+    display:block;
+    color:#b18a35;
+    font-size:1.35rem;
+    margin-bottom:7px;
+}
+.hv-home-trust .hv-trust-four strong{
+    display:block;
+    color:#151515;
+    font-size:.95rem;
+    font-weight:800;
+    line-height:1.2;
+}
+.hv-home-trust .hv-trust-four small{
+    display:block;
+    color:#6b7280;
+    font-size:.68rem;
+    line-height:1.25;
+    margin-top:4px;
+}
+.hv-home-banner-wrap{
+    padding:14px 0 8px;
+    background:#fff;
+}
+.hv-home-banner{
+    width:100%;
+    max-width:1220px;
+    margin:0 auto;
+    overflow:hidden;
+    border-radius:14px;
+}
+.hv-banner-link{
+    height:190px;
+    border-radius:14px;
+}
+@media(max-width:767px){
+    .hv-home-trust-four-wrap{box-shadow:none}
+    .hv-home-trust .hv-trust-four{
+        display:grid;
+        grid-template-columns:repeat(4,minmax(0,1fr));
+    }
+    .hv-home-trust .hv-trust-four .trust-item{
+        max-width:none;
+        width:100%;
+        padding:15px 3px 13px;
+    }
+    .hv-home-trust .hv-trust-four .trust-item i{
+        font-size:1.15rem;
+        margin-bottom:6px;
+    }
+    .hv-home-trust .hv-trust-four .trust-item strong{
+        font-size:.68rem;
+        line-height:1.15;
+        white-space:normal;
+    }
+    .hv-home-trust .hv-trust-four .trust-item small{
+        font-size:.57rem;
+        margin-top:4px;
+        line-height:1.15;
+    }
+    .hv-home-banner-wrap{
+        padding:10px 16px 6px;
+    }
+    .hv-home-banner{
+        border-radius:12px;
+    }
+    .hv-banner-link{
+        height:260px;
+        border-radius:12px;
+    }
+}
+
+/* Category catalogue: square image first, name underneath. */
+.hv-category-tile .image{aspect-ratio:1/1!important;height:auto!important;overflow:hidden;border-radius:14px;background:#f4f1ea}
+.hv-category-tile .image img{width:100%;height:100%;object-fit:cover;display:block}
+.hv-category-tile .body{padding:12px 4px 4px;text-align:center}
+.hv-category-tile .body h3{font-size:1rem;margin:0 0 4px}
+.hv-category-tile .body p{font-size:.72rem;color:#667085;margin:0}
+@media(max-width:767px){
+ .hv-home-section-head>div[style*="display:flex"]{align-items:flex-end!important}
+ .hv-category-tile .body h3{font-size:.86rem;line-height:1.2}
+ .hv-category-tile .body p{font-size:.64rem}
+}
+/* Final category catalogue polish */
+.hv-category-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    margin-bottom:26px;
+}
+.hv-category-head>div{min-width:0}
+.hv-category-head h2{
+    margin:5px 0 8px;
+    color:#101114;
+    font-family:"Playfair Display",serif;
+    font-size:clamp(2rem,4vw,3.35rem);
+    line-height:1.04;
+    letter-spacing:-.03em;
+}
+.hv-category-head p{
+    margin:0;
+    max-width:700px;
+    color:#667085;
+    font-size:1rem;
+    line-height:1.6;
+}
+.hv-category-seeall{
+    flex:0 0 auto;
+    color:#0757a6!important;
+    text-decoration:none!important;
+    font-weight:800;
+    white-space:nowrap;
+    font-size:1rem;
+    padding-bottom:4px;
+}
+.hv-category-seeall i{margin-left:5px}
+.hv-category-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:18px;
+}
+.hv-category-grid .hv-category-tile{
+    display:block;
+    min-width:0;
+    color:inherit;
+    text-decoration:none;
+    border-radius:16px;
+}
+.hv-category-tile .image{
+    aspect-ratio:1/1!important;
+    height:auto!important;
+    overflow:hidden;
+    border-radius:14px;
+    background:linear-gradient(145deg,#f7f2e8,#ebe5d9);
+}
+.hv-category-tile .image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform .35s ease;
+}
+.hv-category-tile:hover .image img{transform:scale(1.035)}
+.hv-category-tile .body{
+    padding:11px 3px 3px;
+    text-align:center;
+}
+.hv-category-tile .body h3{
+    font-size:1rem;
+    line-height:1.25;
+    font-weight:800;
+    color:#15171b;
+    margin:0 0 3px;
+}
+.hv-category-tile .body p{
+    font-size:.76rem;
+    line-height:1.3;
+    color:#667085;
+    margin:0;
+}
+@media(max-width:991px){
+    .hv-category-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+}
+@media(max-width:767px){
+    .hv-category-head{
+        align-items:flex-end;
+        gap:10px;
+        margin-bottom:18px;
+    }
+    .hv-category-head h2{
+        font-size:1.75rem;
+        line-height:1.08;
+        margin-top:4px;
+    }
+    .hv-category-head p{
+        font-size:.78rem;
+        line-height:1.45;
+        max-width:100%;
+    }
+    .hv-category-seeall{
+        font-size:.8rem;
+        padding-bottom:2px;
+    }
+    .hv-category-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:16px 12px;
+    }
+    .hv-category-tile .image{border-radius:12px}
+    .hv-category-tile .body{padding-top:8px}
+    .hv-category-tile .body h3{
+        font-size:.82rem;
+        line-height:1.2;
+    }
+    .hv-category-tile .body p{
+        font-size:.64rem;
+    }
+}
+
+/* =========================================================
+   FINAL HOMEPAGE CAROUSEL + CATEGORY GRID
+   ========================================================= */
+.hv-home-banner-wrap{
+    width:100%;
+    padding:18px 0 12px;
+    background:#fff;
+}
+.hv-home-banner{
+    width:100%;
+    max-width:1220px;
+    margin:0 auto;
+    overflow:hidden;
+    border-radius:16px;
+}
+.hv-home-banner .carousel-inner{
+    position:relative;
+    width:100%;
+    overflow:hidden;
+    border-radius:16px;
+    background:#111518;
+}
+.hv-banner-link{
+    display:block;
+    position:relative;
+    width:100%;
+    aspect-ratio:2.35 / 1;
+    min-height:280px;
+    overflow:hidden;
+    background:#111518;
+}
+.hv-banner-link picture,
+.hv-banner-link img{
+    display:block;
+    width:100%;
+    height:100%;
+}
+.hv-banner-link img{
+    object-fit:cover;
+}
+.hv-banner-content{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    padding:clamp(24px,5vw,62px);
+    background:linear-gradient(90deg,rgba(0,0,0,.64) 0%,rgba(0,0,0,.27) 48%,rgba(0,0,0,.02) 82%);
+    color:#fff;
+    pointer-events:none;
+}
+.hv-banner-content h2{
+    color:#fff!important;
+    font-family:"Playfair Display",serif;
+    font-size:clamp(1.55rem,3.5vw,3.2rem);
+    line-height:1.06;
+    max-width:620px;
+    margin:0 0 9px;
+    text-shadow:0 2px 15px rgba(0,0,0,.25);
+}
+.hv-banner-content p{
+    color:rgba(255,255,255,.94);
+    margin:0 0 13px;
+    max-width:600px;
+    font-size:clamp(.78rem,1.35vw,1rem);
+    line-height:1.45;
+}
+.hv-banner-content span{
+    color:#111;
+    background:#fff;
+    border-radius:9px;
+    padding:9px 15px;
+    font-size:.78rem;
+    font-weight:900;
+    box-shadow:0 5px 18px rgba(0,0,0,.14);
+}
+.hv-home-banner .carousel-item{
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+}
+.hv-home-banner .carousel-item{
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    will-change:transform;
+    transition:transform .52s cubic-bezier(.22,.61,.36,1);
+}
+.hv-home-banner .carousel-control-prev,
+.hv-home-banner .carousel-control-next{
+    z-index:4;
+    width:44px;
+    height:44px;
+    top:50%;
+    transform:translateY(-50%);
+    margin:0 12px;
+    border-radius:50%;
+    background:rgba(255,255,255,.94);
+    opacity:.95;
+    box-shadow:0 4px 16px rgba(0,0,0,.16);
+}
+.hv-home-banner .carousel-control-prev-icon,
+.hv-home-banner .carousel-control-next-icon{
+    filter:invert(1);
+    width:18px;
+    height:18px;
+}
+.hv-banner-indicators{
+    position:absolute;
+    z-index:5;
+    left:50%;
+    bottom:12px;
+    transform:translateX(-50%);
+    display:flex;
+    gap:7px;
+    padding:5px 8px;
+    border-radius:999px;
+    background:rgba(0,0,0,.25);
+}
+.hv-banner-indicators button{
+    width:7px;
+    height:7px;
+    padding:0;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.6);
+    opacity:1;
+}
+.hv-banner-indicators button.active{
+    width:22px;
+    border-radius:999px;
+    background:#fff;
+}
+.hv-category-section{
+    padding:52px 0 58px;
+    background:#f7f9fc;
+}
+.hv-category-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:25px;
+    margin-bottom:24px;
+}
+.hv-category-head>div{min-width:0}
+.hv-category-head h2{
+    margin:5px 0 8px;
+    color:#101114;
+    font-family:"Playfair Display",serif;
+    font-size:clamp(2rem,4vw,3rem);
+    line-height:1.05;
+    letter-spacing:-.025em;
+}
+.hv-category-head p{
+    margin:0;
+    max-width:720px;
+    color:#667085;
+    font-size:.98rem;
+    line-height:1.55;
+}
+.hv-category-seeall{
+    flex:0 0 auto;
+    color:#0757a6!important;
+    text-decoration:none!important;
+    font-weight:900;
+    white-space:nowrap;
+    font-size:.95rem;
+}
+.hv-category-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:18px;
+    align-items:start;
+}
+.hv-category-tile{
+    display:block;
+    min-width:0;
+    color:inherit!important;
+    text-decoration:none!important;
+    background:#fff;
+    border:1px solid #e3e8ef;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 4px 15px rgba(15,23,42,.04);
+    transition:transform .25s ease,box-shadow .25s ease;
+}
+.hv-category-tile:hover{
+    transform:translateY(-4px);
+    box-shadow:0 14px 32px rgba(15,23,42,.1);
+}
+.hv-category-tile .image{
+    width:100%;
+    aspect-ratio:1/1;
+    height:auto!important;
+    overflow:hidden;
+    background:#f3efe6;
+}
+.hv-category-tile .image img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+}
+.hv-category-tile .body{
+    min-height:76px;
+    padding:11px 10px 12px;
+    text-align:center;
+    background:#fff;
+}
+.hv-category-tile .body h3{
+    margin:0 0 5px;
+    color:#16181c;
+    font-family:"Playfair Display",serif;
+    font-size:1.02rem;
+    line-height:1.2;
+    font-weight:900;
+}
+.hv-category-tile .body p{
+    margin:0;
+    color:#667085;
+    font-size:.73rem;
+    line-height:1.25;
+}
+.hv-category-tile .body p span{padding:0 3px}
+@media(max-width:991px){
+    .hv-category-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+}
+@media(max-width:767px){
+    .hv-home-banner-wrap{
+        padding:12px 16px 10px;
+    }
+    .hv-home-banner,
+    .hv-home-banner .carousel-inner,
+    .hv-banner-link{
+        border-radius:12px;
+    }
+    .hv-banner-link{
+        aspect-ratio:2.35/1;
+        min-height:0;
+    }
+    .hv-banner-content{
+        padding:18px 21px 24px;
+        background:linear-gradient(90deg,rgba(0,0,0,.62),rgba(0,0,0,.08) 86%);
+    }
+    .hv-banner-content h2{
+        max-width:66%;
+        font-size:clamp(1.05rem,5vw,1.48rem);
+        line-height:1.05;
+        margin-bottom:5px;
+    }
+    .hv-banner-content p{
+        max-width:63%;
+        font-size:.65rem;
+        line-height:1.3;
+        margin-bottom:7px;
+    }
+    .hv-banner-content span{
+        padding:6px 9px;
+        font-size:.61rem;
+        border-radius:7px;
+    }
+    .hv-home-banner .carousel-control-prev,
+    .hv-home-banner .carousel-control-next{
+        width:30px;
+        height:30px;
+        margin:0 7px;
+    }
+    .hv-home-banner .carousel-control-prev-icon,
+    .hv-home-banner .carousel-control-next-icon{
+        width:13px;
+        height:13px;
+    }
+    .hv-banner-indicators{
+        bottom:7px;
+        gap:5px;
+        padding:4px 7px;
+    }
+    .hv-banner-indicators button{
+        width:6px;
+        height:6px;
+    }
+    .hv-banner-indicators button.active{width:17px}
+    .hv-category-section{
+        padding:38px 16px 48px;
+    }
+    .hv-category-head{
+        align-items:flex-end;
+        gap:10px;
+        margin-bottom:18px;
+    }
+    .hv-category-head h2{
+        font-size:1.72rem;
+        line-height:1.08;
+        margin:5px 0 7px;
+    }
+    .hv-category-head p{
+        font-size:.76rem;
+        line-height:1.42;
+    }
+    .hv-category-seeall{
+        font-size:.78rem;
+        padding-bottom:2px;
+    }
+    .hv-category-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:14px 12px;
+    }
+    .hv-category-tile{
+        border-radius:13px;
+    }
+    .hv-category-tile .body{
+        min-height:67px;
+        padding:9px 6px 10px;
+    }
+    .hv-category-tile .body h3{
+        font-size:.82rem;
+        line-height:1.18;
+        margin-bottom:4px;
+    }
+    .hv-category-tile .body p{
+        font-size:.61rem;
+        white-space:normal;
+    }
+}
+
+
+
+/* =========================================================
+   FINAL MOBILE + DESKTOP BANNER POLISH
+   ========================================================= */
+.hv-home-banner-wrap{
+    width:100%;
+    padding:28px 24px 26px;
+    background:#fff;
+}
+.hv-home-banner{
+    width:100%;
+    max-width:1220px;
+    margin:0 auto;
+    overflow:hidden;
+    border-radius:18px;
+    border:1px solid #e4e8ee;
+    box-shadow:0 12px 34px rgba(15,23,42,.10);
+    isolation:isolate;
+}
+.hv-home-banner .carousel-inner{
+    border-radius:18px;
+    overflow:hidden;
+}
+.hv-banner-link{
+    width:100%;
+    aspect-ratio:2.7 / 1;
+    min-height:0;
+    border-radius:18px;
+    overflow:hidden;
+}
+.hv-banner-link picture,
+.hv-banner-link img{
+    width:100%;
+    height:100%;
+    display:block;
+}
+.hv-banner-link img{
+    object-fit:cover;
+    object-position:center;
+}
+.hv-banner-content{
+    padding:clamp(24px,4vw,56px);
+    background:linear-gradient(90deg,rgba(0,0,0,.68) 0%,rgba(0,0,0,.34) 42%,rgba(0,0,0,0) 78%);
+}
+.hv-banner-content h2{
+    max-width:650px;
+    font-size:clamp(1.65rem,3.5vw,3rem);
+    line-height:1.05;
+    margin-bottom:10px;
+}
+.hv-banner-content p{
+    max-width:610px;
+    font-size:clamp(.82rem,1.35vw,1rem);
+    line-height:1.45;
+    margin-bottom:14px;
+}
+.hv-banner-content span{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:10px 16px;
+    border-radius:10px;
+    background:#fff;
+    color:#111;
+    font-size:.78rem;
+    font-weight:900;
+    box-shadow:0 7px 20px rgba(0,0,0,.16);
+}
+.hv-home-banner .carousel-control-prev,
+.hv-home-banner .carousel-control-next{
+    width:44px;
+    height:44px;
+    margin:0 14px;
+    border-radius:50%;
+    background:rgba(255,255,255,.96);
+    box-shadow:0 6px 18px rgba(15,23,42,.16);
+    opacity:.98;
+    z-index:5;
+}
+.hv-home-banner .carousel-control-prev-icon,
+.hv-home-banner .carousel-control-next-icon{
+    width:17px;
+    height:17px;
+    filter:invert(1);
+}
+.hv-banner-indicators{
+    bottom:14px;
+    gap:7px;
+    padding:6px 9px;
+    background:rgba(17,24,39,.28);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+}
+/* Keep category section visually separated from the banner. */
+.hv-category-section{
+    padding-top:54px;
+    border-top:1px solid #edf0f4;
+}
+@media(max-width:767px){
+    .hv-home-banner-wrap{
+        padding:18px 16px 18px;
+    }
+    .hv-home-banner,
+    .hv-home-banner .carousel-inner,
+    .hv-banner-link{
+        border-radius:14px;
+    }
+    .hv-home-banner{
+        border-radius:14px;
+        box-shadow:0 9px 26px rgba(15,23,42,.09);
+    }
+    .hv-banner-link{
+        aspect-ratio:2.05 / 1;
+    }
+    .hv-banner-content{
+        padding:18px 18px 22px;
+        background:linear-gradient(90deg,rgba(0,0,0,.66) 0%,rgba(0,0,0,.30) 50%,rgba(0,0,0,.02) 88%);
+    }
+    .hv-banner-content h2{
+        max-width:66%;
+        font-size:clamp(1.15rem,5.3vw,1.55rem);
+        line-height:1.06;
+        margin-bottom:5px;
+    }
+    .hv-banner-content p{
+        max-width:64%;
+        font-size:.67rem;
+        line-height:1.32;
+        margin-bottom:7px;
+    }
+    .hv-banner-content span{
+        padding:7px 10px;
+        border-radius:8px;
+        font-size:.63rem;
+    }
+    .hv-home-banner .carousel-control-prev,
+    .hv-home-banner .carousel-control-next{
+        width:34px;
+        height:34px;
+        margin:0 8px;
+    }
+    .hv-home-banner .carousel-control-prev-icon,
+    .hv-home-banner .carousel-control-next-icon{
+        width:13px;
+        height:13px;
+    }
+    .hv-banner-indicators{
+        bottom:8px;
+        gap:5px;
+        padding:4px 7px;
+    }
+    .hv-banner-indicators button{width:6px;height:6px}
+    .hv-banner-indicators button.active{width:18px}
+    .hv-category-section{
+        padding-top:38px;
+        padding-bottom:48px;
+    }
+}
+
+/* =========================================================
+   FINAL BANNER SPEC — 3:2 RATIO + CONTENT-ALIGNED GUTTERS
+   ========================================================= */
+.hv-home-banner-wrap{
+    width:100%;
+    padding:28px 24px 30px;
+    background:#fff;
+}
+.hv-home-banner{
+    width:100%;
+    max-width:1220px;
+    margin:0 auto;
+    overflow:hidden;
+    border-radius:18px;
+    border:1px solid #e4e8ee;
+    box-shadow:0 12px 34px rgba(15,23,42,.10);
+}
+.hv-home-banner .carousel-inner{
+    width:100%;
+    overflow:hidden;
+    border-radius:18px;
+}
+.hv-banner-link{
+    display:block;
+    position:relative;
+    width:100%;
+    aspect-ratio:3 / 2;
+    min-height:0;
+    overflow:hidden;
+    border-radius:18px;
+    background:#111518;
+}
+.hv-banner-link picture,
+.hv-banner-link img{
+    display:block;
+    width:100%;
+    height:100%;
+}
+.hv-banner-link img{
+    object-fit:cover;
+    object-position:center;
+}
+.hv-banner-content{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    padding:clamp(24px,5vw,58px);
+    background:linear-gradient(90deg,rgba(0,0,0,.68) 0%,rgba(0,0,0,.34) 46%,rgba(0,0,0,.02) 82%);
+    pointer-events:none;
+}
+.hv-home-banner .carousel-control-prev,
+.hv-home-banner .carousel-control-next{
+    z-index:5;
+    width:44px;
+    height:44px;
+    top:50%;
+    transform:translateY(-50%);
+    margin:0 14px;
+    border-radius:50%;
+    background:rgba(255,255,255,.96);
+    box-shadow:0 6px 18px rgba(15,23,42,.16);
+    opacity:.98;
+}
+.hv-home-banner .carousel-control-prev-icon,
+.hv-home-banner .carousel-control-next-icon{
+    width:17px;
+    height:17px;
+    filter:invert(1);
+}
+.hv-banner-indicators{
+    bottom:14px;
+    padding:6px 9px;
+    gap:7px;
+    background:rgba(17,24,39,.28);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+}
+@media(max-width:767px){
+    .hv-home-banner-wrap{
+        padding:16px 16px 20px;
+    }
+    .hv-home-banner,
+    .hv-home-banner .carousel-inner,
+    .hv-banner-link{
+        border-radius:14px;
+    }
+    .hv-home-banner{
+        box-shadow:0 9px 26px rgba(15,23,42,.09);
+    }
+    .hv-banner-link{
+        aspect-ratio:3 / 2;
+    }
+    .hv-banner-content{
+        padding:20px 18px 24px;
+        background:linear-gradient(90deg,rgba(0,0,0,.67) 0%,rgba(0,0,0,.34) 52%,rgba(0,0,0,.03) 90%);
+    }
+    .hv-banner-content h2{
+        max-width:72%;
+        font-size:clamp(1.2rem,6vw,1.6rem);
+        line-height:1.06;
+        margin-bottom:7px;
+    }
+    .hv-banner-content p{
+        max-width:70%;
+        font-size:.68rem;
+        line-height:1.35;
+        margin-bottom:9px;
+    }
+    .hv-banner-content span{
+        padding:8px 11px;
+        border-radius:8px;
+        font-size:.64rem;
+    }
+    .hv-home-banner .carousel-control-prev,
+    .hv-home-banner .carousel-control-next{
+        width:34px;
+        height:34px;
+        margin:0 8px;
+    }
+    .hv-home-banner .carousel-control-prev-icon,
+    .hv-home-banner .carousel-control-next-icon{
+        width:13px;
+        height:13px;
+    }
+    .hv-banner-indicators{
+        bottom:9px;
+        padding:4px 7px;
+        gap:5px;
+    }
+}
+
+/* FINAL 3:2 HOMEPAGE CAROUSEL — authoritative override */
+.hv-home-banner-wrap{width:100%;padding:18px 24px 14px;background:#fff;box-sizing:border-box}
+.hv-home-banner{width:100%;max-width:1220px;margin:0 auto;overflow:hidden;border-radius:16px;position:relative}
+.hv-home-banner .carousel,.hv-home-banner .carousel-inner,.hv-home-banner .carousel-item{width:100%}
+.hv-banner-link{display:block;position:relative;width:100%;height:auto!important;min-height:0!important;aspect-ratio:3/2!important;overflow:hidden;background:#f4f1ea;border-radius:16px}
+.hv-banner-link picture{display:block;width:100%;height:100%}
+.hv-banner-link img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.hv-banner-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:clamp(20px,4.5vw,58px);box-sizing:border-box;overflow:hidden;background:linear-gradient(90deg,rgba(0,0,0,.58),rgba(0,0,0,.06) 78%);color:#fff;pointer-events:none}
+.hv-banner-content h2,.hv-banner-content p,.hv-banner-content span{max-width:68%;overflow-wrap:anywhere}
+.hv-banner-content h2{color:#fff!important;font-family:"Playfair Display",serif;font-size:clamp(1.45rem,3.2vw,2.8rem);line-height:1.05;margin:0 0 8px}
+.hv-banner-content p{color:rgba(255,255,255,.94);margin:0 0 12px;font-size:clamp(.76rem,1.45vw,1rem);line-height:1.4}
+.hv-banner-content span{display:inline-flex;align-items:center;gap:7px;width:max-content;max-width:68%;color:#fff;background:#b88b32;border-radius:999px;padding:9px 16px;font-size:.76rem;font-weight:800}
+.hv-home-banner .carousel-control-prev,.hv-home-banner .carousel-control-next{width:46px;height:46px;top:50%;transform:translateY(-50%);margin:0 12px;border:0;border-radius:50%;background:rgba(255,255,255,.96);opacity:1;box-shadow:0 5px 18px rgba(0,0,0,.12);z-index:6}
+.hv-home-banner .carousel-control-prev-icon,.hv-home-banner .carousel-control-next-icon{filter:invert(1);width:18px;height:18px}
+.hv-home-banner .hv-banner-indicators{
+    position:absolute;
+    z-index:7;
+    left:50%;
+    bottom:14px;
+    transform:translateX(-50%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    width:max-content;
+    margin:0;
+    padding:5px 9px;
+    border-radius:999px;
+    background:rgba(15,23,42,.34);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+}
+.hv-home-banner .hv-banner-indicators button{
+    width:8px;
+    height:8px;
+    flex:0 0 8px;
+    margin:0;
+    padding:0;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.68);
+    opacity:1;
+    transition:width .25s ease,background-color .25s ease,transform .25s ease;
+}
+.hv-home-banner .hv-banner-indicators button.active{
+    width:22px;
+    flex-basis:22px;
+    border-radius:999px;
+    background:#c9a961;
+}
+@media(max-width:767px){
+ .hv-home-banner-wrap{padding:12px 16px 8px}
+ .hv-home-banner,.hv-banner-link{border-radius:14px}
+ .hv-banner-link{aspect-ratio:3/2!important}
+ .hv-banner-content{padding:18px 20px 30px;background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(0,0,0,.04) 82%)}
+ .hv-banner-content h2{max-width:64%;font-size:clamp(1.15rem,5.8vw,1.65rem);line-height:1.04;margin-bottom:5px}
+ .hv-banner-content p{max-width:64%;font-size:.7rem;line-height:1.3;margin-bottom:7px}
+ .hv-banner-content span{max-width:64%;padding:7px 11px;font-size:.62rem}
+ .hv-home-banner .carousel-control-prev,.hv-home-banner .carousel-control-next{width:34px;height:34px;margin:0 7px}
+ .hv-home-banner .carousel-control-prev-icon,.hv-home-banner .carousel-control-next-icon{width:14px;height:14px}
+ .hv-banner-indicators{bottom:10px;gap:6px;padding:4px 8px}
+}
+
+
+/* =========================================================
+   MOBILE CAMPAIGN CAROUSEL — AUTHORITATIVE FINAL OVERRIDE
+   Paytm-style horizontal swipe:
+   current banner exits in the swipe direction while the next
+   banner enters from the opposite side. Keep the banner gutter
+   outside the carousel so it can never be lost to overrides.
+   ========================================================= */
+.hv-home-banner-wrap.hv-home-banner-after-trust{
+    width:100% !important;
+    max-width:100% !important;
+    margin:0 !important;
+    padding:16px 16px 12px !important;
+    box-sizing:border-box !important;
+    background:#fff !important;
+    overflow:hidden !important;
+}
+
+.hv-home-banner-wrap.hv-home-banner-after-trust > .hv-home-banner{
+    width:100% !important;
+    max-width:1200px !important;
+    margin:0 auto !important;
+    box-sizing:border-box !important;
+    overflow:hidden !important;
+}
+
+.hv-home-banner-wrap.hv-home-banner-after-trust .carousel-inner{
+    width:100% !important;
+    overflow:hidden !important;
+    touch-action:pan-y !important;
+}
+
+.hv-home-banner-wrap.hv-home-banner-after-trust .carousel-item{
+    width:100% !important;
+    backface-visibility:hidden !important;
+    -webkit-backface-visibility:hidden !important;
+    will-change:transform !important;
+    transition:transform .42s cubic-bezier(.22,.61,.36,1) !important;
+}
+
+.hv-home-banner-wrap.hv-home-banner-after-trust .hv-banner-link{
+    width:100% !important;
+    aspect-ratio:3 / 2 !important;
+    height:auto !important;
+    min-height:0 !important;
+    overflow:hidden !important;
+    border-radius:16px !important;
+}
+
+.hv-home-banner-wrap.hv-home-banner-after-trust .hv-banner-link img{
+    width:100% !important;
+    height:100% !important;
+    display:block !important;
+    object-fit:cover !important;
+    object-position:center !important;
+}
+
+/* Desktop arrows remain available. */
+.hv-home-banner-wrap.hv-home-banner-after-trust .carousel-control-prev,
+.hv-home-banner-wrap.hv-home-banner-after-trust .carousel-control-next{
+    display:flex;
+}
+
+/* Mobile: swipe only — no overlapping arrow controls. */
+@media(max-width:767px){
+    .hv-home-banner-wrap.hv-home-banner-after-trust{
+        padding:12px 16px 10px !important;
+    }
+
+    .hv-home-banner-wrap.hv-home-banner-after-trust > .hv-home-banner,
+    .hv-home-banner-wrap.hv-home-banner-after-trust .carousel-inner,
+    .hv-home-banner-wrap.hv-home-banner-after-trust .hv-banner-link{
+        border-radius:14px !important;
+    }
+
+    .hv-home-banner-wrap.hv-home-banner-after-trust .carousel-control-prev,
+    .hv-home-banner-wrap.hv-home-banner-after-trust .carousel-control-next{
+        display:none !important;
+    }
+
+    .hv-home-banner-wrap.hv-home-banner-after-trust .hv-banner-indicators{
+        position:static !important;
+        width:100% !important;
+        height:24px !important;
+        margin:4px 0 0 !important;
+        padding:0 !important;
+        transform:none !important;
+        background:transparent !important;
+    }
+}
+
+
+/* =========================================================
+   FINAL PAYTM-STYLE TRACK CAROUSEL
+   The slide follows the finger 1:1 while dragging.
+   ========================================================= */
+.hv-home-banner-after-trust .carousel-inner{
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    align-items:stretch !important;
+    overflow:hidden !important;
+    position:relative !important;
+    touch-action:pan-y !important;
+    cursor:grab;
+}
+.hv-home-banner-after-trust .carousel-inner.hv-is-dragging{
+    cursor:grabbing;
+}
+.hv-home-banner-after-trust .carousel-item{
+    flex:0 0 100% !important;
+    width:100% !important;
+    max-width:100% !important;
+    margin:0 !important;
+    position:relative !important;
+    display:block !important;
+    float:none !important;
+    backface-visibility:hidden !important;
+    -webkit-backface-visibility:hidden !important;
+    transform:none !important;
+    opacity:1 !important;
+    transition:none !important;
+}
+.hv-home-banner-after-trust .carousel-item.hv-track-animated{
+    transition:transform .34s cubic-bezier(.22,.61,.36,1) !important;
+}
+.hv-home-banner-after-trust .carousel-item.hv-track-dragging{
+    transition:none !important;
+}
+.hv-home-banner-after-trust .hv-banner-link{
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-touch-callout:none;
+}
+.hv-home-banner-after-trust .hv-banner-link img{
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-drag:none;
+}
+
+/* Indicators remain visible on white mobile space. */
+.hv-home-banner-after-trust .hv-banner-indicators button{
+    background:#aab2bf !important;
+    opacity:1 !important;
+    border:0 !important;
+}
+.hv-home-banner-after-trust .hv-banner-indicators button.active{
+    background:#c9a961 !important;
+}
+@media(max-width:767px){
+    .hv-home-banner-after-trust .hv-banner-indicators{
+        position:static !important;
+        left:auto !important;
+        bottom:auto !important;
+        transform:none !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+        gap:7px !important;
+        width:100% !important;
+        height:28px !important;
+        margin:2px 0 0 !important;
+        padding:0 !important;
+        border-radius:0 !important;
+        background:transparent !important;
+        backdrop-filter:none !important;
+        -webkit-backdrop-filter:none !important;
+    }
+    .hv-home-banner-after-trust .hv-banner-indicators button{
+        width:8px !important;
+        height:8px !important;
+        flex:0 0 8px !important;
+        border-radius:50% !important;
+        padding:0 !important;
+        margin:0 !important;
+        transition:width .2s ease,background-color .2s ease !important;
+    }
+    .hv-home-banner-after-trust .hv-banner-indicators button.active{
+        width:22px !important;
+        flex-basis:22px !important;
+        border-radius:999px !important;
+    }
+}
+
+
+/* Paytm-style campaign carousel: dedicated classes, no Bootstrap carousel interference */
+#hvHomeBanner.hv-campaign-carousel{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+}
+#hvHomeBanner .hv-campaign-viewport{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+  touch-action:pan-y;
+  border-radius:24px;
+}
+#hvHomeBanner .hv-campaign-track{
+  display:flex;
+  flex-wrap:nowrap;
+  width:100%;
+  margin:0;
+  padding:0;
+  transform:translate3d(0,0,0);
+  will-change:transform;
+}
+#hvHomeBanner .hv-campaign-track.hv-animated{
+  transition:transform .38s cubic-bezier(.22,.61,.36,1);
+}
+#hvHomeBanner .hv-campaign-slide{
+  position:relative;
+  flex:0 0 100%;
+  width:100%;
+  min-width:100%;
+  margin:0;
+  padding:0;
+  opacity:1;
+  visibility:visible;
+}
+#hvHomeBanner .hv-campaign-slide .hv-banner-link,
+#hvHomeBanner .hv-campaign-slide picture,
+#hvHomeBanner .hv-campaign-slide img{
+  display:block;
+  width:100%;
+}
+#hvHomeBanner .hv-campaign-slide img{
+  height:auto;
+  aspect-ratio:3/2;
+  object-fit:cover;
+}
+#hvHomeBanner .hv-campaign-prev,
+#hvHomeBanner .hv-campaign-next{
+  display:none;
+}
+#hvHomeBanner .hv-banner-indicators{
+  position:absolute;
+  left:50%;
+  bottom:14px;
+  transform:translateX(-50%);
+  z-index:5;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:auto;
+  margin:0;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.88);
+}
+#hvHomeBanner .hv-banner-indicators button{
+  width:10px;
+  height:10px;
+  padding:0;
+  margin:0;
+  border:0;
+  border-radius:50%;
+  background:#aeb7c5;
+  opacity:1;
+  flex:0 0 10px;
+}
+#hvHomeBanner .hv-banner-indicators button.active{
+  width:46px;
+  flex-basis:46px;
+  border-radius:999px;
+  background:#c9a24e;
+}
+@media(max-width:767px){
+  #hvHomeBanner .hv-campaign-viewport{border-radius:24px;}
+  #hvHomeBanner .hv-banner-indicators{bottom:14px;gap:9px;padding:7px 11px;}
+  #hvHomeBanner .hv-banner-indicators button{width:10px;height:10px;flex-basis:10px;}
+  #hvHomeBanner .hv-banner-indicators button.active{width:46px;flex-basis:46px;}
+}
+
+
+/* FINAL CAROUSEL POLISH — Paytm-style peek + clean card geometry */
+#hvHomeBanner.hv-campaign-carousel{
+    width:100%;
+    overflow:hidden;
+    position:relative;
+}
+#hvHomeBanner .hv-campaign-viewport{
+    width:100%;
+    overflow:hidden;
+    position:relative;
+    padding:0;
+    box-sizing:border-box;
+    border-radius:10px;
+    background:transparent;
+    touch-action:pan-y;
+}
+#hvHomeBanner .hv-campaign-track{
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    align-items:stretch;
+    gap:8px;
+    width:max-content !important;
+    margin:0;
+    padding:0;
+    transform:translate3d(0,0,0);
+    will-change:transform;
+}
+#hvHomeBanner .hv-campaign-slide{
+    flex:0 0 auto !important;
+    width:auto;
+    min-width:0;
+    margin:0;
+    padding:0;
+}
+#hvHomeBanner .hv-campaign-slide .hv-banner-link{
+    width:100%;
+    aspect-ratio:3 / 2 !important;
+    height:auto !important;
+    min-height:0 !important;
+    overflow:hidden;
+    border-radius:10px !important;
+    background:#f4f1ea;
+    box-shadow:0 1px 4px rgba(15,23,42,.08);
+}
+#hvHomeBanner .hv-campaign-slide picture,
+#hvHomeBanner .hv-campaign-slide img{
+    display:block;
+    width:100%;
+    height:100%;
+}
+#hvHomeBanner .hv-campaign-slide img{
+    object-fit:cover;
+}
+#hvHomeBanner .hv-banner-indicators{
+    position:static !important;
+    left:auto !important;
+    bottom:auto !important;
+    transform:none !important;
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    height:28px;
+    margin:8px 0 0 !important;
+    padding:0 !important;
+    background:transparent !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+}
+#hvHomeBanner .hv-banner-indicators button{
+    width:8px !important;
+    height:8px !important;
+    min-width:8px !important;
+    flex:0 0 8px !important;
+    padding:0 !important;
+    margin:0 !important;
+    border:0 !important;
+    border-radius:50% !important;
+    background:#aeb7c5 !important;
+    opacity:1 !important;
+    transition:width .22s ease, background-color .22s ease !important;
+}
+#hvHomeBanner .hv-banner-indicators button.active{
+    width:24px !important;
+    min-width:24px !important;
+    flex-basis:24px !important;
+    border-radius:999px !important;
+    background:#c9a24e !important;
+}
+#hvHomeBanner .hv-campaign-prev,
+#hvHomeBanner .hv-campaign-next{
+    display:none !important;
+}
+@media(min-width:768px){
+    #hvHomeBanner .hv-campaign-viewport{padding:0 12px;border-radius:12px;}
+    #hvHomeBanner .hv-campaign-track{gap:10px;}
+    #hvHomeBanner .hv-campaign-slide .hv-banner-link{border-radius:12px !important;}
+}
+@media(max-width:767px){
+    .hv-home-banner-wrap{
+        padding:10px 8px 6px !important;
+        background:#fff;
+    }
+    .hv-home-banner{
+        max-width:none !important;
+        margin:0 !important;
+        border-radius:0 !important;
+        overflow:visible !important;
+        background:transparent !important;
+    }
+    #hvHomeBanner .hv-campaign-viewport{
+        padding:0;
+        border-radius:0;
+    }
+    #hvHomeBanner .hv-campaign-slide .hv-banner-link{
+        border-radius:10px !important;
+    }
+    #hvHomeBanner .hv-banner-indicators{
+        margin-top:8px !important;
+        height:24px;
+        gap:8px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block page_schema %}
+    {% if faqs %}{% faq_schema faqs %}{% endif %}
+    {% if testimonials %}{% aggregate_rating_schema testimonials %}{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="hv-home">
+
+<!-- HERO -->
+<section class="hv-home-hero">
+ <div class="container-lg" style="position:relative;z-index:2">
+  <div class="row align-items-center">
+   <div class="col-lg-7">
+    <div class="hv-home-eyebrow"><i class="fas fa-clock"></i> Designed for Homes • Businesses • Brands</div>
+    <h1>Wall Clocks from a Jaipur <span>Manufacturer</span> — Retail, Wholesale &amp; Custom</h1>
+    <p class="hv-home-hero-copy">
+      Explore practical, decorative and branded wall clocks for homes, offices, retailers and businesses. HOOVALE supports retail purchases, bulk supply and custom logo requirements from Jaipur, with order assistance and delivery support across India.
+    </p>
+    <div class="hv-home-actions">
+      <a class="hv-home-primary" href="{% whatsapp_link 'Hi HOOVALE, I need your wall clock catalogue and wholesale pricing.' %}" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp for Catalogue</a>
+      <button class="hv-home-secondary" type="button" data-bs-toggle="modal" data-bs-target="#bulkInquiryModal"><i class="fas fa-file-invoice-dollar"></i> Get Bulk Quote</button>
+      <a class="hv-home-outline" href="{% url 'products_list' %}"><i class="fas fa-th-large"></i> Browse Products</a>
+    </div>
+
+   </div>
+   <div class="col-lg-5 d-none d-md-block">
+    <div class="hv-home-hero-showcase">
+      {% for p in featured_products|slice:":4" %}
+      <a href="{{ p.get_absolute_url }}" class="showcase-card" aria-label="{{ p.name }}">
+       {% if p.image %}
+       <img src="{{ p.image.url }}" alt="{{ p.name }} wall clock by HOOVALE Jaipur" loading="eager">
+       {% else %}
+       <img src="{% static 'images/product-placeholder.svg' %}" alt="{{ p.name }} wall clock placeholder" loading="eager">
+       {% endif %}
+      </a>
+      {% empty %}
+      <div class="showcase-card"><div style="height:190px;display:flex;align-items:center;justify-content:center;color:#777">HOOVALE</div></div>
+      {% endfor %}
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- TRUST -->
+<section class="hv-home-trust hv-home-trust-four-wrap">
+ <div class="container-lg">
+  <div class="row g-0 hv-trust-four">
+   <div class="col-3 trust-item"><i class="fas fa-calendar-check"></i><strong>{{ site.establishment_year }}+</strong><small>Established</small></div>
+   <div class="col-3 trust-item"><i class="fas fa-boxes-stacked"></i><strong>Bulk Supply</strong><small>Wholesale Orders</small></div>
+   <div class="col-3 trust-item"><i class="fas fa-pen-ruler"></i><strong>Custom</strong><small>Logo &amp; Branding</small></div>
+   <div class="col-3 trust-item"><i class="fas fa-truck-fast"></i><strong>Fast Delivery</strong><small>Across India</small></div>
+  </div>
+ </div>
+</section>
+
+
+
+<!-- 3:2 ROTATING COLLECTION BANNER — directly below the Established/trust strip and before Explore Collection -->
+<section class="hv-home-banner-wrap hv-home-banner-after-trust" aria-label="HOOVALE featured collections">
+ <div class="hv-home-banner">
+  <div id="hvHomeBanner" class="hv-campaign-carousel">
+   <div class="hv-campaign-viewport">
+    <div class="hv-campaign-track">
+     {% for banner in homepage_campaigns %}
+     <div class="hv-campaign-slide">
+      <a href="{{ banner.url }}" class="hv-banner-link" aria-label="{{ banner.title }}">
+       <picture>
+        <source media="(max-width: 767px)" srcset="{{ banner.mobile_url }}">
+        <img src="{{ banner.desktop_url }}" alt="{{ banner.heading|default:banner.title }} — HOOVALE wall clocks" {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+       </picture>
+      </a>
+     </div>
+     {% endfor %}
+    </div>
+   </div>
+
+   <button class="hv-campaign-prev" type="button" aria-label="Previous banner">
+    <span aria-hidden="true">‹</span>
+   </button>
+   <button class="hv-campaign-next" type="button" aria-label="Next banner">
+    <span aria-hidden="true">›</span>
+   </button>
+
+   <div class="hv-banner-indicators" aria-label="Banner navigation">
+    {% for banner in homepage_campaigns %}
+    <button type="button" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-label="Go to banner {{ forloop.counter }}"></button>
+    {% endfor %}
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- CATEGORIES -->
+{% if categories %}
+<section class="hv-home-section tinted hv-category-section">
+ <div class="container-lg">
+  <div class="hv-category-head">
+   <div>
+    <div class="hv-home-kicker">Explore Collection</div>
+    <h2>Shop Wall Clocks by Category</h2>
+    <p>Explore clocks for home décor, offices, retail spaces, corporate gifting and custom requirements.</p>
+   </div>
+   <a class="hv-category-seeall" href="{% url 'categories_index' %}">View All <i class="fas fa-arrow-right"></i></a>
+  </div>
+
+  <div class="hv-category-grid">
+   {% for cat in categories %}
+   <a href="{{ cat.get_absolute_url }}" class="hv-category-tile">
+    <div class="image">
+     {% if cat.image %}<img src="{{ cat.image.url }}" alt="{{ cat.name }} wall clock manufacturer Jaipur" loading="lazy">
+     {% elif cat.static_image_path %}<img src="{{ cat.static_image_path }}" alt="{{ cat.name }} wall clock category" loading="lazy">
+     {% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ cat.name }} category" loading="lazy">{% endif %}
+    </div>
+    <div class="body">
+     <h3>{{ cat.name }}</h3>
+     <p>{{ cat.products.count }} products <span>•</span> View collection <i class="fas fa-arrow-right"></i></p>
+    </div>
+   </a>
+   {% endfor %}
+  </div>
+ </div>
+</section>
+{% endif %}
+
+<!-- TOP PRODUCT SHELF: NEW ARRIVALS -->
+{% if new_arrivals %}
+<section class="hv-shelf hv-home-product-priority">
+ <div class="container-lg">
+  <div class="hv-shelf-head">
+   <div><div class="hv-home-kicker">Fresh Collection</div><h2>New Arrival Wall Clocks</h2><p>Latest designs added to the HOOVALE collection.</p></div>
+   <a class="hv-shelf-link" href="{% url 'products_list' %}">View All <i class="fas fa-arrow-right"></i></a>
+  </div>
+  <div class="row g-3">
+   {% for product in new_arrivals %}
+   <div class="col-6 col-lg-3">
+    <article class="hv-product-card">
+     <a href="{{ product.get_absolute_url }}" class="hv-product-main-link">
+      <div class="image">
+       {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} wall clock by HOOVALE" loading="{% if forloop.counter < 3 %}eager{% else %}lazy{% endif %}">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} — product image coming soon" loading="lazy">{% endif %}
+       <span class="hv-product-badge new">New</span>
+      </div>
+      <div class="body"><div class="category">{{ product.category.name }}</div><h3>{{ product.name }}</h3><div class="hv-product-meta">{% if product.price %}<span class="hv-product-price">From ₹{{ product.price }}</span>{% else %}<span class="hv-product-price">Get Price</span>{% endif %}<span class="hv-product-moq">MOQ {{ product.moq }}</span></div></div>
+     </a>
+     <a class="wa" href="{% whatsapp_link 'Hi HOOVALE, I want the price for: ' %}{{ product.name }}" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Price</a>
+    </article>
+   </div>
+   {% endfor %}
+  </div>
+ </div>
+</section>
+{% endif %}
+
+<!-- PRODUCT SHELVES -->
+{% for shelf in category_product_sections %}
+<section class="hv-shelf">
+ <div class="container-lg">
+  <div class="hv-shelf-head">
+   <div>
+    <div class="hv-home-kicker">{{ shelf.category.name }}</div>
+    <h2>{{ shelf.category.name }} Wall Clocks</h2>
+    <p>Selected designs available for wholesale and retail enquiries.</p>
+   </div>
+   <a class="hv-shelf-link" href="{{ shelf.category.get_absolute_url }}">View all <i class="fas fa-arrow-right"></i></a>
+  </div>
+  <div class="row g-3">
+   {% for product in shelf.products %}
+   <div class="col-6 col-lg-3">
+    <article class="hv-product-card">
+     <a href="{{ product.get_absolute_url }}" style="text-decoration:none;color:inherit">
+      <div class="image">
+       {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} — {{ shelf.category.name }} wall clock, Jaipur manufacturer" loading="lazy">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} — product image coming soon" loading="lazy">{% endif %}
+       {% if product.is_featured %}
+       <span class="hv-single-status featured">Featured</span>
+       {% elif product.is_bestseller %}
+       <span class="hv-single-status best">Bestseller</span>
+       {% elif product.is_new_arrival %}
+       <span class="hv-single-status new">New</span>
+       {% endif %}
+      </div>
+      <div class="body">
+       <div class="category">{{ shelf.category.name }}</div>
+       <h3>{{ product.name }}</h3>
+       <div class="hv-product-meta">
+        {% if product.price %}<span class="hv-product-price">₹{{ product.price }}</span>{% else %}<span class="hv-product-price">Get Price</span>{% endif %}
+        <span class="hv-product-moq">MOQ {{ product.moq }}</span>
+       </div>
+      </div>
+     </a>
+     <a class="wa" href="{% whatsapp_link 'Hi HOOVALE, I want the best wholesale price for: ' %}{{ product.name }}" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Price</a>
+    </article>
+   </div>
+   {% endfor %}
+  </div>
+ </div>
+</section>
+{% endfor %}
+
+<!-- CUSTOM / PROMOTIONAL -->
+{% if custom_products %}
+<section class="hv-shelf hv-shelf-tinted">
+ <div class="container-lg">
+  <div class="hv-shelf-head"><div><div class="hv-home-kicker">Branding & Promotion</div><h2>Custom & Promotional Wall Clocks</h2><p>Clock options for logo branding, promotions and business requirements.</p></div><a class="hv-shelf-link" href="{% url 'products_list' %}">Explore All <i class="fas fa-arrow-right"></i></a></div>
+  <div class="row g-3">
+   {% for product in custom_products %}
+   <div class="col-6 col-lg-3">
+    <article class="hv-product-card">
+     <a href="{{ product.get_absolute_url }}" class="hv-product-main-link"><div class="image">{% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} custom promotional wall clock" loading="lazy">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} — product image coming soon" loading="lazy">{% endif %}</div><div class="body"><div class="category">{{ product.category.name }}</div><h3>{{ product.name }}</h3><div class="hv-product-meta">{% if product.price %}<span class="hv-product-price">₹{{ product.price }}</span>{% else %}<span class="hv-product-price">Get Price</span>{% endif %}<span class="hv-product-moq">MOQ {{ product.moq }}</span></div></div></a><a class="wa" href="{% whatsapp_link 'Hi HOOVALE, I need a quote for: ' %}{{ product.name }}" target="_blank"><i class="fab fa-whatsapp"></i> Get Quote</a>
+    </article>
+   </div>
+   {% endfor %}
+  </div>
+ </div>
+</section>
+{% endif %}
+
+<!-- BESTSELLERS -->
+{% if bestseller_products %}
+<section class="hv-shelf">
+ <div class="container-lg">
+  <div class="hv-shelf-head"><div><div class="hv-home-kicker">Popular Picks</div><h2>Bestselling Wall Clocks</h2><p>Popular designs selected for retail and bulk enquiries.</p></div><a class="hv-shelf-link" href="{% url 'products_list' %}">View All <i class="fas fa-arrow-right"></i></a></div>
+  <div class="row g-3">
+   {% for product in bestseller_products %}
+   <div class="col-6 col-lg-3">
+    <article class="hv-product-card">
+     <a href="{{ product.get_absolute_url }}" class="hv-product-main-link"><div class="image">{% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} bestselling wall clock" loading="lazy">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} — product image coming soon" loading="lazy">{% endif %}<span class="hv-product-badge best">Bestseller</span></div><div class="body"><div class="category">{{ product.category.name }}</div><h3>{{ product.name }}</h3><div class="hv-product-meta">{% if product.price %}<span class="hv-product-price">₹{{ product.price }}</span>{% else %}<span class="hv-product-price">Get Price</span>{% endif %}<span class="hv-product-moq">MOQ {{ product.moq }}</span></div></div></a><a class="wa" href="{% whatsapp_link 'Hi HOOVALE, I want the best price for: ' %}{{ product.name }}" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Price</a>
+    </article>
+   </div>
+   {% endfor %}
+  </div>
+ </div>
+</section>
+{% endif %}
+
+<!-- SOLUTIONS -->
+<section class="hv-home-section dark">
+ <div class="container-lg">
+  <div class="hv-home-section-head">
+   <div class="hv-home-kicker">Built for Every Buyer</div>
+   <h2>Wall Clock Solutions for Business & Retail</h2>
+   <p>Choose the buying route that matches your requirement. Our team can help with product selection, quantity, branding and delivery.</p>
+  </div>
+  <div class="row g-3">
+   <div class="col-md-6 col-lg-3"><div class="hv-solution-card"><i class="fas fa-store"></i><h3>Retail & Resellers</h3><p>Ready-to-sell wall clock designs for retailers, gift stores and online sellers.</p></div></div>
+   <div class="col-md-6 col-lg-3"><div class="hv-solution-card"><i class="fas fa-boxes-stacked"></i><h3>Wholesale & Distribution</h3><p>Bulk supply with quantity-based pricing for distributors and dealers.</p></div></div>
+   <div class="col-md-6 col-lg-3"><div class="hv-solution-card"><i class="fas fa-bullhorn"></i><h3>Promotional Clocks</h3><p>Logo-branded clocks for marketing campaigns, dealer meets and business promotion.</p></div></div>
+   <div class="col-md-6 col-lg-3"><div class="hv-solution-card"><i class="fas fa-pen-ruler"></i><h3>Custom & OEM</h3><p>Discuss custom dial, logo placement, branding and OEM requirements with our team.</p></div></div>
+  </div>
+ </div>
+</section>
+
+<!-- ABOUT / MANUFACTURING -->
+<section class="hv-home-section">
+ <div class="container-lg">
+  <div class="hv-about-grid">
+   <div class="hv-about-profile" aria-label="HOOVALE Jaipur business profile">
+    <div class="hv-about-profile-icon"><i class="fas fa-clock"></i></div>
+    <div class="hv-about-profile-kicker">HOOVALE • JAIPUR</div>
+    <div class="hv-about-profile-title">Wall clocks for everyday spaces and business needs.</div>
+    <div class="hv-about-profile-list">
+      <span><i class="fas fa-check"></i> Retail &amp; bulk orders</span>
+      <span><i class="fas fa-check"></i> Custom branding options</span>
+      <span><i class="fas fa-check"></i> Promotional requirements</span>
+      <span><i class="fas fa-check"></i> Delivery support across India</span>
+    </div>
+   </div>
+   <div class="hv-about-copy">
+    <div class="hv-home-kicker">About HOOVALE</div>
+    <h2>Wall clocks made for homes, businesses and brands.</h2>
+    <p>HOOVALE serves businesses and individual buyers looking for dependable wall clocks, promotional clocks and customized designs. From selecting the right model to discussing branding, quantity and delivery, our team provides direct assistance.</p>
+    <div class="hv-checks">
+     <div class="hv-check"><i class="fas fa-check-circle"></i> Wholesale & retail supply</div>
+     <div class="hv-check"><i class="fas fa-check-circle"></i> Custom logo printing</div>
+     <div class="hv-check"><i class="fas fa-check-circle"></i> Promotional & corporate use</div>
+     <div class="hv-check"><i class="fas fa-check-circle"></i> PAN India order support</div>
+    </div>
+    <a href="{% url 'about' %}" class="btn btn-dark px-4 py-2">Know More About HOOVALE <i class="fas fa-arrow-right ms-1"></i></a>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="hv-home-section tinted">
+ <div class="container-lg">
+  <div class="hv-home-section-head">
+   <div class="hv-home-kicker">Simple Buying Process</div>
+   <h2>From Enquiry to Delivery</h2>
+   <p>A clear process for wholesale, custom and promotional wall clock orders.</p>
+  </div>
+  <div class="row g-3 hv-process">
+   <div class="col-md-6 col-lg-3"><div class="hv-step"><h3>Tell Us Your Requirement</h3><p>Share product type, quantity, budget, branding needs and delivery city.</p></div></div>
+   <div class="col-md-6 col-lg-3"><div class="hv-step"><h3>Get Product & Pricing</h3><p>Our team helps you shortlist suitable designs and quantity-based pricing.</p></div></div>
+   <div class="col-md-6 col-lg-3"><div class="hv-step"><h3>Approve Customisation</h3><p>For branded orders, confirm logo, artwork, dial and other requirements.</p></div></div>
+   <div class="col-md-6 col-lg-3"><div class="hv-step"><h3>Production & Dispatch</h3><p>Order processing followed by packing and delivery support to your location.</p></div></div>
+  </div>
+ </div>
+</section>
+
+<!-- INDUSTRIES -->
+{% if industries %}
+<section class="hv-home-section dark">
+ <div class="container-lg">
+  <div class="hv-home-section-head"><div class="hv-home-kicker">Applications</div><h2>Where Our Wall Clocks Are Used</h2><p>Solutions for businesses, institutions and promotional requirements.</p></div>
+  <div class="row g-3">
+   {% for ind in industries %}
+   <div class="col-6 col-md-4">
+    <a href="{{ ind.get_absolute_url }}" class="hv-solution-card d-block text-decoration-none">
+     <i class="{{ ind.icon_class|default:'fas fa-building' }}"></i>
+     <h3>{{ ind.industry_name }}</h3>
+     <p>{{ ind.hero_subheading|truncatewords:16 }}</p>
+    </a>
+   </div>
+   {% endfor %}
+  </div>
+ </div>
+</section>
+{% endif %}
+
+<!-- TESTIMONIALS -->
+{% if testimonials %}
+<section class="hv-home-section">
+ <div class="container-lg">
+  <div class="hv-home-section-head"><div class="hv-home-kicker">Customer Feedback</div><h2>What Buyers Say</h2><p>Feedback from customers and business buyers.</p></div>
+  <div id="hvTestimonialHome" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+   <div class="carousel-inner">
+    {% for t in testimonials %}
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+     <div class="col-lg-8 mx-auto text-center">
+      <div style="font-size:1.3rem;color:#b18a35;letter-spacing:3px">★★★★★</div>
+      <blockquote style="font-family:'Playfair Display',serif;font-size:1.35rem;line-height:1.6;margin:18px 0">“{{ t.review_content }}”</blockquote>
+      <strong>{{ t.customer_name }}</strong><div class="text-muted small">{{ t.customer_designation }}{% if t.customer_city %} • {{ t.customer_city }}{% endif %}</div>
+     </div>
+    </div>
+    {% endfor %}
+   </div>
+  </div>
+ </div>
+</section>
+{% endif %}
+
+<!-- SEO / LOCAL RELEVANCE -->
+<section class="hv-home-section tinted">
+ <div class="container-lg">
+  <div class="hv-home-section-head" style="margin-bottom:18px">
+   <div class="hv-home-kicker">Jaipur • Rajasthan • India</div>
+   <h2>Wall Clock Supplier in Jaipur for Wholesale &amp; Custom Orders</h2>
+  </div>
+  <p class="hv-location-copy">
+   HOOVALE is a Jaipur-based wall clock manufacturer serving retail, wholesale, promotional and customized requirements. Buyers can explore wall clock designs online, ask for bulk pricing, discuss logo printing or custom branding, and connect with the team for order and delivery details. We support buyers across India looking for dependable wall clock suppliers and wholesale sources from Jaipur.
+  </p>
+ </div>
+</section>
+
+<!-- FAQ -->
+{% if faqs %}
+<section class="hv-home-section hv-faq">
+ <div class="container-lg">
+  <div class="hv-home-section-head"><div class="hv-home-kicker">Need to Know?</div><h2>Frequently Asked Questions</h2></div>
+  <div class="col-lg-9 mx-auto">
+   <div class="accordion" id="homeFaq">
+    {% for faq in faqs %}
+    <div class="accordion-item">
+     <h3 class="accordion-header"><button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ forloop.counter }}">{{ faq.question }}</button></h3>
+     <div id="faq{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#homeFaq"><div class="accordion-body text-muted">{{ faq.answer|linebreaks }}</div></div>
+    </div>
+    {% endfor %}
+   </div>
+  </div>
+ </div>
+</section>
+{% endif %}
+
+<!-- FINAL CTA -->
+<section class="hv-final-cta">
+ <div class="container-lg">
+  <div class="hv-home-kicker">Ready to Buy?</div>
+  <h2>Looking for Wall Clocks for Your Home or Business?</h2>
+  <p>Share the product type, quantity and branding requirement. Our team can help you shortlist suitable wall clocks and discuss pricing, customisation and delivery.</p>
+  <div class="hv-home-actions justify-content-center">
+   <a class="hv-home-primary" href="{% whatsapp_link 'Hi HOOVALE, I need a quote for wall clocks. Please help me with product options and pricing.' %}" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+   <button class="hv-home-secondary" type="button" data-bs-toggle="modal" data-bs-target="#bulkInquiryModal"><i class="fas fa-paper-plane"></i> Send Enquiry</button>
+   <a class="hv-home-outline" href="{% url 'contact' %}"><i class="fas fa-phone"></i> Contact Team</a>
+  </div>
+ </div>
+</section>
+
+</div>
+{% endblock %}
+
+
+/* =========================================================
+   FINAL COLLECTION BANNER — MATCH SUPPLIED REFERENCE
+   Reference artwork card ratio ≈ 813:345 = 2.36:1.
+   Text/CTA are part of the uploaded artwork, so do not layer
+   a second HTML text treatment over the image.
+   ========================================================= */
+.hv-home-banner-wrap{
+    width:100%;
+    padding:14px 20px 12px;
+    background:#fff;
+}
+
+.hv-home-banner{
+    width:100%;
+    max-width:1220px;
+    margin:0 auto;
+    overflow:visible;
+    border-radius:16px;
+    box-shadow:none;
+    border:0;
+}
+
+.hv-home-banner .carousel,
+.hv-home-banner .carousel-inner,
+.hv-home-banner .carousel-item{
+    width:100%;
+}
+
+.hv-home-banner .carousel-inner{
+    overflow:hidden;
+    border-radius:16px;
+}
+
+.hv-banner-link{
+    display:block;
+    position:relative;
+    width:100%;
+    aspect-ratio:2.36 / 1;
+    height:auto;
+    min-height:0;
+    overflow:hidden;
+    border-radius:16px;
+    background:#f3f4f6;
+}
+
+.hv-banner-link picture,
+.hv-banner-link img{
+    display:block;
+    width:100%;
+    height:100%;
+}
+
+.hv-banner-link img{
+    object-fit:cover;
+    object-position:center;
+}
+
+/* The reference image already contains headline, copy and CTA. */
+.hv-banner-content{
+    display:none !important;
+}
+
+/* Clean circular arrows like the supplied reference. */
+.hv-home-banner .carousel-control-prev,
+.hv-home-banner .carousel-control-next{
+    z-index:8;
+    width:46px;
+    height:46px;
+    top:50%;
+    transform:translateY(-50%);
+    margin:0 10px;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.96);
+    box-shadow:0 5px 18px rgba(15,23,42,.14);
+    opacity:1;
+}
+
+.hv-home-banner .carousel-control-prev-icon,
+.hv-home-banner .carousel-control-next-icon{
+    width:16px;
+    height:16px;
+    filter:invert(1);
+}
+
+/* Reference has dots BELOW the banner on a clean white background. */
+.hv-banner-indicators{
+    position:static !important;
+    left:auto !important;
+    bottom:auto !important;
+    transform:none !important;
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    height:28px;
+    margin:5px 0 0;
+    padding:0 !important;
+    background:transparent !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+}
+
+.hv-banner-indicators button{
+    width:8px !important;
+    height:8px !important;
+    min-width:8px;
+    min-height:8px;
+    padding:0 !important;
+    margin:0 !important;
+    border:0 !important;
+    border-radius:999px !important;
+    background:#aeb4bd !important;
+    opacity:1 !important;
+    transition:width .2s ease, background-color .2s ease;
+}
+
+.hv-banner-indicators button.active{
+    width:24px !important;
+    height:8px !important;
+    background:#b48a36 !important;
+}
+
+@media(max-width:767px){
+    .hv-home-banner-wrap{
+        padding:10px 10px 8px;
+    }
+
+    .hv-home-banner,
+    .hv-home-banner .carousel-inner,
+    .hv-banner-link{
+        border-radius:12px;
+    }
+
+    .hv-banner-link{
+        aspect-ratio:2.36 / 1;
+    }
+
+    .hv-home-banner .carousel-control-prev,
+    .hv-home-banner .carousel-control-next{
+        width:32px;
+        height:32px;
+        margin:0 7px;
+    }
+
+    .hv-home-banner .carousel-control-prev-icon,
+    .hv-home-banner .carousel-control-next-icon{
+        width:12px;
+        height:12px;
+    }
+
+    .hv-banner-indicators{
+        height:25px;
+        margin-top:4px;
+        gap:6px;
+    }
+
+    .hv-banner-indicators button{
+        width:7px !important;
+        height:7px !important;
+        min-width:7px;
+        min-height:7px;
+    }
+
+    .hv-banner-indicators button.active{
+        width:20px !important;
+        height:7px !important;
+    }
+}
+
+
+/* =========================================================
+   FINAL HOMEPAGE CAMPAIGN BANNER — EXACT 3:2
+   Keep the full 1200x800 artwork visible; no vertical crop.
+   ========================================================= */
+.hv-home-banner-wrap{
+    width:100%;
+    padding:16px 24px 12px !important;
+    background:#fff;
+    box-sizing:border-box;
+}
+.hv-home-banner{
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
+    overflow:hidden;
+    border-radius:16px;
+    position:relative;
+}
+.hv-home-banner .carousel,
+.hv-home-banner .carousel-inner,
+.hv-home-banner .carousel-item{
+    width:100%;
+}
+.hv-banner-link{
+    display:block;
+    position:relative;
+    width:100%;
+    aspect-ratio:3 / 2 !important;
+    height:auto !important;
+    min-height:0 !important;
+    overflow:hidden;
+    background:#f3f4f6;
+    border-radius:16px;
+}
+.hv-banner-link picture{
+    display:block;
+    width:100%;
+    height:100%;
+}
+.hv-banner-link img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+}
+.hv-banner-content{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    box-sizing:border-box;
+    max-width:100%;
+    overflow:hidden;
+    padding:clamp(22px,4vw,52px);
+    background:linear-gradient(90deg,rgba(0,0,0,.56),rgba(0,0,0,.02) 78%);
+    pointer-events:none;
+}
+.hv-banner-content h2,
+.hv-banner-content p,
+.hv-banner-content span{
+    max-width:min(62%,720px);
+    box-sizing:border-box;
+}
+.hv-banner-content h2{
+    margin:0 0 8px;
+    line-height:1.08;
+    color:#fff !important;
+    font-family:"Playfair Display",serif;
+    font-size:clamp(1.45rem,3.2vw,2.8rem);
+}
+.hv-banner-content p{
+    margin:0 0 12px;
+    color:rgba(255,255,255,.94);
+    font-size:clamp(.78rem,1.55vw,1rem);
+    line-height:1.4;
+}
+.hv-banner-content span{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    width:max-content;
+    max-width:62%;
+    padding:9px 16px;
+    border-radius:999px;
+    background:#b88b32;
+    color:#fff;
+    font-size:.78rem;
+    font-weight:800;
+}
+.hv-home-banner .carousel-control-prev,
+.hv-home-banner .carousel-control-next{
+    z-index:5;
+    width:44px;
+    height:44px;
+    top:50%;
+    transform:translateY(-50%);
+    margin:0 14px;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.94);
+    opacity:.96;
+}
+.hv-home-banner .carousel-control-prev-icon,
+.hv-home-banner .carousel-control-next-icon{
+    width:18px;
+    height:18px;
+    filter:invert(1);
+}
+.hv-banner-indicators{
+    z-index:6;
+}
+
+@media(max-width:767px){
+    .hv-home-banner-wrap{
+        padding:12px 16px 8px !important;
+    }
+    .hv-home-banner{
+        width:100%;
+        border-radius:14px;
+    }
+    .hv-banner-link{
+        aspect-ratio:3 / 2 !important;
+        height:auto !important;
+        border-radius:14px;
+    }
+    .hv-banner-content{
+        padding:18px 20px;
+        background:linear-gradient(90deg,rgba(0,0,0,.58),rgba(0,0,0,.04) 82%);
+    }
+    .hv-banner-content h2,
+    .hv-banner-content p,
+    .hv-banner-content span{
+        max-width:60%;
+    }
+    .hv-banner-content h2{
+        font-size:clamp(1.15rem,5.2vw,1.55rem);
+        line-height:1.08;
+        margin-bottom:5px;
+    }
+    .hv-banner-content p{
+        font-size:.68rem;
+        line-height:1.3;
+        margin-bottom:7px;
+    }
+    .hv-banner-content span{
+        padding:7px 11px;
+        font-size:.62rem;
+    }
+    .hv-home-banner .carousel-control-prev,
+    .hv-home-banner .carousel-control-next{
+        width:32px;
+        height:32px;
+        margin:0 7px;
+    }
+    .hv-home-banner .carousel-control-prev-icon,
+    .hv-home-banner .carousel-control-next-icon{
+        width:13px;
+        height:13px;
+    }
+}
+

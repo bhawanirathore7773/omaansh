@@ -1,0 +1,451 @@
+{% load seo_tags %}
+{% get_site_settings as site %}
+
+{# ================================================== #}
+{# STICKY CTAs — WhatsApp + Call + Quote               #}
+{# Always visible. Mobile + desktop optimized.         #}
+{# ================================================== #}
+
+<style>
+.sticky-ctas {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* WhatsApp — bottom right */
+.sticky-whatsapp {
+    bottom: 24px;
+    right: 24px;
+    pointer-events: auto;
+}
+
+.sticky-whatsapp a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: #25D366;
+    color: white;
+    border-radius: 50%;
+    font-size: 28px;
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    animation: wa-pulse 2s infinite;
+}
+
+.sticky-whatsapp a:hover {
+    transform: scale(1.1);
+    background: #1da851;
+    color: white;
+}
+
+@keyframes wa-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6), 0 8px 25px rgba(37, 211, 102, 0.5); }
+    70% { box-shadow: 0 0 0 18px rgba(37, 211, 102, 0), 0 8px 25px rgba(37, 211, 102, 0.5); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0), 0 8px 25px rgba(37, 211, 102, 0.5); }
+}
+
+/* Call button — bottom right above WhatsApp */
+.sticky-call {
+    bottom: 96px;
+    right: 24px;
+    pointer-events: auto;
+}
+
+.sticky-call a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #FFA500, #FF8C00);
+    color: white;
+    border-radius: 50%;
+    font-size: 24px;
+    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.5);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.sticky-call a:hover {
+    transform: scale(1.1);
+    color: white;
+}
+
+/* Mobile bottom navigation — full-width, edge-to-edge */
+.mobile-cta-bar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-cta-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 64px;
+        min-height: 64px;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        align-items: start;
+        gap: 0;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        background: rgba(255,255,255,.98);
+        border: 0;
+        border-top: 1px solid rgba(15,23,42,.10);
+        border-radius: 0;
+        box-shadow: 0 -8px 28px rgba(15,23,42,.12);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        z-index: 9998;
+    }
+
+    .mobile-cta-item {
+        position: relative;
+        width: 100%;
+        min-width: 0;
+        height: 64px;
+        min-height: 64px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: #667085;
+        text-decoration: none;
+        font: inherit;
+        font-size: .68rem;
+        font-weight: 700;
+        line-height: 1.1;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: color .18s ease, background .18s ease, transform .18s ease;
+    }
+
+    .mobile-cta-item i {
+        font-size: 20px;
+        line-height: 1;
+        transition: transform .18s ease;
+    }
+
+    .mobile-cta-item span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        padding: 0 2px;
+    }
+
+    .mobile-cta-item:active {
+        background: rgba(0,81,163,.055);
+        transform: none;
+    }
+
+    .mobile-cta-item.active {
+        color: #0051A3;
+        background: rgba(0,81,163,.055);
+    }
+
+    .mobile-cta-item.active::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 30px;
+        height: 3px;
+        transform: translateX(-50%);
+        background: #0051A3;
+        border-radius: 0 0 4px 4px;
+    }
+
+    .mobile-cta-item.active i {
+        transform: translateY(-1px);
+    }
+
+    .mobile-cta-about {
+        color: #344054;
+    }
+
+    html,
+    body {
+        margin: 0;
+        min-height: 100%;
+        background: #fff;
+        overscroll-behavior-y: none;
+    }
+
+    /* The bottom bar is fixed and overlays the page; do not add
+       document-height padding that creates a blank scroll area after footer. */
+    body {
+        padding-bottom: 0 !important;
+    }
+
+    .sticky-whatsapp {
+        display: block;
+        bottom: 82px;
+        right: 18px;
+        pointer-events: auto;
+    }
+
+    .sticky-whatsapp a {
+        width: 56px;
+        height: 56px;
+        font-size: 25px;
+        box-shadow: 0 8px 24px rgba(37,211,102,.38);
+    }
+
+    .sticky-call {
+        display: none;
+    }
+}
+
+@media (max-width: 380px) {
+    .mobile-cta-item {
+        font-size: .62rem;
+    }
+
+    .mobile-cta-item i {
+        font-size: 18px;
+    }
+
+    .sticky-whatsapp {
+        right: 14px;
+    }
+
+    .sticky-whatsapp a {
+        width: 52px;
+        height: 52px;
+        font-size: 23px;
+    }
+}
+
+.sticky-tooltip {
+    position: absolute;
+    right: 75px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #1a1a1a;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.sticky-tooltip::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left: 6px solid #1a1a1a;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+}
+
+.sticky-whatsapp:hover .sticky-tooltip,
+.sticky-call:hover .sticky-tooltip {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .sticky-tooltip { display: none; }
+}
+
+/* =========================================================
+   HOOVALE HOME — MOBILE UX OVERRIDES
+   1. Remove the hero WhatsApp CTA; keep floating WhatsApp.
+   2. Make trust/hero metrics compact, icon-led and balanced.
+   3. Move the promotional banner immediately above products.
+   ========================================================= */
+
+.hv-home .hv-home-hero .hv-home-primary {
+    display: none !important;
+}
+
+.hv-home .hv-hero-stats {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 24px !important;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,.14);
+}
+
+.hv-home .hv-hero-stats .stat {
+    position: relative;
+    min-width: 0;
+    min-height: 78px;
+    padding: 13px 10px 11px;
+    border: 1px solid rgba(201,169,97,.22);
+    border-radius: 12px;
+    background: rgba(255,255,255,.045);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.hv-home .hv-hero-stats .stat::before {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    display: block;
+    color: #d9bb72;
+    font-size: 15px;
+    margin-bottom: 7px;
+}
+
+.hv-home .hv-hero-stats .stat:nth-child(1)::before { content: "\f1ad"; }
+.hv-home .hv-hero-stats .stat:nth-child(2)::before { content: "\f466"; }
+.hv-home .hv-hero-stats .stat:nth-child(3)::before { content: "\f303"; }
+.hv-home .hv-hero-stats .stat:nth-child(4)::before { content: "\f0d1"; }
+
+.hv-home .hv-hero-stats .stat strong {
+    display: block;
+    color: #fff;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(.95rem, 2vw, 1.35rem);
+    line-height: 1.1;
+    margin: 0 0 4px;
+}
+
+.hv-home .hv-hero-stats .stat span {
+    display: block;
+    color: rgba(255,255,255,.64);
+    font-size: .63rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: .35px;
+    text-transform: uppercase;
+}
+
+.hv-home .hv-home-banner-wrap {
+    padding: 12px 0 8px;
+    order: 0;
+}
+
+.hv-home .hv-home-banner {
+    border-radius: 0;
+}
+
+.hv-home .hv-banner-link {
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(15,23,42,.12);
+}
+
+@media (max-width: 767px) {
+    .hv-home .hv-home-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .hv-home .hv-home-actions .hv-home-secondary,
+    .hv-home .hv-home-actions .hv-home-outline {
+        min-height: 54px;
+        border-radius: 12px;
+        font-size: .96rem;
+    }
+
+    .hv-home .hv-home-actions .hv-home-secondary {
+        box-shadow: 0 8px 20px rgba(0,0,0,.18);
+    }
+
+    .hv-home .hv-home-actions .hv-home-outline {
+        background: rgba(255,255,255,.02);
+    }
+
+    .hv-home .hv-hero-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+        padding-top: 16px;
+        margin-top: 20px !important;
+    }
+
+    .hv-home .hv-hero-stats .stat {
+        min-height: 82px;
+        padding: 11px 8px;
+        border-radius: 11px;
+    }
+
+    .hv-home .hv-hero-stats .stat strong {
+        font-size: 1.15rem;
+    }
+
+    .hv-home .hv-hero-stats .stat span {
+        font-size: .61rem;
+    }
+
+    .hv-home .hv-home-banner-wrap {
+        padding: 8px 0 4px;
+    }
+
+    .hv-home .hv-banner-link {
+        height: 118px;
+        border-radius: 10px;
+    }
+}
+
+@media (max-width: 380px) {
+    .hv-home .hv-hero-stats .stat {
+        min-height: 76px;
+    }
+}
+</style>
+
+{# Desktop sticky buttons #}
+<div class="sticky-ctas sticky-call">
+    <a href="{% call_link %}" aria-label="Call HOOVALE">
+        <i class="fas fa-phone-alt"></i>
+        <span class="sticky-tooltip">Call Now</span>
+    </a>
+</div>
+
+<div class="sticky-ctas sticky-whatsapp">
+    <a href="{% whatsapp_link 'Hi HOOVALE, I want wall clock wholesale pricing.' %}" target="_blank" rel="noopener" aria-label="WhatsApp HOOVALE">
+        <i class="fab fa-whatsapp"></i>
+        <span class="sticky-tooltip">Chat on WhatsApp</span>
+    </a>
+</div>
+
+{# Mobile bottom bar #}
+<nav class="mobile-cta-bar" aria-label="Mobile navigation">
+    <a href="{% url 'home' %}" class="mobile-cta-item" data-bottom-nav="home" aria-label="Home">
+        <i class="fas fa-house" aria-hidden="true"></i>
+        <span>Home</span>
+    </a>
+
+    <a href="{% url 'products_list' %}" class="mobile-cta-item" data-bottom-nav="products" aria-label="Products">
+        <i class="fas fa-box-open" aria-hidden="true"></i>
+        <span>Products</span>
+    </a>
+
+    <a href="{% url 'categories_index' %}" class="mobile-cta-item" data-bottom-nav="categories" aria-label="Categories">
+        <i class="fas fa-layer-group" aria-hidden="true"></i>
+        <span>Category</span>
+    </a>
+
+    <a href="{% url 'contact' %}" class="mobile-cta-item" data-bottom-nav="contact" aria-label="Contact HOOVALE">
+        <i class="fas fa-phone" aria-hidden="true"></i>
+        <span>Contact</span>
+    </a>
+
+    <a href="{% url 'about' %}" class="mobile-cta-item mobile-cta-about" data-bottom-nav="about" aria-label="About HOOVALE">
+        <i class="fas fa-circle-info" aria-hidden="true"></i>
+        <span>About</span>
+    </a>
+</nav>

@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static seo_tags %}
+
+{% block meta_title %}{{ blog.meta_title|default:blog.title }} | HOOVALE{% endblock %}
+{% block meta_description %}{{ blog.meta_description|default:blog.description|truncatechars:155 }}{% endblock %}
+{% block meta_keywords %}{{ blog.meta_keywords }}{% endblock %}
+{% block og_title %}{{ blog.meta_title|default:blog.title }}{% endblock %}
+{% block og_description %}{{ blog.meta_description|default:blog.description|truncatechars:155 }}{% endblock %}
+{% block og_image %}{% if blog.featured_image and blog.featured_image.name != 'default/blog-default.jpg' %}{{ blog.featured_image.url }}{% else %}{% static 'images/product-placeholder.svg' %}{% endif %}{% endblock %}
+
+{% block page_schema %}
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"{{ blog.title|escapejs }}",
+  "description":"{{ blog.meta_description|default:blog.description|truncatechars:155|escapejs }}",
+  "datePublished":"{{ blog.created_at|date:'c' }}",
+  "dateModified":"{{ blog.updated_at|date:'c' }}",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"{{ request.build_absolute_uri }}"},
+  "author":{"@type":"Organization","name":"HOOVALE"},
+  "publisher":{"@type":"Organization","name":"HOOVALE"},
+  "image":"{% if blog.featured_image and blog.featured_image.name != 'default/blog-default.jpg' %}{{ request.scheme }}://{{ request.get_host }}{{ blog.featured_image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/product-placeholder.svg' %}{% endif %}"
+}
+</script>
+{% breadcrumb_schema blog_breadcrumb_items %}
+{% endblock %}
+
+{% block content %}
+<div class="hv-blog-detail">
+  <div class="hv-blog-reading-progress" id="hvBlogProgress"></div>
+
+  <div class="hv-blog-hero">
+    <div class="container-lg">
+      <div class="hv-blog-hero-inner">
+        <a href="{% url 'blog_list' %}" class="hv-blog-back"><i class="fas fa-arrow-left"></i> Wall Clock Guides</a>
+        <span class="hv-blog-category">{{ blog.category }}</span>
+        <h1>{{ blog.title }}</h1>
+        <div class="hv-blog-meta"><i class="far fa-calendar"></i> {{ blog.created_at|date:"d M Y" }} <span>•</span> Practical buying guide from HOOVALE</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-lg">
+    <div class="hv-blog-layout">
+      <article class="hv-blog-article">
+        <div class="hv-blog-featured">
+          {% if blog.featured_image %}
+          <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }} — HOOVALE wall clock guide" loading="eager">
+          {% else %}
+          <div class="hv-blog-visual-placeholder">
+            <i class="far fa-clock"></i>
+            <span>HOOVALE Wall Clock Guide</span>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="hv-blog-intro">{{ blog.description }}</div>
+
+        {% if blog.content_html %}
+          <div class="hv-blog-content">{{ blog.content_html|safe }}</div>
+        {% else %}
+          <div class="hv-blog-content">{{ blog.description|linebreaks }}</div>
+        {% endif %}
+
+        {% if blog.inline_image_1 %}
+        <figure class="hv-blog-inline-image"><img src="{{ blog.inline_image_1.url }}" alt="{{ blog.inline_image_1_caption|default:blog.title }}" loading="lazy">{% if blog.inline_image_1_caption %}<figcaption>{{ blog.inline_image_1_caption }}</figcaption>{% endif %}</figure>
+        {% endif %}
+        {% if blog.inline_image_2 %}
+        <figure class="hv-blog-inline-image"><img src="{{ blog.inline_image_2.url }}" alt="{{ blog.inline_image_2_caption|default:blog.title }}" loading="lazy">{% if blog.inline_image_2_caption %}<figcaption>{{ blog.inline_image_2_caption }}</figcaption>{% endif %}</figure>
+        {% endif %}
+        {% if blog.inline_image_3 %}
+        <figure class="hv-blog-inline-image"><img src="{{ blog.inline_image_3.url }}" alt="{{ blog.inline_image_3_caption|default:blog.title }}" loading="lazy">{% if blog.inline_image_3_caption %}<figcaption>{{ blog.inline_image_3_caption }}</figcaption>{% endif %}</figure>
+        {% endif %}
+
+        <div class="hv-blog-cta">
+          <div>
+            <span>Need help choosing?</span>
+            <h2>Tell us the size, quantity and use case.</h2>
+            <p>HOOVALE can help with retail, wholesale, promotional and custom wall clock requirements.</p>
+          </div>
+          <a href="{% url 'contact' %}" class="btn-hv-gold">Ask HOOVALE <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+
+      {% if related_blogs %}
+      <aside class="hv-blog-sidebar">
+        <div class="hv-blog-side-card">
+          <div class="hv-home-kicker">Keep Reading</div>
+          <h3>Related wall clock guides</h3>
+          {% for post in related_blogs %}
+          <a href="{{ post.get_absolute_url }}" class="hv-blog-related">
+            <span>{{ post.category }}</span>
+            <strong>{{ post.title }}</strong>
+            <small>{{ post.created_at|date:"d M Y" }}</small>
+          </a>
+          {% endfor %}
+        </div>
+      </aside>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.hv-blog-detail{background:#f7f9fc;padding-bottom:72px}
+.hv-blog-reading-progress{position:fixed;top:0;left:0;width:0;height:3px;background:#c9a961;z-index:2000}
+.hv-blog-hero{background:linear-gradient(135deg,#0b1724,#075aa4);padding:58px 0 62px;color:#fff}
+.hv-blog-hero-inner{max-width:900px}
+.hv-blog-back{color:#d9e8f7;font-weight:700;display:inline-flex;gap:8px;margin-bottom:22px}
+.hv-blog-back:hover{color:#fff}
+.hv-blog-category{display:inline-block;padding:6px 10px;border:1px solid rgba(201,169,97,.55);border-radius:999px;color:#e2bf70;text-transform:uppercase;letter-spacing:1px;font-size:.72rem;font-weight:800}
+.hv-blog-hero h1{color:#fff!important;font-size:clamp(2.2rem,5vw,4rem);margin:18px 0 16px}
+.hv-blog-meta{color:rgba(255,255,255,.75);font-size:.9rem}
+.hv-blog-layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:28px;align-items:start;margin-top:-28px;position:relative}
+.hv-blog-article{background:#fff;border:1px solid #e4e9ef;border-radius:18px;padding:clamp(22px,4vw,48px);box-shadow:0 12px 35px rgba(15,23,42,.07)}
+.hv-blog-featured img,.hv-blog-inline-image img{display:block;width:100%;height:auto;border-radius:14px}
+.hv-blog-visual-placeholder{min-height:280px;border-radius:14px;background:linear-gradient(135deg,#0b1724,#075aa4);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-size:1.1rem;font-weight:700}
+.hv-blog-visual-placeholder i{font-size:3rem;color:#e2bf70}
+.hv-blog-intro{font-size:1.18rem;line-height:1.8;color:#34445a;font-weight:600;margin:28px 0}
+.hv-blog-content{font-size:1.05rem;line-height:1.9;color:#3f4b5b}
+.hv-blog-content h2{font-size:1.65rem;margin:36px 0 14px}
+.hv-blog-content h3{font-size:1.25rem;margin:28px 0 10px}
+.hv-blog-content p{color:#3f4b5b;margin-bottom:18px}
+.hv-blog-content ul,.hv-blog-content ol{padding-left:22px;margin-bottom:22px}
+.hv-blog-content li{margin-bottom:8px}
+.hv-blog-content a{font-weight:700;color:#075aa4}
+.hv-blog-inline-image{margin:32px 0}
+.hv-blog-inline-image figcaption{font-size:.82rem;color:#697586;margin-top:8px;text-align:center}
+.hv-blog-sidebar{position:sticky;top:100px}
+.hv-blog-side-card{background:#fff;border:1px solid #e4e9ef;border-radius:16px;padding:22px}
+.hv-blog-side-card h3{font-size:1.3rem;margin:8px 0 14px}
+.hv-blog-related{display:flex;flex-direction:column;gap:4px;padding:15px 0;border-top:1px solid #edf0f3;color:#172033}
+.hv-blog-related span{font-size:.68rem;color:#a88e4f;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.hv-blog-related strong{font-size:.94rem;line-height:1.4}
+.hv-blog-related small{color:#8a94a3}
+.hv-blog-cta{margin-top:42px;padding:24px;border-radius:15px;background:#eef5fb;border:1px solid #dbe8f3;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.hv-blog-cta span{font-size:.75rem;color:#a88e4f;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.hv-blog-cta h2{font-size:1.35rem;margin:5px 0}
+.hv-blog-cta p{margin:0}
+@media(max-width:991px){.hv-blog-layout{grid-template-columns:1fr}.hv-blog-sidebar{position:static}.hv-blog-cta{flex-direction:column;align-items:flex-start}}
+@media(max-width:767px){.hv-blog-hero{padding:42px 0 48px}.hv-blog-article{border-radius:14px}.hv-blog-layout{margin-top:-18px}.hv-blog-cta .btn-hv-gold{width:100%}}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  const bar=document.getElementById('hvBlogProgress');
+  const article=document.querySelector('.hv-blog-article');
+  if(!bar||!article)return;
+  const update=()=>{const top=article.getBoundingClientRect().top+window.scrollY;const total=Math.max(1,article.offsetHeight-window.innerHeight);const pct=Math.min(100,Math.max(0,(window.scrollY-top)/total*100));bar.style.width=pct+'%';};
+  window.addEventListener('scroll',update,{passive:true});update();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static seo_tags %}
+
+{% block meta_title %}{{ category.meta_title|default:category.name }}{% endblock %}
+{% block meta_description %}{{ category.meta_description|default:category.description|truncatechars:155 }}{% endblock %}
+{% block meta_keywords %}{{ category.meta_keywords|default:category.name|lower }}, wall clock manufacturer, bulk wall clocks, wholesale {{ category.name|lower }}{% endblock %}
+
+{% block og_title %}{{ category.meta_title|default:category.name }}{% endblock %}
+{% block og_description %}{{ category.meta_description|default:category.description|truncatechars:160 }}{% endblock %}
+{% block og_image %}https://hoovale.com{% if category.image %}{{ category.image.url }}{% elif category.static_image_path %}{{ category.static_image_path }}{% else %}{% static 'images/product-placeholder.svg' %}{% endif %}{% endblock %}
+
+{% block page_schema %}
+    {% breadcrumb_schema breadcrumb_items %}
+{% endblock page_schema %}
+
+{% block content %}
+<div class="hv-category-detail-page">
+
+{# BREADCRUMBS #}
+<div style="background:#f8f9fa; padding:14px 0; font-size:0.9rem;">
+    <div class="container-lg">
+        <a href="/" style="color:#666; text-decoration:none;">Home</a>
+        <span style="color:#999;"> › </span>
+        <a href="{% url 'products_list' %}" style="color:#666; text-decoration:none;">Products</a>
+        <span style="color:#999;"> › </span>
+        <span style="color:#0051A3; font-weight:600;">{{ category.name }}</span>
+    </div>
+</div>
+
+{# HERO #}
+<section class="hv-category-detail-hero" style="position:relative; padding:70px 0; background:linear-gradient(135deg,#0b1724 0%, #0051A3 100%); color:white; overflow:hidden;">
+    {% if category.image %}<div style="position:absolute; inset:0; background-image:url('{{ category.image.url }}'); background-size:cover; background-position:center; opacity:0.2;"></div>{% elif category.static_image_path %}<div style="position:absolute; inset:0; background-image:url('{{ category.static_image_path }}'); background-size:cover; background-position:center; opacity:0.16;"></div>{% endif %}
+    <div class="container-lg" style="position:relative; z-index:2;">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div style="display:inline-block; background:rgba(255,165,0,0.2); color:#FFA500; padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:700; margin-bottom:16px; border:1px solid #FFA500;">
+                    <i class="fas fa-tag"></i> CATEGORY
+                </div>
+                <h1 class="hv-category-detail-title" style="font-family:'Montserrat',sans-serif; font-size:2.8rem; font-weight:900; line-height:1.1; margin-bottom:18px;">
+                    {{ category.h1_heading|default:category.name }}
+                </h1>
+                {% if category.description %}
+                <p class="hv-category-detail-description" style="font-size:1.15rem; opacity:0.95; line-height:1.6; max-width:700px; margin-bottom:30px;">{{ category.description|truncatewords:35 }}</p>
+                {% endif %}
+                <div class="hv-category-detail-stats" style="display:flex; gap:30px; flex-wrap:wrap; margin-top:20px;">
+                    <div><strong style="color:#FFA500; font-size:1.4rem;">{{ products.paginator.count }}</strong><br><span style="font-size:0.85rem; opacity:0.8;">Products</span></div>
+                    <div><strong style="color:#FFA500; font-size:1.4rem;">MOQ 5+</strong><br><span style="font-size:0.85rem; opacity:0.8;">Min Order</span></div>
+                    <div><strong style="color:#FFA500; font-size:1.4rem;">PAN India</strong><br><span style="font-size:0.85rem; opacity:0.8;">Delivery</span></div>
+                    <div><strong style="color:#FFA500; font-size:1.4rem;">Custom Logo</strong><br><span style="font-size:0.85rem; opacity:0.8;">Available</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# PRODUCTS GRID #}
+{% if products %}
+<section class="hv-category-products" style="padding:50px 0;">
+    <div class="container-lg">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:14px;">
+            <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; color:#1a1a1a; margin:0;">{{ category.name }} — All Products</h2>
+            <span style="color:#666; font-size:0.95rem;">Showing {{ products|length }} of {{ products.paginator.count }} products</span>
+        </div>
+
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-6 col-md-4 col-lg-3">
+                <div style="background:white; border:1px solid #eee; border-radius:12px; overflow:hidden; transition:all 0.3s; height:100%;"
+                     onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 30px rgba(0,81,163,0.15)'; this.style.borderColor='#0051A3';"
+                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee';">
+                    <a href="{{ product.get_absolute_url }}" style="text-decoration:none; color:inherit; display:block;">
+                        <div style="position:relative;">
+                            {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} — {{ category.name }} manufacturer Jaipur" loading="lazy" style="width:100%; height:200px; object-fit:cover;">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} — product image coming soon" loading="lazy" style="width:100%; height:200px; object-fit:cover;">{% endif %}
+                            {% if product.is_bestseller %}<span style="position:absolute; top:10px; left:10px; background:#10b981; color:white; padding:3px 8px; border-radius:20px; font-size:0.65rem; font-weight:700;">BESTSELLER</span>{% endif %}
+                        </div>
+                        <div style="padding:14px;">
+                            <h3 style="font-size:0.9rem; font-weight:700; color:#1a1a1a; margin:0 0 6px; line-height:1.3;">{{ product.name|truncatechars:50 }}</h3>
+                            <div style="display:flex; align-items:baseline; justify-content:space-between;">
+                                {% if product.price %}<span style="color:#0051A3; font-weight:800; font-size:1.05rem;">From ₹{{ product.price }}</span>{% endif %}
+                                <small style="color:#999;">MOQ {{ product.moq }}</small>
+                            </div>
+                        </div>
+                    </a>
+                    <div style="padding:0 14px 14px;">
+                        <a href="{% whatsapp_link 'Hi, I need pricing for: ' %}{{ product.name }}" target="_blank"
+                           style="display:block; text-align:center; background:#25D366; color:white; padding:8px; border-radius:6px; text-decoration:none; font-weight:700; font-size:0.85rem;">
+                            <i class="fab fa-whatsapp"></i> Get Price
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center" style="padding:40px;">
+                <p style="color:#666;">No products in this category yet. Check back soon or contact us.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        {# Pagination #}
+        {% if products.has_other_pages %}
+        <nav style="margin-top:40px;" aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if products.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">‹ Prev</a></li>
+                {% endif %}
+                {% for num in products.paginator.page_range %}
+                    {% if products.number == num %}
+                    <li class="page-item active"><span class="page-link" style="background:#FFA500; border-color:#FFA500;">{{ num }}</span></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if products.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next ›</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
+
+{# SEO CONTENT — appears below products for ranking power #}
+{% if category.seo_content %}
+<section style="padding:60px 0; background:#f8f9fa;">
+    <div class="container-lg">
+        <div class="row">
+            <div class="col-lg-9 mx-auto">
+                <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; color:#1a1a1a; margin-bottom:20px;">About {{ category.name }}</h2>
+                <div style="font-size:1.05rem; color:#444; line-height:1.8;">{{ category.seo_content|linebreaks }}</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# CTA #}
+<section style="padding:60px 0; background:linear-gradient(135deg,#FFA500,#FF8C00); color:white; text-align:center;">
+    <div class="container-lg">
+        <h2 style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:2.2rem; margin-bottom:14px;">Need Bulk Quantity?</h2>
+        <p style="font-size:1.1rem; max-width:700px; margin:0 auto 30px; opacity:0.95;">Get wholesale pricing for {{ category.name }}. Custom logo printing on bulk orders.</p>
+        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+            <a href="{% whatsapp_link 'Hi, I need bulk pricing for: ' %}{{ category.name }}" target="_blank" style="background:#25D366; color:white; padding:14px 36px; border-radius:8px; font-weight:800; text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp Quote</a>
+            <a href="{% call_link %}" style="background:white; color:#FF8C00; padding:14px 36px; border-radius:8px; font-weight:800; text-decoration:none;"><i class="fas fa-phone-alt"></i> Call Now</a>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Category detail — polished marketplace UI */
+.hv-category-detail-page{width:100%;max-width:100%;overflow-x:clip;background:#fff;}
+.hv-category-detail-page .hv-category-detail-hero{min-height:350px;display:flex;align-items:center;}
+.hv-category-detail-title{color:#fff!important;text-shadow:0 2px 12px rgba(0,0,0,.2);}
+.hv-category-detail-description{color:rgba(255,255,255,.9)!important;}
+.hv-category-detail-stats strong{color:#ffc04d!important;}
+.hv-category-products{background:#f8fafc;}
+.hv-category-products h2{font-size:1.55rem;}
+@media(max-width:767px){
+  .hv-category-detail-page .container-lg{max-width:100%;padding-left:16px;padding-right:16px;}
+  .hv-category-detail-page .hv-category-detail-hero{min-height:0;padding:42px 0!important;}
+  .hv-category-detail-page .hv-category-detail-hero .container-lg{padding-left:18px;padding-right:18px;}
+  .hv-category-detail-title{font-size:2rem!important;line-height:1.12!important;margin-bottom:12px!important;}
+  .hv-category-detail-description{font-size:.94rem!important;line-height:1.55!important;margin-bottom:20px!important;}
+  .hv-category-detail-stats{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 14px!important;margin-top:12px!important;}
+  .hv-category-detail-stats>div{min-width:0;}
+  .hv-category-detail-stats strong{font-size:1.2rem!important;}
+  .hv-category-detail-stats span{font-size:.72rem!important;}
+  .hv-category-products{padding:30px 0 55px!important;}
+  .hv-category-products> .container-lg > div:first-child{align-items:flex-start!important;}
+  .hv-category-products h2{font-size:1.15rem!important;line-height:1.25;}
+  .hv-category-products .row{--bs-gutter-x:10px;--bs-gutter-y:12px;}
+  .hv-category-products .col-6{padding-left:5px;padding-right:5px;}
+  .hv-category-products .col-6 > div{border-radius:11px!important;box-shadow:0 3px 12px rgba(15,23,42,.06);}
+  .hv-category-products img{height:155px!important;object-fit:cover;}
+  .hv-category-products .pagination{flex-wrap:wrap;gap:4px;}
+}
+@media(max-width:380px){
+  .hv-category-products img{height:135px!important;}
+  .hv-category-detail-stats{gap:14px 10px!important;}
+}
+</style>
+
+{% endblock content %}

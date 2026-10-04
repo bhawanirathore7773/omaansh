@@ -1,0 +1,335 @@
+{% extends 'base.html' %}
+{% load static seo_tags %}
+
+{# ===== Per-page SEO ===== #}
+{% block meta_title %}HOOVALE — Wall Clock Manufacturer & Supplier in Jaipur | Bulk, OEM, Custom Logo{% endblock %}
+{% block meta_description %}Leading wall clock manufacturer in Jaipur. Wholesale, bulk orders, OEM supply, custom logo printing. Trusted by retailers, hotels, corporates across India. Call now.{% endblock %}
+{% block meta_keywords %}wall clock manufacturer in jaipur, wall clock supplier jaipur, wall clock wholesaler, bulk wall clocks india, customized wall clocks, corporate clocks supplier{% endblock %}
+
+{% block page_schema %}
+    {% if faqs %}{% faq_schema faqs %}{% endif %}
+    {% if testimonials %}{% aggregate_rating_schema testimonials %}{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{# ============================================================ #}
+{# HERO BANNER (Carousel if banners exist, else fallback)       #}
+{# ============================================================ #}
+<section style="position:relative; min-height:600px; background:linear-gradient(135deg,#1a1a1a 0%, #0051A3 100%); color:white; overflow:hidden; display:flex; align-items:center;">
+    <div style="position:absolute; inset:0; background-image:radial-gradient(circle at 20% 50%, rgba(255,165,0,0.15), transparent 50%); pointer-events:none;"></div>
+
+    <div class="container-lg" style="position:relative; z-index:2; padding:80px 0;">
+        <div class="row align-items-center">
+            <div class="col-lg-7" data-aos="fade-up">
+                <div style="display:inline-block; background:rgba(255,165,0,0.15); color:#FFA500; padding:8px 18px; border-radius:30px; font-size:0.85rem; font-weight:700; margin-bottom:20px; border:1px solid rgba(255,165,0,0.3);">
+                    <i class="fas fa-industry"></i> EST. {{ site.establishment_year }} • JAIPUR, INDIA
+                </div>
+
+                <h1 style="font-family:'Montserrat',sans-serif; font-size:3.6rem; font-weight:900; line-height:1.05; margin-bottom:20px; letter-spacing:-1px;">
+                    Premium Wall Clock<br>
+                    <span style="background:linear-gradient(135deg,#FFA500,#FFD700); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Manufacturer in Jaipur</span>
+                </h1>
+
+                <p style="font-size:1.2rem; opacity:0.9; line-height:1.6; margin-bottom:30px; max-width:600px;">
+                    Direct factory supply for retailers, distributors, corporates and bulk buyers across India.
+                    Bulk orders, custom logo printing, OEM manufacturing — all under one roof.
+                </p>
+
+                <div style="display:flex; gap:14px; flex-wrap:wrap; margin-bottom:30px;">
+                    <a href="{% whatsapp_link 'Hi HOOVALE, I need wall clock wholesale catalogue with pricing.' %}" target="_blank"
+                       style="background:#25D366; color:white; padding:16px 36px; border-radius:8px; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:10px; font-size:1.05rem; box-shadow:0 8px 20px rgba(37,211,102,0.4);">
+                        <i class="fab fa-whatsapp" style="font-size:1.4rem;"></i> WhatsApp for Catalogue
+                    </a>
+                    <a href="{% url 'products_list' %}"
+                       style="background:rgba(255,255,255,0.1); border:2px solid rgba(255,255,255,0.3); color:white; padding:14px 36px; border-radius:8px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:10px; backdrop-filter:blur(10px);">
+                        <i class="fas fa-eye"></i> View Products
+                    </a>
+                </div>
+
+                {# Trust strip #}
+                <div style="display:flex; gap:30px; flex-wrap:wrap; padding-top:20px; border-top:1px solid rgba(255,255,255,0.15);">
+                    <div><strong style="color:#FFA500; font-size:1.6rem;">500+</strong><br><span style="font-size:0.85rem; opacity:0.8;">Designs Available</span></div>
+                    <div><strong style="color:#FFA500; font-size:1.6rem;">{{ site.establishment_year|add:"-2010"|add:"15" }}+</strong><br><span style="font-size:0.85rem; opacity:0.8;">Years Experience</span></div>
+                    <div><strong style="color:#FFA500; font-size:1.6rem;">1000+</strong><br><span style="font-size:0.85rem; opacity:0.8;">Happy Clients</span></div>
+                    <div><strong style="color:#FFA500; font-size:1.6rem;">PAN India</strong><br><span style="font-size:0.85rem; opacity:0.8;">Delivery</span></div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 d-none d-lg-block">
+                {# Right side - product grid preview #}
+                <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:14px; transform:rotate(-3deg);">
+                    {% for p in featured_products|slice:":4" %}
+                    <div style="background:white; padding:14px; border-radius:12px; box-shadow:0 20px 40px rgba(0,0,0,0.3); transition:transform 0.4s;"
+                         onmouseover="this.style.transform='translateY(-5px) rotate(2deg)';"
+                         onmouseout="this.style.transform='translateY(0) rotate(0)';">
+                        <img src="{{ p.image.url }}" alt="{{ p.name }}" style="width:100%; height:140px; object-fit:cover; border-radius:8px;">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ============================================================ #}
+{# TRUST BAR — credentials                                       #}
+{# ============================================================ #}
+<section style="background:white; padding:30px 0; border-bottom:1px solid #eee;">
+    <div class="container-lg">
+        <div class="row text-center g-4">
+            <div class="col-6 col-md-3">
+                <i class="fas fa-shield-alt" style="font-size:2rem; color:#FFA500;"></i>
+                <h6 style="margin-top:10px; font-weight:700; color:#1a1a1a;">GST Registered</h6>
+                {% if site.gst_number %}<small style="color:#666;">{{ site.gst_number }}</small>{% endif %}
+            </div>
+            <div class="col-6 col-md-3">
+                <i class="fas fa-industry" style="font-size:2rem; color:#FFA500;"></i>
+                <h6 style="margin-top:10px; font-weight:700; color:#1a1a1a;">Direct Manufacturer</h6>
+                <small style="color:#666;">No middlemen</small>
+            </div>
+            <div class="col-6 col-md-3">
+                <i class="fas fa-truck-fast" style="font-size:2rem; color:#FFA500;"></i>
+                <h6 style="margin-top:10px; font-weight:700; color:#1a1a1a;">Pan India Delivery</h6>
+                <small style="color:#666;">3-7 business days</small>
+            </div>
+            <div class="col-6 col-md-3">
+                <i class="fas fa-paint-brush" style="font-size:2rem; color:#FFA500;"></i>
+                <h6 style="margin-top:10px; font-weight:700; color:#1a1a1a;">Custom Logo</h6>
+                <small style="color:#666;">Free on bulk orders</small>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ============================================================ #}
+{# CATEGORIES                                                    #}
+{# ============================================================ #}
+{% if categories %}
+<section style="padding:70px 0; background:#f8f9fa;">
+    <div class="container-lg">
+        <div class="text-center mb-5">
+            <h2 style="font-family:'Montserrat',sans-serif; font-weight:900; color:#1a1a1a; font-size:2.4rem;">Shop by Category</h2>
+            <p style="color:#666;">Browse our extensive wall clock collection</p>
+        </div>
+        <div class="row g-4">
+            {% for cat in categories %}
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ cat.get_absolute_url }}" style="text-decoration:none; color:inherit;">
+                    <div style="background:white; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.06); transition:all 0.3s;"
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 30px rgba(0,0,0,0.12)';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.06)';">
+                        {% if cat.image %}
+                        <img src="{{ cat.image.url }}" alt="{{ cat.name }} manufacturer Jaipur" loading="lazy" style="width:100%; height:200px; object-fit:cover;">
+                        {% else %}
+                        <div style="height:200px; background:linear-gradient(135deg,#0051A3,#0066cc); display:flex; align-items:center; justify-content:center;">
+                            <i class="fas fa-clock" style="font-size:3rem; color:white;"></i>
+                        </div>
+                        {% endif %}
+                        <div style="padding:20px;">
+                            <h3 style="font-size:1.1rem; font-weight:700; color:#1a1a1a; margin:0 0 6px;">{{ cat.name }}</h3>
+                            <p style="font-size:0.85rem; color:#666; margin:0;">{{ cat.products.count }} products available</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# ============================================================ #}
+{# FEATURED PRODUCTS                                             #}
+{# ============================================================ #}
+{% if featured_products %}
+<section style="padding:70px 0;">
+    <div class="container-lg">
+        <div class="text-center mb-5">
+            <h2 style="font-family:'Montserrat',sans-serif; font-weight:900; color:#1a1a1a; font-size:2.4rem;">Bestselling Wall Clocks</h2>
+            <p style="color:#666;">Hand-picked products our wholesale buyers love</p>
+        </div>
+        <div class="row g-4">
+            {% for product in featured_products %}
+            <div class="col-md-6 col-lg-3">
+                <div style="background:white; border:1px solid #eee; border-radius:12px; overflow:hidden; transition:all 0.3s; height:100%;"
+                     onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 30px rgba(0,81,163,0.15)'; this.style.borderColor='#0051A3';"
+                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee';">
+                    <a href="{{ product.get_absolute_url }}" style="text-decoration:none; color:inherit;">
+                        <div style="position:relative; overflow:hidden;">
+                            <img src="{{ product.image.url }}" alt="{{ product.name }} — wall clock supplier Jaipur" loading="lazy" style="width:100%; height:230px; object-fit:cover;">
+                            {% if product.is_bestseller %}<span style="position:absolute; top:10px; left:10px; background:#10b981; color:white; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:700;">🔥 BESTSELLER</span>{% endif %}
+                        </div>
+                        <div style="padding:18px;">
+                            <p style="font-size:0.75rem; color:#FFA500; font-weight:700; text-transform:uppercase; margin:0 0 6px;">{{ product.category.name }}</p>
+                            <h3 style="font-size:1rem; font-weight:700; color:#1a1a1a; margin:0 0 10px;">{{ product.name }}</h3>
+                            <div style="display:flex; align-items:baseline; justify-content:space-between;">
+                                {% if product.price %}<span style="color:#0051A3; font-weight:800; font-size:1.3rem;">₹{{ product.price }}</span>{% endif %}
+                                <span style="font-size:0.8rem; color:#999;">MOQ: {{ product.moq }}</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div style="padding:0 18px 18px;">
+                        <a href="{% whatsapp_link 'Hi, interested in: ' %}{{ product.name }}" target="_blank"
+                           style="display:block; text-align:center; background:#25D366; color:white; padding:10px; border-radius:6px; text-decoration:none; font-weight:700; font-size:0.9rem;">
+                            <i class="fab fa-whatsapp"></i> Get Best Price
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'products_list' %}" style="background:linear-gradient(135deg,#0051A3,#0066cc); color:white; padding:14px 40px; border-radius:8px; text-decoration:none; font-weight:700;">
+                View All Products <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# ============================================================ #}
+{# INDUSTRIES SERVED                                             #}
+{# ============================================================ #}
+{% if industries %}
+<section style="padding:70px 0; background:linear-gradient(135deg,#1a1a1a,#2d2d2d); color:white;">
+    <div class="container-lg">
+        <div class="text-center mb-5">
+            <h2 style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:2.4rem;">Industries We Serve</h2>
+            <p style="opacity:0.8;">Trusted by businesses across multiple verticals</p>
+        </div>
+        <div class="row g-4">
+            {% for ind in industries %}
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ ind.get_absolute_url }}" style="text-decoration:none; color:inherit;">
+                    <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:30px; border-radius:12px; transition:all 0.3s;"
+                         onmouseover="this.style.background='rgba(255,165,0,0.1)'; this.style.borderColor='#FFA500'; this.style.transform='translateY(-3px)';"
+                         onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)'; this.style.transform='translateY(0)';">
+                        <i class="{{ ind.icon_class|default:'fas fa-building' }}" style="font-size:2.5rem; color:#FFA500; margin-bottom:14px;"></i>
+                        <h3 style="font-size:1.2rem; font-weight:700; color:white; margin-bottom:8px;">{{ ind.industry_name }}</h3>
+                        <p style="opacity:0.8; font-size:0.9rem; margin:0;">{{ ind.hero_subheading|truncatewords:15 }}</p>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# ============================================================ #}
+{# CITIES WE SUPPLY (Internal linking goldmine)                  #}
+{# ============================================================ #}
+{% if cities %}
+<section style="padding:70px 0; background:#f8f9fa;">
+    <div class="container-lg">
+        <div class="text-center mb-5">
+            <h2 style="font-family:'Montserrat',sans-serif; font-weight:900; color:#1a1a1a; font-size:2.4rem;">
+                <i class="fas fa-map-marker-alt" style="color:#FFA500;"></i> Cities We Supply
+            </h2>
+            <p style="color:#666;">Wall clock supplier serving major cities across India</p>
+        </div>
+        <div class="row g-3">
+            {% for city in cities %}
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="{{ city.get_absolute_url }}" style="text-decoration:none;">
+                    <div style="background:white; padding:18px; border-radius:8px; text-align:center; border:2px solid transparent; transition:all 0.3s;"
+                         onmouseover="this.style.borderColor='#FFA500'; this.style.transform='translateY(-3px)';"
+                         onmouseout="this.style.borderColor='transparent'; this.style.transform='translateY(0)';">
+                        <i class="fas fa-map-marker-alt" style="color:#FFA500; font-size:1.4rem; margin-bottom:8px;"></i>
+                        <h4 style="font-size:0.95rem; font-weight:700; color:#1a1a1a; margin:0;">Wall Clock {{ city.get_page_type_display|truncatewords:1 }}</h4>
+                        <p style="font-size:0.8rem; color:#666; margin:4px 0 0;">in {{ city.city_name }}</p>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# ============================================================ #}
+{# TESTIMONIALS                                                  #}
+{# ============================================================ #}
+{% if testimonials %}
+<section style="padding:70px 0;">
+    <div class="container-lg">
+        <div class="text-center mb-5">
+            <h2 style="font-family:'Montserrat',sans-serif; font-weight:900; color:#1a1a1a; font-size:2.4rem;">What Our Clients Say</h2>
+            <div style="color:#FFA500; font-size:1.2rem;">★★★★★</div>
+        </div>
+        <div class="row g-4">
+            {% for t in testimonials %}
+            <div class="col-md-6 col-lg-4">
+                <div style="background:#f8f9fa; padding:30px; border-radius:12px; border-left:4px solid #FFA500; height:100%;">
+                    <div style="color:#FFA500; font-size:1.1rem; margin-bottom:12px;">{% for _ in "12345"|make_list %}{% if forloop.counter <= t.rating %}★{% else %}☆{% endif %}{% endfor %}</div>
+                    <p style="color:#444; font-style:italic; line-height:1.7; margin-bottom:16px;">"{{ t.review_content }}"</p>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        {% if t.customer_image %}<img src="{{ t.customer_image.url }}" alt="{{ t.customer_name }}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">{% endif %}
+                        <div>
+                            <strong style="color:#1a1a1a;">{{ t.customer_name }}</strong><br>
+                            <small style="color:#666;">{{ t.customer_designation }}{% if t.customer_city %} • {{ t.customer_city }}{% endif %}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# ============================================================ #}
+{# FAQ                                                           #}
+{# ============================================================ #}
+{% if faqs %}
+<section style="padding:70px 0; background:#f8f9fa;">
+    <div class="container-lg">
+        <div class="text-center mb-5">
+            <h2 style="font-family:'Montserrat',sans-serif; font-weight:900; color:#1a1a1a; font-size:2.4rem;">Frequently Asked Questions</h2>
+        </div>
+        <div class="row">
+            <div class="col-lg-9 mx-auto">
+                <div class="accordion" id="homeFaq">
+                    {% for faq in faqs %}
+                    <div class="accordion-item" style="border:1px solid #eee; border-radius:8px; margin-bottom:12px; overflow:hidden;">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#hf{{ forloop.counter }}" style="font-weight:600;">
+                                {{ faq.question }}
+                            </button>
+                        </h3>
+                        <div id="hf{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#homeFaq">
+                            <div class="accordion-body" style="color:#555;">{{ faq.answer|linebreaks }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# ============================================================ #}
+{# FINAL CTA                                                     #}
+{# ============================================================ #}
+<section style="padding:70px 0; background:linear-gradient(135deg,#FFA500,#FF8C00); color:white; text-align:center;">
+    <div class="container-lg">
+        <h2 style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:2.8rem; margin-bottom:14px;">Ready to Place Your Bulk Order?</h2>
+        <p style="font-size:1.15rem; opacity:0.95; margin-bottom:30px; max-width:700px; margin-left:auto; margin-right:auto;">
+            Get a customised wholesale quote in minutes. Direct factory pricing. Custom logo printing. Pan-India delivery.
+        </p>
+        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+            <a href="{% whatsapp_link 'Hi HOOVALE, please share wall clock catalogue with bulk pricing.' %}" target="_blank"
+               style="background:#25D366; color:white; padding:18px 44px; border-radius:8px; font-weight:800; text-decoration:none; font-size:1.05rem; box-shadow:0 8px 20px rgba(0,0,0,0.2);">
+                <i class="fab fa-whatsapp"></i> WhatsApp for Quote
+            </a>
+            <a href="{% call_link %}"
+               style="background:white; color:#FF8C00; padding:18px 44px; border-radius:8px; font-weight:800; text-decoration:none; font-size:1.05rem; box-shadow:0 8px 20px rgba(0,0,0,0.2);">
+                <i class="fas fa-phone-alt"></i> Call: {{ site.primary_phone }}
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

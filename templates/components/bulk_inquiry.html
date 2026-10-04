@@ -1,0 +1,232 @@
+{% load seo_tags %}
+
+
+
+<style>
+.bulk-modal .modal-content {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+}
+
+.bulk-modal-header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0051A3 100%);
+    color: white;
+    padding: 28px 30px;
+    border: none;
+    position: relative;
+}
+
+.bulk-modal-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #FFA500, #FF8C00);
+}
+
+.bulk-modal-body {
+    padding: 30px;
+}
+
+.bulk-modal-form .form-label {
+    font-weight: 600;
+    color: #1a1a1a;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+}
+
+.bulk-modal-form .form-control,
+.bulk-modal-form .form-select {
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1.5px solid #e0e0e0;
+    transition: all 0.2s;
+}
+
+.bulk-modal-form .form-control:focus,
+.bulk-modal-form .form-select:focus {
+    border-color: #FFA500;
+    box-shadow: 0 0 0 3px rgba(255,165,0,0.15);
+}
+
+.bulk-modal-submit {
+    background: linear-gradient(135deg, #FFA500, #FF8C00);
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 1rem;
+    width: 100%;
+    transition: transform 0.2s;
+}
+
+.bulk-modal-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255,140,0,0.4);
+}
+
+.bulk-modal-trust {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.bulk-modal-alt {
+    background: #f8f9fa;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-top: 16px;
+    font-size: 0.9rem;
+    color: #555;
+    text-align: center;
+}
+
+.bulk-modal-alt a {
+    color: #25D366;
+    font-weight: 700;
+    text-decoration: none;
+}
+</style>
+
+<div class="modal fade bulk-modal" id="bulkInquiryModal" tabindex="-1" aria-labelledby="bulkInquiryLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="bulk-modal-header">
+                <button type="button" class="btn-close btn-close-white position-absolute" data-bs-dismiss="modal" aria-label="Close" style="top:18px; right:20px;"></button>
+                <div style="display:inline-block; background:rgba(255,165,0,0.2); color:#FFA500; padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:700; margin-bottom:10px; border:1px solid #FFA500;">
+                    <i class="fas fa-bolt"></i> BULK INQUIRY
+                </div>
+                <h2 id="bulkInquiryLabel" style="font-family:'Montserrat',sans-serif; font-size:1.6rem; font-weight:900; margin:0 0 6px;">Get Wholesale Quote</h2>
+                <p style="margin:0; opacity:0.9; font-size:0.95rem;">Fill in your requirement — response within 2 hours during business hours.</p>
+            </div>
+
+            <div class="bulk-modal-body">
+                <form id="bulkInquiryForm" class="bulk-modal-form" method="POST" action="{% url 'submit_enquiry' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" id="bulkProductId" value="">
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Full Name *</label>
+                            <input type="text" name="name" required class="form-control" placeholder="Your name">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone / WhatsApp *</label>
+                            <input type="tel" name="phone" required class="form-control" placeholder="+91 XXXXX XXXXX">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="your@email.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">City *</label>
+                            <input type="text" name="city" required class="form-control" placeholder="Your city">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Quantity Required *</label>
+                            <select name="quantity" class="form-select">
+                                <option value="">Select quantity range</option>
+                                <option value="5-49">5 to 49 pieces</option>
+                                <option value="50-199">50 to 199 pieces</option>
+                                <option value="200-499">200 to 499 pieces</option>
+                                <option value="500-1999">500 to 1999 pieces</option>
+                                <option value="2000+">2000+ pieces</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Customer Type</label>
+                            <select name="customer_type" class="form-select">
+                                <option value="">Select type</option>
+                                <option value="Retailer">Retailer / Wholesaler</option>
+                                <option value="Corporate">Corporate Buyer</option>
+                                <option value="Hotel">Hotel / Hospitality</option>
+                                <option value="Hospital">Hospital / Healthcare</option>
+                                <option value="School">School / Education</option>
+                                <option value="Real Estate">Real Estate Builder</option>
+                                <option value="Distributor">Distributor</option>
+                                <option value="Promotional">Promotional / Marketing</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Requirement Details *</label>
+                            <textarea name="message" required rows="3" class="form-control" placeholder="Designs needed, customisation requirements, custom logo, delivery timeline..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="bulk-modal-submit">
+                                <i class="fas fa-paper-plane"></i> Send Bulk Inquiry
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div id="bulkResponse"></div>
+
+                <div class="bulk-modal-alt">
+                    Prefer instant response? <a href="{% whatsapp_link 'Hi HOOVALE, I want bulk pricing for wall clocks.' %}" target="_blank"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+                </div>
+
+                <div class="bulk-modal-trust">
+                    <span><i class="fas fa-shield-alt" style="color:#10b981;"></i> 1 Year Warranty</span>
+                    <span><i class="fas fa-truck-fast" style="color:#FFA500;"></i> PAN India Delivery</span>
+                    <span><i class="fas fa-paint-brush" style="color:#0051A3;"></i> Free Logo on Bulk</span>
+                    <span><i class="fas fa-file-invoice" style="color:#6f42c1;"></i> GST Invoice</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const form = document.getElementById('bulkInquiryForm');
+    if (!form) return;
+
+    // Allow setting product context when modal opens
+    const modalEl = document.getElementById('bulkInquiryModal');
+    modalEl.addEventListener('show.bs.modal', function(event) {
+        const trigger = event.relatedTarget;
+        if (trigger) {
+            const productId = trigger.getAttribute('data-product-id');
+            if (productId) document.getElementById('bulkProductId').value = productId;
+        }
+    });
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const responseDiv = document.getElementById('bulkResponse');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+        try {
+            const response = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+            const data = await response.json();
+            if (data.success) {
+                responseDiv.innerHTML = '<div style="background:#d4edda; color:#155724; padding:14px; border-radius:8px; margin-top:14px;"><i class="fas fa-check-circle"></i> Inquiry sent! We will WhatsApp/call you within 2 hours.</div>';
+                form.reset();
+                setTimeout(() => {
+                    bootstrap.Modal.getInstance(modalEl).hide();
+                    responseDiv.innerHTML = '';
+                }, 3000);
+            } else {
+                responseDiv.innerHTML = '<div style="background:#f8d7da; color:#721c24; padding:14px; border-radius:8px; margin-top:14px;"><i class="fas fa-exclamation-circle"></i> ' + (data.error || 'Something went wrong.') + '</div>';
+            }
+        } catch (err) {
+            responseDiv.innerHTML = '<div style="background:#f8d7da; color:#721c24; padding:14px; border-radius:8px; margin-top:14px;"><i class="fas fa-exclamation-circle"></i> Network error. Please WhatsApp us instead.</div>';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }
+    });
+})();
+</script>

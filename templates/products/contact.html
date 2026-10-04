@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% load static seo_tags %}
+
+{% block meta_title %}Contact HOOVALE | Wall Clock Manufacturer in Jaipur{% endblock %}
+{% block meta_description %}Contact HOOVALE in Jaipur for wall clock wholesale orders, custom logo printing, OEM manufacturing and bulk supply. Call, WhatsApp or send an enquiry online.{% endblock %}
+{% block meta_keywords %}contact hoovale, wall clock manufacturer contact jaipur, hoovale phone whatsapp, wall clock supplier contact{% endblock %}
+
+{% block page_schema %}
+    {% breadcrumb_schema breadcrumb_items %}
+    {% if faqs %}{% faq_schema faqs %}{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="contact-page">
+{# HERO #}
+<section style="padding:70px 0; background:linear-gradient(135deg,#1a1a1a,#0051A3); color:white;">
+    <div class="container-lg">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div style="display:inline-block; background:rgba(255,165,0,0.2); color:#FFA500; padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:700; margin-bottom:16px; border:1px solid #FFA500;">
+                    <i class="fas fa-headset"></i> WE'RE HERE TO HELP
+                </div>
+                <h1 style="color:#fff !important; font-family:'Montserrat',sans-serif; font-size:3rem; font-weight:900;">Contact HOOVALE</h1>
+                <p style="font-size:1.2rem; color:#fff !important; line-height:1.6; margin:0;">Wholesale wall clock enquiries, custom orders, OEM partnerships, distributor opportunities — talk to us directly.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="contact-heading">
+    <span>CONTACT OPTIONS</span>
+
+    <h2>How Would You Like To Reach Us?</h2>
+
+    <p>
+        Connect with our team for wholesale wall clock orders,
+        OEM manufacturing, custom branding and distributor enquiries.
+    </p>
+</div>
+{# CONTACT METHODS — 4 CARDS #}
+
+<section style="padding:60px 0;background:#f8f8f8;">
+    <div class="container-lg">
+        <div class="row g-4">
+
+            <div class="col-6 col-md-6 col-lg-3">
+                <a href="{% whatsapp_link 'Hi HOOVALE, I have a wall clock enquiry.' %}"
+                   target="_blank"
+                   style="text-decoration:none;">
+                    <div class="contact-card whatsapp-card">
+                        <div class="contact-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+
+                        <h3>WhatsApp</h3>
+                        <p>Instant Response</p>
+                        <small>Chat with our team</small>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3">
+                <a href="{% call_link %}" style="text-decoration:none;">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+
+                        <h3>Call Us</h3>
+                        <p>{{ site.primary_phone }}</p>
+                        <small>Mon–Sat • 9 AM – 7 PM</small>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3">
+                <a href="mailto:{{ site.email }}" style="text-decoration:none;">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+
+                        <h3>Email</h3>
+                        <p>{{ site.email }}</p>
+                        <small>Detailed Quotations</small>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+
+                    <h3>Visit Us</h3>
+                    <p>{{ site.locality }}, {{ site.region }}</p>
+                    <small>By Appointment Only</small>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{# CONTACT FORM + ADDRESS #}
+<section style="padding:50px 0; background:#f8f9fa;">
+    <div class="container-lg">
+        <div class="row g-4 align-items-start contact-main-grid">
+            {# Contact Form #}
+            <div class="col-lg-6 contact-form-column">
+                <h2 class="hv-contact-form-title">Send Us a Bulk Enquiry</h2>
+                <p class="hv-contact-form-subtitle">Tell us what you need and our team will help with product selection, quantity, customisation and pricing.</p>
+
+                <form id="contactForm" method="POST" action="{% url 'submit_enquiry' %}" class="hv-contact-form">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label style="font-weight:600; color:#1a1a1a; font-size:0.9rem; margin-bottom:6px; display:block;">Full Name *</label>
+                            <input type="text" name="name" required class="form-control" placeholder="Your name" style="padding:12px; border-radius:8px;">
+                        </div>
+                        <div class="col-md-6">
+                            <label style="font-weight:600; color:#1a1a1a; font-size:0.9rem; margin-bottom:6px; display:block;">Phone / WhatsApp *</label>
+                            <input type="tel" name="phone" required class="form-control" placeholder="+91 XXXXX XXXXX" style="padding:12px; border-radius:8px;">
+                        </div>
+                        <div class="col-md-6">
+                            <label style="font-weight:600; color:#1a1a1a; font-size:0.9rem; margin-bottom:6px; display:block;">Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="your@email.com" style="padding:12px; border-radius:8px;">
+                        </div>
+                        <div class="col-md-6">
+                            <label style="font-weight:600; color:#1a1a1a; font-size:0.9rem; margin-bottom:6px; display:block;">City *</label>
+                            <input type="text" name="city" required class="form-control" placeholder="Your city" style="padding:12px; border-radius:8px;">
+                        </div>
+                        <div class="col-12">
+                            <label style="font-weight:600; color:#1a1a1a; font-size:0.9rem; margin-bottom:6px; display:block;">Requirement Details *</label>
+                            <textarea name="message" required rows="5" class="form-control" placeholder="Quantity, designs, customisation needs, delivery location..." style="padding:12px; border-radius:8px;"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" style="background:linear-gradient(135deg,#FFA500,#FF8C00); color:white; border:none; padding:14px 36px; border-radius:8px; font-weight:800; font-size:1rem; width:100%;">
+                                <i class="fas fa-paper-plane"></i> Send Enquiry
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div id="formResponse" style="margin-top:16px;"></div>
+            </div>
+
+            {# Address + Map #}
+            <div class="col-lg-6 contact-info-column">
+                <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:20px;">Office Address</h2>
+                <div class="contact-info-card" style="margin-bottom:18px;">
+                    <p style="font-size:1rem; line-height:1.8; color:#444; margin:0;">
+                        <strong style="color:#1a1a1a; font-size:1.1rem; display:block; margin-bottom:8px;">{{ site.business_name }}</strong>
+                        <i class="fas fa-map-marker-alt" style="color:#FFA500;"></i> {{ site.street_address }}<br>
+                        {{ site.locality }}, {{ site.region }} {{ site.postal_code }}<br>
+                        India
+                    </p>
+                    {% if site.gst_number %}
+                    <p style="margin-top:12px; padding-top:12px; border-top:1px solid #eee; margin-bottom:0;">
+                        <strong style="color:#FFA500;">GST:</strong> <span style="color:#444;">{{ site.gst_number }}</span>
+                    </p>
+                    {% endif %}
+                </div>
+
+                {# Map embed #}
+                <div class="contact-map">
+                    <iframe src="https://maps.google.com/maps?q={{ site.latitude }},{{ site.longitude }}&hl=en&z=14&output=embed"
+                            width="100%" height="280" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="HOOVALE Location"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# BUSINESS HOURS #}
+<section style="padding:50px 0; text-align:center;">
+    <div class="container-lg">
+        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:20px;">
+            <i class="fas fa-clock" style="color:#FFA500;"></i> Business Hours
+        </h2>
+        <div style="display:inline-block; background:#f8f9fa; padding:24px 40px; border-radius:12px; border-top:4px solid #FFA500;">
+            <p style="margin:0; font-size:1.1rem; color:#1a1a1a; font-weight:600;">Monday – Saturday: <strong style="color:#FFA500;">9:00 AM – 7:00 PM</strong></p>
+            <p style="margin:6px 0 0; color:#666;">Sunday: Closed</p>
+            <p style="margin-top:12px; font-size:0.9rem; color:#666;"><i class="fab fa-whatsapp" style="color:#25D366;"></i> WhatsApp messages: <strong>24×7</strong> (we reply on next business day)</p>
+        </div>
+    </div>
+</section>
+
+{# FAQ #}
+{% if faqs %}
+<section style="padding:60px 0; background:#f8f9fa;">
+    <div class="container-lg">
+        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:30px; text-align:center;">Common Questions</h2>
+        <div class="row">
+            <div class="col-lg-9 mx-auto">
+                <div class="accordion" id="contactFaq">
+                    {% for faq in faqs %}
+                    <div class="accordion-item" style="border:1px solid #eee; border-radius:8px; margin-bottom:12px; overflow:hidden;">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#cf{{ forloop.counter }}" style="font-weight:600;">{{ faq.question }}</button>
+                        </h3>
+                        <div id="cf{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#contactFaq">
+                            <div class="accordion-body" style="color:#555;">{{ faq.answer|linebreaks }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<style>
+/* Contact — balanced desktop form + information layout */
+.contact-main-grid{max-width:1120px;margin:0 auto;}
+.hv-contact-form{background:#fff;padding:28px;border-radius:16px;box-shadow:0 8px 28px rgba(15,23,42,.07);border:1px solid #e8edf2;}
+.hv-contact-form-title{font-family:'Montserrat',sans-serif;color:#151515;font-weight:800;font-size:1.55rem;margin-bottom:7px;}
+.hv-contact-form-subtitle{color:#667085;margin-bottom:20px;line-height:1.55;}
+.hv-contact-form .form-control{min-height:48px;border:1px solid #dce2e8;border-radius:9px;padding:11px 13px;}
+.hv-contact-form textarea.form-control{min-height:135px;}
+.hv-contact-form .form-control:focus{border-color:#0051A3;box-shadow:0 0 0 3px rgba(0,81,163,.08);}
+.hv-contact-form button[type="submit"]{background:#0051A3!important;border-radius:9px!important;padding:13px 24px!important;}
+.contact-info-column>h2{font-family:'Montserrat',sans-serif;color:#151515;font-weight:800;font-size:1.55rem;margin-bottom:14px;}
+.contact-info-card{background:#fff;border:1px solid #e8edf2;border-radius:16px;padding:22px;box-shadow:0 8px 28px rgba(15,23,42,.06);}
+.contact-map{border-radius:14px;overflow:hidden;border:1px solid #e5e9ef;box-shadow:0 5px 18px rgba(15,23,42,.06);}
+@media(max-width:991px){
+ .contact-main-grid{max-width:760px;}
+ .contact-info-column{margin-top:8px;}
+}
+@media(max-width:767px){
+ .hv-contact-form{padding:18px;}
+ .hv-contact-form-title,.contact-info-column>h2{font-size:1.3rem;}
+ .contact-page section[style*="padding:50px"]{padding:35px 0!important;}
+}
+</style>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const responseDiv = document.getElementById('formResponse');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+    try {
+        const formData = new FormData(form);
+        const response = await fetch(form.action, { method: 'POST', body: formData });
+        const data = await response.json();
+        if (data.success) {
+            responseDiv.innerHTML = '<div style="background:#d4edda; color:#155724; padding:14px; border-radius:8px;"><i class="fas fa-check-circle"></i> ' + (data.message || 'Enquiry sent successfully!') + ' We will contact you soon.</div>';
+            form.reset();
+        } else {
+            responseDiv.innerHTML = '<div style="background:#f8d7da; color:#721c24; padding:14px; border-radius:8px;"><i class="fas fa-exclamation-circle"></i> ' + (data.error || 'Something went wrong.') + '</div>';
+        }
+    } catch (err) {
+        responseDiv.innerHTML = '<div style="background:#f8d7da; color:#721c24; padding:14px; border-radius:8px;"><i class="fas fa-exclamation-circle"></i> Network error. Please WhatsApp us directly.</div>';
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    }
+});
+</script>
+{% endblock %}

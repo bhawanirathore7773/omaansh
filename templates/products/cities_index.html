@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static seo_tags %}
+
+{% block meta_title %}Wall Clock Supplier — Locations We Serve Across India | HOOVALE{% endblock %}
+{% block meta_description %}HOOVALE supplies wall clocks across India — Delhi, Mumbai, Bangalore, Chennai, Hyderabad, Pune, Ahmedabad, Kolkata. Direct factory pricing, custom logo, fast delivery.{% endblock %}
+{% block meta_keywords %}wall clock supplier india, wall clock manufacturer cities, pan india wall clock supply{% endblock %}
+
+{% block content %}
+
+<section style="padding:80px 0; background:linear-gradient(135deg,#1a1a1a 0%, #0051A3 100%); color:white; text-align:center;">
+    <div class="container-lg">
+        <h1 style="font-family:'Montserrat',sans-serif; font-size:3rem; font-weight:900; margin-bottom:16px;">
+            <i class="fas fa-map-marked-alt" style="color:#FFA500;"></i> Cities We Supply
+        </h1>
+        <p style="font-size:1.2rem; opacity:0.9; max-width:800px; margin:0 auto;">
+            HOOVALE supplies wall clocks to retailers, distributors, corporates and bulk buyers across India. Direct from our Jaipur factory.
+        </p>
+    </div>
+</section>
+
+<section style="padding:60px 0;">
+    <div class="container-lg">
+        <div class="row g-4">
+            {% for city in cities %}
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ city.get_absolute_url }}" style="text-decoration:none; color:inherit;">
+                    <div style="background:white; border:2px solid #eee; padding:30px; border-radius:12px; transition:all 0.3s; height:100%;"
+                         onmouseover="this.style.borderColor='#FFA500'; this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 30px rgba(255,165,0,0.15)';"
+                         onmouseout="this.style.borderColor='#eee'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
+                            <i class="fas fa-map-marker-alt" style="font-size:2rem; color:#FFA500;"></i>
+                            <div>
+                                <h2 style="font-size:1.3rem; font-weight:800; color:#1a1a1a; margin:0;">{{ city.city_name }}</h2>
+                                <small style="color:#666;">{{ city.state }}</small>
+                            </div>
+                        </div>
+                        <h3 style="font-size:1rem; color:#0051A3; font-weight:700; margin-bottom:10px;">{{ city.h1_heading }}</h3>
+                        <p style="color:#555; font-size:0.95rem; line-height:1.6; margin-bottom:14px;">{{ city.hero_subheading|truncatewords:20 }}</p>
+                        <div style="display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid #eee;">
+                            <span style="font-size:0.85rem; color:#666;"><i class="fas fa-truck-fast" style="color:#FFA500;"></i> {{ city.delivery_time }}</span>
+                            <span style="color:#FFA500; font-weight:700; font-size:0.9rem;">View Details <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section style="padding:60px 0; background:#f8f9fa; text-align:center;">
+    <div class="container-lg">
+        <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; color:#1a1a1a;">Don't see your city?</h2>
+        <p style="color:#666; font-size:1.05rem; margin-bottom:24px;">We supply across India. Contact us with your location for delivery details.</p>
+        <a href="{% whatsapp_link 'Hi, I am from ' %}" target="_blank" style="background:#25D366; color:white; padding:14px 36px; border-radius:8px; font-weight:700; text-decoration:none;">
+            <i class="fab fa-whatsapp"></i> Ask About Your City
+        </a>
+    </div>
+</section>
+
+{% endblock %}

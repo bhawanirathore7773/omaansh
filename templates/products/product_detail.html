@@ -1,0 +1,889 @@
+{% extends 'base.html' %}
+{% load static seo_tags %}
+
+{% block meta_title %}{{ product.meta_title|default:product.name }} | HOOVALE{% endblock %}
+{% block meta_description %}{{ product.meta_description|default:product.short_description|truncatechars:155 }}{% endblock %}
+{% block meta_keywords %}{{ product.meta_keywords|default:"wall clock, " }}{{ product.name|lower }}, {{ product.category.name|lower }}, wall clock manufacturer Jaipur{% endblock %}
+
+{% block og_type %}product{% endblock %}
+{% block og_title %}{{ product.og_title|default:product.name }}{% endblock %}
+{% block og_description %}{{ product.og_description|default:product.meta_description }}{% endblock %}
+{% block og_image %}https://hoovale.com{% if product.og_image %}{{ product.og_image.url }}{% elif product.image %}{{ product.image.url }}{% else %}{% static 'images/product-placeholder.svg' %}{% endif %}{% endblock %}
+
+{% block page_schema %}
+    {% product_schema product %}
+    {% breadcrumb_schema breadcrumb_items %}
+{% endblock %}
+
+{% block content %}
+<section class="hv-pdp">
+    <div class="container-lg">
+
+        <nav class="hv-pdp-breadcrumb" aria-label="Breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+            <a href="{% url 'products_list' %}">Wall Clocks</a>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+            <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+            <span>{{ product.name }}</span>
+        </nav>
+
+        <div class="hv-pdp-hero">
+
+            <!-- Product gallery -->
+            <div class="hv-pdp-gallery">
+                <div class="hv-pdp-main-image-card">
+                    {% if product.is_featured %}
+                    <span class="hv-pdp-badge">Featured</span>
+                    {% endif %}
+
+                    <button type="button" class="hv-pdp-image-button" data-hv-lightbox="product-main" aria-label="View {{ product.name }} image">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }} - HOOVALE wall clock" class="hv-pdp-main-image" fetchpriority="high">
+                        {% else %}
+                        <img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} - HOOVALE wall clock" class="hv-pdp-main-image" fetchpriority="high">
+                        {% endif %}
+                    </button>
+                    <span class="hv-pdp-zoom"><i class="fas fa-expand" aria-hidden="true"></i> Click to enlarge</span>
+                </div>
+
+                {% if product.additional_images %}
+                <div class="hv-pdp-thumbs" aria-label="Product images">
+                    {% if product.image %}
+                    <button type="button" class="hv-pdp-thumb is-active" data-hv-gallery-src="{{ product.image.url }}" aria-label="Main product image">
+                        <img src="{{ product.image.url }}" alt="" loading="lazy">
+                    </button>
+                    {% endif %}
+                    {% for extra_image in product.additional_images %}
+                    <button type="button" class="hv-pdp-thumb" data-hv-gallery-src="{{ extra_image }}" aria-label="Product image {{ forloop.counter|add:1 }}">
+                        <img src="{{ extra_image }}" alt="" loading="lazy">
+                    </button>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Product information -->
+            <div class="hv-pdp-info">
+                <div class="hv-pdp-eyebrow">
+                    {{ product.category.name }}
+                    {% if product.is_featured %}<span>Featured</span>
+                    {% elif product.is_bestseller %}<span>Bestseller</span>
+                    {% elif product.is_new_arrival %}<span>New</span>{% endif %}
+                </div>
+
+                <h1>{{ product.name }}</h1>
+
+                {% if product.short_description %}
+                <p class="hv-pdp-short">{{ product.short_description }}</p>
+                {% endif %}
+
+                <div class="hv-pdp-code-row">
+                    {% if product.sku %}<span>SKU: <strong>{{ product.sku }}</strong></span>{% endif %}
+                    <span class="hv-stock {% if product.availability == 'OutOfStock' %}is-out{% endif %}">
+                        <i class="fas fa-circle" aria-hidden="true"></i> {{ product.get_availability_display }}
+                    </span>
+                </div>
+
+                <div class="hv-pdp-price-card">
+                    {% if product.price %}
+                    <div>
+                        <span class="hv-pdp-price-label">Starting price</span>
+                        <div class="hv-pdp-price">₹{{ product.price }} <small>/ piece</small></div>
+                    </div>
+                    {% else %}
+                    <div>
+                        <span class="hv-pdp-price-label">Wholesale pricing</span>
+                        <div class="hv-pdp-price-enquiry">Price on enquiry</div>
+                    </div>
+                    {% endif %}
+                    <div class="hv-pdp-moq">
+                        <span>MOQ</span>
+                        <strong>{{ product.moq }} pcs</strong>
+                    </div>
+                </div>
+
+                <div class="hv-pdp-highlights">
+                    <div><i class="fas fa-industry"></i><span><strong>Direct Supply</strong> from Jaipur</span></div>
+                    <div><i class="fas fa-boxes-stacked"></i><span><strong>Bulk Orders</strong> for businesses</span></div>
+                    <div><i class="fas fa-paintbrush"></i><span><strong>Custom Branding</strong> available</span></div>
+                    <div><i class="fas fa-truck-fast"></i><span><strong>PAN-India Delivery</strong></span></div>
+                </div>
+
+                {% if product.color_options %}
+                <div class="hv-pdp-option">
+                    <h3>Available Colours</h3>
+                    <div class="hv-pdp-chips">
+                        {% for option in product.color_options %}<span>{{ option }}</span>{% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if product.size_options %}
+                <div class="hv-pdp-option">
+                    <h3>Available Sizes</h3>
+                    <div class="hv-pdp-chips">
+                        {% for option in product.size_options %}<span>{{ option }}</span>{% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="hv-pdp-actions">
+                    <button type="button"
+                            class="hv-pdp-quote"
+                            data-product-id="{{ product.id }}"
+                            data-bs-toggle="modal"
+                            data-bs-target="#bulkInquiryModal">
+                        <i class="fas fa-file-invoice"></i>
+                        Get Bulk Quote
+                    </button>
+                    <a class="hv-pdp-whatsapp"
+                       href="https://wa.me/919462207356?text=Hello%20HOOVALE%20Team%2C%20I%20am%20interested%20in%20{{ product.name|urlencode }}%20(SKU%20{{ product.sku|urlencode }})."
+                       target="_blank" rel="noopener">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp Enquiry
+                    </a>
+                </div>
+
+                <p class="hv-pdp-note">
+                    <i class="fas fa-circle-info"></i>
+                    Tell us your quantity, branding requirement and delivery location for an accurate quotation.
+                </p>
+            </div>
+        </div>
+
+        <!-- Key product information -->
+        <section class="hv-pdp-section hv-pdp-overview">
+            <div class="hv-pdp-section-heading">
+                <span>PRODUCT INFORMATION</span>
+                <h2>Everything you need to know</h2>
+            </div>
+
+            <div class="hv-pdp-overview-grid">
+                <article class="hv-pdp-card hv-pdp-about">
+                    <h3>About this product</h3>
+                    <div class="hv-pdp-copy">{{ product.description|linebreaks }}</div>
+                </article>
+
+                {% if specifications %}
+                <article class="hv-pdp-card">
+                    <h3>Specifications</h3>
+                    <div class="hv-pdp-specs">
+                        {% for item in specifications %}
+                        <div class="hv-pdp-spec">
+                            <span>{{ item.key }}</span>
+                            <strong>{{ item.value }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </article>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Bulk pricing -->
+        {% if pricing_tiers %}
+        <section class="hv-pdp-section">
+            <div class="hv-pdp-section-heading">
+                <span>WHOLESALE PRICING</span>
+                <h2>Better prices at higher quantities</h2>
+                <p>Final pricing can vary with customization, quantity, packaging and delivery requirements.</p>
+            </div>
+
+            <div class="hv-pdp-pricing-card">
+                <div class="hv-pdp-pricing-head">
+                    <div><strong>Quantity</strong><span>Order size</span></div>
+                    <div><strong>Price / piece</strong><span>Indicative price</span></div>
+                    <div class="hv-pdp-pricing-save"><strong>Saving</strong><span>vs. starting price</span></div>
+                </div>
+                {% for tier in pricing_tiers %}
+                <div class="hv-pdp-price-row {% if forloop.last %}is-last{% endif %}">
+                    <div>
+                        <strong>{{ tier.max_qty_display }} pcs</strong>
+                        <span>{{ tier.label }}</span>
+                    </div>
+                    <strong class="hv-pdp-tier-price">₹{{ tier.unit_price }}</strong>
+                    <div class="hv-pdp-saving">
+                        {% if tier.discount_value %}
+                        <span>{{ tier.badge|default:"Bulk saving" }}</span>
+                        {% else %}
+                        <span>Standard price</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="hv-pdp-pricing-foot">
+                    <i class="fas fa-circle-info"></i>
+                    Need a large, custom or mixed order? Contact HOOVALE for a project quotation.
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Custom branding -->
+        <section class="hv-pdp-section">
+            <div class="hv-pdp-branding">
+                <div class="hv-pdp-branding-icon"><i class="fas fa-paintbrush"></i></div>
+                <div>
+                    <span class="hv-pdp-mini-label">FOR BUSINESS & BULK BUYERS</span>
+                    <h2>Need your logo on the clock?</h2>
+                    <p>Share your logo, quantity and preferred design. HOOVALE can discuss branding, packaging and bulk production requirements with you.</p>
+                    <button type="button" class="hv-pdp-inline-cta" data-product-id="{{ product.id }}" data-bs-toggle="modal" data-bs-target="#bulkInquiryModal">
+                        Discuss Custom Branding <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="hv-pdp-section">
+            <div class="hv-pdp-section-heading">
+                <span>HOW IT WORKS</span>
+                <h2>From enquiry to delivery</h2>
+            </div>
+            <div class="hv-pdp-steps">
+                <div><b>01</b><i class="fas fa-comment-dots"></i><h3>Share requirement</h3><p>Tell us quantity, design, branding and delivery location.</p></div>
+                <div><b>02</b><i class="fas fa-file-invoice"></i><h3>Get quotation</h3><p>Our team confirms pricing and production requirements.</p></div>
+                <div><b>03</b><i class="fas fa-industry"></i><h3>Production</h3><p>Approved orders move through the agreed production process.</p></div>
+                <div><b>04</b><i class="fas fa-truck-fast"></i><h3>Dispatch</h3><p>Products are packed and dispatched to your location.</p></div>
+            </div>
+        </section>
+
+        <!-- FAQs -->
+        {% if faqs %}
+        <section class="hv-pdp-section hv-pdp-faq-section">
+            <div class="hv-pdp-section-heading">
+                <span>BUYER QUESTIONS</span>
+                <h2>Frequently asked questions</h2>
+            </div>
+            <div class="accordion hv-pdp-faq" id="productFaq">
+                {% for faq in faqs %}
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="faqHeading{{ forloop.counter }}">
+                        <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="faqCollapse{{ forloop.counter }}">
+                            {{ faq.question }}
+                        </button>
+                    </h3>
+                    <div id="faqCollapse{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="faqHeading{{ forloop.counter }}" data-bs-parent="#productFaq">
+                        <div class="accordion-body">{{ faq.answer|linebreaks }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Related products -->
+        {% if related_products %}
+        <section class="hv-pdp-section hv-pdp-related">
+            <div class="hv-pdp-section-heading hv-pdp-related-heading">
+                <div>
+                    <span>MORE FROM HOOVALE</span>
+                    <h2>Related Wall Clocks</h2>
+                </div>
+                <a href="{% url 'products_list' %}">View all <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="hv-pdp-related-grid">
+                {% for related in related_products %}
+                <a href="{{ related.get_absolute_url }}" class="hv-pdp-related-card">
+                    <div class="hv-pdp-related-image">
+                        {% if related.image %}
+                        <img src="{{ related.image.url }}" alt="{{ related.name }}" loading="lazy">
+                        {% else %}
+                        <img src="{% static 'images/product-placeholder.svg' %}" alt="{{ related.name }}" loading="lazy">
+                        {% endif %}
+                    </div>
+                    <div class="hv-pdp-related-info">
+                        <span>{{ related.category.name }}</span>
+                        <h3>{{ related.name }}</h3>
+                        {% if related.price %}<strong>From ₹{{ related.price }}</strong>{% else %}<small>Price on enquiry</small>{% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Mobile product CTA. It sits above the existing fixed site navigation. -->
+<div class="hv-pdp-mobile-bar" aria-label="Product enquiry actions">
+    <button type="button" data-product-id="{{ product.id }}" data-bs-toggle="modal" data-bs-target="#bulkInquiryModal">
+        <i class="fas fa-file-invoice"></i><span>Get Quote</span>
+    </button>
+    <a href="https://wa.me/919462207356?text=Hello%20HOOVALE%20Team%2C%20I%20am%20interested%20in%20{{ product.name|urlencode }}." target="_blank" rel="noopener">
+        <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
+    </a>
+</div>
+
+<!-- Simple accessible image lightbox -->
+<div class="hv-pdp-lightbox" id="hvProductLightbox" hidden>
+    <button type="button" class="hv-pdp-lightbox-close" aria-label="Close image"><i class="fas fa-times"></i></button>
+    <img src="" alt="" id="hvProductLightboxImage">
+</div>
+
+<style>
+/* =========================================================
+   HOOVALE PRODUCT DETAIL PAGE
+   Clean B2B catalogue style — no gradients, no excessive motion.
+   ========================================================= */
+.hv-pdp{
+    --p-blue:#0051A3;
+    --p-blue-dark:#003d7a;
+    --p-gold:#B58A32;
+    --p-text:#171717;
+    --p-muted:#667085;
+    --p-border:#E4E7EC;
+    --p-soft:#F7F8FA;
+    --p-green:#20A95A;
+    background:#fff;
+    color:var(--p-text);
+    padding:22px 0 110px;
+}
+.hv-pdp a{color:inherit}
+.hv-pdp-breadcrumb{
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    margin:0 0 24px;color:#7A8493;font-size:.78rem;
+}
+.hv-pdp-breadcrumb a{color:var(--p-blue);text-decoration:none}
+.hv-pdp-breadcrumb a:hover{text-decoration:underline}
+.hv-pdp-breadcrumb i{font-size:.6rem;color:#A7AFBA}
+.hv-pdp-breadcrumb span{max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hv-pdp-hero{
+    display:grid;grid-template-columns:minmax(0,1.02fr) minmax(420px,.98fr);
+    gap:54px;align-items:start;
+}
+.hv-pdp-gallery{min-width:0}
+.hv-pdp-main-image-card{
+    position:relative;min-height:550px;background:#FAFAF9;
+    border:1px solid var(--p-border);border-radius:16px;
+    display:flex;align-items:center;justify-content:center;padding:38px;
+}
+.hv-pdp-image-button{
+    appearance:none;border:0;background:transparent;width:100%;height:100%;
+    min-height:470px;padding:0;cursor:zoom-in;display:flex;align-items:center;justify-content:center;
+}
+.hv-pdp-main-image{display:block;width:100%;height:470px;object-fit:contain}
+.hv-pdp-badge{
+    position:absolute;top:18px;left:18px;z-index:2;
+    background:var(--p-blue);color:#fff;border-radius:6px;
+    padding:7px 11px;font-size:.68rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+}
+.hv-pdp-zoom{
+    position:absolute;bottom:15px;right:18px;color:#7A8493;font-size:.72rem;
+    background:#fff;border:1px solid var(--p-border);border-radius:6px;padding:6px 9px;
+}
+.hv-pdp-thumbs{display:flex;gap:10px;margin-top:12px;overflow-x:auto;padding-bottom:2px}
+.hv-pdp-thumb{
+    width:72px;height:72px;flex:0 0 72px;padding:5px;background:#fff;
+    border:1px solid var(--p-border);border-radius:8px;cursor:pointer;
+}
+.hv-pdp-thumb.is-active{border:2px solid var(--p-blue)}
+.hv-pdp-thumb img{width:100%;height:100%;object-fit:contain}
+.hv-pdp-info{padding:8px 0}
+.hv-pdp-eyebrow{
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    color:var(--p-gold);font-size:.72rem;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;margin-bottom:12px;
+}
+.hv-pdp-eyebrow span{
+    color:var(--p-blue);background:#EFF6FF;border:1px solid #CFE3FF;
+    padding:4px 7px;border-radius:4px;font-size:.61rem;letter-spacing:.4px;
+}
+.hv-pdp-info h1{
+    font-size:clamp(2rem,3.5vw,3.05rem);line-height:1.12;letter-spacing:-.025em;
+    font-weight:800;margin:0 0 14px;color:var(--p-text);
+}
+.hv-pdp-short{color:var(--p-muted);font-size:1rem;line-height:1.7;margin:0 0 18px;max-width:680px}
+.hv-pdp-code-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap;color:#7A8493;font-size:.77rem;margin-bottom:18px}
+.hv-pdp-code-row strong{color:#333}
+.hv-stock{color:#18864B;font-weight:700}
+.hv-stock i{font-size:.43rem;vertical-align:middle}
+.hv-stock.is-out{color:#B42318}
+.hv-pdp-price-card{
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    border-top:1px solid var(--p-border);border-bottom:1px solid var(--p-border);
+    padding:17px 0;margin-bottom:17px;
+}
+.hv-pdp-price-label{display:block;color:#7A8493;font-size:.7rem;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
+.hv-pdp-price{font-size:2.15rem;line-height:1;font-weight:800;color:var(--p-blue)}
+.hv-pdp-price small{font-size:.78rem;color:#7A8493;font-weight:500}
+.hv-pdp-price-enquiry{font-size:1.35rem;font-weight:800;color:var(--p-blue)}
+.hv-pdp-moq{min-width:100px;text-align:right;border-left:1px solid var(--p-border);padding-left:18px}
+.hv-pdp-moq span{display:block;color:#7A8493;font-size:.68rem;text-transform:uppercase;letter-spacing:.7px}
+.hv-pdp-moq strong{font-size:1rem}
+.hv-pdp-highlights{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:21px;
+}
+.hv-pdp-highlights div{
+    display:flex;align-items:flex-start;gap:9px;color:#596273;font-size:.79rem;line-height:1.45;
+    padding:10px 11px;background:var(--p-soft);border:1px solid #EEF0F2;border-radius:8px;
+}
+.hv-pdp-highlights i{color:var(--p-gold);width:16px;margin-top:2px;text-align:center}
+.hv-pdp-highlights strong{display:block;color:#272B31;font-size:.78rem}
+.hv-pdp-option{margin:17px 0}
+.hv-pdp-option h3{font-size:.78rem;margin:0 0 8px;font-weight:800}
+.hv-pdp-chips{display:flex;gap:7px;flex-wrap:wrap}
+.hv-pdp-chips span{border:1px solid var(--p-border);background:#fff;border-radius:5px;padding:7px 10px;font-size:.75rem;color:#454B54}
+.hv-pdp-actions{display:grid;gap:9px;margin-top:21px}
+.hv-pdp-quote,.hv-pdp-whatsapp{
+    min-height:52px;width:100%;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:9px;
+    font-size:.9rem;font-weight:800;text-decoration:none;cursor:pointer;
+}
+.hv-pdp-quote{border:1px solid var(--p-blue);background:var(--p-blue);color:#fff}
+.hv-pdp-quote:hover{background:var(--p-blue-dark);color:#fff}
+.hv-pdp-whatsapp{border:1px solid #9ADBB5;background:#F5FFF8;color:#137C40}
+.hv-pdp-whatsapp:hover{background:#ECFFF3;color:#137C40}
+.hv-pdp-note{margin:12px 0 0;color:#7A8493;font-size:.72rem;line-height:1.5}
+.hv-pdp-note i{color:var(--p-blue);margin-right:4px}
+.hv-pdp-section{margin-top:68px}
+.hv-pdp-section-heading{margin-bottom:22px}
+.hv-pdp-section-heading>span,.hv-pdp-mini-label{
+    display:block;color:var(--p-gold);font-size:.68rem;font-weight:800;letter-spacing:1.5px;margin-bottom:7px;
+}
+.hv-pdp-section-heading h2{font-size:1.8rem;line-height:1.2;font-weight:800;margin:0;color:var(--p-text)}
+.hv-pdp-section-heading p{color:var(--p-muted);font-size:.82rem;margin:7px 0 0;max-width:720px}
+.hv-pdp-overview-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:20px}
+.hv-pdp-card{
+    background:#fff;border:1px solid var(--p-border);border-radius:12px;padding:26px;
+}
+.hv-pdp-card h3{font-size:1.05rem;font-weight:800;margin:0 0 17px}
+.hv-pdp-copy{color:#596273;font-size:.91rem;line-height:1.8}
+.hv-pdp-copy p:last-child{margin-bottom:0}
+.hv-pdp-specs{border:1px solid var(--p-border);border-radius:8px;overflow:hidden}
+.hv-pdp-spec{
+    display:grid;grid-template-columns:1fr 1.15fr;gap:14px;padding:12px 13px;
+    border-bottom:1px solid #EEF0F2;font-size:.8rem;
+}
+.hv-pdp-spec:last-child{border-bottom:0}
+.hv-pdp-spec span{color:#7A8493}.hv-pdp-spec strong{color:#292D33;word-break:break-word}
+.hv-pdp-pricing-card{border:1px solid var(--p-border);border-radius:12px;overflow:hidden;background:#fff}
+.hv-pdp-pricing-head,.hv-pdp-price-row{
+    display:grid;grid-template-columns:1.5fr 1fr .8fr;gap:20px;align-items:center;padding:15px 20px;
+}
+.hv-pdp-pricing-head{background:#F7F8FA;border-bottom:1px solid var(--p-border)}
+.hv-pdp-pricing-head strong{display:block;font-size:.75rem}
+.hv-pdp-pricing-head span{display:block;color:#8A93A0;font-size:.65rem;margin-top:2px}
+.hv-pdp-price-row{min-height:62px;border-bottom:1px solid #EEF0F2}
+.hv-pdp-price-row.is-last{border-bottom:0}
+.hv-pdp-price-row>div:first-child strong{display:block;font-size:.82rem}.hv-pdp-price-row>div:first-child span{display:block;color:#7A8493;font-size:.69rem;margin-top:3px}
+.hv-pdp-tier-price{color:var(--p-blue);font-size:1rem}
+.hv-pdp-saving span{
+    display:inline-block;color:#18794E;background:#ECFDF3;border:1px solid #B7E4CA;
+    padding:4px 7px;border-radius:4px;font-size:.64rem;font-weight:800;
+}
+.hv-pdp-pricing-foot{padding:13px 20px;background:#FBFCFD;border-top:1px solid var(--p-border);color:#667085;font-size:.73rem}
+.hv-pdp-pricing-foot i{color:var(--p-blue);margin-right:5px}
+.hv-pdp-branding{
+    display:grid;grid-template-columns:58px 1fr;gap:20px;align-items:start;
+    padding:30px;background:#F7F9FC;border:1px solid #DCE7F5;border-radius:12px;
+}
+.hv-pdp-branding-icon{
+    width:58px;height:58px;border-radius:10px;background:#EAF2FB;color:var(--p-blue);
+    display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+}
+.hv-pdp-branding h2{font-size:1.45rem;margin:0 0 7px;font-weight:800}
+.hv-pdp-branding p{color:#667085;font-size:.85rem;line-height:1.65;max-width:800px;margin:0 0 14px}
+.hv-pdp-inline-cta{
+    border:0;background:transparent;padding:0;color:var(--p-blue);font-size:.78rem;font-weight:800;cursor:pointer;
+}
+.hv-pdp-inline-cta i{margin-left:5px}
+.hv-pdp-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.hv-pdp-steps>div{position:relative;padding:23px 19px;border:1px solid var(--p-border);border-radius:10px;background:#fff}
+.hv-pdp-steps b{position:absolute;top:14px;right:15px;color:#C8CDD4;font-size:.67rem}
+.hv-pdp-steps i{display:flex;width:39px;height:39px;border-radius:7px;align-items:center;justify-content:center;background:#EFF6FF;color:var(--p-blue);font-size:.9rem;margin-bottom:17px}
+.hv-pdp-steps h3{font-size:.91rem;margin:0 0 7px;font-weight:800}
+.hv-pdp-steps p{color:#7A8493;font-size:.75rem;line-height:1.55;margin:0}
+.hv-pdp-faq{border:1px solid var(--p-border);border-radius:10px;overflow:hidden}
+.hv-pdp-faq .accordion-item{border:0;border-bottom:1px solid var(--p-border)}
+.hv-pdp-faq .accordion-item:last-child{border-bottom:0}
+.hv-pdp-faq .accordion-button{font-size:.86rem;font-weight:700;padding:17px 19px;box-shadow:none;background:#fff;color:var(--p-text)}
+.hv-pdp-faq .accordion-button:not(.collapsed){color:var(--p-blue);background:#FBFCFE}
+.hv-pdp-faq .accordion-body{padding:0 19px 18px;color:#667085;font-size:.8rem;line-height:1.7}
+.hv-pdp-related-heading{display:flex;align-items:end;justify-content:space-between;gap:20px}
+.hv-pdp-related-heading>a{font-size:.77rem;font-weight:800;color:var(--p-blue);text-decoration:none}
+.hv-pdp-related-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.hv-pdp-related-card{
+    border:1px solid var(--p-border);border-radius:10px;overflow:hidden;background:#fff;text-decoration:none;
+}
+.hv-pdp-related-card:hover{border-color:#BFD6EE;color:inherit}
+.hv-pdp-related-image{height:210px;background:#FAFAFA;padding:14px;display:flex;align-items:center;justify-content:center}
+.hv-pdp-related-image img{width:100%;height:100%;object-fit:contain}
+.hv-pdp-related-info{padding:14px}
+.hv-pdp-related-info>span{font-size:.63rem;text-transform:uppercase;letter-spacing:.8px;color:var(--p-gold);font-weight:800}
+.hv-pdp-related-info h3{font-size:.87rem;line-height:1.35;margin:6px 0 8px;color:#20242A}
+.hv-pdp-related-info strong,.hv-pdp-related-info small{font-size:.75rem;color:#58616D}
+.hv-pdp-mobile-bar{display:none}
+.hv-pdp-lightbox{
+    position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:20000;
+    display:flex;align-items:center;justify-content:center;padding:25px;
+}
+.hv-pdp-lightbox[hidden]{display:none}
+.hv-pdp-lightbox img{max-width:94vw;max-height:88vh;object-fit:contain;background:#fff;border-radius:8px}
+.hv-pdp-lightbox-close{
+    position:absolute;top:18px;right:20px;width:44px;height:44px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.35);color:#fff;font-size:1rem;cursor:pointer;
+}
+@media(max-width:991px){
+    .hv-pdp{padding-top:18px}
+    .hv-pdp-hero{grid-template-columns:1fr;gap:30px}
+    .hv-pdp-main-image-card{min-height:430px}
+    .hv-pdp-image-button{min-height:350px}
+    .hv-pdp-main-image{height:350px}
+    .hv-pdp-overview-grid{grid-template-columns:1fr}
+    .hv-pdp-steps{grid-template-columns:1fr 1fr}
+    .hv-pdp-related-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:767px){
+    .hv-pdp{padding:13px 0 128px}
+    .hv-pdp-breadcrumb{font-size:.69rem;margin-bottom:14px}
+    .hv-pdp-breadcrumb span{max-width:170px}
+    .hv-pdp-hero{gap:20px}
+    .hv-pdp-main-image-card{min-height:320px;padding:20px;border-radius:12px}
+    .hv-pdp-image-button{min-height:270px}
+    .hv-pdp-main-image{height:270px}
+    .hv-pdp-zoom{bottom:10px;right:10px;font-size:.63rem}
+    .hv-pdp-thumb{width:62px;height:62px;flex-basis:62px}
+    .hv-pdp-info h1{font-size:1.8rem}
+    .hv-pdp-price{font-size:1.85rem}
+    .hv-pdp-price-card{padding:15px 0}
+    .hv-pdp-highlights{grid-template-columns:1fr 1fr;gap:7px}
+    .hv-pdp-highlights div{font-size:.7rem;padding:9px}
+    .hv-pdp-section{margin-top:45px}
+    .hv-pdp-section-heading h2{font-size:1.45rem}
+    .hv-pdp-card{padding:19px}
+    .hv-pdp-spec{grid-template-columns:1fr;gap:3px}
+    .hv-pdp-pricing-head,.hv-pdp-price-row{grid-template-columns:1.25fr .9fr;gap:10px;padding:13px 12px}
+    .hv-pdp-pricing-save{display:none}
+    .hv-pdp-price-row .hv-pdp-saving{display:none}
+    .hv-pdp-branding{grid-template-columns:1fr;padding:21px}
+    .hv-pdp-branding-icon{width:48px;height:48px}
+    .hv-pdp-steps{grid-template-columns:1fr 1fr;gap:8px}
+    .hv-pdp-steps>div{padding:18px 14px}
+    .hv-pdp-related-grid{gap:9px}
+    .hv-pdp-related-image{height:145px;padding:10px}
+    .hv-pdp-related-info{padding:10px}
+    .hv-pdp-related-info h3{font-size:.78rem}
+    .hv-pdp-related-heading>a{font-size:.68rem}
+    .hv-pdp-mobile-bar{
+        position:fixed;left:0;right:0;bottom:64px;height:58px;z-index:11990;
+        display:grid;grid-template-columns:1fr 1fr;background:#fff;border-top:1px solid #DDE1E6;
+        box-shadow:0 -6px 18px rgba(15,23,42,.08);
+    }
+    .hv-pdp-mobile-bar button,.hv-pdp-mobile-bar a{
+        border:0;background:#fff;display:flex;align-items:center;justify-content:center;gap:7px;
+        font-size:.76rem;font-weight:800;text-decoration:none;color:var(--p-blue);
+    }
+    .hv-pdp-mobile-bar a{color:#168B43;border-left:1px solid #E5E7EB}
+    .hv-pdp-mobile-bar button i,.hv-pdp-mobile-bar a i{font-size:.9rem}
+}
+@media(max-width:380px){
+    .hv-pdp-highlights{grid-template-columns:1fr}
+    .hv-pdp-steps{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+    .hv-pdp *{scroll-behavior:auto!important;transition:none!important}
+}
+
+/* =========================================================
+   FINAL PDP MOBILE / DESKTOP UX POLISH
+   - Comfortable reading margins
+   - Cleaner information hierarchy
+   - Better tap targets and card rhythm
+   - Prevent floating WhatsApp from covering PDP CTA bar
+   ========================================================= */
+.hv-pdp > .container-lg{
+    width:100%;
+    max-width:1240px;
+    padding-left:28px;
+    padding-right:28px;
+}
+.hv-pdp{
+    background:
+        linear-gradient(180deg,#ffffff 0,#ffffff 72%,#f8fafc 100%);
+}
+.hv-pdp-hero{
+    gap:48px;
+}
+.hv-pdp-info{
+    position:relative;
+}
+.hv-pdp-price-card{
+    background:#fbfcfe;
+    border:1px solid #e7ebf1;
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:0 8px 24px rgba(15,23,42,.04);
+}
+.hv-pdp-highlights{
+    gap:10px;
+}
+.hv-pdp-highlights div{
+    min-height:76px;
+    border:1px solid #e5e9ef;
+    border-radius:12px;
+    background:#fff;
+    box-shadow:0 4px 14px rgba(15,23,42,.035);
+    transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+.hv-pdp-highlights div:hover{
+    transform:translateY(-2px);
+    border-color:#d4dce7;
+    box-shadow:0 9px 22px rgba(15,23,42,.07);
+}
+.hv-pdp-option{
+    margin-top:25px;
+}
+.hv-pdp-option h3{
+    margin-bottom:11px;
+    font-size:1rem;
+    font-weight:800;
+}
+.hv-pdp-chips span{
+    min-height:42px;
+    display:inline-flex;
+    align-items:center;
+    padding:9px 16px;
+    border:1px solid #dfe4eb;
+    border-radius:10px;
+    background:#fff;
+    font-weight:600;
+    box-shadow:0 2px 7px rgba(15,23,42,.03);
+}
+.hv-pdp-actions{
+    gap:10px;
+    margin-top:24px;
+}
+.hv-pdp-quote,.hv-pdp-whatsapp{
+    min-height:52px;
+    border-radius:11px;
+    box-shadow:0 7px 18px rgba(15,23,42,.08);
+    transition:transform .18s ease,box-shadow .18s ease;
+}
+.hv-pdp-quote:hover,.hv-pdp-whatsapp:hover{
+    transform:translateY(-1px);
+    box-shadow:0 10px 24px rgba(15,23,42,.12);
+}
+.hv-pdp-section{
+    scroll-margin-top:96px;
+}
+.hv-pdp-card,
+.hv-pdp-pricing-card,
+.hv-pdp-branding{
+    box-shadow:0 8px 26px rgba(15,23,42,.045);
+}
+
+/* Product page has its own CTA strip above the global 5-tab nav. */
+@media(max-width:767px){
+    .hv-pdp > .container-lg{
+        max-width:none;
+        padding-left:20px;
+        padding-right:20px;
+    }
+    .hv-pdp{
+        padding-top:16px;
+        padding-bottom:132px;
+    }
+    .hv-pdp-breadcrumb{
+        margin-bottom:17px;
+        padding:0 2px;
+    }
+    .hv-pdp-hero{
+        gap:24px;
+    }
+    .hv-pdp-main-image-card{
+        min-height:330px;
+        padding:18px;
+        border-radius:14px;
+    }
+    .hv-pdp-image-button{
+        min-height:280px;
+    }
+    .hv-pdp-main-image{
+        height:280px;
+    }
+    .hv-pdp-info{
+        padding:0;
+    }
+    .hv-pdp-eyebrow{
+        margin-bottom:10px;
+        font-size:.67rem;
+    }
+    .hv-pdp-info h1{
+        font-size:clamp(1.75rem,7.4vw,2.15rem);
+        line-height:1.12;
+        letter-spacing:-.02em;
+        margin-bottom:12px;
+    }
+    .hv-pdp-short{
+        font-size:.94rem;
+        line-height:1.62;
+        margin-bottom:17px;
+    }
+    .hv-pdp-code-row{
+        margin-bottom:16px;
+        gap:10px;
+        font-size:.72rem;
+    }
+    .hv-pdp-price-card{
+        margin-bottom:15px;
+        padding:15px 16px;
+        border-radius:13px;
+    }
+    .hv-pdp-price{
+        font-size:1.85rem;
+        line-height:1.05;
+    }
+    .hv-pdp-moq strong{
+        font-size:1.05rem;
+    }
+    .hv-pdp-highlights{
+        gap:9px;
+        margin-top:4px;
+    }
+    .hv-pdp-highlights div{
+        min-height:72px;
+        padding:11px 10px;
+        border-radius:12px;
+    }
+    .hv-pdp-highlights div i{
+        font-size:.95rem;
+        margin-right:6px;
+    }
+    .hv-pdp-option{
+        margin-top:24px;
+    }
+    .hv-pdp-option h3{
+        font-size:1.02rem;
+        margin-bottom:10px;
+    }
+    .hv-pdp-chips span{
+        min-height:40px;
+        padding:8px 14px;
+        border-radius:9px;
+    }
+    .hv-pdp-actions{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:9px;
+        margin-top:22px;
+    }
+    .hv-pdp-quote,.hv-pdp-whatsapp{
+        min-height:50px;
+        padding:11px 9px;
+        font-size:.76rem;
+        border-radius:10px;
+    }
+    .hv-pdp-note{
+        margin-top:11px;
+        font-size:.7rem;
+        line-height:1.5;
+    }
+    .hv-pdp-section{
+        margin-top:42px;
+    }
+    .hv-pdp-section-heading{
+        margin-bottom:17px;
+    }
+    .hv-pdp-section-heading h2{
+        line-height:1.2;
+    }
+
+    /* Keep the global floating WhatsApp clear of the product CTA strip. */
+    body:has(.hv-pdp) .sticky-whatsapp{
+        bottom:132px;
+    }
+    body:has(.hv-pdp) .sticky-whatsapp a{
+        box-shadow:0 8px 24px rgba(37,211,102,.30);
+    }
+}
+
+@media(max-width:480px){
+    .hv-pdp > .container-lg{
+        padding-left:18px;
+        padding-right:18px;
+    }
+    .hv-pdp{
+        padding-bottom:132px;
+    }
+    .hv-pdp-actions{
+        grid-template-columns:1fr;
+    }
+    .hv-pdp-quote,.hv-pdp-whatsapp{
+        min-height:48px;
+        font-size:.8rem;
+    }
+    .hv-pdp-main-image-card{
+        min-height:300px;
+    }
+    .hv-pdp-image-button{
+        min-height:250px;
+    }
+    .hv-pdp-main-image{
+        height:250px;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+    .hv-pdp-highlights div,
+    .hv-pdp-quote,
+    .hv-pdp-whatsapp{
+        transition:none!important;
+    }
+}
+
+</style>
+
+<script>
+(function(){
+    const mainImage = document.querySelector('.hv-pdp-main-image');
+    const lightbox = document.getElementById('hvProductLightbox');
+    const lightboxImage = document.getElementById('hvProductLightboxImage');
+    const closeButton = document.querySelector('.hv-pdp-lightbox-close');
+
+    function openLightbox(src, alt){
+        if(!lightbox || !lightboxImage || !src) return;
+        lightboxImage.src = src;
+        lightboxImage.alt = alt || '';
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(){
+        if(!lightbox) return;
+        lightbox.hidden = true;
+        lightboxImage.src = '';
+        document.body.style.overflow = '';
+    }
+
+    document.querySelector('[data-hv-lightbox="product-main"]')?.addEventListener('click', function(){
+        openLightbox(mainImage?.src, mainImage?.alt);
+    });
+    closeButton?.addEventListener('click', closeLightbox);
+    lightbox?.addEventListener('click', function(e){
+        if(e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape' && lightbox && !lightbox.hidden) closeLightbox();
+    });
+
+    document.querySelectorAll('[data-hv-gallery-src]').forEach(function(thumb){
+        thumb.addEventListener('click', function(){
+            const src = thumb.getAttribute('data-hv-gallery-src');
+            if(!mainImage || !src) return;
+            mainImage.src = src;
+            document.querySelectorAll('.hv-pdp-thumb').forEach(x => x.classList.remove('is-active'));
+            thumb.classList.add('is-active');
+        });
+    });
+
+    // Ensure the shared enquiry modal always knows which product was requested.
+    document.querySelectorAll('[data-product-id]').forEach(function(trigger){
+        trigger.addEventListener('click', function(){
+            const id = trigger.getAttribute('data-product-id');
+            const field = document.getElementById('bulkProductId');
+            if(field && id) field.value = id;
+        });
+    });
+})();
+</script>
+{% endblock %}

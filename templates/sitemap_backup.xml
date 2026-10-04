@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- Home Page -->
+    <url>
+        <loc>{{ request.build_absolute_uri '/' }}</loc>
+        <lastmod>{% now "Y-m-d" %}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- Products Page -->
+    <url>
+        <loc>{{ request.build_absolute_uri '/products/' }}</loc>
+        <lastmod>{% now "Y-m-d" %}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- About Page -->
+    <url>
+        <loc>{{ request.build_absolute_uri '/about/' }}</loc>
+        <lastmod>{% now "Y-m-d" %}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Contact Page -->
+    <url>
+        <loc>{{ request.build_absolute_uri '/contact/' }}</loc>
+        <lastmod>{% now "Y-m-d" %}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Category Pages -->
+    {% for category in categories %}
+    <url>
+        <loc>{{ request.build_absolute_uri category.get_absolute_url }}</loc>
+        <lastmod>{{ category.updated_at|date:"Y-m-d" }}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    {% endfor %}
+    
+    <!-- Product Pages -->
+    {% for product in products %}
+    <url>
+        <loc>{{ request.build_absolute_uri product.get_absolute_url }}</loc>
+        <lastmod>{{ product.updated_at|date:"Y-m-d" }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    {% endfor %}
+</urlset>

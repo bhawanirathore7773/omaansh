@@ -1,0 +1,265 @@
+{% load static seo_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    {# ================================================== #}
+    {# DYNAMIC SEO META TAGS (set in each child template)  #}
+    {# ================================================== #}
+    {% get_site_settings as site %}
+
+    {# ================================================== #}
+    {# SEARCH RESULT METADATA                            #}
+    {# Google may rewrite title/snippet, but clear page- #}
+    {# specific metadata gives it a strong source.      #}
+    {# ================================================== #}
+    <title>{% block meta_title %}{{ site.default_meta_title }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ site.default_meta_description }}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}wall clock manufacturer in Jaipur, wall clock supplier Jaipur, wholesale wall clocks, custom wall clocks, corporate wall clocks{% endblock %}">
+
+    {# Authorship & business info (EEAT) #}
+    <meta name="author" content="{{ site.business_name }}">
+    <meta name="publisher" content="{{ site.business_name }}">
+    <meta name="copyright" content="© {{ site.business_name }}">
+    <meta name="robots" content="{% block robots %}index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{% endblock %}">
+    <meta name="googlebot" content="index, follow">
+
+    {# Geo tags for local SEO #}
+    <meta name="geo.region" content="IN-RJ">
+    <meta name="geo.placename" content="Jaipur">
+    <meta name="geo.position" content="{{ site.latitude }};{{ site.longitude }}">
+    <meta name="ICBM" content="{{ site.latitude }}, {{ site.longitude }}">
+
+    {# Canonical URL (prevents duplicate content) #}
+    <link rel="canonical" href="{% block canonical %}{% canonical_url %}{% endblock %}">
+
+    {# Search engine verification #}
+    {% if site.google_verification %}<meta name="google-site-verification" content="{{ site.google_verification }}">{% endif %}
+    {% if site.bing_verification %}<meta name="msvalidate.01" content="{{ site.bing_verification }}">{% endif %}
+
+    {# ================================================== #}
+    {# OPEN GRAPH (Facebook, LinkedIn, WhatsApp share)     #}
+    {# ================================================== #}
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="{{ site.business_name }}">
+    <meta property="og:title" content="{% block og_title %}{{ site.default_meta_title }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ site.default_meta_description }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'images/og-default.jpg' %}{% endblock %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="{% canonical_url %}">
+    <meta property="og:locale" content="en_IN">
+
+    {# ================================================== #}
+    {# TWITTER CARDS                                       #}
+    {# ================================================== #}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ site.default_meta_title }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ site.default_meta_description }}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/og-default.jpg' %}{% endblock %}">
+
+    {# ================================================== #}
+    {# FAVICONS                                            #}
+    {# ================================================== #}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon/favicon.ico' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-touch-icon.png' %}">
+    <link rel="manifest" href="{% static 'images/favicon/site.webmanifest' %}">
+
+    {# ================================================== #}
+    {# PRELOAD CRITICAL RESOURCES (Core Web Vitals)        #}
+    {# ================================================== #}
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="//www.google-analytics.com">
+
+    {# ================================================== #}
+    {# FONTS — Modern industrial typography                #}
+    {# ================================================== #}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+
+    {# Bootstrap + FontAwesome (existing) #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+
+
+    {# Site CSS #}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=20260924">
+        
+    {# Premium theme #}
+    <link rel="stylesheet" href="{% static 'css/premium_theme.css' %}?v=20260924-scrollfix322">
+   
+
+
+    {# Per-page CSS #}
+    {% block extra_css %}{% endblock %}
+
+    {# ================================================== #}
+    {# SCHEMA.ORG JSON-LD (Global)                         #}
+    {# ================================================== #}
+    {% organization_schema %}
+    {% local_business_schema %}
+    {% website_schema %}
+    {% site_navigation_schema %}
+
+    {# Per-page schema #}
+    {% block page_schema %}{% endblock %}
+
+    {# ================================================== #}
+    {# GOOGLE ANALYTICS (replace ID when ready)            #}
+    {# ================================================== #}
+    {% block analytics %}
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXX');
+    </script>
+
+    {% endblock %}
+</head>
+
+<body>
+
+{# ================================================== #}
+{# NAVIGATION                                          #}
+{# ================================================== #}
+<nav class="navbar navbar-expand-lg hv-navbar sticky-top">
+    <div class="container-lg">
+        <a class="navbar-brand" href="{% url 'home' %}" aria-label="HOOVALE Home">
+            HOOVALE
+        </a>
+        <button
+            class="navbar-toggler hv-menu-toggle"
+            id="hvMenuToggle"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-controls="nav"
+            aria-expanded="false">
+            <span class="hv-menu-icon" aria-hidden="true">
+                <span></span><span></span><span></span>
+            </span>
+        </button>
+        <div class="hv-menu-overlay" id="hvMenuOverlay" aria-hidden="true"></div>
+        <div class="collapse navbar-collapse hv-mobile-drawer" id="nav">
+            <div class="hv-drawer-header">
+                <span class="hv-drawer-title">MENU</span>
+            </div>
+            <ul class="navbar-nav ms-auto" style="gap:8px;">
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'products_list' %}">Wall Clocks</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'categories_index' %}">Categories</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'services_index' %}">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About HOOVALE</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'blog_list' %}">Wall Clock Guides</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                <li class="nav-item">
+                    <button
+                        class="btn btn-warning fw-bold ms-lg-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#bulkInquiryModal"
+                        style="background:linear-gradient(135deg,#FFA500,#FF8C00); border:none; color:white; padding:10px 24px; border-radius:6px;">
+                        <i class="fas fa-bolt"></i> Get Quote
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{# ================================================== #}
+{# MAIN CONTENT                                        #}
+{# ================================================== #}
+<main role="main">
+    {% block content %}{% endblock %}
+</main>
+
+{% include 'components/bulk_inquiry.html' %}
+{# ================================================== #}
+{# FOOTER (with NAP for local SEO)                     #}
+{# ================================================== #}
+<footer class="hv-footer">
+    <div class="container-lg">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <h5 style="color:white; font-weight:700; margin-bottom:8px;">{{ site.business_name }}</h5>
+                <p class="hv-footer-subtitle">
+                    Jaipur-based wall clock manufacturing and supply for homes, retailers, businesses and bulk buyers across India. Explore custom, promotional, corporate and wholesale wall clocks with direct enquiry support.
+                </p>
+                {% if site.gst_number %}
+                <p style="font-size:0.85rem; color:#FFA500;"><strong>GST:</strong> {{ site.gst_number }}</p>
+                {% endif %}
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <h6 style="color:white; font-weight:700; margin-bottom:15px;">Quick Links</h6>
+                <ul class="hv-footer-link-grid">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'products_list' %}">Products</a></li>
+                    <li><a href="{% url 'categories_index' %}">Categories</a></li>
+                    <li><a href="{% url 'about' %}">About HOOVALE</a></li>
+                    <li><a href="{% url 'blog_list' %}">Wall Clock Guides</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <h6 style="color:white; font-weight:700; margin-bottom:15px;">Top Services</h6>
+                <ul class="hv-footer-link-grid">
+                    <li><a href="{% url 'service_page' slug='bulk-wall-clock-supply' %}">Bulk Wall Clock Supply</a></li>
+                    <li><a href="{% url 'service_page' slug='custom-logo-printing' %}">Custom Logo Printing</a></li>
+                    <li><a href="{% url 'service_page' slug='oem-manufacturing' %}">OEM Manufacturing</a></li>
+                    <li><a href="{% url 'service_page' slug='corporate-gifting' %}">Corporate Gifting</a></li>
+                    <li><a href="{% url 'service_page' slug='promotional-clocks' %}">Promotional Clocks</a></li>
+                </ul>
+            </div>
+
+            {# NAP — Name, Address, Phone (CRITICAL for local SEO) #}
+            <div class="col-lg-3 col-md-6">
+                <h6 style="color:white; font-weight:700; margin-bottom:15px;">Contact</h6>
+                <p style="font-size:0.9rem; line-height:1.8;">
+                    <i class="fas fa-map-marker-alt" style="color:#FFA500;"></i> {{ site.street_address }}<br>
+                    <i class="fas fa-phone" style="color:#FFA500;"></i> <a href="{% call_link %}" style="color:#ccc; text-decoration:none;">{{ site.primary_phone }}</a><br>
+                    <i class="fab fa-whatsapp" style="color:#25D366;"></i> <a href="{% whatsapp_link 'Hi, I need wall clock pricing' %}" target="_blank" style="color:#ccc; text-decoration:none;">WhatsApp Us</a><br>
+                    <i class="fas fa-envelope" style="color:#FFA500;"></i> <a href="mailto:{{ site.email }}" style="color:#ccc; text-decoration:none;">{{ site.email }}</a>
+                </p>
+            </div>
+        </div>
+
+        <hr style="border-color:#333; margin:40px 0 20px;">
+
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <p style="font-size:0.85rem; margin:0;">© {% now "Y" %} {{ site.business_name }}. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="/sitemap.xml" style="color:#888; font-size:0.85rem; text-decoration:none; margin-right:15px;">Sitemap</a>
+                <a href="/robots.txt" style="color:#888; font-size:0.85rem; text-decoration:none;">Robots</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+{# ================================================== #}
+{# STICKY CTAs (WhatsApp + Call) — HUGE conversion     #}
+{# ================================================== #}
+{% include 'components/sticky_ctas.html' %}
+
+{# ================================================== #}
+{# JS                                                  #}
+{# ================================================== #}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/main.js' %}?v=20260924-scrollfix"></script>
+
+{% block extra_js %}{% endblock %}
+
+{# Exit intent popup - shows once per 7 days #}
+{% include 'components/exit_intent.html' %}
+</body>
+</html>
