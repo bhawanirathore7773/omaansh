@@ -146,7 +146,7 @@
   </nav>
 </header>
 <style>
-.site-header{position:sticky;top:0;z-index:1050;background:rgba(255,255,255,.94);transition:box-shadow .25s ease,transform .25s ease}
+.site-header{position:sticky;top:0;z-index:1050;background:rgba(255,255,255,.94);transition:box-shadow .25s ease,transform .25s ease}.site-header.is-scrolled{box-shadow:0 8px 28px rgba(16,24,40,.08)}
 .site-nav{position:relative;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #e8ebef}
 .site-nav-inner{max-width:1240px;min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:28px}
 .site-brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:#101828;min-width:190px}
@@ -261,6 +261,10 @@
 <script src="{% static 'js/main.js' %}?v=20260924-scrollfix"></script>
 <script>
 document.addEventListener('DOMContentLoaded',function(){
+  const header=document.querySelector('.site-header');
+  const updateHeader=function(){ if(header) header.classList.toggle('is-scrolled',window.scrollY>8); };
+  updateHeader();
+  window.addEventListener('scroll',updateHeader,{passive:true});
   const toggle=document.getElementById('siteMenuToggle');
   const menu=document.getElementById('siteNavMenu');
   if(!toggle||!menu)return;
