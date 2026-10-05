@@ -1,187 +1,23 @@
 {% extends 'base.html' %}
 {% load static seo_tags %}
-
 {% block meta_title %}{{ industry.meta_title|default:industry.h1_heading }}{% endblock %}
 {% block meta_description %}{{ industry.meta_description|default:industry.hero_subheading|truncatechars:155 }}{% endblock %}
-{% block meta_keywords %}{{ industry.meta_keywords }}{% endblock %}
-{% block og_title %}{{ industry.meta_title }}{% endblock %}
+{% block meta_keywords %}{{ industry.meta_keywords }}, wall clocks Jaipur{% endblock %}
+{% block og_title %}{{ industry.meta_title|default:industry.h1_heading }}{% endblock %}
 {% block og_description %}{{ industry.meta_description|default:industry.hero_subheading }}{% endblock %}
-{% if industry.hero_image %}{% block og_image %}https://hoovale.com{{ industry.hero_image.url }}{% endblock %}{% endif %}
-
-{% block page_schema %}
-    {% breadcrumb_schema breadcrumb_items %}
-    {% if faqs %}{% faq_schema faqs %}{% endif %}
-{% endblock %}
-
+{% if industry.hero_image %}{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{{ industry.hero_image.url }}{% endblock %}{% endif %}
+{% block page_schema %}{% breadcrumb_schema breadcrumb_items %}{% if faqs %}{% faq_schema faqs %}{% endif %}{% endblock %}
 {% block content %}
-
-{# BREADCRUMBS #}
-<div style="background:#f8f9fa; padding:14px 0; font-size:0.9rem;">
-    <div class="container-lg">
-        <a href="/" style="color:#666; text-decoration:none;">Home</a>
-        <span style="color:#999;"> › </span>
-        <a href="{% url 'industries_index' %}" style="color:#666; text-decoration:none;">Industries</a>
-        <span style="color:#999;"> › </span>
-        <span style="color:#0051A3; font-weight:600;">{{ industry.industry_name }}</span>
-    </div>
+<div class="industry-page">
+<nav class="crumbs"><div class="container-lg"><a href="/">Home</a><span>/</span><a href="{% url 'industries_index' %}">Industries</a><span>/</span><b>{{ industry.industry_name }}</b></div></nav>
+<section class="hero">{% if industry.hero_image %}<div class="bg" style="background-image:url('{{ industry.hero_image.url }}')"></div>{% endif %}<div class="container-lg hero-grid"><div><span class="eyebrow">WALL CLOCKS FOR {{ industry.industry_name|upper }}</span><h1>{{ industry.h1_heading }}</h1><p>{{ industry.hero_subheading }}</p><div class="actions"><a href="{% url 'contact' %}" class="btn main">Discuss your requirement</a><a href="{% url 'products_list' %}" class="btn ghost">Browse wall clocks</a></div></div><div class="note"><span>BUSINESS BUYING</span><strong>Right product. Right quantity. Clearer procurement.</strong><p>Share quantity, delivery city and branding needs for a tailored conversation.</p></div></div></section>
+<section class="content"><div class="container-lg content-grid"><main><span class="eyebrow">UNDERSTANDING THE REQUIREMENT</span><h2>Wall clocks selected for {{ industry.industry_name|lower }}</h2><div class="rich">{{ industry.intro_content|linebreaks }}</div>{% if industry.benefits_content %}<section class="block"><span class="eyebrow">WHY IT MATTERS</span><h2>Practical benefits for your space</h2><div class="rich">{{ industry.benefits_content|linebreaks }}</div></section>{% endif %}{% if industry.customization_content %}<section class="block"><span class="eyebrow">CUSTOMIZATION</span><h2>Branding and specification options</h2><div class="rich">{{ industry.customization_content|linebreaks }}</div></section>{% endif %}{% if industry.case_study_content %}<section class="block"><span class="eyebrow">APPLICATION</span><h2>Where these clocks fit</h2><div class="rich">{{ industry.case_study_content|linebreaks }}</div></section>{% endif %}</main><aside><span class="eyebrow">GET A QUOTE</span><h3>Planning a bulk order?</h3><p>Share quantity, preferred style, delivery city and branding needs. We can help shortlist suitable models.</p><a href="{% url 'contact' %}" class="side">Send enquiry</a><a href="{% whatsapp_link 'Hi, I need wall clocks for ' %}{{ industry.industry_name }}" target="_blank" rel="noopener" class="wa">WhatsApp us</a></aside></div></section>
+{% if products %}<section class="products"><div class="container-lg"><div class="head"><div><span class="eyebrow">RECOMMENDED PRODUCTS</span><h2>Wall clocks for {{ industry.industry_name|lower }}</h2></div><a href="{% url 'products_list' %}">View all clocks ↗</a></div><div class="grid">{% for product in products %}<article><a href="{{ product.get_absolute_url }}" class="media">{% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} for {{ industry.industry_name }}" loading="lazy">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }}" loading="lazy">{% endif %}</a><div class="info"><small>{{ product.sku|default:"Wall clock" }}</small><h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>{% if product.price %}<strong>₹{{ product.price }}</strong>{% endif %}</div></article>{% endfor %}</div></div></section>{% endif %}
+{% if faqs %}<section class="faqs"><div class="container-lg"><span class="eyebrow">COMMON QUESTIONS</span><h2>Buying wall clocks for {{ industry.industry_name|lower }}</h2>{% for faq in faqs %}<details {% if forloop.first %}open{% endif %}><summary>{{ faq.question }}</summary><p>{{ faq.answer }}</p></details>{% endfor %}</div></section>{% endif %}
+<section class="cta"><div class="container-lg"><div><span class="eyebrow">READY TO PLAN?</span><h2>Tell us what the space needs.</h2><p>Quantity, design, delivery city and branding are enough to start.</p></div><a href="{% url 'contact' %}" class="btn light">Start an enquiry</a></div></section>
 </div>
-
-{# HERO #}
-<section style="position:relative; padding:80px 0; background:linear-gradient(135deg,#1a1a1a 0%, #2d2d2d 100%); color:white; overflow:hidden;">
-    {% if industry.hero_image %}
-    <div style="position:absolute; inset:0; background-image:url('{{ industry.hero_image.url }}'); background-size:cover; opacity:0.2;"></div>
-    {% endif %}
-    <div class="container-lg" style="position:relative; z-index:2;">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <div style="display:inline-block; background:rgba(255,165,0,0.2); color:#FFA500; padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:700; margin-bottom:16px; border:1px solid #FFA500;">
-                    <i class="{{ industry.icon_class|default:'fas fa-building' }}"></i> {{ industry.industry_name|upper }}
-                </div>
-                <h1 style="font-family:'Montserrat',sans-serif; font-size:2.8rem; font-weight:900; line-height:1.1; margin-bottom:18px;">{{ industry.h1_heading }}</h1>
-                {% if industry.hero_subheading %}<p style="font-size:1.15rem; opacity:0.9; line-height:1.6; margin-bottom:30px;">{{ industry.hero_subheading }}</p>{% endif %}
-
-                <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                    <a href="{% whatsapp_link 'Hi, I need wall clocks for ' %}{{ industry.industry_name }}" target="_blank"
-                       style="background:#25D366; color:white; padding:14px 30px; border-radius:8px; font-weight:700; text-decoration:none;">
-                        <i class="fab fa-whatsapp"></i> WhatsApp for Quote
-                    </a>
-                    <a href="{% call_link %}"
-                       style="background:linear-gradient(135deg,#FFA500,#FF8C00); color:white; padding:14px 30px; border-radius:8px; font-weight:700; text-decoration:none;">
-                        <i class="fas fa-phone-alt"></i> Call Now
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{# INTRO #}
-<section style="padding:60px 0;">
-    <div class="container-lg">
-        <div class="row">
-            <div class="col-lg-9">
-                <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:20px;">
-                    Trusted Wall Clock Supplier for {{ industry.industry_name }}
-                </h2>
-                <div style="font-size:1.05rem; color:#444; line-height:1.8;">{{ industry.intro_content|linebreaks }}</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{# BENEFITS #}
-{% if industry.benefits_content %}
-<section style="padding:60px 0; background:#f8f9fa;">
-    <div class="container-lg">
-        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:30px; text-align:center;">
-            Why HOOVALE for {{ industry.industry_name }}
-        </h2>
-        <div class="row">
-            <div class="col-lg-9 mx-auto">
-                <div style="font-size:1.05rem; color:#444; line-height:1.8;">{{ industry.benefits_content|linebreaks }}</div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-{# CUSTOMIZATION #}
-{% if industry.customization_content %}
-<section style="padding:60px 0;">
-    <div class="container-lg">
-        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:30px;">
-            Customisation Options for {{ industry.industry_name }}
-        </h2>
-        <div class="row">
-            <div class="col-lg-9">
-                <div style="font-size:1.05rem; color:#444; line-height:1.8;">{{ industry.customization_content|linebreaks }}</div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-{# RECOMMENDED PRODUCTS #}
-{% if products %}
-<section style="padding:60px 0; background:#f8f9fa;">
-    <div class="container-lg">
-        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:30px; text-align:center;">
-            Recommended Wall Clocks for {{ industry.industry_name }}
-        </h2>
-        <div class="row g-4">
-            {% for product in products %}
-            <div class="col-md-6 col-lg-3">
-                <a href="{{ product.get_absolute_url }}" style="text-decoration:none; color:inherit;">
-                    <div style="background:white; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.06); transition:all 0.3s; height:100%;"
-                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 30px rgba(0,81,163,0.15)';"
-                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.06)';">
-                        <img src="{{ product.image.url }}" alt="{{ product.name }} for {{ industry.industry_name }}" loading="lazy" style="width:100%; height:200px; object-fit:cover;">
-                        <div style="padding:18px;">
-                            <h3 style="font-size:0.95rem; font-weight:700; color:#1a1a1a; margin:0 0 8px;">{{ product.name }}</h3>
-                            {% if product.price %}<p style="color:#0051A3; font-weight:800; margin:0;">₹{{ product.price }} <small style="color:#999; font-weight:400;">MOQ {{ product.moq }}</small></p>{% endif %}
-                        </div>
-                    </div>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-{% endif %}
-
-{# CASE STUDIES #}
-{% if industry.case_study_content %}
-<section style="padding:60px 0;">
-    <div class="container-lg">
-        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:20px;">
-            <i class="fas fa-trophy" style="color:#FFA500;"></i> Recent {{ industry.industry_name }} Projects
-        </h2>
-        <div class="row">
-            <div class="col-lg-9">
-                <div style="background:#f8f9fa; padding:30px; border-left:4px solid #FFA500; border-radius:8px; font-size:1.05rem; color:#444; line-height:1.8;">
-                    {{ industry.case_study_content|linebreaks }}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-{# FAQ #}
-{% if faqs %}
-<section style="padding:60px 0; background:#f8f9fa;">
-    <div class="container-lg">
-        <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:30px; text-align:center;">FAQs — {{ industry.industry_name }}</h2>
-        <div class="row">
-            <div class="col-lg-9 mx-auto">
-                <div class="accordion" id="indFaq">
-                    {% for faq in faqs %}
-                    <div class="accordion-item" style="border:1px solid #eee; border-radius:8px; margin-bottom:12px; overflow:hidden;">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#if{{ forloop.counter }}" style="font-weight:600;">{{ faq.question }}</button>
-                        </h3>
-                        <div id="if{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#indFaq">
-                            <div class="accordion-body" style="color:#555;">{{ faq.answer|linebreaks }}</div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-{# CLOSING CTA #}
-<section style="padding:60px 0; background:linear-gradient(135deg,#FFA500,#FF8C00); color:white; text-align:center;">
-    <div class="container-lg">
-        <h2 style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:2.4rem; margin-bottom:16px;">Ready to Order Wall Clocks for {{ industry.industry_name }}?</h2>
-        <p style="font-size:1.1rem; max-width:700px; margin:0 auto 30px; opacity:0.95;">Talk to us for industry-specific pricing, custom options, and bulk discounts.</p>
-        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
-            <a href="{% whatsapp_link 'Hi, I need wall clocks for ' %}{{ industry.industry_name }}" target="_blank" style="background:#25D366; color:white; padding:16px 40px; border-radius:8px; font-weight:800; text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp Quote</a>
-            <a href="{% call_link %}" style="background:white; color:#FF8C00; padding:16px 40px; border-radius:8px; font-weight:800; text-decoration:none;"><i class="fas fa-phone-alt"></i> Call Now</a>
-        </div>
-    </div>
-</section>
-
+<style>
+.industry-page{background:#f7f6f2;color:#172022}.crumbs{background:#fff;border-bottom:1px solid #ebe8e1;padding:13px 0;font-size:.78rem}.crumbs .container-lg{display:flex;gap:9px}.crumbs a{color:#697371;text-decoration:none}.hero{background:#172022;color:#fff;position:relative;overflow:hidden;min-height:490px;display:flex;align-items:center}.bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.15}.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.5fr .55fr;gap:65px;align-items:end;padding:72px 0}.eyebrow{display:inline-block;color:#d18b5a;font-size:.69rem;font-weight:900;letter-spacing:2px;margin-bottom:13px}.hero h1{font-family:Manrope,sans-serif;font-size:clamp(2.5rem,5vw,4.7rem);line-height:1.02;letter-spacing:-2px;margin:0 0 18px;max-width:800px}.hero p{color:#c6cfcd;line-height:1.75;max-width:700px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:27px}.btn{display:inline-flex;padding:12px 18px;border-radius:7px;text-decoration:none;font-weight:800;font-size:.83rem}.btn.main{background:#d18b5a;color:#fff}.btn.ghost{border:1px solid #ffffff40;color:#fff}.note{border-left:1px solid #ffffff2b;padding-left:25px}.note span{font-size:.65rem;color:#9ba8a6;letter-spacing:1.7px;font-weight:800}.note strong{display:block;line-height:1.4;margin:13px 0 7px}.note p{font-size:.8rem}.content{padding:70px 0}.content-grid{display:grid;grid-template-columns:1.7fr .65fr;gap:45px}.content-grid main,.content-grid aside{background:#fff;border:1px solid #e5e2da;border-radius:11px;padding:30px}.content-grid h2{font-family:Manrope,sans-serif;font-size:2rem;margin:0 0 16px}.rich{color:#596461;line-height:1.85}.block{border-top:1px solid #ebe8e1;margin-top:35px;padding-top:30px}.block h2{font-size:1.55rem}.content-grid aside{height:max-content;position:sticky;top:100px}.content-grid aside h3{font-size:1.3rem;margin:0 0 10px}.content-grid aside p{font-size:.82rem;color:#6c7673;line-height:1.7}.side,.wa{display:flex;justify-content:center;padding:12px;border-radius:7px;text-decoration:none;font-weight:800;font-size:.82rem;margin-top:10px}.side{background:#172022;color:#fff}.wa{background:#e9f6ee;color:#16834b}.products{background:#fff;padding:65px 0 75px}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:25px}.head h2,.faqs h2,.cta h2{font-family:Manrope,sans-serif;font-size:2rem;margin:0}.head>a{color:#172022;text-decoration:none;font-weight:800;font-size:.8rem}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.grid article{border:1px solid #e5e2da;border-radius:10px;overflow:hidden;background:#fff}.media{height:220px;display:block;background:#efeee9}.media img{width:100%;height:100%;object-fit:cover}.info{padding:14px}.info small{color:#9a6b4d;font-size:.62rem}.info h3{font-size:.9rem;margin:7px 0}.info h3 a{color:#172022;text-decoration:none}.info strong{font-size:.86rem}.faqs{padding:65px 0;background:#eeece6}.faqs details{background:#fff;border:1px solid #e5e2da;border-radius:8px;margin-top:10px;padding:16px 18px}.faqs summary{cursor:pointer;font-weight:800}.faqs p{color:#65706d;line-height:1.7;margin:12px 0 0}.cta{background:#d18b5a;color:#fff;padding:50px 0}.cta .container-lg{display:flex;align-items:center;justify-content:space-between;gap:30px}.cta h2{margin-bottom:7px}.cta p{margin:0;opacity:.85}.btn.light{background:#fff;color:#172022}
+@media(max-width:900px){.hero-grid,.content-grid{grid-template-columns:1fr}.note{border-left:0;border-top:1px solid #ffffff2b;padding:20px 0 0}.content-grid aside{position:static}.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.hero-grid{padding:55px 16px}.hero h1{font-size:2.55rem}.content,.products,.faqs{padding:48px 0}.content-grid main,.content-grid aside{padding:22px}.head{align-items:flex-start;gap:10px}.head h2,.faqs h2{font-size:1.5rem}.grid{gap:10px}.media{height:170px}.cta .container-lg{flex-direction:column;align-items:flex-start}.cta h2{font-size:1.7rem}}
+</style>
 {% endblock %}
