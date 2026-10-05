@@ -120,7 +120,7 @@ def organization_schema(context):
 # ============================================================
 # 3. PRODUCT SCHEMA (rich snippets with price + rating)
 # ============================================================
-@register.simple_tag
+@register.simple_tag(takes_context=True)
 def product_schema(context, product, request=None):
     """
     Outputs Product schema. Gives rich snippet with price, availability, rating.
