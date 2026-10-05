@@ -2,8 +2,8 @@
 {% load static seo_tags %}
 
 {% block meta_title %}Contact {{ site.business_name }} | Wall Clock Manufacturer in Jaipur{% endblock %}
-{% block meta_description %}Contact HOOVALE in Jaipur for wall clock wholesale orders, custom logo printing, OEM manufacturing and bulk supply. Call, WhatsApp or send an enquiry online.{% endblock %}
-{% block meta_keywords %}contact wall clock supplier, wall clock manufacturer contact jaipur, hoovale phone whatsapp, wall clock supplier contact{% endblock %}
+{% block meta_description %}Contact {{ site.business_name }} in Jaipur for wall clock wholesale orders, custom logo printing, OEM manufacturing and bulk supply. Call, WhatsApp or send an enquiry online.{% endblock %}
+{% block meta_keywords %}contact wall clock supplier, wall clock manufacturer contact jaipur, {{ site.business_name|lower }} phone whatsapp, wall clock supplier contact{% endblock %}
 
 {% block page_schema %}
     {% breadcrumb_schema breadcrumb_items %}
@@ -21,7 +21,7 @@
                 <div style="display:inline-block; background:rgba(255,165,0,0.2); color:#FFA500; padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:700; margin-bottom:16px; border:1px solid #FFA500;">
                     <i class="fas fa-headset"></i> WE'RE HERE TO HELP
                 </div>
-                <h1 style="color:#fff !important; font-family:'Montserrat',sans-serif; font-size:3rem; font-weight:900;">Contact HOOVALE</h1>
+                <h1 style="color:#fff !important; font-family:'Montserrat',sans-serif; font-size:3rem; font-weight:900;">Contact {{ site.business_name }}</h1>
                 <p style="font-size:1.2rem; color:#fff !important; line-height:1.6; margin:0;">Wholesale wall clock enquiries, custom orders, OEM partnerships, distributor opportunities — talk to us directly.</p>
             </div>
         </div>
@@ -167,7 +167,7 @@
                 {# Map embed #}
                 <div class="contact-map">
                     <iframe src="https://maps.google.com/maps?q={{ site.latitude }},{{ site.longitude }}&hl=en&z=14&output=embed"
-                            width="100%" height="280" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="HOOVALE Location"></iframe>
+                            width="100%" height="280" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="{{ site.business_name }} Location"></iframe>
                 </div>
             </div>
         </div>
