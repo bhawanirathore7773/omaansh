@@ -1,847 +1,259 @@
 {% extends 'base.html' %}
 {% load static seo_tags %}
-{% include 'components/catalogue_download.html' %}
 
-{% block meta_title %}Wall Clocks | Wholesale & Custom Wall Clock Supplier | HOOVALE{% endblock %}
-{% block meta_description %}Browse HOOVALE wall clocks for homes, offices, retailers and businesses. Explore custom logo, corporate, promotional and wholesale wall clocks supplied from Jaipur.{% endblock %}
-{% block meta_keywords %}wall clocks, wall clock manufacturer Jaipur, wholesale wall clocks, custom logo wall clocks, bulk wall clocks, promotional clocks{% endblock %}
-{% block og_title %}Wall Clocks | Custom, Wholesale & Bulk Wall Clock Supplier | HOOVALE{% endblock %}
-{% block og_description %}Explore HOOVALE wall clocks, custom logo designs, promotional clocks and wholesale bulk-order options from Jaipur.{% endblock %}
+{% block meta_title %}Wall Clocks in Jaipur | Wholesale, Custom & Bulk Wall Clock Supplier{% endblock %}
+{% block meta_description %}Browse wall clocks for homes, offices, retailers and business orders. Compare categories, prices and availability, then enquire about wholesale supply or custom logo wall clocks from Jaipur.{% endblock %}
+{% block meta_keywords %}wall clocks Jaipur, wall clock manufacturer in Jaipur, wall clock supplier Jaipur, wholesale wall clocks, bulk wall clocks, custom logo wall clocks{% endblock %}
+{% block og_title %}Wall Clocks | Wholesale & Custom Supply from Jaipur{% endblock %}
+{% block og_description %}Browse wall clock designs by category, price and availability, with wholesale and custom enquiry options.{% endblock %}
 {% block page_schema %}{% breadcrumb_schema breadcrumb_items %}{% endblock %}
-{% block content %}
-<section class="products-page py-5">
-    <div class="container-lg">
-        <!-- Page Header -->
-        <div class="row mb-4 products-toolbar" data-aos="fade-up">
-            <div class="col-12 col-lg-7">
-                <h1 class="page-title mb-1">Wall Clocks &amp; Custom Designs</h1>
-                <p class="text-muted mb-0">Browse wall clocks for homes, offices, retailers and bulk buyers — with custom logo and wholesale options from Jaipur.</p>
-            </div>
-            <div class="col-12 col-lg-5">
-                <form class="search-form" method="get">
-                    <div class="input-group">
-                        <input type="text" class="form-control search-input" name="q" placeholder="Search products..." 
-                               value="{{ search_query }}">
-                        <button class="btn btn-primary search-submit" type="submit" aria-label="Search products">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <button class="products-filter-toggle" type="button" id="productsFilterToggle"
-                                aria-label="Open filters" aria-controls="productsFilterDrawer" aria-expanded="false">
-                            <i class="fas fa-sliders-h"></i>
-                            <span>Filter</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
-        <div class="row">
-            <!-- Sidebar Filters -->
-            <div class="col-lg-3 mb-4 products-filter-column" data-aos="fade-right">
-                <div class="filter-card">
-                    <h5 class="filter-title mb-4">
-                        <i class="fas fa-filter"></i> Filters
-                    </h5>
-                    
-                    <!-- Category Filter -->
-                    <div class="filter-group mb-4">
-                        <h6 class="filter-subtitle">Categories</h6>
-                        <div class="filter-options">
-                            <a href="{% url 'products_list' %}" 
-                               class="filter-option {% if not selected_category %}active{% endif %}">
-                                All Categories
-                            </a>
-                            {% for category in categories %}
-                            <a href="?category={{ category.slug }}" 
-                               class="filter-option {% if selected_category == category.slug %}active{% endif %}">
-                                {{ category.name }}
-                            </a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    
-                    <!-- Clear Filters -->
-                    <div class="text-center">
-                        <a href="{% url 'products_list' %}" class="btn btn-sm btn-outline-primary w-100">
-                            Clear All Filters
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Products Grid -->
-            <div class="col-lg-9 products-results-column" data-aos="fade-left">
-                {% if products %}
-                <div class="row g-4 mb-5">
-                    {% for product in products %}
-                    <div class="col-md-6 col-lg-4">
-                        <div class="product-card h-100">
-                            <a href="{{ product.get_absolute_url }}" class="product-card-main-link" aria-label="View {{ product.name }}">
-                                <div class="product-image-container">
-                                    {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image" loading="lazy">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} — product image coming soon" class="product-image" loading="lazy">{% endif %}
-                                    {% if product.is_featured %}
-                                    <span class="badge bg-danger position-absolute top-0 end-0 m-3">Featured</span>
-                                    {% endif %}
-                                </div>
-                                <div class="product-info">
-                                    <h5 class="product-name">{{ product.name }}</h5>
-                                    <p class="product-description">{{ product.description|truncatewords:12 }}</p>
-                                    {% if product.price %}
-                                    <div class="product-price mb-3">
-                                        <span class="price-tag">From ₹{{ product.price }}</span>
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </a>
-                            <div class="product-actions d-grid gap-2">
-                                <a href="#" class="btn btn-sm btn-outline-primary enquiry-btn"
-                                   data-product-id="{{ product.id }}" data-product-name="{{ product.name }}">
-                                    <i class="fas fa-envelope"></i> Enquiry
-                                </a>
-                                <a href="https://wa.me/919462207356?text=Hello%20Hoovale%20Team%2C%20I%20am%20interested%20in%20{{ product.name|urlencode }}."
-                                   class="btn btn-sm btn-success" target="_blank" rel="noopener">
-                                    <i class="fab fa-whatsapp"></i> WhatsApp
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <!-- Pagination -->
-                {% if total_pages > 1 %}
-                <nav aria-label="Page navigation" class="mt-5">
-                    <ul class="pagination justify-content-center">
-                        {% if current_page > 1 %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page=1{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
-                                First
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ current_page|add:'-1' }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
-                                Previous
-                            </a>
-                        </li>
-                        {% endif %}
-
-                        {% for page_num in "x"|rjust:total_pages %}
-                        {% if forloop.counter == current_page %}
-                        <li class="page-item active">
-                            <span class="page-link">{{ forloop.counter }}</span>
-                        </li>
-                        {% else %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ forloop.counter }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
-                                {{ forloop.counter }}
-                            </a>
-                        </li>
-                        {% endif %}
-                        {% endfor %}
-
-                        {% if current_page < total_pages %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ current_page|add:'1' }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
-                                Next
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ total_pages }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
-                                Last
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-                {% endif %}
-                {% else %}
-                <div class="alert alert-info text-center py-5">
-                    <i class="fas fa-search fa-3x mb-3 d-block"></i>
-                    <h5>No products found</h5>
-                    <p class="mb-0">Try adjusting your search or filters</p>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Mobile filter drawer -->
-<div class="products-filter-backdrop" id="productsFilterBackdrop" aria-hidden="true"></div>
-<aside class="products-filter-drawer" id="productsFilterDrawer" aria-hidden="true" aria-label="Product filters">
-  <form method="get" class="products-filter-form" id="productsFilterForm">
-    {% if search_query %}<input type="hidden" name="q" value="{{ search_query }}">{% endif %}
-
-    <div class="products-filter-drawer-head">
-      <div>
-        <span class="products-filter-kicker">FILTER BY</span>
-        <h2>Refine Products</h2>
-      </div>
-      <button type="button" class="products-filter-close" id="productsFilterClose" aria-label="Close filters">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-
-    <div class="products-filter-drawer-body">
-      <section class="filter-section">
-        <div class="filter-section-title"><span>Category</span><button type="button" class="filter-reset-section" data-reset-group="category">Reset</button></div>
-        <div class="filter-options">
-          <label class="filter-choice">
-            <input type="radio" name="category" value="" {% if not selected_category %}checked{% endif %}>
-            <span>All Categories</span>
-          </label>
-          {% for category in categories %}
-          <label class="filter-choice">
-            <input type="radio" name="category" value="{{ category.slug }}" {% if selected_category == category.slug %}checked{% endif %}>
-            <span>{{ category.name }}</span>
-          </label>
-          {% endfor %}
-        </div>
-      </section>
-
-      <section class="filter-section filter-price-section">
-        <div class="filter-section-title"><span>Price Range</span><button type="button" class="filter-reset-section" data-reset-group="price">Reset</button></div>
-
-        <div class="price-range-values">
-          <div><span>From</span><strong>₹<output id="minPriceOutput">{{ min_price|default:catalogue_min_price|default:0 }}</output></strong></div>
-          <div><span>To</span><strong>₹<output id="maxPriceOutput">{{ max_price|default:catalogue_max_price|default:0 }}</output></strong></div>
-        </div>
-
-        <div class="dual-price-slider" id="dualPriceSlider"
-             data-min="{{ catalogue_min_price|default:0 }}"
-             data-max="{{ catalogue_max_price|default:0 }}">
-          <div class="dual-price-track"></div>
-          <div class="dual-price-fill" id="dualPriceFill"></div>
-          <input type="range" id="minPriceRange" min="{{ catalogue_min_price|default:0 }}" max="{{ catalogue_max_price|default:0 }}" step="10" value="{{ min_price|default:catalogue_min_price|default:0 }}" aria-label="Minimum price">
-          <input type="range" id="maxPriceRange" min="{{ catalogue_min_price|default:0 }}" max="{{ catalogue_max_price|default:0 }}" step="10" value="{{ max_price|default:catalogue_max_price|default:0 }}" aria-label="Maximum price">
-        </div>
-
-        <div class="price-input-row">
-          <label class="price-input-box"><span>₹</span><input type="number" id="minPriceInput" name="min_price" min="0" value="{{ min_price }}" placeholder="{{ catalogue_min_price|default:0 }}" inputmode="numeric"></label>
-          <span class="price-between">to</span>
-          <label class="price-input-box"><span>₹</span><input type="number" id="maxPriceInput" name="max_price" min="0" value="{{ max_price }}" placeholder="{{ catalogue_max_price|default:0 }}" inputmode="numeric"></label>
-        </div>
-        <p class="price-hint">Drag either handle to set your budget.</p>
-      </section>
-
-      <section class="filter-section">
-        <div class="filter-section-title"><span>Product Type</span><button type="button" class="filter-reset-section" data-reset-group="badge">Reset</button></div>
-        <div class="filter-chips">
-          <label class="filter-chip"><input type="radio" name="badge" value="featured" {% if badge == 'featured' %}checked{% endif %}><span>Featured</span></label>
-          <label class="filter-chip"><input type="radio" name="badge" value="bestseller" {% if badge == 'bestseller' %}checked{% endif %}><span>Best Sellers</span></label>
-          <label class="filter-chip"><input type="radio" name="badge" value="new" {% if badge == 'new' %}checked{% endif %}><span>New Arrivals</span></label>
-        </div>
-      </section>
-
-      <section class="filter-section">
-        <div class="filter-section-title"><span>Availability</span><button type="button" class="filter-reset-section" data-reset-group="availability">Reset</button></div>
-        <div class="filter-chips">
-          <label class="filter-chip"><input type="radio" name="availability" value="InStock" {% if availability == 'InStock' %}checked{% endif %}><span>In Stock</span></label>
-          <label class="filter-chip"><input type="radio" name="availability" value="PreOrder" {% if availability == 'PreOrder' %}checked{% endif %}><span>Pre-Order</span></label>
-          <label class="filter-chip"><input type="radio" name="availability" value="OutOfStock" {% if availability == 'OutOfStock' %}checked{% endif %}><span>Out of Stock</span></label>
-        </div>
-      </section>
-
-      <section class="filter-section">
-        <div class="filter-section-title"><span>Sort By</span></div>
-        <select name="sort" class="filter-sort-select">
-          <option value="featured" {% if sort == 'featured' %}selected{% endif %}>Featured first</option>
-          <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest first</option>
-          <option value="price_low" {% if sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
-          <option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
-          <option value="name" {% if sort == 'name' %}selected{% endif %}>Name: A–Z</option>
-        </select>
-      </section>
-    </div>
-
-    <div class="products-filter-drawer-footer">
-      <a href="{% url 'products_list' %}" class="filter-clear-btn" id="filterResetAll">Reset All</a>
-      <button type="submit" class="filter-apply-btn" id="filterApplyButton">Apply Filters</button>
-    </div>
-  </form>
-</aside>
-
-<!-- Enquiry Modal -->
-<div class="modal fade" id="enquiryModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Enquiry Form</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="enquiryForm" action="{% url "submit_enquiry" %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="product_id" id="productId">
-                    
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name *</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone *</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email">
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="city" class="form-label">City *</label>
-                        <input type="text" class="form-control" id="city" name="city" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="message" class="form-label">Message *</label>
-                        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="fas fa-send"></i> Send Enquiry
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
+{% block extra_css %}
 <style>
-/* Product listing — professional mobile marketplace UX */
-.products-page{background:#f8fafc;min-height:70vh;}
-.products-toolbar{align-items:end;}
-.products-toolbar .search-form{margin-left:auto;}
-.products-filter-toggle{display:none;}
-.product-card-link{display:block;color:inherit;text-decoration:none;cursor:pointer;}
-.product-card-link:hover{color:inherit;text-decoration:none;}
-.product-card-link .product-actions a{position:relative;z-index:5;}
-.products-filter-backdrop,.products-filter-drawer{display:none;}
+/* =========================================================
+   CATALOGUE V2 — visual redesign, same Django filters/functions
+   ========================================================= */
+.nx-catalogue{background:#f6f7f8;color:#101828;padding:34px 0 80px;min-height:70vh}
+.nx-catalogue .container-lg{max-width:1240px}
+.nx-catalogue-hero{display:flex;justify-content:space-between;gap:30px;align-items:end;padding:15px 0 30px}
+.nx-catalogue-kicker{font-size:.7rem;letter-spacing:1.8px;text-transform:uppercase;font-weight:900;color:#c56a2d}
+.nx-catalogue h1{font-family:"Manrope",sans-serif;font-size:clamp(2rem,4vw,3.5rem);letter-spacing:-.05em;line-height:1.05;margin:9px 0 10px;font-weight:800}
+.nx-catalogue-lead{max-width:760px;color:#667085;line-height:1.7;margin:0}
+.nx-searchbar{display:flex;gap:8px;min-width:min(420px,100%)}
+.nx-searchbar input{height:48px;border:1px solid #d9dee6;border-radius:9px;padding:0 15px;outline:0;background:#fff;min-width:0;flex:1}
+.nx-searchbar input:focus{border-color:#c56a2d;box-shadow:0 0 0 3px rgba(197,106,45,.09)}
+.nx-searchbar button{width:48px;border:0;border-radius:9px;background:#101828;color:#fff}
+.nx-catalogue-layout{display:grid;grid-template-columns:245px minmax(0,1fr);gap:24px;align-items:start}
+.nx-filter-panel{background:#fff;border:1px solid #e4e7ec;border-radius:16px;padding:20px;position:sticky;top:90px}
+.nx-filter-title{font-weight:800;font-size:.95rem;margin-bottom:17px;display:flex;justify-content:space-between}
+.nx-filter-group{padding:17px 0;border-top:1px solid #edf0f3}
+.nx-filter-group h3{font-size:.74rem;text-transform:uppercase;letter-spacing:1px;color:#667085;margin:0 0 11px;font-weight:900}
+.nx-filter-links{display:grid;gap:5px}.nx-filter-links a{padding:8px 9px;border-radius:8px;text-decoration:none;color:#475467;font-size:.8rem}.nx-filter-links a:hover,.nx-filter-links a.active{background:#f4ebe4;color:#9e4f1d;font-weight:800}
+.nx-filter-reset{display:block;text-align:center;text-decoration:none;color:#667085;font-size:.75rem;margin-top:5px}
+.nx-filter-reset:hover{color:#c56a2d}
+.nx-results-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:15px}
+.nx-results-count{font-size:.78rem;color:#667085}.nx-results-count strong{color:#101828}
+.nx-sort{height:40px;border:1px solid #d9dee6;border-radius:8px;background:#fff;padding:0 12px;color:#344054;font-size:.76rem}
+.nx-mobile-filter{display:none}
+.nx-product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.nx-product-card{background:#fff;border:1px solid #e4e7ec;border-radius:15px;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:.2s ease}
+.nx-product-card:hover{transform:translateY(-3px);box-shadow:0 15px 32px rgba(16,24,40,.09);border-color:#d6dae0}
+.nx-product-link{display:block;color:inherit;text-decoration:none}
+.nx-product-image{height:275px;background:#f0f1f3;position:relative;overflow:hidden}
+.nx-product-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.nx-product-card:hover .nx-product-image img{transform:scale(1.035)}
+.nx-product-label{position:absolute;top:12px;left:12px;background:#101828;color:#fff;padding:6px 9px;border-radius:6px;font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.7px}
+.nx-product-label.new{background:#c56a2d}
+.nx-product-label.best{background:#16845b}
+.nx-product-info{padding:15px 15px 12px}
+.nx-product-category{font-size:.62rem;text-transform:uppercase;letter-spacing:1px;color:#9e4f1d;font-weight:900}
+.nx-product-name{font-size:.95rem;line-height:1.35;font-weight:800;margin:6px 0 7px}
+.nx-product-desc{font-size:.74rem;line-height:1.55;color:#667085;margin:0;min-height:2.3em}
+.nx-product-bottom{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-top:13px}
+.nx-price{font-size:.92rem;font-weight:900}.nx-moq{font-size:.65rem;color:#667085;text-align:right}
+.nx-card-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0 15px 15px}
+.nx-card-actions a{display:flex;align-items:center;justify-content:center;gap:6px;min-height:39px;border-radius:8px;text-decoration:none;font-size:.7rem;font-weight:800}
+.nx-enquiry{border:1px solid #d9dee6;color:#344054}.nx-enquiry:hover{color:#101828;border-color:#aeb6c1}
+.nx-whatsapp{background:#16845b;color:#fff}.nx-whatsapp:hover{color:#fff;background:#116d4b}
+.nx-empty{background:#fff;border:1px dashed #ccd2da;border-radius:15px;padding:60px 25px;text-align:center;color:#667085}
+.nx-pagination{display:flex;justify-content:center;gap:6px;margin-top:28px;flex-wrap:wrap}
+.nx-pagination a,.nx-pagination span{min-width:38px;height:38px;display:grid;place-items:center;border:1px solid #dfe3e8;border-radius:8px;text-decoration:none;color:#475467;background:#fff;font-size:.75rem}
+.nx-pagination .active{background:#101828;color:#fff;border-color:#101828}
+
+/* Existing mobile filter drawer is retained for functionality */
+.products-filter-backdrop,.products-filter-drawer{display:none}
+@media(max-width:991px){
+ .nx-catalogue-hero{display:block}.nx-searchbar{margin-top:20px;max-width:620px}
+ .nx-catalogue-layout{grid-template-columns:1fr}.nx-filter-panel{display:none}.nx-mobile-filter{display:flex;gap:8px;margin-bottom:15px}
+ .nx-mobile-filter button{height:42px;border:1px solid #d9dee6;background:#fff;border-radius:9px;padding:0 14px;font-weight:800;color:#344054}
+ .nx-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media(max-width:767px){
-  .products-page{padding-top:22px!important;}
-  .products-toolbar{margin-bottom:18px!important;}
-  .products-toolbar .page-title{font-size:1.65rem;}
-  .products-toolbar .search-form{margin-top:14px;}
-  .search-form .input-group{display:flex;gap:8px;align-items:stretch;}
-  .search-form .search-input{min-width:0;border-radius:10px!important;height:46px;}
-  .search-form .search-submit{width:46px;height:46px;border-radius:10px!important;flex:0 0 46px;}
-  .products-filter-toggle{display:inline-flex;height:46px;min-width:88px;align-items:center;justify-content:center;gap:7px;border:1px solid #d8e0ea;background:#fff;color:#0051A3;border-radius:10px;font-weight:700;box-shadow:0 2px 8px rgba(15,23,42,.06);}
-  .products-filter-toggle:active{transform:scale(.97);}
-  .products-filter-column{display:none;}
-  .products-results-column{width:100%;}
-  .products-results-column .row.g-4{--bs-gutter-x:12px;--bs-gutter-y:14px;}
-  .products-results-column .col-md-6{width:50%;}
-  .product-card{border-radius:12px;box-shadow:0 3px 14px rgba(15,23,42,.07);border:1px solid #e7ebf0;overflow:hidden;}
-  .product-image-container{aspect-ratio:1/1!important;height:auto!important;}
-  .product-info{padding:12px!important;}
-  .product-name{font-size:.88rem!important;line-height:1.3!important;}
-  .product-description{font-size:.72rem!important;line-height:1.35!important;}
-  .price-tag{font-size:1rem!important;}
-  .product-actions{gap:6px!important;}
-  .product-actions .btn{font-size:.7rem;padding:8px 5px;}
-  .products-filter-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(2px);z-index:1400;display:block;opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s ease;}
-  .products-filter-drawer{position:fixed;left:0;right:0;bottom:0;display:block;background:#fff;z-index:1401;border-radius:20px 20px 0 0;max-height:78dvh;transform:translateY(105%);transition:transform .3s cubic-bezier(.22,1,.36,1);box-shadow:0 -16px 45px rgba(15,23,42,.18);overflow:hidden;}
-  body.hv-filter-open{overflow:hidden!important;}
-  body.hv-filter-open .products-filter-backdrop{opacity:1;visibility:visible;}
-  body.hv-filter-open .products-filter-drawer{transform:translateY(0);}
-  .products-filter-drawer-head{display:flex;justify-content:space-between;align-items:center;padding:18px 18px 14px;border-bottom:1px solid #edf0f4;}
-  .products-filter-kicker{font-size:.68rem;letter-spacing:1.5px;color:#0051A3;font-weight:800;}
-  .products-filter-drawer-head h2{font-family:Montserrat,sans-serif;font-size:1.25rem;margin:2px 0 0;}
-  .products-filter-close{width:40px;height:40px;border:1px solid #e5e7eb;background:#f8fafc;border-radius:50%;font-size:1rem;color:#334155;}
-  .products-filter-drawer-body{padding:18px;overflow:auto;max-height:calc(78dvh - 78px);}
-  .products-filter-drawer .filter-options{display:grid;gap:6px;}
-  .products-filter-drawer .filter-option{padding:11px 12px;border-radius:9px;background:#f8fafc;color:#334155;font-weight:600;}
-  .products-filter-drawer .filter-option.active{background:#e8f2ff;color:#0051A3;}
+ .nx-catalogue{padding:18px 0 55px}.nx-catalogue-hero{padding-bottom:22px}.nx-catalogue h1{font-size:2.2rem}
+ .nx-catalogue-lead{font-size:.85rem}.nx-searchbar input{height:45px}.nx-searchbar button{width:45px}
+ .nx-results-head{align-items:flex-start}.nx-sort{max-width:150px}
+ .nx-product-grid{gap:10px}.nx-product-image{height:auto;aspect-ratio:1/1}.nx-product-info{padding:11px 11px 9px}.nx-product-name{font-size:.78rem}.nx-product-desc{font-size:.66rem}.nx-product-bottom{margin-top:9px}.nx-price{font-size:.78rem}.nx-moq{font-size:.58rem}.nx-card-actions{padding:0 9px 9px;gap:5px}.nx-card-actions a{font-size:.62rem;min-height:35px}.nx-product-label{top:8px;left:8px;font-size:.52rem;padding:5px 7px}
+}
+
+/* Bottom sheet controls expected by main.js */
+@media(max-width:767px){
+ .products-filter-backdrop{position:fixed!important;inset:0!important;z-index:100000!important;background:rgba(16,24,40,.48)!important;opacity:0;visibility:hidden;pointer-events:none;transition:.2s ease;display:block}
+ .products-filter-drawer{position:fixed!important;left:50%!important;bottom:0!important;width:min(100%,560px)!important;height:min(84dvh,780px)!important;display:block!important;z-index:100001!important;background:#fff!important;border-radius:22px 22px 0 0!important;transform:translate(-50%,105%)!important;visibility:hidden;overflow:hidden;transition:transform .3s ease,visibility 0s linear .3s}
+ body.hv-filter-open .products-filter-backdrop{opacity:1;visibility:visible;pointer-events:auto}
+ body.hv-filter-open .products-filter-drawer{transform:translate(-50%,0)!important;visibility:visible;transition:transform .3s ease}
+ .products-filter-form{height:100%;display:flex;flex-direction:column}.products-filter-drawer-head{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid #edf0f3}.products-filter-drawer-body{overflow:auto;flex:1;padding:18px 20px}.products-filter-drawer-footer{display:flex;gap:8px;padding:14px 20px;border-top:1px solid #edf0f3}.filter-apply-btn,.filter-clear-btn{flex:1;text-align:center;padding:12px;border-radius:8px;text-decoration:none;font-weight:800}.filter-apply-btn{border:0;background:#101828;color:#fff}.filter-clear-btn{border:1px solid #d9dee6;color:#344054}
 }
 </style>
 {% endblock %}
 
+{% block content %}
+<section class="nx-catalogue">
+  <div class="container-lg">
+    <div class="nx-catalogue-hero">
+      <div>
+        <div class="nx-catalogue-kicker">Wall clock collection</div>
+        <h1>Find the right wall clock for the space.</h1>
+        <p class="nx-catalogue-lead">Browse designs by category, price and availability. If you are buying in quantity, use the same catalogue to shortlist products before sending a wholesale or custom branding enquiry.</p>
+      </div>
+      <form class="nx-searchbar" method="get" role="search">
+        <input type="search" name="q" value="{{ search_query }}" placeholder="Search by clock name or design..." aria-label="Search wall clocks">
+        <button type="submit" aria-label="Search wall clocks"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+
+    <div class="nx-mobile-filter">
+      <button type="button" id="productsFilterToggle"><i class="fas fa-sliders-h"></i> Filters</button>
+      <span style="font-size:.75rem;color:#667085;align-self:center">Refine category, price, availability or type</span>
+    </div>
+
+    <div class="nx-catalogue-layout">
+      <aside class="nx-filter-panel">
+        <div class="nx-filter-title">Refine collection <i class="fas fa-sliders-h" style="color:#c56a2d"></i></div>
+        <div class="nx-filter-group">
+          <h3>Categories</h3>
+          <div class="nx-filter-links">
+            <a href="{% url 'products_list' %}" class="{% if not selected_category %}active{% endif %}">All categories</a>
+            {% for category in categories %}
+            <a href="?category={{ category.slug }}" class="{% if selected_category == category.slug %}active{% endif %}">{{ category.name }}</a>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="nx-filter-group">
+          <h3>Product type</h3>
+          <div class="nx-filter-links">
+            <a href="?badge=featured{% if search_query %}&q={{ search_query }}{% endif %}">Featured</a>
+            <a href="?badge=bestseller{% if search_query %}&q={{ search_query }}{% endif %}">Best sellers</a>
+            <a href="?badge=new{% if search_query %}&q={{ search_query }}{% endif %}">New arrivals</a>
+          </div>
+        </div>
+        <div class="nx-filter-group">
+          <h3>Availability</h3>
+          <div class="nx-filter-links">
+            <a href="?availability=InStock{% if search_query %}&q={{ search_query }}{% endif %}">In stock</a>
+            <a href="?availability=PreOrder{% if search_query %}&q={{ search_query }}{% endif %}">Pre-order</a>
+            <a href="?availability=OutOfStock{% if search_query %}&q={{ search_query }}{% endif %}">Out of stock</a>
+          </div>
+        </div>
+        <a class="nx-filter-reset" href="{% url 'products_list' %}">Clear all filters</a>
+      </aside>
+
+      <div>
+        <div class="nx-results-head">
+          <div class="nx-results-count"><strong>{{ products.paginator.count }}</strong> wall clocks in this collection{% if search_query %} for “{{ search_query }}”{% endif %}</div>
+          <select class="nx-sort" onchange="this.form.submit()" form="nxSortForm" aria-label="Sort products">
+            <option value="">Sort</option>
+            <option value="featured" {% if sort == 'featured' %}selected{% endif %}>Featured first</option>
+            <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest first</option>
+            <option value="price_low" {% if sort == 'price_low' %}selected{% endif %}>Price low to high</option>
+            <option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>Price high to low</option>
+            <option value="name" {% if sort == 'name' %}selected{% endif %}>Name A–Z</option>
+          </select>
+          <form id="nxSortForm" method="get" style="display:none">
+            {% if search_query %}<input name="q" value="{{ search_query }}">{% endif %}
+            {% if selected_category %}<input name="category" value="{{ selected_category }}">{% endif %}
+          </form>
+        </div>
+
+        {% if products %}
+        <div class="nx-product-grid">
+          {% for product in products %}
+          <article class="nx-product-card">
+            <a href="{{ product.get_absolute_url }}" class="nx-product-link" aria-label="View {{ product.name }}">
+              <div class="nx-product-image">
+                {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} wall clock" loading="lazy">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} wall clock" loading="lazy">{% endif %}
+                {% if product.is_new_arrival %}<span class="nx-product-label new">New</span>{% elif product.is_bestseller %}<span class="nx-product-label best">Bestseller</span>{% elif product.is_featured %}<span class="nx-product-label">Featured</span>{% endif %}
+              </div>
+              <div class="nx-product-info">
+                <div class="nx-product-category">{{ product.category.name }}</div>
+                <h2 class="nx-product-name">{{ product.name }}</h2>
+                <p class="nx-product-desc">{{ product.short_description|default:product.description|truncatewords:14 }}</p>
+                <div class="nx-product-bottom">
+                  <div class="nx-price">{% if product.price %}From ₹{{ product.price }}{% else %}Price on enquiry{% endif %}</div>
+                  <div class="nx-moq">MOQ<strong>{{ product.moq }} pcs</strong></div>
+                </div>
+              </div>
+            </a>
+            <div class="nx-card-actions">
+              <a href="#" class="nx-enquiry enquiry-btn" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}"><i class="fas fa-envelope"></i> Enquire</a>
+              <a href="{% whatsapp_link 'Hi, I am interested in this wall clock: '|add:product.name %}" class="nx-whatsapp" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+
+        {% if total_pages > 1 %}
+        <nav class="nx-pagination" aria-label="Product pages">
+          {% if current_page > 1 %}<a href="?page={{ current_page|add:'-1' }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">←</a>{% endif %}
+          {% for page_num in "x"|rjust:total_pages %}
+            {% if forloop.counter == current_page %}<span class="active">{{ forloop.counter }}</span>{% else %}<a href="?page={{ forloop.counter }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ forloop.counter }}</a>{% endif %}
+          {% endfor %}
+          {% if current_page < total_pages %}<a href="?page={{ current_page|add:'1' }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">→</a>{% endif %}
+        </nav>
+        {% endif %}
+        {% else %}
+        <div class="nx-empty">
+          <i class="fas fa-magnifying-glass" style="font-size:2rem;color:#c56a2d;margin-bottom:14px"></i>
+          <h2 style="font-size:1.2rem">No wall clocks match that search.</h2>
+          <p>Try another product name, category or filter.</p>
+          <a class="nx-btn nx-btn-primary" href="{% url 'products_list' %}" style="display:inline-flex">View all wall clocks</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mobile filter drawer: same IDs/classes used by the existing filter JavaScript -->
+<div class="products-filter-backdrop" id="productsFilterBackdrop" aria-hidden="true"></div>
+<aside class="products-filter-drawer" id="productsFilterDrawer" aria-hidden="true" aria-label="Product filters">
+<form method="get" class="products-filter-form" id="productsFilterForm">
+{% if search_query %}<input type="hidden" name="q" value="{{ search_query }}">{% endif %}
+<div class="products-filter-drawer-head"><div><span class="products-filter-kicker">FILTER BY</span><h2>Refine products</h2></div><button type="button" class="products-filter-close" id="productsFilterClose" aria-label="Close filters"><i class="fas fa-times"></i></button></div>
+<div class="products-filter-drawer-body">
+<section class="filter-section"><div class="filter-section-title"><span>Category</span><button type="button" class="filter-reset-section" data-reset-group="category">Reset</button></div><div class="filter-options">
+<label class="filter-choice"><input type="radio" name="category" value="" {% if not selected_category %}checked{% endif %}><span>All Categories</span></label>
+{% for category in categories %}<label class="filter-choice"><input type="radio" name="category" value="{{ category.slug }}" {% if selected_category == category.slug %}checked{% endif %}><span>{{ category.name }}</span></label>{% endfor %}
+</div></section>
+<section class="filter-section filter-price-section"><div class="filter-section-title"><span>Price Range</span><button type="button" class="filter-reset-section" data-reset-group="price">Reset</button></div>
+<div class="price-range-values"><div><span>From</span><strong>₹<output id="minPriceOutput">{{ min_price|default:catalogue_min_price|default:0 }}</output></strong></div><div><span>To</span><strong>₹<output id="maxPriceOutput">{{ max_price|default:catalogue_max_price|default:0 }}</output></strong></div></div>
+<div class="dual-price-slider" id="dualPriceSlider" data-min="{{ catalogue_min_price|default:0 }}" data-max="{{ catalogue_max_price|default:0 }}"><div class="dual-price-track"></div><div class="dual-price-fill" id="dualPriceFill"></div><input type="range" id="minPriceRange" min="{{ catalogue_min_price|default:0 }}" max="{{ catalogue_max_price|default:0 }}" step="10" value="{{ min_price|default:catalogue_min_price|default:0 }}"><input type="range" id="maxPriceRange" min="{{ catalogue_min_price|default:0 }}" max="{{ catalogue_max_price|default:0 }}" step="10" value="{{ max_price|default:catalogue_max_price|default:0 }}"></div>
+<div class="price-input-row"><label class="price-input-box"><span>₹</span><input type="number" id="minPriceInput" name="min_price" min="0" value="{{ min_price }}" placeholder="{{ catalogue_min_price|default:0 }}"></label><span class="price-between">to</span><label class="price-input-box"><span>₹</span><input type="number" id="maxPriceInput" name="max_price" min="0" value="{{ max_price }}" placeholder="{{ catalogue_max_price|default:0 }}"></label></div>
+</section>
+<section class="filter-section"><div class="filter-section-title"><span>Product type</span><button type="button" class="filter-reset-section" data-reset-group="badge">Reset</button></div><div class="filter-chips">
+<label class="filter-chip"><input type="radio" name="badge" value="featured" {% if badge == 'featured' %}checked{% endif %}><span>Featured</span></label>
+<label class="filter-chip"><input type="radio" name="badge" value="bestseller" {% if badge == 'bestseller' %}checked{% endif %}><span>Best sellers</span></label>
+<label class="filter-chip"><input type="radio" name="badge" value="new" {% if badge == 'new' %}checked{% endif %}><span>New arrivals</span></label>
+</div></section>
+<section class="filter-section"><div class="filter-section-title"><span>Availability</span><button type="button" class="filter-reset-section" data-reset-group="availability">Reset</button></div><div class="filter-chips">
+<label class="filter-chip"><input type="radio" name="availability" value="InStock" {% if availability == 'InStock' %}checked{% endif %}><span>In stock</span></label>
+<label class="filter-chip"><input type="radio" name="availability" value="PreOrder" {% if availability == 'PreOrder' %}checked{% endif %}><span>Pre-order</span></label>
+<label class="filter-chip"><input type="radio" name="availability" value="OutOfStock" {% if availability == 'OutOfStock' %}checked{% endif %}><span>Out of stock</span></label>
+</div></section>
+<section class="filter-section"><div class="filter-section-title"><span>Sort by</span></div><select name="sort" class="filter-sort-select"><option value="featured" {% if sort == 'featured' %}selected{% endif %}>Featured first</option><option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest first</option><option value="price_low" {% if sort == 'price_low' %}selected{% endif %}>Price low to high</option><option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>Price high to low</option><option value="name" {% if sort == 'name' %}selected{% endif %}>Name A–Z</option></select></section>
+</div>
+<div class="products-filter-drawer-footer"><a href="{% url 'products_list' %}" class="filter-clear-btn" id="filterResetAll">Reset all</a><button type="submit" class="filter-apply-btn" id="filterApplyButton">Apply filters</button></div>
+</form>
+</aside>
+
+<div class="modal fade" id="enquiryModal" tabindex="-1">
+<div class="modal-dialog"><div class="modal-content"><div class="modal-header" style="background:#101828;color:#fff"><h5 class="modal-title">Product enquiry</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+<div class="modal-body"><form id="enquiryForm" action="{% url 'submit_enquiry' %}" method="post">{% csrf_token %}<input type="hidden" name="product_id" id="productId">
+<div class="mb-3"><label for="name" class="form-label">Name *</label><input type="text" class="form-control" id="name" name="name" required></div>
+<div class="mb-3"><label for="phone" class="form-label">Phone *</label><input type="tel" class="form-control" id="phone" name="phone" required></div>
+<div class="mb-3"><label for="email" class="form-label">Email</label><input type="email" class="form-control" id="email" name="email"></div>
+<div class="mb-3"><label for="city" class="form-label">City *</label><input type="text" class="form-control" id="city" name="city" required></div>
+<div class="mb-3"><label for="message" class="form-label">Requirement *</label><textarea class="form-control" id="message" name="message" rows="4" required placeholder="Quantity, branding, delivery city..."></textarea></div>
+<button type="submit" class="btn w-100" style="background:#101828;color:#fff"><i class="fas fa-paper-plane"></i> Send enquiry</button>
+</form></div></div></div>
+</div>
+{% endblock %}
+
 {% block extra_js %}
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    if (typeof initializeProductEnquiry === 'function') initializeProductEnquiry();
-    if (typeof initializeProductFilters === 'function') initializeProductFilters();
-    if (typeof initializeProductPriceRange === 'function') initializeProductPriceRange();
+document.addEventListener('DOMContentLoaded',function(){
+  if(typeof initializeProductEnquiry==='function') initializeProductEnquiry();
+  if(typeof initializeProductFilters==='function') initializeProductFilters();
+  if(typeof initializeProductPriceRange==='function') initializeProductPriceRange();
 });
 </script>
-
-<style>
-/* ============================================================
-   HOOVALE — FILTER SHEET
-   Matches the supplied mobile reference:
-   clean bottom sheet, sticky actions, no mobile nav underneath.
-   ============================================================ */
-@media (max-width: 767px) {
-    .products-filter-backdrop {
-        position: fixed !important;
-        inset: 0 !important;
-        display: block !important;
-        z-index: 100000 !important;
-        background: rgba(19, 27, 39, .48) !important;
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transition: opacity .22s ease, visibility .22s ease;
-        backdrop-filter: blur(3px);
-        -webkit-backdrop-filter: blur(3px);
-    }
-
-    .products-filter-drawer {
-        position: fixed !important;
-        left: 50% !important;
-        right: auto !important;
-        bottom: 0 !important;
-        width: min(100%, 560px) !important;
-        height: min(84dvh, 780px) !important;
-        max-height: 84dvh !important;
-        display: block !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        transform: translate(-50%, 105%) !important;
-        visibility: hidden;
-        opacity: 1 !important;
-        overflow: hidden !important;
-        z-index: 100001 !important;
-        background: #fff !important;
-        border-radius: 24px 24px 0 0 !important;
-        box-shadow: 0 -20px 55px rgba(15, 23, 42, .25) !important;
-        transition:
-            transform .30s cubic-bezier(.22, 1, .36, 1),
-            visibility 0s linear .30s !important;
-    }
-
-    body.hv-filter-open .products-filter-backdrop {
-        opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-    }
-
-    body.hv-filter-open .products-filter-drawer {
-        transform: translate(-50%, 0) !important;
-        visibility: visible !important;
-        transition: transform .30s cubic-bezier(.22, 1, .36, 1) !important;
-    }
-
-    /* The website's mobile navigation and floating WhatsApp must sit
-       behind the filter sheet and should not remain visible underneath it. */
-    body.hv-filter-open .mobile-cta-bar,
-    body.hv-filter-open .sticky-whatsapp,
-    body.hv-filter-open .sticky-call {
-        opacity: 0 !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-    }
-
-    body.hv-filter-open {
-        overflow: hidden !important;
-        touch-action: none;
-    }
-
-    .products-filter-form {
-        width: 100%;
-        height: 100%;
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
-        background: #fff;
-    }
-
-    .products-filter-drawer-head {
-        position: relative !important;
-        flex: 0 0 auto !important;
-        min-height: 116px;
-        display: flex !important;
-        align-items: flex-end !important;
-        justify-content: space-between !important;
-        gap: 16px;
-        padding: 26px 20px 18px !important;
-        background: #fff !important;
-        border-bottom: 1px solid #edf0f4 !important;
-    }
-
-    .products-filter-drawer-head::before {
-        content: "";
-        position: absolute;
-        top: 11px;
-        left: 50%;
-        width: 42px;
-        height: 4px;
-        border-radius: 999px;
-        transform: translateX(-50%);
-        background: #d9dde3;
-    }
-
-    .products-filter-kicker {
-        display: block;
-        margin: 0 0 5px !important;
-        color: #0051A3 !important;
-        font-size: .70rem !important;
-        line-height: 1 !important;
-        font-weight: 800 !important;
-        letter-spacing: 1.6px !important;
-    }
-
-    .products-filter-drawer-head h2 {
-        margin: 0 !important;
-        color: #101318 !important;
-        font-family: var(--ff-heading, Arial, sans-serif) !important;
-        font-size: 1.65rem !important;
-        line-height: 1.05 !important;
-        font-weight: 800 !important;
-        letter-spacing: -.025em !important;
-    }
-
-    .products-filter-close {
-        width: 50px !important;
-        height: 50px !important;
-        flex: 0 0 50px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 0 !important;
-        border: 1px solid #e0e5eb !important;
-        border-radius: 50% !important;
-        background: #f8fafc !important;
-        color: #334155 !important;
-        font-size: 1.15rem !important;
-    }
-
-    .products-filter-drawer-body {
-        flex: 1 1 auto !important;
-        min-height: 0 !important;
-        max-height: none !important;
-        height: 0 !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
-        padding: 18px 20px 24px !important;
-        background: #fff !important;
-    }
-
-    .filter-section {
-        padding: 0 0 19px !important;
-        margin: 0 0 19px !important;
-        border-bottom: 1px solid #edf0f3 !important;
-    }
-
-    .filter-section:last-child {
-        margin-bottom: 0 !important;
-        border-bottom: 0 !important;
-    }
-
-    .filter-section-title {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        margin-bottom: 12px !important;
-        color: #303844 !important;
-        font-size: 1rem !important;
-        font-weight: 750 !important;
-    }
-
-    .filter-reset-section {
-        appearance: none;
-        border: 0 !important;
-        background: transparent !important;
-        color: #654098 !important;
-        padding: 2px 0 !important;
-        font-size: .82rem !important;
-        font-weight: 700 !important;
-    }
-
-    .filter-options {
-        display: grid !important;
-        gap: 8px !important;
-    }
-
-    .filter-choice {
-        min-height: 48px !important;
-        display: flex !important;
-        align-items: center !important;
-        padding: 0 13px !important;
-        border: 1px solid #e5e9ef !important;
-        border-radius: 11px !important;
-        background: #fafbfc !important;
-        color: #354052 !important;
-        font-size: .91rem !important;
-        font-weight: 600 !important;
-    }
-
-    .filter-choice input {
-        width: 19px !important;
-        height: 19px !important;
-        margin: 0 11px 0 0 !important;
-        accent-color: #654098;
-        flex: 0 0 auto;
-    }
-
-    .filter-choice:has(input:checked) {
-        border-color: #654098 !important;
-        background: #faf7ff !important;
-        color: #5d3a91 !important;
-    }
-
-    /* Price range — two independent volume-style handles */
-    .price-range-values {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10px !important;
-        margin-bottom: 14px !important;
-    }
-
-    .price-range-values > div {
-        min-width: 0;
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 3px !important;
-        padding: 10px 12px !important;
-        border: 1px solid #e2e7ed !important;
-        border-radius: 11px !important;
-        background: #fafbfc !important;
-    }
-
-    .price-range-values span {
-        color: #8a93a0 !important;
-        font-size: .70rem !important;
-        font-weight: 600 !important;
-    }
-
-    .price-range-values strong {
-        color: #222a35 !important;
-        font-size: 1.05rem !important;
-        font-weight: 800 !important;
-    }
-
-    .dual-price-slider {
-        position: relative !important;
-        width: calc(100% - 12px);
-        height: 38px !important;
-        margin: 0 6px 7px !important;
-    }
-
-    .dual-price-track,
-    .dual-price-fill {
-        position: absolute !important;
-        top: 16px !important;
-        height: 5px !important;
-        border-radius: 999px !important;
-    }
-
-    .dual-price-track {
-        left: 0 !important;
-        right: 0 !important;
-        background: #e2e5e9 !important;
-    }
-
-    .dual-price-fill {
-        background: #68439b !important;
-        min-width: 0;
-    }
-
-    .dual-price-slider input[type="range"] {
-        position: absolute !important;
-        left: -7px !important;
-        top: 0 !important;
-        width: calc(100% + 14px) !important;
-        height: 38px !important;
-        margin: 0 !important;
-        background: transparent !important;
-        pointer-events: none !important;
-        appearance: none !important;
-        -webkit-appearance: none !important;
-    }
-
-    .dual-price-slider input[type="range"]::-webkit-slider-runnable-track {
-        height: 5px;
-        background: transparent;
-    }
-
-    .dual-price-slider input[type="range"]::-webkit-slider-thumb {
-        width: 24px !important;
-        height: 24px !important;
-        margin-top: -10px !important;
-        border: 3px solid #68439b !important;
-        border-radius: 50% !important;
-        background: #fff !important;
-        box-shadow: 0 2px 8px rgba(15,23,42,.20);
-        appearance: none !important;
-        -webkit-appearance: none !important;
-        pointer-events: auto !important;
-    }
-
-    .dual-price-slider input[type="range"]::-moz-range-track {
-        height: 5px;
-        background: transparent;
-    }
-
-    .dual-price-slider input[type="range"]::-moz-range-thumb {
-        width: 18px;
-        height: 18px;
-        border: 3px solid #68439b;
-        border-radius: 50%;
-        background: #fff;
-        pointer-events: auto;
-    }
-
-    .price-input-row {
-        display: grid !important;
-        grid-template-columns: minmax(0,1fr) auto minmax(0,1fr) !important;
-        align-items: center !important;
-        gap: 8px !important;
-        margin-top: 8px !important;
-    }
-
-    .price-input-box {
-        min-width: 0;
-        height: 46px !important;
-        display: flex !important;
-        align-items: center !important;
-        padding: 0 11px !important;
-        border: 1px solid #dfe4ea !important;
-        border-radius: 10px !important;
-        background: #fff !important;
-    }
-
-    .price-input-box span {
-        color: #7b8491 !important;
-        font-weight: 700 !important;
-        margin-right: 5px !important;
-    }
-
-    .price-input-box input {
-        min-width: 0 !important;
-        width: 100% !important;
-        border: 0 !important;
-        outline: 0 !important;
-        background: transparent !important;
-        color: #202936 !important;
-        font-size: .9rem !important;
-        font-weight: 650 !important;
-    }
-
-    .price-between {
-        color: #9aa2ad !important;
-        font-size: .78rem !important;
-        font-weight: 700 !important;
-    }
-
-    .price-hint {
-        margin: 8px 0 0 !important;
-        color: #929aa6 !important;
-        font-size: .72rem !important;
-    }
-
-    .filter-chips {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-    }
-
-    .filter-chip {
-        position: relative;
-        min-height: 40px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        padding: 0 14px !important;
-        border: 1px solid #dfe4ea !important;
-        border-radius: 999px !important;
-        background: #fff !important;
-        color: #586273 !important;
-        font-size: .80rem !important;
-        font-weight: 700 !important;
-    }
-
-    .filter-chip input {
-        position: absolute !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-    }
-
-    .filter-chip:has(input:checked) {
-        border-color: #68439b !important;
-        background: #f4effb !important;
-        color: #5e3b93 !important;
-    }
-
-    .filter-sort-select {
-        width: 100% !important;
-        height: 48px !important;
-        border: 1px solid #dfe4ea !important;
-        border-radius: 11px !important;
-        background: #fff !important;
-        padding: 0 13px !important;
-        color: #334155 !important;
-        font-weight: 650 !important;
-        outline: 0 !important;
-    }
-
-    /* Bottom action bar — always visible inside the sheet */
-    .products-filter-drawer-footer {
-        position: relative !important;
-        flex: 0 0 76px !important;
-        display: grid !important;
-        grid-template-columns: 1fr 1.35fr !important;
-        gap: 10px !important;
-        min-height: 76px !important;
-        box-sizing: border-box !important;
-        padding: 12px 20px calc(12px + env(safe-area-inset-bottom)) !important;
-        background: #fff !important;
-        border-top: 1px solid #e6e9ee !important;
-        box-shadow: 0 -8px 24px rgba(15,23,42,.08) !important;
-        z-index: 3 !important;
-    }
-
-    .filter-clear-btn,
-    .filter-apply-btn {
-        width: 100% !important;
-        position: relative !important;
-        z-index: 5 !important;
-        min-height: 50px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border-radius: 11px !important;
-        font-size: .92rem !important;
-        font-weight: 800 !important;
-        text-decoration: none !important;
-    }
-
-    .filter-clear-btn {
-        border: 1px solid #ded4ef !important;
-        background: #f7f2ff !important;
-        color: #5e3b93 !important;
-    }
-
-    .filter-apply-btn {
-        border: 0 !important;
-        background: #68439b !important;
-        color: #fff !important;
-        box-shadow: 0 6px 15px rgba(104,67,155,.22) !important;
-    }
-}
-
-@media (max-width: 380px) {
-    .products-filter-drawer {
-        height: 88dvh !important;
-        max-height: 88dvh !important;
-    }
-
-    .products-filter-drawer-head {
-        padding-left: 16px !important;
-        padding-right: 16px !important;
-    }
-
-    .products-filter-drawer-body {
-        padding-left: 16px !important;
-        padding-right: 16px !important;
-    }
-
-    .products-filter-drawer-footer {
-        padding-left: 16px !important;
-        padding-right: 16px !important;
-    }
-}
-</style>
 {% endblock %}
