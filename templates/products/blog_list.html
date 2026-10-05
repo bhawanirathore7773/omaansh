@@ -1,76 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
-
-{% block meta_title %}Wall Clock Buying Guides & Ideas | HOOVALE Jaipur{% endblock %}
-{% block meta_description %}Practical wall clock guides from HOOVALE: sizes, materials, wholesale buying, custom logo clocks, office clocks, gifting and promotional ideas.{% endblock %}
-{% block meta_keywords %}wall clock buying guide, wall clock sizes, wholesale wall clocks, custom logo clocks, wall clock Jaipur{% endblock %}
-
+{% block meta_title %}Wall Clock Guides & Buying Advice | Sizes, Wholesale, Custom & Office Clocks{% endblock %}
+{% block meta_description %}Practical wall clock guides covering size selection, wholesale buying, custom logo clocks, office clocks, gifting and business requirements.{% endblock %}
+{% block meta_keywords %}wall clock buying guide, wall clock sizes, wholesale wall clocks, custom logo clocks, office wall clocks{% endblock %}
 {% block content %}
-<section class="hv-blog-index">
-  <div class="hv-blog-index-hero">
-    <div class="container-lg">
-      <div class="hv-home-kicker">HOOVALE WALL CLOCK GUIDES</div>
-      <h1>Useful ideas before you buy a wall clock</h1>
-      <p>Practical guidance on sizes, materials, custom branding, wholesale buying, gifting and business requirements — written to help you make a clearer choice.</p>
-    </div>
-  </div>
-
-  <div class="container-lg py-5">
-    <div class="row g-4">
-      {% for blog in blog_posts %}
-      <div class="col-md-6 col-lg-4">
-        <article class="hv-blog-index-card">
-          <a href="{{ blog.get_absolute_url }}" class="hv-blog-index-image">
-            {% if blog.featured_image and blog.featured_image.name != 'default/blog-default.jpg' %}
-              <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" loading="lazy">
-            {% else %}
-              <div class="hv-blog-index-placeholder"><i class="far fa-clock"></i></div>
-            {% endif %}
-          </a>
-          <div class="hv-blog-index-body">
-            <span>{{ blog.category }}</span>
-            <h2><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a></h2>
-            <p>{{ blog.description|truncatewords:28 }}</p>
-            <div class="hv-blog-index-meta">{{ blog.created_at|date:"d M Y" }} <span>•</span> Practical guide</div>
-            <a href="{{ blog.get_absolute_url }}" class="hv-blog-index-read">Read guide <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </article>
-      </div>
-      {% empty %}
-      <div class="col-12 text-center py-5"><p class="text-muted">Guides are being prepared.</p></div>
-      {% endfor %}
-    </div>
-
-    {% if total_pages > 1 %}
-    <nav class="mt-5" aria-label="Blog pages">
-      <ul class="pagination justify-content-center">
-        {% if blog_posts.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ blog_posts.previous_page_number }}">Previous</a></li>{% endif %}
-        <li class="page-item active"><span class="page-link">{{ blog_posts.number }}</span></li>
-        {% if blog_posts.has_next %}<li class="page-item"><a class="page-link" href="?page={{ blog_posts.next_page_number }}">Next</a></li>{% endif %}
-      </ul>
-    </nav>
-    {% endif %}
-  </div>
-</section>
-{% endblock %}
-
-{% block extra_css %}
+<section class="guides-hero"><div class="container-lg"><span class="eyebrow">WALL CLOCK GUIDES</span><h1>Better choices start with better information.</h1><p>Practical articles on choosing, buying and specifying wall clocks for homes, offices, retailers and bulk orders.</p></div></section>
+<section class="guides"><div class="container-lg"><div class="head"><div><span class="eyebrow">LATEST</span><h2>Browse the guides</h2></div><span>Buying advice, not filler</span></div><div class="grid">{% for blog in blog_posts %}<article><a class="media" href="{{ blog.get_absolute_url }}">{% if blog.featured_image and blog.featured_image.name != 'default/blog-default.jpg' %}<img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" loading="lazy">{% else %}<div class="placeholder"><i class="far fa-clock"></i></div>{% endif %}</a><div class="body"><small>{{ blog.category }}</small><h2><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a></h2><p>{{ blog.description|truncatewords:28 }}</p><div class="meta">{{ blog.created_at|date:"d M Y" }} · Practical guide</div><a class="read" href="{{ blog.get_absolute_url }}">Read guide ↗</a></div></article>{% empty %}<div class="empty"><h3>Guides are being prepared.</h3><p>Check back soon for practical wall clock buying advice.</p></div>{% endfor %}</div>{% if total_pages > 1 %}<nav class="pagination"><div>{% if blog_posts.has_previous %}<a href="?page={{ blog_posts.previous_page_number }}">← Previous</a>{% endif %}<strong>Page {{ blog_posts.number }} of {{ total_pages }}</strong>{% if blog_posts.has_next %}<a href="?page={{ blog_posts.next_page_number }}">Next →</a>{% endif %}</div></nav>{% endif %}</div></section>
 <style>
-.hv-blog-index{background:#f7f9fc;min-height:70vh}
-.hv-blog-index-hero{padding:64px 0;background:linear-gradient(135deg,#0b1724,#075aa4);color:#fff}
-.hv-blog-index-hero h1{color:#fff!important;max-width:800px;margin:12px 0}
-.hv-blog-index-hero p{color:rgba(255,255,255,.86);max-width:760px;font-size:1.05rem}
-.hv-blog-index-card{height:100%;background:#fff;border:1px solid #e4e9ef;border-radius:16px;overflow:hidden;box-shadow:0 8px 25px rgba(15,23,42,.05);transition:.2s}
-.hv-blog-index-card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(15,23,42,.09)}
-.hv-blog-index-image{display:block;aspect-ratio:16/9;background:linear-gradient(135deg,#0b1724,#075aa4)}
-.hv-blog-index-image img{width:100%;height:100%;object-fit:cover}
-.hv-blog-index-placeholder{height:100%;display:flex;align-items:center;justify-content:center;color:#e2bf70;font-size:2.6rem}
-.hv-blog-index-body{padding:22px}
-.hv-blog-index-body>span{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:#a88e4f;font-weight:800}
-.hv-blog-index-body h2{font-size:1.35rem;margin:8px 0 10px}
-.hv-blog-index-body h2 a{color:#111;text-decoration:none}
-.hv-blog-index-body p{font-size:.92rem;line-height:1.65}
-.hv-blog-index-meta{font-size:.78rem;color:#7a8491;margin:14px 0}
-.hv-blog-index-read{font-weight:800;color:#075aa4}
+.guides-hero{background:#12191a;color:#fff;padding:78px 0}.eyebrow{display:inline-block;color:#c98250;font-size:.68rem;font-weight:900;letter-spacing:2px;margin-bottom:13px}.guides-hero h1{font-family:Manrope,sans-serif;font-size:clamp(2.5rem,5vw,4.8rem);line-height:1.02;letter-spacing:-2px;max-width:820px;margin:0 0 18px}.guides-hero p{color:#c4cecb;max-width:700px;line-height:1.75}.guides{background:#f7f6f2;padding:70px 0 90px}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:28px}.head h2{font-family:Manrope,sans-serif;font-size:2rem;margin:0}.head>span{font-size:.78rem;color:#78827f}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.grid article{background:#fff;border:1px solid #e4e1da;border-radius:11px;overflow:hidden;transition:.2s}.grid article:hover{transform:translateY(-4px);box-shadow:0 15px 30px #17202212}.media{display:block;height:220px;background:#ebe9e3}.media img{width:100%;height:100%;object-fit:cover}.placeholder{height:100%;display:grid;place-items:center;color:#c98250;font-size:2.5rem}.body{padding:20px}.body small{color:#a06a49;font-weight:900;font-size:.65rem;text-transform:uppercase;letter-spacing:1px}.body h2{font-size:1.2rem;line-height:1.35;margin:8px 0}.body h2 a{color:#172022;text-decoration:none}.body p{color:#69736f;font-size:.83rem;line-height:1.65;min-height:65px}.meta{font-size:.72rem;color:#929b98;margin:13px 0}.read{color:#172022;font-weight:900;font-size:.78rem;text-decoration:none}.pagination{margin-top:35px;text-align:center}.pagination div{display:flex;justify-content:center;gap:20px;align-items:center}.pagination a{color:#172022;font-weight:800;text-decoration:none}.pagination strong{font-size:.8rem}.empty{grid-column:1/-1;text-align:center;background:#fff;border:1px solid #e4e1da;border-radius:11px;padding:60px}.empty p{color:#69736f}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.guides-hero{padding:56px 0}.guides{padding:48px 0 65px}.head{align-items:flex-start;flex-direction:column;gap:5px}.grid{grid-template-columns:1fr}.media{height:210px}}
 </style>
 {% endblock %}
