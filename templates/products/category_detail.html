@@ -1,183 +1,20 @@
 {% extends 'base.html' %}
 {% load static seo_tags %}
-
-{% block meta_title %}{{ category.meta_title|default:category.name }}{% endblock %}
-{% block meta_description %}{{ category.meta_description|default:category.description|truncatechars:155 }}{% endblock %}
-{% block meta_keywords %}{{ category.meta_keywords|default:category.name|lower }}, wall clock manufacturer, bulk wall clocks, wholesale {{ category.name|lower }}{% endblock %}
-
-{% block og_title %}{{ category.meta_title|default:category.name }}{% endblock %}
-{% block og_description %}{{ category.meta_description|default:category.description|truncatechars:160 }}{% endblock %}
-{% block og_image %}https://hoovale.com{% if category.image %}{{ category.image.url }}{% elif category.static_image_path %}{{ category.static_image_path }}{% else %}{% static 'images/product-placeholder.svg' %}{% endif %}{% endblock %}
-
-{% block page_schema %}
-    {% breadcrumb_schema breadcrumb_items %}
-{% endblock page_schema %}
-
+{% block meta_title %}{{ category.meta_title|default:category.name }} | Wall Clocks Jaipur{% endblock %}
+{% block meta_description %}{{ category.meta_description|default:category.description|truncatechars:155 }} Browse {{ category.name|lower }} wall clocks for retail, office and bulk requirements from Jaipur.{% endblock %}
+{% block meta_keywords %}{{ category.name|lower }} wall clocks Jaipur, wholesale wall clocks, bulk wall clocks, custom wall clocks{% endblock %}
+{% block page_schema %}{% breadcrumb_schema breadcrumb_items %}{% endblock page_schema %}
 {% block content %}
-<div class="hv-category-detail-page">
-
-{# BREADCRUMBS #}
-<div style="background:#f8f9fa; padding:14px 0; font-size:0.9rem;">
-    <div class="container-lg">
-        <a href="/" style="color:#666; text-decoration:none;">Home</a>
-        <span style="color:#999;"> › </span>
-        <a href="{% url 'products_list' %}" style="color:#666; text-decoration:none;">Products</a>
-        <span style="color:#999;"> › </span>
-        <span style="color:#0051A3; font-weight:600;">{{ category.name }}</span>
-    </div>
+<div class="cat-page">
+<nav class="cat-crumbs"><div class="container-lg"><a href="/">Home</a><span>/</span><a href="{% url 'categories_index' %}">Collections</a><span>/</span><b>{{ category.name }}</b></div></nav>
+<section class="cat-hero">{% if category.image %}<div class="cat-bg" style="background-image:url('{{ category.image.url }}')"></div>{% endif %}<div class="container-lg cat-hero-grid"><div><span class="eyebrow">COLLECTION / {{ category.name|upper }}</span><h1>{{ category.h1_heading|default:category.name }}</h1>{% if category.description %}<p>{{ category.description|truncatewords:45 }}</p>{% else %}<p>Explore {{ category.name|lower }} wall clocks for homes, offices, retailers and business orders.</p>{% endif %}<div class="cat-actions"><a href="#products" class="btn-main">View {{ products.paginator.count }} products</a><a href="{% whatsapp_link 'Hi, I need a quote for: ' %}{{ category.name }}" target="_blank" rel="noopener" class="btn-ghost">Wholesale enquiry</a></div></div><div class="cat-facts"><div><b>{{ products.paginator.count }}</b><small>products</small></div><div><b>Bulk</b><small>business quantities</small></div><div><b>Custom</b><small>branding options</small></div></div></div></section>
+<section class="cat-intro"><div class="container-lg intro-grid"><div><span class="eyebrow">THE COLLECTION</span><h2>Compare designs before you enquire.</h2></div><p>Shortlist the models you like, then share quantity and delivery location with our team for a practical wholesale or bulk quote.</p></div></section>
+<section id="products" class="cat-products"><div class="container-lg"><div class="products-head"><div><span class="eyebrow">PRODUCTS</span><h2>{{ category.name }} wall clocks</h2></div><span>{{ products.paginator.count }} available</span></div>{% if products %}<div class="product-grid">{% for product in products %}<article class="product-card"><a href="{{ product.get_absolute_url }}" class="media">{% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} {{ category.name }} wall clock" loading="lazy">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} product image" loading="lazy">{% endif %}{% if product.is_bestseller %}<em>Bestseller</em>{% elif product.is_new_arrival %}<em>New</em>{% endif %}</a><div class="info"><small>{{ category.name }}{% if product.sku %} · {{ product.sku }}{% endif %}</small><h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>{% if product.short_description %}<p>{{ product.short_description|truncatechars:85 }}</p>{% endif %}<div class="buy">{% if product.price %}<strong>₹{{ product.price }}</strong>{% else %}<strong>Get quote</strong>{% endif %}<a href="{% whatsapp_link 'Hi, please share price and availability for: ' %}{{ product.name }}" target="_blank" rel="noopener">↗</a></div></div></article>{% endfor %}</div>{% if products.has_other_pages %}<div class="pagination">{% if products.has_previous %}<a href="?page={{ products.previous_page_number }}">← Previous</a>{% endif %}<span>Page {{ products.number }} of {{ products.paginator.num_pages }}</span>{% if products.has_next %}<a href="?page={{ products.next_page_number }}">Next →</a>{% endif %}</div>{% endif %}{% else %}<div class="empty"><h3>No products are listed in this collection yet.</h3><p>Contact us for current availability or browse the full catalogue.</p><a href="{% url 'products_list' %}" class="btn-main">Browse all wall clocks</a></div>{% endif %}</div></section>
+{% if category.seo_content %}<section class="cat-seo"><div class="container-lg"><span class="eyebrow">ABOUT THIS COLLECTION</span><h2>Buying {{ category.name|lower }} wall clocks from Jaipur</h2><div>{{ category.seo_content|linebreaks }}</div></div></section>{% endif %}
+<section class="cat-cta"><div class="container-lg"><div><span class="eyebrow">READY TO BUY?</span><h2>Tell us the quantity. We’ll help with the shortlist.</h2><p>Share designs, quantity and delivery location for a wholesale or bulk quote.</p></div><div><a href="{% whatsapp_link 'Hi, I need a bulk quote for: ' %}{{ category.name }}" target="_blank" rel="noopener" class="btn-light">WhatsApp quote</a><a href="{% url 'contact' %}" class="btn-outline">Contact us</a></div></div></section>
 </div>
-
-{# HERO #}
-<section class="hv-category-detail-hero" style="position:relative; padding:70px 0; background:linear-gradient(135deg,#0b1724 0%, #0051A3 100%); color:white; overflow:hidden;">
-    {% if category.image %}<div style="position:absolute; inset:0; background-image:url('{{ category.image.url }}'); background-size:cover; background-position:center; opacity:0.2;"></div>{% elif category.static_image_path %}<div style="position:absolute; inset:0; background-image:url('{{ category.static_image_path }}'); background-size:cover; background-position:center; opacity:0.16;"></div>{% endif %}
-    <div class="container-lg" style="position:relative; z-index:2;">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <div style="display:inline-block; background:rgba(255,165,0,0.2); color:#FFA500; padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:700; margin-bottom:16px; border:1px solid #FFA500;">
-                    <i class="fas fa-tag"></i> CATEGORY
-                </div>
-                <h1 class="hv-category-detail-title" style="font-family:'Montserrat',sans-serif; font-size:2.8rem; font-weight:900; line-height:1.1; margin-bottom:18px;">
-                    {{ category.h1_heading|default:category.name }}
-                </h1>
-                {% if category.description %}
-                <p class="hv-category-detail-description" style="font-size:1.15rem; opacity:0.95; line-height:1.6; max-width:700px; margin-bottom:30px;">{{ category.description|truncatewords:35 }}</p>
-                {% endif %}
-                <div class="hv-category-detail-stats" style="display:flex; gap:30px; flex-wrap:wrap; margin-top:20px;">
-                    <div><strong style="color:#FFA500; font-size:1.4rem;">{{ products.paginator.count }}</strong><br><span style="font-size:0.85rem; opacity:0.8;">Products</span></div>
-                    <div><strong style="color:#FFA500; font-size:1.4rem;">MOQ 5+</strong><br><span style="font-size:0.85rem; opacity:0.8;">Min Order</span></div>
-                    <div><strong style="color:#FFA500; font-size:1.4rem;">PAN India</strong><br><span style="font-size:0.85rem; opacity:0.8;">Delivery</span></div>
-                    <div><strong style="color:#FFA500; font-size:1.4rem;">Custom Logo</strong><br><span style="font-size:0.85rem; opacity:0.8;">Available</span></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{# PRODUCTS GRID #}
-{% if products %}
-<section class="hv-category-products" style="padding:50px 0;">
-    <div class="container-lg">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:14px;">
-            <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; color:#1a1a1a; margin:0;">{{ category.name }} — All Products</h2>
-            <span style="color:#666; font-size:0.95rem;">Showing {{ products|length }} of {{ products.paginator.count }} products</span>
-        </div>
-
-        <div class="row g-4">
-            {% for product in products %}
-            <div class="col-6 col-md-4 col-lg-3">
-                <div style="background:white; border:1px solid #eee; border-radius:12px; overflow:hidden; transition:all 0.3s; height:100%;"
-                     onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 30px rgba(0,81,163,0.15)'; this.style.borderColor='#0051A3';"
-                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee';">
-                    <a href="{{ product.get_absolute_url }}" style="text-decoration:none; color:inherit; display:block;">
-                        <div style="position:relative;">
-                            {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} — {{ category.name }} manufacturer Jaipur" loading="lazy" style="width:100%; height:200px; object-fit:cover;">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} — product image coming soon" loading="lazy" style="width:100%; height:200px; object-fit:cover;">{% endif %}
-                            {% if product.is_bestseller %}<span style="position:absolute; top:10px; left:10px; background:#10b981; color:white; padding:3px 8px; border-radius:20px; font-size:0.65rem; font-weight:700;">BESTSELLER</span>{% endif %}
-                        </div>
-                        <div style="padding:14px;">
-                            <h3 style="font-size:0.9rem; font-weight:700; color:#1a1a1a; margin:0 0 6px; line-height:1.3;">{{ product.name|truncatechars:50 }}</h3>
-                            <div style="display:flex; align-items:baseline; justify-content:space-between;">
-                                {% if product.price %}<span style="color:#0051A3; font-weight:800; font-size:1.05rem;">From ₹{{ product.price }}</span>{% endif %}
-                                <small style="color:#999;">MOQ {{ product.moq }}</small>
-                            </div>
-                        </div>
-                    </a>
-                    <div style="padding:0 14px 14px;">
-                        <a href="{% whatsapp_link 'Hi, I need pricing for: ' %}{{ product.name }}" target="_blank"
-                           style="display:block; text-align:center; background:#25D366; color:white; padding:8px; border-radius:6px; text-decoration:none; font-weight:700; font-size:0.85rem;">
-                            <i class="fab fa-whatsapp"></i> Get Price
-                        </a>
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-12 text-center" style="padding:40px;">
-                <p style="color:#666;">No products in this category yet. Check back soon or contact us.</p>
-            </div>
-            {% endfor %}
-        </div>
-
-        {# Pagination #}
-        {% if products.has_other_pages %}
-        <nav style="margin-top:40px;" aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                {% if products.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">‹ Prev</a></li>
-                {% endif %}
-                {% for num in products.paginator.page_range %}
-                    {% if products.number == num %}
-                    <li class="page-item active"><span class="page-link" style="background:#FFA500; border-color:#FFA500;">{{ num }}</span></li>
-                    {% else %}
-                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                    {% endif %}
-                {% endfor %}
-                {% if products.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next ›</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        {% endif %}
-    </div>
-</section>
-{% endif %}
-
-{# SEO CONTENT — appears below products for ranking power #}
-{% if category.seo_content %}
-<section style="padding:60px 0; background:#f8f9fa;">
-    <div class="container-lg">
-        <div class="row">
-            <div class="col-lg-9 mx-auto">
-                <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; color:#1a1a1a; margin-bottom:20px;">About {{ category.name }}</h2>
-                <div style="font-size:1.05rem; color:#444; line-height:1.8;">{{ category.seo_content|linebreaks }}</div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-{# CTA #}
-<section style="padding:60px 0; background:linear-gradient(135deg,#FFA500,#FF8C00); color:white; text-align:center;">
-    <div class="container-lg">
-        <h2 style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:2.2rem; margin-bottom:14px;">Need Bulk Quantity?</h2>
-        <p style="font-size:1.1rem; max-width:700px; margin:0 auto 30px; opacity:0.95;">Get wholesale pricing for {{ category.name }}. Custom logo printing on bulk orders.</p>
-        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
-            <a href="{% whatsapp_link 'Hi, I need bulk pricing for: ' %}{{ category.name }}" target="_blank" style="background:#25D366; color:white; padding:14px 36px; border-radius:8px; font-weight:800; text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp Quote</a>
-            <a href="{% call_link %}" style="background:white; color:#FF8C00; padding:14px 36px; border-radius:8px; font-weight:800; text-decoration:none;"><i class="fas fa-phone-alt"></i> Call Now</a>
-        </div>
-    </div>
-</section>
-
 <style>
-/* Category detail — polished marketplace UI */
-.hv-category-detail-page{width:100%;max-width:100%;overflow-x:clip;background:#fff;}
-.hv-category-detail-page .hv-category-detail-hero{min-height:350px;display:flex;align-items:center;}
-.hv-category-detail-title{color:#fff!important;text-shadow:0 2px 12px rgba(0,0,0,.2);}
-.hv-category-detail-description{color:rgba(255,255,255,.9)!important;}
-.hv-category-detail-stats strong{color:#ffc04d!important;}
-.hv-category-products{background:#f8fafc;}
-.hv-category-products h2{font-size:1.55rem;}
-@media(max-width:767px){
-  .hv-category-detail-page .container-lg{max-width:100%;padding-left:16px;padding-right:16px;}
-  .hv-category-detail-page .hv-category-detail-hero{min-height:0;padding:42px 0!important;}
-  .hv-category-detail-page .hv-category-detail-hero .container-lg{padding-left:18px;padding-right:18px;}
-  .hv-category-detail-title{font-size:2rem!important;line-height:1.12!important;margin-bottom:12px!important;}
-  .hv-category-detail-description{font-size:.94rem!important;line-height:1.55!important;margin-bottom:20px!important;}
-  .hv-category-detail-stats{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 14px!important;margin-top:12px!important;}
-  .hv-category-detail-stats>div{min-width:0;}
-  .hv-category-detail-stats strong{font-size:1.2rem!important;}
-  .hv-category-detail-stats span{font-size:.72rem!important;}
-  .hv-category-products{padding:30px 0 55px!important;}
-  .hv-category-products> .container-lg > div:first-child{align-items:flex-start!important;}
-  .hv-category-products h2{font-size:1.15rem!important;line-height:1.25;}
-  .hv-category-products .row{--bs-gutter-x:10px;--bs-gutter-y:12px;}
-  .hv-category-products .col-6{padding-left:5px;padding-right:5px;}
-  .hv-category-products .col-6 > div{border-radius:11px!important;box-shadow:0 3px 12px rgba(15,23,42,.06);}
-  .hv-category-products img{height:155px!important;object-fit:cover;}
-  .hv-category-products .pagination{flex-wrap:wrap;gap:4px;}
-}
-@media(max-width:380px){
-  .hv-category-products img{height:135px!important;}
-  .hv-category-detail-stats{gap:14px 10px!important;}
-}
+.cat-page{background:#f7f6f2;color:#172022}.cat-crumbs{background:#fff;border-bottom:1px solid #ebe8e1;padding:13px 0;font-size:.78rem}.cat-crumbs .container-lg{display:flex;gap:9px}.cat-crumbs a{color:#697371;text-decoration:none}.cat-hero{background:#172022;color:#fff;position:relative;min-height:500px;display:flex;align-items:center;overflow:hidden}.cat-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.16}.cat-hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.5fr .5fr;gap:60px;align-items:end;padding:75px 0}.eyebrow{display:inline-block;color:#d18b5a;font-size:.69rem;font-weight:900;letter-spacing:2px;margin-bottom:13px}.cat-hero h1{font-family:Manrope,sans-serif;font-size:clamp(2.5rem,5vw,4.8rem);line-height:1.02;letter-spacing:-2px;margin:0 0 18px}.cat-hero p{max-width:700px;color:#c6cfcd;line-height:1.75}.cat-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:27px}.btn-main,.btn-ghost,.btn-light,.btn-outline{display:inline-flex;padding:12px 18px;border-radius:7px;text-decoration:none;font-weight:800;font-size:.83rem}.btn-main{background:#d18b5a;color:#fff}.btn-ghost{border:1px solid #ffffff40;color:#fff}.cat-facts{border-left:1px solid #ffffff2b;padding-left:25px;display:grid;gap:17px}.cat-facts b{display:block;font-size:1.15rem}.cat-facts small{color:#9fa9a7}.cat-intro{background:#fff;padding:60px 0}.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}.intro-grid h2,.products-head h2,.cat-seo h2,.cat-cta h2{font-family:Manrope,sans-serif;letter-spacing:-.8px}.intro-grid h2{font-size:2.1rem;line-height:1.15;margin:0}.intro-grid p{color:#65706d;line-height:1.8;margin:22px 0 0}.cat-products{padding:65px 0 85px}.products-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:26px}.products-head h2{font-size:1.95rem;margin:0}.products-head>span{font-size:.8rem;color:#7d8784}.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:17px}.product-card{background:#fff;border:1px solid #e5e2da;border-radius:11px;overflow:hidden;transition:.2s}.product-card:hover{transform:translateY(-4px);box-shadow:0 15px 32px #17202217}.media{height:240px;display:block;background:#efeee9;position:relative}.media img{width:100%;height:100%;object-fit:cover}.media em{position:absolute;left:10px;top:10px;background:#172022;color:#fff;padding:5px 8px;border-radius:4px;font-size:.6rem;font-style:normal;text-transform:uppercase}.info{padding:15px}.info>small{color:#9a6b4d;font-size:.62rem;text-transform:uppercase;letter-spacing:1px}.info h3{font-size:.94rem;line-height:1.35;margin:7px 0}.info h3 a{color:#172022;text-decoration:none}.info p{font-size:.73rem;color:#7b8582;line-height:1.5}.buy{border-top:1px solid #eeeae3;padding-top:11px;display:flex;justify-content:space-between;align-items:center}.buy strong{font-size:.9rem}.buy>a{width:33px;height:33px;border-radius:50%;background:#edf5ef;color:#1c8b52;display:grid;place-items:center;text-decoration:none;font-weight:900}.pagination{display:flex;justify-content:center;gap:18px;margin-top:32px;font-size:.8rem}.pagination a{color:#172022;text-decoration:none;font-weight:800}.pagination span{color:#7b8582}.cat-seo{background:#eeece6;padding:65px 0}.cat-seo .container-lg>div{max-width:850px;color:#5f6967;line-height:1.85}.cat-seo h2{font-size:2rem;margin:0 0 18px}.cat-cta{background:#d18b5a;color:#fff;padding:55px 0}.cat-cta .container-lg{display:flex;align-items:center;justify-content:space-between;gap:30px}.cat-cta h2{font-size:2rem;max-width:700px;margin:0 0 8px}.cat-cta p{color:#fff;opacity:.85}.cat-cta>div>div:last-child{display:flex;gap:9px;flex-wrap:wrap}.btn-light{background:#fff;color:#172022}.btn-outline{border:1px solid #fff9;color:#fff}.empty{background:#fff;padding:55px 20px;text-align:center;border:1px solid #e5e2da;border-radius:11px}.empty p{color:#6e7875}
+@media(max-width:1000px){.product-grid{grid-template-columns:repeat(3,1fr)}.cat-hero-grid{grid-template-columns:1fr}.cat-facts{border-left:0;border-top:1px solid #ffffff2b;padding:20px 0 0;grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){.cat-hero-grid{padding:55px 16px}.cat-hero h1{font-size:2.55rem;letter-spacing:-1.2px}.intro-grid{grid-template-columns:1fr;gap:5px}.cat-intro,.cat-products,.cat-seo{padding:48px 0}.product-grid{grid-template-columns:repeat(2,1fr);gap:10px}.media{height:170px}.info{padding:12px}.info h3{font-size:.82rem}.info p{font-size:.68rem}.products-head h2{font-size:1.5rem}.cat-facts{grid-template-columns:1fr}.cat-cta .container-lg{flex-direction:column;align-items:flex-start}.cat-cta h2{font-size:1.7rem}.cat-crumbs{padding-left:16px}}
 </style>
-
 {% endblock content %}
