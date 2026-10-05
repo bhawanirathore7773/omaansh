@@ -739,30 +739,30 @@ class SiteSettings(models.Model):
     Phone number, WhatsApp number, address, etc. all editable from admin.
     """
     # Business identity
-    business_name = models.CharField(max_length=200, default='')
-    tagline = models.CharField(max_length=300, default='Premium Wall Clock Manufacturer in Jaipur')
+    business_name = models.CharField(max_length=200, default='OSIRA')
+    tagline = models.CharField(max_length=300, default='Thoughtfully crafted wall clocks and décor for modern spaces')
 
     # Contact
-    primary_phone = models.CharField(max_length=20, default='+919462207356')
-    whatsapp_number = models.CharField(max_length=20, default='919462207356',
+    primary_phone = models.CharField(max_length=20, default='+91141616961')
+    whatsapp_number = models.CharField(max_length=20, default='919509912556',
                                       help_text="Format: 91XXXXXXXXXX (no + or -)")
-    email = models.EmailField(default='info@hoovale.com')
+    email = models.EmailField(default='hello@omaansh.com')
 
     # Address (for LocalBusiness schema)
-    street_address = models.CharField(max_length=300, default='Jaipur, Rajasthan, India')
-    locality = models.CharField(max_length=100, default='Jaipur')
+    street_address = models.CharField(max_length=300, default='24, Shree Shyam Vatika, Gokulpura, Kalwar Road, Jaipur, Rajasthan 302012')
+    locality = models.CharField(max_length=100, default='Gokulpura, Jaipur')
     region = models.CharField(max_length=100, default='Rajasthan')
-    postal_code = models.CharField(max_length=10, default='302001')
+    postal_code = models.CharField(max_length=10, default='302012')
     country = models.CharField(max_length=10, default='IN')
 
     # Geo coordinates for LocalBusiness schema
-    latitude = models.FloatField(default=26.9124)
-    longitude = models.FloatField(default=75.7873)
+    latitude = models.FloatField(default=26.9312482)
+    longitude = models.FloatField(default=75.7159318)
 
     # Business credentials (EEAT signals)
     gst_number = models.CharField(max_length=20, blank=True, help_text="GST Number for trust")
-    establishment_year = models.PositiveIntegerField(default=2010)
-    employee_count = models.CharField(max_length=20, blank=True, default='10-50')
+    establishment_year = models.PositiveIntegerField(default=2021)
+    employee_count = models.CharField(max_length=20, blank=True, default='10')
 
     # Social
     facebook_url = models.URLField(blank=True)
