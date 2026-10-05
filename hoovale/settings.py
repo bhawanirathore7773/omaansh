@@ -9,17 +9,16 @@ from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config(
-    "SECRET_KEY",
-    default="django-insecure-hoovale-development-key-change-in-production",
-)
-DEBUG = config("DEBUG", default=True, cast=bool)
+DEBUG = config("DEBUG", default=False, cast=bool)
+SECRET_KEY = config("SECRET_KEY", default="dev-only-change-this-key")
+if not DEBUG and SECRET_KEY == "dev-only-change-this-key":
+    raise RuntimeError("SECRET_KEY must be set in production.")
 
 ALLOWED_HOSTS = [
     host.strip()
     for host in config(
         "ALLOWED_HOSTS",
-        default="localhost,127.0.0.1,www.hoovale.com,hoovale.com",
+        default="localhost,127.0.0.1",
     ).split(",")
     if host.strip()
 ]
@@ -97,22 +96,25 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 
 # Security
-SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=False, cast=bool)
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = config(
-    "SECURE_HSTS_INCLUDE_SUBDOMAINS", default=False, cast=bool
-)
+SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=not DEBUG, cast=bool)
+SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", default=31536000 if not DEBUG else 0, cast=int)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config("SECURE_HSTS_INCLUDE_SUBDOMAINS", default=not DEBUG, cast=bool)
 SECURE_HSTS_PRELOAD = config("SECURE_HSTS_PRELOAD", default=False, cast=bool)
-SECURE_CONTENT_TYPE_NOSNIFF = config(
-    "SECURE_CONTENT_TYPE_NOSNIFF", default=False, cast=bool
-)
-SECURE_BROWSER_XSS_FILTER = config(
-    "SECURE_BROWSER_XSS_FILTER", default=False, cast=bool
-)
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = False  # Removed by modern browsers; kept explicit for clarity.
 X_FRAME_OPTIONS = "SAMEORIGIN"
-SECURE_REFERRER_POLICY = "same-origin"
-SESSION_COOKIE_SECURE = config("SESSION_COOKIE_SECURE", default=False, cast=bool)
-CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE", default=False, cast=bool)
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+SESSION_COOKIE_SECURE = config("SESSION_COOKIE_SECURE", default=not DEBUG, cast=bool)
+CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE", default=not DEBUG, cast=bool)
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip().rstrip("/")
+    for origin in config("CSRF_TRUSTED_ORIGINS", default="").split(",")
+    if origin.strip()
+]
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
 # Database
 DATABASES = {
@@ -170,7 +172,7 @@ ADMIN_RESET_USERNAME = config("ADMIN_RESET_USERNAME", default="admin")
 OTP_EMAIL_PROVIDER = config("OTP_EMAIL_PROVIDER", default="brevo")
 BREVO_API_KEY = config("BREVO_API_KEY", default="")
 BREVO_SENDER_EMAIL = config("BREVO_SENDER_EMAIL", default="")
-BREVO_SENDER_NAME = config("BREVO_SENDER_NAME", default="HOOVALE")
+BREVO_SENDER_NAME = config("BREVO_SENDER_NAME", default="Website")
 
 # SMS provider: Twilio Verify for real SMS; console is a zero-cost local test mode.
 OTP_SMS_PROVIDER = config("OTP_SMS_PROVIDER", default="twilio")
