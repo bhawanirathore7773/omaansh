@@ -95,18 +95,17 @@ def home(request):
             break
         homepage_campaigns.append({**campaign, 'is_dynamic': False})
 
-    featured_products = Product.objects.filter(is_active=True, is_featured=True)[:8]
-    new_arrivals = Product.objects.filter(is_active=True, is_new_arrival=True).order_by('-created_at')[:8]
+    product_base = Product.objects.filter(is_active=True).select_related('category')
+    featured_products = product_base.filter(is_featured=True)[:8]
+    new_arrivals = product_base.filter(is_new_arrival=True).order_by('-created_at')[:8]
     if not new_arrivals.exists():
-        new_arrivals = Product.objects.filter(is_active=True).order_by('-created_at')[:8]
+        new_arrivals = product_base.order_by('-created_at')[:8]
 
-    bestseller_products = Product.objects.filter(
-        is_active=True, is_bestseller=True
+    bestseller_products = product_base.filter(
+        is_bestseller=True
     ).order_by('-updated_at', '-created_at')[:8]
 
-    custom_products = Product.objects.filter(
-        is_active=True
-    ).filter(
+    custom_products = product_base.filter(
         Q(category__name__icontains='custom') |
         Q(category__name__icontains='promotional') |
         Q(category__name__icontains='corporate')
@@ -118,8 +117,8 @@ def home(request):
     # gets its own small product rail so buyers can scan products quickly.
     category_product_sections = []
     for category in categories[:5]:
-        section_products = Product.objects.filter(
-            is_active=True, category=category
+        section_products = product_base.filter(
+            category=category
         ).order_by('-is_featured', '-is_bestseller', '-created_at')[:4]
         if section_products.exists():
             category_product_sections.append({
@@ -257,10 +256,13 @@ def products_list(request):
 
 
 def product_detail(request, slug):
-    product = get_object_or_404(Product, slug=slug, is_active=True)
+    product = get_object_or_404(
+        Product.objects.select_related('category', 'pricing_tier_template'),
+        slug=slug, is_active=True,
+    )
     related_products = Product.objects.filter(
         category=product.category, is_active=True
-    ).exclude(id=product.id)[:4]
+    ).exclude(id=product.id).select_related('category')[:4]
     faqs = FAQ.objects.filter(is_active=True, scope__in=['global', 'product'])[:6]
 
     # ── Specifications ────────────────────────────────────────
@@ -363,7 +365,7 @@ def banner_page(request, slug):
 
 def category_products(request, slug):
     category = get_object_or_404(Category, slug=slug)
-    products = Product.objects.filter(category=category, is_active=True)
+    products = Product.objects.filter(category=category, is_active=True).select_related('category')
     paginator = Paginator(products, 12)
     page_number = request.GET.get('page', 1)
     products_page = paginator.get_page(page_number)
