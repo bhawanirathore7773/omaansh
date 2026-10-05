@@ -81,13 +81,13 @@
     <div class="pv2-gallery">
       <div class="pv2-main">
         {% if product.is_featured %}<span class="pv2-badge">Featured design</span>{% elif product.is_bestseller %}<span class="pv2-badge">Bestseller</span>{% elif product.is_new_arrival %}<span class="pv2-badge">New arrival</span>{% endif %}
-        {% if product.image %}<img id="pv2MainImage" src="{{ product.image.url }}" alt="{{ product.name }} wall clock" fetchpriority="high">{% else %}<img id="pv2MainImage" src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} wall clock" fetchpriority="high">{% endif %}
+        {% if product.image %}<img decoding="async" id="pv2MainImage" src="{{ product.image.url }}" alt="{{ product.name }} wall clock" fetchpriority="high">{% else %}<img decoding="async" id="pv2MainImage" src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} wall clock" fetchpriority="high">{% endif %}
         <button type="button" class="pv2-view" id="pv2OpenImage"><i class="fas fa-expand"></i> View larger</button>
       </div>
       {% if product.additional_images %}
       <div class="pv2-thumbs" aria-label="Product images">
-        {% if product.image %}<button type="button" class="pv2-thumb is-active" data-pv2-image="{{ product.image.url }}"><img src="{{ product.image.url }}" alt="" loading="lazy"></button>{% endif %}
-        {% for extra_image in product.additional_images %}<button type="button" class="pv2-thumb" data-pv2-image="{{ extra_image }}"><img src="{{ extra_image }}" alt="" loading="lazy"></button>{% endfor %}
+        {% if product.image %}<button type="button" class="pv2-thumb is-active" data-pv2-image="{{ product.image.url }}"><img decoding="async" src="{{ product.image.url }}" alt="" loading="lazy"></button>{% endif %}
+        {% for extra_image in product.additional_images %}<button type="button" class="pv2-thumb" data-pv2-image="{{ extra_image }}"><img decoding="async" src="{{ extra_image }}" alt="" loading="lazy"></button>{% endfor %}
       </div>
       {% endif %}
     </div>
@@ -183,7 +183,7 @@
     <div class="pv2-related-grid">
       {% for related in related_products %}
       <a href="{{ related.get_absolute_url }}" class="pv2-related">
-        <div class="pv2-related-img">{% if related.image %}<img src="{{ related.image.url }}" alt="{{ related.name }} wall clock" loading="lazy">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ related.name }} wall clock" loading="lazy">{% endif %}</div>
+        <div class="pv2-related-img">{% if related.image %}<img decoding="async" src="{{ related.image.url }}" alt="{{ related.name }} wall clock" loading="lazy">{% else %}<img decoding="async" src="{% static 'images/product-placeholder.svg' %}" alt="{{ related.name }} wall clock" loading="lazy">{% endif %}</div>
         <div class="pv2-related-info"><span>{{ related.category.name }}</span><h3>{{ related.name }}</h3>{% if related.price %}<strong>From ₹{{ related.price }}</strong>{% else %}<small>Price on enquiry</small>{% endif %}</div>
       </a>
       {% endfor %}
@@ -195,7 +195,7 @@
 
 <div class="pv2-lightbox" id="pv2Lightbox" hidden>
   <button type="button" class="pv2-close" id="pv2Close" aria-label="Close image"><i class="fas fa-times"></i></button>
-  <img src="" alt="" id="pv2LightboxImage">
+  <img decoding="async" src="" alt="" id="pv2LightboxImage">
 </div>
 {% endblock %}
 
