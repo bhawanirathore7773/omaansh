@@ -1,90 +1,21 @@
 {% extends 'base.html' %}
 {% load static seo_tags %}
-
 {% block meta_title %}{{ service.meta_title|default:service.name }}{% endblock %}
 {% block meta_description %}{{ service.meta_description|default:service.short_description|truncatechars:155 }}{% endblock %}
-{% block meta_keywords %}{{ service.meta_keywords }}{% endblock %}
-{% block og_title %}{{ service.meta_title }}{% endblock %}
+{% block meta_keywords %}{{ service.meta_keywords }}, wall clock services Jaipur{% endblock %}
+{% block og_title %}{{ service.meta_title|default:service.name }}{% endblock %}
 {% block og_description %}{{ service.meta_description|default:service.short_description }}{% endblock %}
-
 {% block page_schema %}{% breadcrumb_schema breadcrumb_items %}{% endblock %}
-
 {% block content %}
-<section class="hv-service-hero">
-  <div class="container-lg">
-    <a href="{% url 'services_index' %}" class="hv-service-back"><i class="fas fa-arrow-left"></i> All Services</a>
-    <div class="hv-service-icon"><i class="{{ service.icon_class|default:'fas fa-cogs' }}"></i></div>
-    <div class="hv-home-kicker">HOOVALE SERVICE • JAIPUR</div>
-    <h1>{{ service.h1_heading }}</h1>
-    <p>{{ service.hero_subheading|default:service.short_description }}</p>
-    <div class="hv-service-actions">
-      <a class="btn-hv-gold" href="{% whatsapp_link 'Hi HOOVALE, I need details and pricing for ' %}{{ service.name }}" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Enquiry</a>
-      <a class="btn-hv-outline" href="{% url 'contact' %}">Send Requirement <i class="fas fa-arrow-right"></i></a>
-    </div>
-  </div>
-</section>
-
-<section class="hv-service-content">
-  <div class="container-lg">
-    <div class="row g-4 align-items-start">
-      <div class="col-lg-8">
-        <article class="hv-service-card">
-          <div class="hv-home-kicker">Service Overview</div>
-          <h2>{{ service.name }}</h2>
-          <p class="hv-service-lead">{{ service.short_description }}</p>
-          <div class="hv-rich-copy">{{ service.full_description|linebreaks }}</div>
-          {% if service.process_content %}<div class="hv-service-section"><h2>How it works</h2><div class="hv-rich-copy">{{ service.process_content|linebreaks }}</div></div>{% endif %}
-          {% if service.benefits_content %}<div class="hv-service-section"><h2>What buyers can expect</h2><div class="hv-rich-copy">{{ service.benefits_content|linebreaks }}</div></div>{% endif %}
-        </article>
-      </div>
-      <div class="col-lg-4">
-        <aside class="hv-service-side">
-          <div class="hv-home-kicker">Need a quote?</div>
-          <h3>Share your quantity, design and delivery requirement.</h3>
-          <p>We can help you shortlist suitable wall clocks and discuss branding, pricing and dispatch.</p>
-          <a class="btn-hv-primary w-100" href="{% url 'contact' %}">Send Enquiry <i class="fas fa-arrow-right"></i></a>
-          <a class="btn-hv-whatsapp w-100 mt-2" href="{% whatsapp_link 'Hi HOOVALE, I need a quote for ' %}{{ service.name }}" target="_blank">WhatsApp Us</a>
-        </aside>
-      </div>
-    </div>
-  </div>
-</section>
-
-{% if related_services %}
-<section class="hv-service-related">
-  <div class="container-lg">
-    <div class="hv-home-kicker">More From HOOVALE</div>
-    <h2>Related services</h2>
-    <div class="row g-3 mt-2">
-      {% for related in related_services %}
-      <div class="col-6 col-lg-3"><a class="hv-related-service" href="{{ related.get_absolute_url }}"><i class="{{ related.icon_class|default:'fas fa-arrow-right' }}"></i><strong>{{ related.name }}</strong><span>Explore <i class="fas fa-arrow-right"></i></span></a></div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-{% endif %}
-{% endblock %}
-
-{% block extra_css %}
+<div class="service-page">
+<nav class="service-crumbs"><div class="container-lg"><a href="/">Home</a><span>/</span><a href="{% url 'services_index' %}">Services</a><span>/</span><b>{{ service.name }}</b></div></nav>
+<section class="service-hero">{% if service.hero_image %}<div class="service-bg" style="background-image:url('{{ service.hero_image.url }}')"></div>{% endif %}<div class="container-lg service-hero-grid"><div><span class="eyebrow">BUSINESS SERVICE / JAIPUR</span><h1>{{ service.h1_heading }}</h1><p>{{ service.hero_subheading|default:service.short_description }}</p><div class="service-actions"><a href="{% whatsapp_link 'Hi, I need details and pricing for ' %}{{ service.name }}" target="_blank" rel="noopener" class="btn-main">WhatsApp enquiry</a><a href="{% url 'contact' %}" class="btn-ghost">Send requirement</a></div></div><div class="service-hero-note"><span>SUITABLE FOR</span><strong>Retailers · Offices · Distributors · Brands</strong><p>Share quantity, delivery city and any branding requirement for a tailored conversation.</p></div></div></section>
+<section class="service-content"><div class="container-lg content-grid"><article><span class="eyebrow">SERVICE OVERVIEW</span><h2>{{ service.name }}</h2><p class="lead">{{ service.short_description }}</p><div class="rich">{{ service.full_description|linebreaks }}</div>{% if service.process_content %}<div class="content-block"><span class="eyebrow">HOW IT WORKS</span><h2>From requirement to dispatch</h2><div class="rich">{{ service.process_content|linebreaks }}</div></div>{% endif %}{% if service.benefits_content %}<div class="content-block"><span class="eyebrow">WHY THIS SERVICE</span><h2>What buyers can expect</h2><div class="rich">{{ service.benefits_content|linebreaks }}</div></div>{% endif %}</article><aside><span class="eyebrow">START A CONVERSATION</span><h3>Have a quantity or branding requirement?</h3><p>Send the product type, quantity and delivery location. We’ll help you work out the next step.</p><a href="{% url 'contact' %}" class="side-main">Send enquiry</a><a href="{% whatsapp_link 'Hi, I need a quote for ' %}{{ service.name }}" target="_blank" rel="noopener" class="side-wa">WhatsApp us</a></aside></div></section>
+{% if related_services %}<section class="related"><div class="container-lg"><span class="eyebrow">EXPLORE MORE</span><h2>Other business services</h2><div class="related-grid">{% for related in related_services %}<a href="{{ related.get_absolute_url }}"><i class="{{ related.icon_class|default:'fas fa-arrow-right' }}"></i><strong>{{ related.name }}</strong><small>Explore ↗</small></a>{% endfor %}</div></div></section>{% endif %}
+<section class="service-bottom-cta"><div class="container-lg"><div><span class="eyebrow">READY WHEN YOU ARE</span><h2>Let's discuss the requirement, not just the product.</h2></div><a href="{% url 'contact' %}" class="btn-light">Start an enquiry</a></div></section>
+</div>
 <style>
-.hv-service-hero{padding:58px 0 70px;background:linear-gradient(135deg,#0b1724,#075aa4);color:#fff}
-.hv-service-back{display:inline-flex;gap:8px;color:#d8e7f5;font-weight:700;margin-bottom:24px}
-.hv-service-back:hover{color:#fff}
-.hv-service-icon{width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:rgba(201,169,97,.15);border:1px solid rgba(201,169,97,.55);color:#e2bf70;font-size:1.4rem;margin-bottom:20px}
-.hv-service-hero h1,
-.hv-service-hero h1 *,
-.hv-service-hero .hv-home-kicker{color:#fff!important;-webkit-text-fill-color:#fff!important;}
-.hv-service-hero h1{max-width:850px;margin:10px 0 18px;}
-.hv-service-hero p,
-.hv-service-hero .hv-service-back{color:rgba(255,255,255,.9)!important;-webkit-text-fill-color:rgba(255,255,255,.9)!important;}
-.hv-service-hero p{font-size:1.1rem;max-width:780px;line-height:1.7;}
-.hv-service-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
-.hv-service-content{padding:58px 0;background:#f7f9fc}
-.hv-service-card,.hv-service-side{background:#fff;border:1px solid #e4e9ef;border-radius:18px;padding:30px;box-shadow:0 10px 30px rgba(15,23,42,.06)}
-.hv-service-card h2{margin-bottom:14px}.hv-service-lead{font-size:1.08rem;color:#44546a;line-height:1.8}.hv-rich-copy{color:#465365;line-height:1.85}
-.hv-service-section{margin-top:32px;padding-top:28px;border-top:1px solid #e7ebf0}.hv-service-side{position:sticky;top:105px}.hv-service-side h3{font-size:1.35rem;margin:8px 0 12px}.hv-service-related{padding:58px 0;background:#fff}
-.hv-related-service{display:flex;flex-direction:column;gap:9px;height:100%;padding:20px;border:1px solid #e4e9ef;border-radius:14px;color:#172033;background:#fff}.hv-related-service:hover{color:#075aa4;box-shadow:0 12px 28px rgba(15,23,42,.08)}
-.hv-related-service>i{color:#c9a961}.hv-related-service span{font-size:.82rem;color:#697586;margin-top:auto}
-@media(max-width:767px){.hv-service-hero{padding:44px 0 54px}.hv-service-hero h1{font-size:2.35rem}.hv-service-content{padding:38px 0}.hv-service-card,.hv-service-side{padding:22px}.hv-service-side{position:static}.hv-service-actions>*{width:100%}}
+.service-page{background:#f7f6f2;color:#172022}.service-crumbs{background:#fff;border-bottom:1px solid #ebe8e1;padding:13px 0;font-size:.78rem}.service-crumbs .container-lg{display:flex;gap:9px}.service-crumbs a{color:#697371;text-decoration:none}.service-hero{background:#172022;color:#fff;position:relative;overflow:hidden;min-height:480px;display:flex;align-items:center}.service-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.15}.service-hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.45fr .55fr;gap:65px;align-items:end;padding:72px 0}.service-hero h1{font-family:Manrope,sans-serif;font-size:clamp(2.5rem,5vw,4.7rem);line-height:1.02;letter-spacing:-2px;margin:0 0 18px}.service-hero p{color:#c6cfcd;line-height:1.75;max-width:700px}.service-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:27px}.btn-main,.btn-ghost,.btn-light{display:inline-flex;padding:12px 18px;border-radius:7px;text-decoration:none;font-weight:800;font-size:.83rem}.btn-main{background:#d18b5a;color:#fff}.btn-ghost{border:1px solid #ffffff40;color:#fff}.service-hero-note{border-left:1px solid #ffffff2b;padding-left:25px}.service-hero-note span{font-size:.66rem;letter-spacing:1.7px;color:#9ba8a6;font-weight:800}.service-hero-note strong{display:block;line-height:1.45;margin:13px 0 7px}.service-hero-note p{font-size:.8rem}.service-content{padding:70px 0}.content-grid{display:grid;grid-template-columns:1.7fr .65fr;gap:45px}.content-grid article,.content-grid aside{background:#fff;border:1px solid #e5e2da;border-radius:11px;padding:30px}.content-grid article h2{font-family:Manrope,sans-serif;font-size:2rem;margin:0 0 13px}.lead{font-size:1.02rem;color:#5e6966;line-height:1.75}.rich{color:#596461;line-height:1.85}.content-block{border-top:1px solid #ebe8e1;margin-top:35px;padding-top:30px}.content-block h2{font-size:1.55rem!important}.content-grid aside{height:max-content;position:sticky;top:100px}.content-grid aside h3{font-size:1.3rem;margin:0 0 10px}.content-grid aside p{font-size:.82rem;color:#6c7673;line-height:1.7}.side-main,.side-wa{display:flex;justify-content:center;padding:12px;border-radius:7px;text-decoration:none;font-weight:800;font-size:.82rem;margin-top:10px}.side-main{background:#172022;color:#fff}.side-wa{background:#e9f6ee;color:#16834b}.related{background:#fff;padding:65px 0}.related h2{font-family:Manrope,sans-serif;font-size:2rem;margin:0 0 24px}.related-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.related-grid a{border:1px solid #e5e2da;padding:20px;border-radius:10px;text-decoration:none;color:#172022;display:flex;flex-direction:column;gap:12px}.related-grid a:hover{box-shadow:0 12px 25px #17202212}.related-grid i{color:#c17c4c}.related-grid small{color:#7b8582;margin-top:auto}.service-bottom-cta{background:#d18b5a;color:#fff;padding:48px 0}.service-bottom-cta .container-lg{display:flex;justify-content:space-between;align-items:center;gap:30px}.service-bottom-cta h2{font-family:Manrope,sans-serif;font-size:2rem;margin:0}.btn-light{background:#fff;color:#172022}
+@media(max-width:900px){.service-hero-grid,.content-grid{grid-template-columns:1fr}.service-hero-grid{padding:55px 0}.service-hero-note{border-left:0;border-top:1px solid #ffffff2b;padding:20px 0 0}.content-grid aside{position:static}.related-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.service-hero h1{font-size:2.55rem}.service-content,.related{padding:48px 0}.content-grid article,.content-grid aside{padding:22px}.related-grid{grid-template-columns:1fr}.service-bottom-cta .container-lg{flex-direction:column;align-items:flex-start}.service-bottom-cta h2{font-size:1.7rem}}
 </style>
 {% endblock %}
