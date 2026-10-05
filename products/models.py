@@ -772,9 +772,9 @@ class SiteSettings(models.Model):
 
     # SEO defaults
     default_meta_title = models.CharField(max_length=70,
-        default='Wall Clock Manufacturer & Supplier in Jaipur')
+        default='OSIRA | Wall Clock Manufacturer & Supplier in Jaipur')
     default_meta_description = models.CharField(max_length=160,
-        default='Wall clocks for homes, offices, retailers and bulk buyers, with custom branding and wholesale supply from Jaipur.')
+        default='OSIRA creates wall clocks and décor products for homes, workplaces and commercial spaces, with custom and business order support.')
 
     # Verification
     google_verification = models.CharField(max_length=200, blank=True)
