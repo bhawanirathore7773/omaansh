@@ -1,5 +1,5 @@
 """
-Dynamic XML Sitemaps for HOOVALE
+Dynamic XML Sitemaps for site
 All URL types auto-included → submit to Google Search Console
 URL: /sitemap.xml
 """
