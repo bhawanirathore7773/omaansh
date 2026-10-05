@@ -248,6 +248,7 @@ def products_list(request):
         ],
         'current_page': int(page_number) if str(page_number).isdigit() else 1,
         'total_pages': paginator.num_pages,
+        'is_filtered_catalogue': bool(search_query or selected_category or min_price_raw or max_price_raw or availability or badge or sort != 'featured' or (page_number and str(page_number) != '1')),
     }
     return render(request, 'products/products_list.html', context)
 
@@ -372,6 +373,7 @@ def category_products(request, slug):
             ('Products', '/products/'),
             (category.name, None),
         ],
+        'is_paginated_category': paginator.num_pages > 1,
     }
     return render(request, 'products/category_detail.html', context)
 
