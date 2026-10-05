@@ -126,6 +126,7 @@ def product_schema(product, request=None):
     Outputs Product schema. Gives rich snippet with price, availability, rating.
     Usage: {% product_schema product %}
     """
+    request = context.get("request")
     base_url = request.build_absolute_uri("/").rstrip("/") if request else ""
     image_url = (base_url + product.image.url) if product.image else f"{base_url}/static/images/product-placeholder.svg"
 
@@ -162,8 +163,8 @@ def product_schema(product, request=None):
 # ============================================================
 # 4. BREADCRUMB SCHEMA (improves CTR in search results)
 # ============================================================
-@register.simple_tag
-def breadcrumb_schema(items, request=None):
+@register.simple_tag(takes_context=True)
+def breadcrumb_schema(context, items):
     """
     Outputs BreadcrumbList schema.
     items = [('Name', 'url'), ('Name2', 'url2'), ...]
