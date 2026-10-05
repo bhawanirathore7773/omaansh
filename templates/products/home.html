@@ -158,6 +158,33 @@
 .nx-catalog-more{display:flex;justify-content:center;margin-top:25px}
 .nx-catalog-more a{font-size:.8rem;font-weight:800;color:var(--nx-ink);text-decoration:none;border:1px solid #d8dde4;border-radius:9px;padding:12px 17px;background:#fff}
 .nx-catalog-more a:hover{border-color:#aeb6c1;color:var(--nx-accent-dark)}
+.nx-business-section{background:#101820;color:#fff;padding:86px 0}
+.nx-business-top{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);gap:54px;align-items:end}
+.nx-business-section .nx-kicker{color:#d27a3a}
+.nx-business-section .nx-heading{color:#fff;max-width:760px}
+.nx-business-section .nx-subheading{color:#aeb8c3;max-width:720px}
+.nx-business-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.nx-primary-btn,.nx-outline-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:0 17px;border-radius:9px;text-decoration:none;font-size:.76rem;font-weight:800}
+.nx-primary-btn{background:#d16e2d;color:#fff}.nx-primary-btn:hover{color:#fff;background:#bb5d24}
+.nx-outline-btn{border:1px solid #4a5562;color:#fff}.nx-outline-btn:hover{color:#fff;border-color:#7b8794}
+.nx-capacity-card{background:#fff;color:#17202b;border-radius:18px;padding:25px;box-shadow:0 20px 50px rgba(0,0,0,.16)}
+.nx-capacity-card>span{font-size:.6rem;font-weight:900;letter-spacing:1.5px;color:#a65a26}
+.nx-capacity-card>strong{display:block;font:800 1.5rem/1.12 Manrope,sans-serif;margin:11px 0 8px;letter-spacing:-.03em}
+.nx-capacity-card p{font-size:.78rem;line-height:1.65;color:#667085;margin:0}
+.nx-capacity-meta{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:5px 8px;align-items:end;border-top:1px solid #e7eaee;margin-top:18px;padding-top:16px}
+.nx-capacity-meta b{font-size:1.15rem}.nx-capacity-meta span{font-size:.6rem;color:#667085;padding-bottom:2px}
+.nx-business-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:45px}
+.nx-business-card{position:relative;padding:23px;border:1px solid #2d3742;border-radius:15px;background:#151e27;min-height:245px;transition:transform .2s ease,border-color .2s ease,background .2s ease}
+.nx-business-card:hover{transform:translateY(-4px);border-color:#596574;background:#19232e}
+.nx-business-num{position:absolute;right:18px;top:18px;color:#687583;font-size:.62rem;font-weight:900}
+.nx-business-icon{width:39px;height:39px;border-radius:10px;display:grid;place-items:center;background:#26313d;color:#e2a067;margin-bottom:19px}
+.nx-business-card h3{font:800 1.02rem/1.25 Manrope,sans-serif;margin:0 0 9px}
+.nx-business-card p{color:#9da8b4;font-size:.72rem;line-height:1.65;margin:0 0 18px}
+.nx-business-card a{color:#fff;text-decoration:none;font-size:.67rem;font-weight:800}.nx-business-card a i{margin-left:5px}
+.nx-business-process{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:18px;border-top:1px solid #2d3742;margin-top:34px;padding-top:28px}
+.nx-business-process div{display:grid;grid-template-columns:30px 1fr;column-gap:9px}.nx-business-process span{grid-row:span 2;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#27323d;color:#fff;font-size:.58rem;font-weight:900}.nx-business-process strong{font-size:.72rem}.nx-business-process small{grid-column:2;color:#8995a2;font-size:.62rem;line-height:1.4;margin-top:2px}.nx-business-process>i{color:#6e7a87;font-size:.7rem}
+@media(max-width:991px){.nx-business-top{grid-template-columns:1fr}.nx-business-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nx-business-process{grid-template-columns:1fr;gap:13px}.nx-business-process>i{display:none}}
+@media(max-width:575px){.nx-business-section{padding:60px 0}.nx-business-top{gap:25px}.nx-business-actions{display:grid;grid-template-columns:1fr}.nx-primary-btn,.nx-outline-btn{width:100%}.nx-capacity-card{padding:20px}.nx-business-grid{grid-template-columns:1fr;gap:9px;margin-top:30px}.nx-business-card{min-height:auto;padding:20px}.nx-business-process{margin-top:26px;padding-top:22px}.nx-capacity-meta{grid-template-columns:auto 1fr;gap:5px 9px}.nx-capacity-meta b:nth-of-type(2){grid-column:1}.nx-capacity-meta span:nth-of-type(2){grid-column:2}}
 /* Applications, testimonials, FAQ */
 .nx-industry-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
 .nx-industry{padding:22px;background:#fff;border:1px solid var(--nx-line);border-radius:15px}.nx-industry h3{font-size:.92rem;margin:0 0 7px}.nx-industry p{font-size:.75rem;color:var(--nx-muted);line-height:1.6;margin:0}
@@ -383,21 +410,63 @@
   {% endif %}
 
   <!-- 06. BUSINESS SOLUTIONS -->
-  <section class="nx-section dark">
+  <section class="nx-business-section">
     <div class="container-lg">
-      <div class="nx-section-head">
-        <div>
-          <div class="nx-kicker">For business buyers</div>
-          <h2 class="nx-heading">One collection, different buying needs</h2>
-          <p class="nx-subheading" style="color:#aeb8c3">Whether you are reselling clocks, ordering for an organisation or planning a branded campaign, the buying process starts with the requirement.</p>
+      <div class="nx-business-top">
+        <div class="nx-business-copy">
+          <div class="nx-kicker">Built for business orders</div>
+          <h2 class="nx-heading">From one design to a complete business order.</h2>
+          <p class="nx-subheading">OSIRA works across retail, corporate gifting, promotional programmes and OEM requirements. Tell us the product, quantity, branding and delivery need — we shape the right route from there.</p>
+          <div class="nx-business-actions">
+            <a href="{% url 'contact' %}" class="nx-primary-btn">Discuss your requirement <i class="fas fa-arrow-right"></i></a>
+            <a href="{% url 'services_index' %}" class="nx-outline-btn">Explore business solutions</a>
+          </div>
         </div>
-        <a class="nx-text-link" href="{% url 'services_index' %}" style="color:#fff">Explore services <i class="fas fa-arrow-right"></i></a>
+        <div class="nx-capacity-card">
+          <span>JAIPUR · EST. 2021</span>
+          <strong>In-house wall clock manufacturing</strong>
+          <p>Approx. 4,000 sq. ft. facility with stated production capability of up to 1 lakh clocks per month.</p>
+          <div class="nx-capacity-meta"><b>10</b><span>team members</span><b>4,000+</b><span>sq. ft. facility</span></div>
+        </div>
       </div>
-      <div class="nx-solution-grid">
-        <article class="nx-solution"><i class="fas fa-store"></i><h3>Retail & resellers</h3><p>Browse ready-to-sell designs and discuss quantities suitable for your store or online catalogue.</p></article>
-        <article class="nx-solution"><i class="fas fa-warehouse"></i><h3>Wholesale supply</h3><p>For distributors and dealers who need repeat supply, quantities and pricing discussed around the order.</p></article>
-        <article class="nx-solution"><i class="fas fa-bullhorn"></i><h3>Promotional clocks</h3><p>Explore branded clock requirements for campaigns, dealer programmes, events and business promotion.</p></article>
-        <article class="nx-solution"><i class="fas fa-pen-ruler"></i><h3>Custom & OEM</h3><p>Share your design direction, logo and expected quantity so the team can assess the requirement.</p></article>
+
+      <div class="nx-business-grid">
+        <article class="nx-business-card">
+          <span class="nx-business-num">01</span>
+          <div class="nx-business-icon"><i class="fas fa-store"></i></div>
+          <h3>Retail & wholesale</h3>
+          <p>Ready-to-sell wall clocks for retailers, dealers and distributors, with quantities planned around your catalogue and demand.</p>
+          <a href="{% url 'products_list' %}">Browse products <i class="fas fa-arrow-right"></i></a>
+        </article>
+        <article class="nx-business-card">
+          <span class="nx-business-num">02</span>
+          <div class="nx-business-icon"><i class="fas fa-gift"></i></div>
+          <h3>Corporate gifting</h3>
+          <p>Wall clocks for employee gifts, dealer programmes, milestones and branded business occasions.</p>
+          <a href="{% url 'services_index' %}">View gifting support <i class="fas fa-arrow-right"></i></a>
+        </article>
+        <article class="nx-business-card">
+          <span class="nx-business-num">03</span>
+          <div class="nx-business-icon"><i class="fas fa-bullhorn"></i></div>
+          <h3>Promotional & branded</h3>
+          <p>Share your logo, artwork and quantity for promotional wall clock requirements and campaign-led orders.</p>
+          <a href="{% url 'services_index' %}">Explore branding <i class="fas fa-arrow-right"></i></a>
+        </article>
+        <article class="nx-business-card">
+          <span class="nx-business-num">04</span>
+          <div class="nx-business-icon"><i class="fas fa-drafting-compass"></i></div>
+          <h3>Custom & OEM</h3>
+          <p>Discuss product direction, dimensions, finish, branding and quantity for custom or OEM requirements.</p>
+          <a href="{% url 'services_index' %}">Talk to OSIRA <i class="fas fa-arrow-right"></i></a>
+        </article>
+      </div>
+
+      <div class="nx-business-process">
+        <div><span>01</span><strong>Share the requirement</strong><small>Product, quantity, logo and delivery location.</small></div>
+        <i class="fas fa-arrow-right"></i>
+        <div><span>02</span><strong>Confirm the route</strong><small>Design, branding, pricing and order details.</small></div>
+        <i class="fas fa-arrow-right"></i>
+        <div><span>03</span><strong>Move to production</strong><small>Execution aligned to the agreed requirement.</small></div>
       </div>
     </div>
   </section>
