@@ -269,7 +269,8 @@
  .nx-solution-grid,.nx-process,.nx-industry-grid,.nx-testimonial-grid{grid-template-columns:1fr}.nx-about-panel{min-height:260px;padding:26px}.nx-about-stat b{font-size:3rem}.nx-check-list{grid-template-columns:1fr}
  .nx-actions{display:grid;grid-template-columns:1fr}.nx-btn{width:100%}.nx-cta{padding:54px 0}
 }
-</style>
+@media(max-width:575px){.nx-business-section .nx-business-grid{grid-template-columns:1fr 1fr}.nx-business-section .nx-business-card{min-height:185px}
+}</style>
 {% endblock %}
 
 {% block content %}
@@ -654,9 +655,3 @@
 </div>
 {% endblock %}
 
-<style>
-@media(max-width:575px){
-  .nx-business-section .nx-business-grid{grid-template-columns:1fr 1fr}
-  .nx-business-section .nx-business-card{min-height:185px}
-}
-</style>
