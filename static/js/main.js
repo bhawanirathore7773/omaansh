@@ -1,5 +1,5 @@
 /**
- * HOOVALE - Premium Wall Clock Brand
+ * Site interaction and enquiry scripts
  * Main JavaScript File
  */
 
