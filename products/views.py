@@ -268,7 +268,9 @@ def product_detail(request, slug):
     )
     related_products = Product.objects.filter(
         category=product.category, is_active=True
-    ).exclude(id=product.id).select_related('category')[:4]
+    ).exclude(id=product.id).select_related('category').order_by(
+        '-is_featured', '-is_bestseller', '-is_new_arrival', '-created_at'
+    )[:2]
     faqs = FAQ.objects.filter(is_active=True, scope__in=['global', 'product'])[:6]
 
     # ── Specifications ────────────────────────────────────────
