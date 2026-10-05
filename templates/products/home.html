@@ -197,13 +197,13 @@
             {% if featured_products %}
               {% with hero=featured_products.0 %}
                 {% if hero.image %}
-                  <img src="{{ hero.image.url }}" alt="{{ hero.name }} wall clock" fetchpriority="high">
+                  <img decoding="async" src="{{ hero.image.url }}" alt="{{ hero.name }} wall clock" fetchpriority="high">
                 {% else %}
-                  <img src="{% static 'images/hero-clock.png' %}" alt="Wall clock collection" fetchpriority="high">
+                  <img decoding="async" src="{% static 'images/hero-clock.png' %}" alt="Wall clock collection" fetchpriority="high">
                 {% endif %}
               {% endwith %}
             {% else %}
-              <img src="{% static 'images/hero-clock.png' %}" alt="Wall clock collection" fetchpriority="high">
+              <img decoding="async" src="{% static 'images/hero-clock.png' %}" alt="Wall clock collection" fetchpriority="high">
             {% endif %}
           </div>
           <div class="nx-hero-float">
@@ -241,11 +241,11 @@
         {% for cat in categories %}
         <a class="nx-category" href="{{ cat.get_absolute_url }}">
           {% if cat.image %}
-            <img src="{{ cat.image.url }}" alt="{{ cat.name }} wall clocks" loading="lazy">
+            <img decoding="async" src="{{ cat.image.url }}" alt="{{ cat.name }} wall clocks" loading="lazy">
           {% elif cat.static_image_path %}
-            <img src="{% static cat.static_image_path %}" alt="{{ cat.name }} wall clocks" loading="lazy">
+            <img decoding="async" src="{% static cat.static_image_path %}" alt="{{ cat.name }} wall clocks" loading="lazy">
           {% else %}
-            <img src="{% static 'images/product-placeholder.svg' %}" alt="{{ cat.name }} wall clocks" loading="lazy">
+            <img decoding="async" src="{% static 'images/product-placeholder.svg' %}" alt="{{ cat.name }} wall clocks" loading="lazy">
           {% endif %}
           <div class="nx-category-content">
             <h3>{{ cat.name }}</h3>
@@ -280,9 +280,9 @@
         {% with product=featured_products.0 %}
         <a class="nx-product-feature" href="{{ product.get_absolute_url }}">
           {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }} wall clock" loading="lazy">
+            <img decoding="async" src="{{ product.image.url }}" alt="{{ product.name }} wall clock" loading="lazy">
           {% else %}
-            <img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} wall clock" loading="lazy">
+            <img decoding="async" src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} wall clock" loading="lazy">
           {% endif %}
           <div class="nx-product-overlay">
             <span class="tag">{{ product.category.name }}</span>
@@ -294,7 +294,7 @@
           {% for product in featured_products|slice:"1:5" %}
           <a class="nx-product-small" href="{{ product.get_absolute_url }}">
             <div class="img">
-              {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} wall clock" loading="lazy">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} wall clock" loading="lazy">{% endif %}
+              {% if product.image %}<img decoding="async" src="{{ product.image.url }}" alt="{{ product.name }} wall clock" loading="lazy">{% else %}<img decoding="async" src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} wall clock" loading="lazy">{% endif %}
             </div>
             <div class="body">
               <div class="meta">{{ product.category.name }}</div>
@@ -327,7 +327,7 @@
         {% for product in new_arrivals|slice:":4" %}
         <a class="nx-product-small" href="{{ product.get_absolute_url }}">
           <div class="img" style="height:205px">
-            {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} wall clock" loading="lazy">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} wall clock" loading="lazy">{% endif %}
+            {% if product.image %}<img decoding="async" src="{{ product.image.url }}" alt="{{ product.name }} wall clock" loading="lazy">{% else %}<img decoding="async" src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} wall clock" loading="lazy">{% endif %}
           </div>
           <div class="body"><div class="meta">{{ product.category.name }} · New</div><h3>{{ product.name }}</h3><div class="price">{% if product.price %}From ₹{{ product.price }}{% else %}Get price{% endif %}</div></div>
         </a>
