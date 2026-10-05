@@ -34,21 +34,24 @@ def render_jsonld(data):
 # ============================================================
 # 1. LOCAL BUSINESS SCHEMA (most important for local SEO)
 # ============================================================
-@register.simple_tag
-def local_business_schema():
+@register.simple_tag(takes_context=True)
+def local_business_schema(context):
     """
     Outputs LocalBusiness schema. Critical for ranking in Jaipur.
     Use on every page (or at least homepage + contact).
     """
     s = SiteSettings.load()
+    request = context.get("request")
+    origin = request.build_absolute_uri("/").rstrip("/") if request else ""
+    logo_url = request.build_absolute_uri("/static/images/favicon/android-chrome-512x512.png") if request else "/static/images/favicon/android-chrome-512x512.png"
     data = {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
-        "@id": "https://hoovale.com/#business",
+        "@id": f"{origin}/#business" if origin else "#business",
         "name": s.business_name,
-        "image": "https://hoovale.com/static/images/favicon/android-chrome-512x512.png",
+        "image": logo_url,
         "description": s.default_meta_description,
-        "url": "https://hoovale.com",
+        "url": origin or "/",
         "telephone": s.primary_phone,
         "email": s.email,
         "priceRange": "₹₹",
@@ -81,20 +84,22 @@ def local_business_schema():
 # ============================================================
 # 2. ORGANIZATION SCHEMA (brand entity)
 # ============================================================
-@register.simple_tag
-def organization_schema():
+@register.simple_tag(takes_context=True)
+def organization_schema(context):
     """Identifies HOOVALE as an organization in Google Knowledge Graph."""
     s = SiteSettings.load()
+    request = context.get("request")
+    origin = request.build_absolute_uri("/").rstrip("/") if request else ""
+    logo_url = request.build_absolute_uri("/static/images/favicon/android-chrome-512x512.png") if request else "/static/images/favicon/android-chrome-512x512.png"
     data = {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "@id": "https://hoovale.com/#organization",
+        "@id": f"{origin}/#organization" if origin else "#organization",
         "name": s.business_name,
-        "alternateName": "HOOVALE",
-        "url": "https://hoovale.com/",
+        "url": origin or "/",
         "logo": {
             "@type": "ImageObject",
-            "url": "https://hoovale.com/static/images/hoovale-mark.svg",
+            "url": logo_url,
             "width": 600,
             "height": 200
         },
@@ -121,8 +126,8 @@ def product_schema(product, request=None):
     Outputs Product schema. Gives rich snippet with price, availability, rating.
     Usage: {% product_schema product %}
     """
-    base_url = "https://hoovale.com"
-    image_url = base_url + product.image.url if product.image else f"{base_url}/static/images/placeholder.jpg"
+    base_url = request.build_absolute_uri("/").rstrip("/") if request else ""
+    image_url = (base_url + product.image.url) if product.image else f"{base_url}/static/images/product-placeholder.svg"
 
     data = {
         "@context": "https://schema.org",
@@ -133,7 +138,7 @@ def product_schema(product, request=None):
         "sku": product.sku or f"HV-{product.id}",
         "brand": {
             "@type": "Brand",
-            "name": product.brand or "HOOVALE"
+            "name": product.brand or SiteSettings.load().business_name
         },
         "category": product.category.name if product.category else "Wall Clocks",
     }
@@ -147,7 +152,7 @@ def product_schema(product, request=None):
             "availability": f"https://schema.org/{product.availability}",
             "seller": {
                 "@type": "Organization",
-                "name": "HOOVALE"
+                "name": SiteSettings.load().business_name
             }
         }
 
@@ -158,12 +163,12 @@ def product_schema(product, request=None):
 # 4. BREADCRUMB SCHEMA (improves CTR in search results)
 # ============================================================
 @register.simple_tag
-def breadcrumb_schema(items):
+def breadcrumb_schema(items, request=None):
     """
     Outputs BreadcrumbList schema.
     items = [('Name', 'url'), ('Name2', 'url2'), ...]
     """
-    base_url = "https://hoovale.com"
+    base_url = request.build_absolute_uri("/").rstrip("/") if request else ""
     data = {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -244,17 +249,19 @@ def aggregate_rating_schema(testimonials):
 # ============================================================
 # 7. WEBSITE SCHEMA
 # ============================================================
-@register.simple_tag
-def website_schema():
-    """Outputs WebSite entity markup for site identity."""
+@register.simple_tag(takes_context=True)
+def website_schema(context):
+    """Outputs a dynamic WebSite entity using the current request origin."""
+    s = SiteSettings.load()
+    request = context.get("request")
+    origin = request.build_absolute_uri("/").rstrip("/") if request else ""
     data = {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "@id": "https://hoovale.com/#website",
-        "url": "https://hoovale.com/",
-        "name": "HOOVALE",
-        "alternateName": "HOOVALE Wall Clocks",
-        "publisher": {"@id": "https://hoovale.com/#organization"}
+        "@id": f"{origin}/#website" if origin else "#website",
+        "url": origin or "/",
+        "name": s.business_name,
+        "publisher": {"@id": f"{origin}/#organization" if origin else "#organization"}
     }
     return render_jsonld(data)
 
@@ -262,30 +269,27 @@ def website_schema():
 # ============================================================
 # 8. SITE NAVIGATION SCHEMA
 # ============================================================
-@register.simple_tag
-def site_navigation_schema():
-    """Outputs navigation links so crawlers can understand site hierarchy."""
+@register.simple_tag(takes_context=True)
+def site_navigation_schema(context):
+    """Outputs navigation markup using the site's real origin."""
+    s = SiteSettings.load()
+    request = context.get("request")
+    origin = request.build_absolute_uri("/").rstrip("/") if request else ""
     links = [
         ("Home", "/"),
         ("Wall Clocks", "/products/"),
-        ("Categories", "/categories/"),
+        ("Collections", "/categories/"),
         ("Services", "/services/"),
-        ("About HOOVALE", "/about/"),
-        ("Wall Clock Guides", "/blog/"),
+        ("About", "/about/"),
+        ("Guides", "/blog/"),
         ("Contact", "/contact/"),
     ]
-    base_url = "https://hoovale.com"
     data = {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": "HOOVALE site navigation",
+        "name": f"{s.business_name} site navigation",
         "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": i + 1,
-                "name": name,
-                "url": base_url + url
-            }
+            {"@type": "ListItem", "position": i + 1, "name": name, "url": f"{origin}{url}"}
             for i, (name, url) in enumerate(links)
         ]
     }
@@ -362,7 +366,7 @@ def seo_meta(context, title=None, description=None, keywords=None, image=None, u
         'title': title or s.default_meta_title,
         'description': (description or s.default_meta_description)[:160],
         'keywords': keywords or 'wall clock manufacturer jaipur, bulk wall clocks, wholesale clocks',
-        'image': image or 'https://hoovale.com/static/images/og-default.jpg',
-        'url': url or (request.build_absolute_uri() if request else 'https://hoovale.com'),
+        'image': image or (request.build_absolute_uri('/static/images/og-default.jpg') if request else '/static/images/og-default.jpg'),
+        'url': url or (request.build_absolute_uri() if request else ''),
         'business_name': s.business_name,
     }
