@@ -89,7 +89,7 @@ def can_request_reset(target: str) -> tuple[bool, str]:
 
 
 def _render_otp_email(otp: str) -> tuple[str, str, str]:
-    subject = "Your HOOVALE Admin password reset OTP"
+    subject = "Your admin password reset OTP"
     context = {
         "otp": otp,
         "expires_minutes": OTP_TTL_MINUTES,
@@ -97,7 +97,7 @@ def _render_otp_email(otp: str) -> tuple[str, str, str]:
     }
     html = render_to_string("accounts/email/password_reset_otp.html", context)
     text = (
-        "HOOVALE Admin password reset\n\n"
+        "Admin password reset\n\n"
         f"Your one-time verification code is {otp}.\n"
         f"This code expires in {OTP_TTL_MINUTES} minutes.\n\n"
         "If you did not request this, you can safely ignore this email."
@@ -111,7 +111,7 @@ def send_email_otp(challenge: PasswordResetChallenge, otp: str) -> str:
 
     if provider == "console":
         logger.warning(
-            "HOOVALE TEST OTP [email] target=%s otp=%s expires=%s minutes",
+            "Admin test OTP [email] target=%s otp=%s expires=%s minutes",
             challenge.target,
             otp,
             OTP_TTL_MINUTES,
@@ -123,7 +123,7 @@ def send_email_otp(challenge: PasswordResetChallenge, otp: str) -> str:
 
     api_key = getattr(settings, "BREVO_API_KEY", "")
     sender_email = getattr(settings, "BREVO_SENDER_EMAIL", "")
-    sender_name = getattr(settings, "BREVO_SENDER_NAME", "HOOVALE")
+    sender_name = getattr(settings, "BREVO_SENDER_NAME", "Site")
     if not api_key or not sender_email:
         raise RuntimeError("Brevo email OTP is not configured.")
 
@@ -140,7 +140,7 @@ def send_email_otp(challenge: PasswordResetChallenge, otp: str) -> str:
             "subject": subject,
             "htmlContent": html,
             "textContent": text,
-            "tags": ["hoovale-admin-password-reset"],
+            "tags": ["admin-password-reset"],
         },
         timeout=12,
     )
@@ -159,7 +159,7 @@ def send_phone_otp(challenge: PasswordResetChallenge) -> str:
         challenge.otp_hash = make_password(otp)
         challenge.save(update_fields=["otp_hash"])
         logger.warning(
-            "HOOVALE TEST OTP [phone] target=%s otp=%s expires=%s minutes",
+            "Admin test OTP [phone] target=%s otp=%s expires=%s minutes",
             challenge.target,
             otp,
             OTP_TTL_MINUTES,
