@@ -43,7 +43,7 @@ class Category(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         if not self.meta_title:
-            self.meta_title = f"{self.name} Manufacturer & Supplier in Jaipur
+            self.meta_title = f"{self.name} Manufacturer & Supplier in Jaipur | Wall Clock Supply"
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -739,7 +739,7 @@ class SiteSettings(models.Model):
     Phone number, WhatsApp number, address, etc. all editable from admin.
     """
     # Business identity
-    business_name = models.CharField(max_length=200, default=''
+    business_name = models.CharField(max_length=200, default='')
     tagline = models.CharField(max_length=300, default='Premium Wall Clock Manufacturer in Jaipur')
 
     # Contact
