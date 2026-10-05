@@ -5,9 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
-    initializeMenuHighlight();
-    initializeBottomNav();
-    initializeLazyLoading();
+    // Native browser lazy-loading handles image scheduling.
     initializeSmoothScroll();
     initializeFormValidation();
     initializeFastNavigation();
@@ -276,61 +274,6 @@ function initializeCampaignCarousel() {
     measure();
     updateIndicators();
     restartAutoplay();
-}
-
-/**
- * Highlight active menu item based on current page
- */
-function initializeMenuHighlight() {
-    const currentLocation = location.pathname;
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        const normalizedHref = href ? href.replace(/\/$/, '') || '/' : '';
-        const normalizedLocation = currentLocation.replace(/\/$/, '') || '/';
-        link.classList.toggle('active', normalizedHref === normalizedLocation);
-    });
-}
-
-/**
- * Lazy load images for better performance
- */
-function initializeBottomNav() {
-    const items = document.querySelectorAll('[data-bottom-nav]');
-    if (!items.length) return;
-
-    const path = window.location.pathname.replace(/\/$/, '') || '/';
-
-    items.forEach(item => {
-        const type = item.dataset.bottomNav;
-        const isHome = type === 'home' && path === '/';
-        const isProducts = type === 'products' && path.startsWith('/products');
-        const isCategories = type === 'categories' && path.startsWith('/categories');
-        const isContact = type === 'contact' && path === '/contact';
-        const isAbout = type === 'about' && path === '/about';
-        item.classList.toggle('active', isHome || isProducts || isCategories || isContact || isAbout);
-    });
-}
-
-
-function initializeLazyLoading() {
-    if ('IntersectionObserver' in window) {
-        const images = document.querySelectorAll('img[loading="lazy"]');
-        
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src || img.src;
-                    img.classList.add('loaded');
-                    observer.unobserve(img);
-                }
-            });
-        });
-        
-        images.forEach(img => imageObserver.observe(img));
-    }
 }
 
 /**
