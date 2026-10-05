@@ -519,15 +519,19 @@ def contact(request):
 # ROBOTS.TXT
 # ============================================================
 def robots_txt(request):
+    """Serve a crawler-friendly robots.txt with the current public origin."""
+    origin = request.build_absolute_uri("/").rstrip("/")
     lines = [
         "User-Agent: *",
         "Allow: /",
         "Disallow: /admin/",
         "Disallow: /accounts/",
+        "Disallow: /submit-enquiry/",
+        "Disallow: /?*",
         "",
-        "Sitemap: https://hoovale.com/sitemap.xml",
+        f"Sitemap: {origin}/sitemap.xml",
     ]
-    return HttpResponse("\n".join(lines), content_type="text/plain")
+    return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")
 
 
 # ============================================================
