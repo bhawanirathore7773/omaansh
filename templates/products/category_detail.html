@@ -2,7 +2,8 @@
 {% load static seo_tags %}
 {% block meta_title %}{{ category.meta_title|default:category.name }} | Wall Clocks Jaipur{% endblock %}
 {% block meta_description %}{{ category.meta_description|default:category.description|truncatechars:155 }} Browse {{ category.name|lower }} wall clocks for retail, office and bulk requirements from Jaipur.{% endblock %}
-{% block meta_keywords %}{{ category.name|lower }} wall clocks Jaipur, wholesale wall clocks, bulk wall clocks, custom wall clocks{% endblock %}
+{% block meta_keywords %}
+{% block robots %}{% if request.GET.page %}noindex, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{% else %}index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{% endif %}{% endblock %}{{ category.name|lower }} wall clocks Jaipur, wholesale wall clocks, bulk wall clocks, custom wall clocks{% endblock %}
 {% block page_schema %}{% breadcrumb_schema breadcrumb_items %}{% endblock page_schema %}
 {% block content %}
 <div class="cat-page">
