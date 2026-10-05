@@ -43,7 +43,7 @@ class Category(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         if not self.meta_title:
-            self.meta_title = f"{self.name} Manufacturer & Supplier in Jaipur | HOOVALE"
+            self.meta_title = f"{self.name} Manufacturer & Supplier in Jaipur
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -237,7 +237,7 @@ class Product(models.Model):
     og_image = models.ImageField(upload_to='og_images/', blank=True, null=True)
 
     # Schema.org product fields
-    brand = models.CharField(max_length=100, default='HOOVALE')
+    brand = models.CharField(max_length=100, default='Wall Clock Manufacturer')
     sku = models.CharField(max_length=50, blank=True)
     availability = models.CharField(max_length=30, default='InStock',
                                    choices=[('InStock','In Stock'),('OutOfStock','Out of Stock'),('PreOrder','Pre Order')])
@@ -290,7 +290,7 @@ class Product(models.Model):
         else:
             self.meta_description = self.meta_description[:160].rstrip()
         if not self.sku:
-            self.sku = f"HV-{self.id or 'NEW'}-{slugify(self.name)[:10].upper()}"
+            self.sku = f"WC-{self.id or 'NEW'}-{slugify(self.name)[:10].upper()}"
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -739,7 +739,7 @@ class SiteSettings(models.Model):
     Phone number, WhatsApp number, address, etc. all editable from admin.
     """
     # Business identity
-    business_name = models.CharField(max_length=200, default='HOOVALE')
+    business_name = models.CharField(max_length=200, default=''
     tagline = models.CharField(max_length=300, default='Premium Wall Clock Manufacturer in Jaipur')
 
     # Contact
@@ -772,9 +772,9 @@ class SiteSettings(models.Model):
 
     # SEO defaults
     default_meta_title = models.CharField(max_length=70,
-        default='HOOVALE — Wall Clock Manufacturer & Supplier in Jaipur')
+        default='Wall Clock Manufacturer & Supplier in Jaipur')
     default_meta_description = models.CharField(max_length=160,
-        default='Leading wall clock manufacturer in Jaipur. Bulk orders, custom logo printing, OEM supply across India. Call for wholesale prices.')
+        default='Wall clocks for homes, offices, retailers and bulk buyers, with custom branding and wholesale supply from Jaipur.')
 
     # Verification
     google_verification = models.CharField(max_length=200, blank=True)
