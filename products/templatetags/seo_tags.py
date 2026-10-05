@@ -121,12 +121,12 @@ def organization_schema(context):
 # 3. PRODUCT SCHEMA (rich snippets with price + rating)
 # ============================================================
 @register.simple_tag
-def product_schema(product, request=None):
+def product_schema(context, product, request=None):
     """
     Outputs Product schema. Gives rich snippet with price, availability, rating.
     Usage: {% product_schema product %}
     """
-    request = context.get("request")
+    request = request or context.get("request")
     base_url = request.build_absolute_uri("/").rstrip("/") if request else ""
     image_url = (base_url + product.image.url) if product.image else f"{base_url}/static/images/product-placeholder.svg"
 
@@ -169,6 +169,7 @@ def breadcrumb_schema(context, items):
     Outputs BreadcrumbList schema.
     items = [('Name', 'url'), ('Name2', 'url2'), ...]
     """
+    request = context.get("request")
     base_url = request.build_absolute_uri("/").rstrip("/") if request else ""
     data = {
         "@context": "https://schema.org",
@@ -235,7 +236,7 @@ def aggregate_rating_schema(testimonials):
     data = {
         "@context": "https://schema.org",
         "@type": "Product",
-        "name": "HOOVALE Wall Clocks",
+        "name": f"{SiteSettings.load().business_name} Wall Clocks",
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": str(avg),
