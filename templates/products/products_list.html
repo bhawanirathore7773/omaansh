@@ -84,6 +84,7 @@
  body.hv-filter-open .products-filter-drawer{transform:translate(-50%,0)!important;visibility:visible;transition:transform .3s ease}
  .products-filter-form{height:100%;display:flex;flex-direction:column}.products-filter-drawer-head{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid #edf0f3}.products-filter-drawer-body{overflow:auto;flex:1;padding:18px 20px}.products-filter-drawer-footer{display:flex;gap:8px;padding:14px 20px;border-top:1px solid #edf0f3}.filter-apply-btn,.filter-clear-btn{flex:1;text-align:center;padding:12px;border-radius:8px;text-decoration:none;font-weight:800}.filter-apply-btn{border:0;background:#101828;color:#fff}.filter-clear-btn{border:1px solid #d9dee6;color:#344054}
 }
+.nx-infinite-spinner{display:inline-block;width:16px;height:16px;border:2px solid #d9dee6;border-top-color:#c56a2d;border-radius:50%;vertical-align:-3px;margin-right:7px;animation:nxSpin .7s linear infinite}@keyframes nxSpin{to{transform:rotate(360deg)}}
 </style>
 {% endblock %}
 
@@ -183,7 +184,7 @@
         </div>
 
         {% if total_pages > 1 %}
-        <nav class="nx-pagination" aria-label="Product pages">
+        <nav class="nx-pagination" id="nxPagination" aria-label="Product pages">
           {% if current_page > 1 %}<a href="?page={{ current_page|add:'-1' }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if availability %}&availability={{ availability|urlencode }}{% endif %}{% if badge %}&badge={{ badge|urlencode }}{% endif %}{% if sort and sort != 'featured' %}&sort={{ sort|urlencode }}{% endif %}">←</a>{% endif %}
           {% for page_num in "x"|rjust:total_pages %}
             {% if forloop.counter == current_page %}<span class="active">{{ forloop.counter }}</span>{% else %}<a href="?page={{ forloop.counter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if availability %}&availability={{ availability|urlencode }}{% endif %}{% if badge %}&badge={{ badge|urlencode }}{% endif %}{% if sort and sort != 'featured' %}&sort={{ sort|urlencode }}{% endif %}">{{ forloop.counter }}</a>{% endif %}
@@ -191,6 +192,10 @@
           {% if current_page < total_pages %}<a href="?page={{ current_page|add:'1' }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if availability %}&availability={{ availability|urlencode }}{% endif %}{% if badge %}&badge={{ badge|urlencode }}{% endif %}{% if sort and sort != 'featured' %}&sort={{ sort|urlencode }}{% endif %}">→</a>{% endif %}
         </nav>
         {% endif %}
+        <div id="nxInfiniteStatus" style="display:none;text-align:center;padding:22px 0;color:#667085;font-size:.75rem">
+          <span class="nx-infinite-spinner" aria-hidden="true"></span>
+          <span class="nx-infinite-text">Loading more wall clocks…</span>
+        </div>
         {% else %}
         <div class="nx-empty">
           <i class="fas fa-magnifying-glass" style="font-size:2rem;color:#c56a2d;margin-bottom:14px"></i>
@@ -255,6 +260,66 @@ document.addEventListener('DOMContentLoaded',function(){
   if(typeof initializeProductEnquiry==='function') initializeProductEnquiry();
   if(typeof initializeProductFilters==='function') initializeProductFilters();
   if(typeof initializeProductPriceRange==='function') initializeProductPriceRange();
+
+  const grid=document.querySelector('.nx-product-grid');
+  const pagination=document.getElementById('nxPagination');
+  const status=document.getElementById('nxInfiniteStatus');
+  if(!grid || !pagination || !status) return;
+
+  const pageLinks=Array.from(pagination.querySelectorAll('a[href]'));
+  const nextLink=pageLinks[pageLinks.length-1];
+  if(!nextLink || !nextLink.textContent.trim().includes('→')) return;
+
+  let loading=false;
+  let finished=false;
+  let nextUrl=nextLink.href;
+
+  pagination.style.display='none';
+  status.style.display='block';
+
+  const loadMore=async function(){
+    if(loading || finished || !nextUrl) return;
+    loading=true;
+    status.querySelector('.nx-infinite-text').textContent='Loading more wall clocks…';
+    try{
+      const response=await fetch(nextUrl,{headers:{'X-Requested-With':'XMLHttpRequest'}});
+      if(!response.ok) throw new Error('Unable to load products');
+      const html=await response.text();
+      const doc=new DOMParser().parseFromString(html,'text/html');
+      const newCards=doc.querySelectorAll('.nx-product-grid .nx-product-card');
+      if(!newCards.length){
+        finished=true;
+        status.querySelector('.nx-infinite-text').textContent='You have reached the end of the collection.';
+        status.querySelector('.nx-infinite-spinner').style.display='none';
+        return;
+      }
+      newCards.forEach(card=>grid.appendChild(document.importNode(card,true)));
+
+      const newPagination=doc.getElementById('nxPagination');
+      const newNext=newPagination ? Array.from(newPagination.querySelectorAll('a[href]')).find(a=>a.textContent.trim()==='→') : null;
+      if(newNext){
+        nextUrl=newNext.href;
+        const nextPage=new URL(nextUrl,window.location.origin).searchParams.get('page');
+        if(nextPage) window.history.replaceState({},'',nextUrl);
+      }else{
+        finished=true;
+        status.querySelector('.nx-infinite-text').textContent='You have reached the end of the collection.';
+        status.querySelector('.nx-infinite-spinner').style.display='none';
+      }
+
+      if(typeof initializeProductEnquiry==='function') initializeProductEnquiry();
+    }catch(error){
+      status.querySelector('.nx-infinite-text').textContent='Could not load more products. Scroll again to retry.';
+      console.error(error);
+    }finally{
+      loading=false;
+    }
+  };
+
+  const observer=new IntersectionObserver(entries=>{
+    if(entries.some(entry=>entry.isIntersecting)) loadMore();
+  },{rootMargin:'700px 0px'});
+  observer.observe(status);
 });
 </script>
 {% endblock %}
