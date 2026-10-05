@@ -130,48 +130,69 @@
 {# ================================================== #}
 {# NAVIGATION                                          #}
 {# ================================================== #}
-<nav class="navbar navbar-expand-lg hv-navbar sticky-top">
-    <div class="container-lg">
-        <a class="navbar-brand" href="{% url 'home' %}" aria-label="{{ site.business_name|default:'Home' }} Home">
-            {{ site.business_name|default:"Home" }}
-        </a>
-        <button
-            class="navbar-toggler hv-menu-toggle"
-            id="hvMenuToggle"
-            type="button"
-            aria-label="Open navigation menu"
-            aria-controls="nav"
-            aria-expanded="false">
-            <span class="hv-menu-icon" aria-hidden="true">
-                <span></span><span></span><span></span>
-            </span>
-        </button>
-        <div class="hv-menu-overlay" id="hvMenuOverlay" aria-hidden="true"></div>
-        <div class="collapse navbar-collapse hv-mobile-drawer" id="nav">
-            <div class="hv-drawer-header">
-                <span class="hv-drawer-title">MENU</span>
-            </div>
-            <ul class="navbar-nav ms-auto" style="gap:8px;">
-                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'products_list' %}">Wall Clocks</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'categories_index' %}">Categories</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'services_index' %}">Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'blog_list' %}">Wall Clock Guides</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
-                <li class="nav-item">
-                    <button
-                        class="btn btn-warning fw-bold ms-lg-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#bulkInquiryModal"
-                        style="background:linear-gradient(135deg,#FFA500,#FF8C00); border:none; color:white; padding:10px 24px; border-radius:6px;">
-                        <i class="fas fa-bolt"></i> Get Quote
-                    </button>
-                </li>
-            </ul>
+<header class="site-header">
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="container-lg site-nav-inner">
+      <a class="site-brand" href="{% url 'home' %}" aria-label="{{ site.business_name|default:'Home' }} home">
+        <span class="site-brand-mark" aria-hidden="true">{{ site.business_name|default:"W"|slice:":1" }}</span>
+        <span class="site-brand-copy">
+          <strong>{{ site.business_name|default:"Our Company" }}</strong>
+          <small>Wall clocks · Jaipur</small>
+        </span>
+      </a>
+
+      <button class="site-menu-toggle" id="siteMenuToggle" type="button" aria-label="Open navigation" aria-controls="siteNavMenu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="site-nav-menu" id="siteNavMenu">
+        <div class="site-nav-links">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'products_list' %}">Wall Clocks</a>
+          <a href="{% url 'categories_index' %}">Collections</a>
+          <a href="{% url 'services_index' %}">Business Solutions</a>
+          <a href="{% url 'about' %}">About</a>
+          <a href="{% url 'blog_list' %}">Guides</a>
         </div>
+        <a href="{% url 'contact' %}" class="site-nav-cta">
+          Start an enquiry <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
     </div>
-</nav>
+  </nav>
+</header>
+<style>
+.site-header{position:relative;z-index:1050}
+.site-nav{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #e8ebef}
+.site-nav-inner{max-width:1240px;min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:28px}
+.site-brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:#101828;min-width:190px}
+.site-brand:hover{color:#101828}
+.site-brand-mark{width:36px;height:36px;border-radius:11px;background:#101828;color:#fff;display:grid;place-items:center;font:800 .78rem/1 Manrope,sans-serif}
+.site-brand-copy{display:flex;flex-direction:column;line-height:1.1}
+.site-brand-copy strong{font:800 .88rem/1.1 Manrope,sans-serif;letter-spacing:-.02em}
+.site-brand-copy small{font:500 .57rem/1.4 "DM Sans",sans-serif;color:#98a2b3;margin-top:4px}
+.site-nav-menu{display:flex;align-items:center;gap:22px}
+.site-nav-links{display:flex;align-items:center;gap:2px}
+.site-nav-links a{position:relative;padding:9px 10px;color:#475467;text-decoration:none;font:700 .73rem/1 "DM Sans",sans-serif;border-radius:8px;transition:.2s ease}
+.site-nav-links a:after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:1px;background:#c56a2d;transform:scaleX(0);transform-origin:center;transition:.2s ease}
+.site-nav-links a:hover{color:#101828;background:#f7f8fa}.site-nav-links a:hover:after{transform:scaleX(1)}
+.site-nav-cta{display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border-radius:9px;background:#101828;color:#fff!important;text-decoration:none;font:800 .71rem/1 "DM Sans",sans-serif;white-space:nowrap;transition:.2s ease}
+.site-nav-cta:hover{background:#c56a2d;color:#fff!important;transform:translateY(-1px)}
+.site-menu-toggle{display:none;border:1px solid #dfe3e8;background:#fff;border-radius:9px;width:42px;height:42px;padding:9px}
+.site-menu-toggle span{display:block;height:2px;background:#101828;margin:5px 2px;border-radius:3px;transition:.2s ease}
+.site-menu-toggle.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.site-menu-toggle.is-open span:nth-child(2){opacity:0}
+.site-menu-toggle.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media(max-width:980px){
+ .site-nav-inner{min-height:66px}.site-menu-toggle{display:block}
+ .site-nav-menu{display:none;position:absolute;left:12px;right:12px;top:72px;background:#fff;border:1px solid #e1e5ea;border-radius:16px;padding:10px;box-shadow:0 20px 50px rgba(16,24,40,.14)}
+ .site-nav-menu.is-open{display:block}.site-nav-links{display:grid;gap:2px}.site-nav-links a{padding:13px 12px}.site-nav-links a:after{display:none}
+ .site-nav-cta{margin-top:8px;justify-content:center;padding:13px}
+}
+@media(max-width:575px){
+ .site-brand{min-width:0}.site-brand-copy small{display:none}.site-brand-copy strong{font-size:.82rem}
+}
+</style>
 
 {# ================================================== #}
 {# MAIN CONTENT                                        #}
@@ -184,67 +205,65 @@
 {# ================================================== #}
 {# FOOTER (with NAP for local SEO)                     #}
 {# ================================================== #}
-<footer class="hv-footer">
-    <div class="container-lg">
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6">
-                <h5 style="color:white; font-weight:700; margin-bottom:8px;">{{ site.business_name }}</h5>
-                <p class="hv-footer-subtitle">
-                    Jaipur-based wall clock manufacturing and supply for homes, retailers, businesses and bulk buyers across India. Explore custom, promotional, corporate and wholesale wall clocks with direct enquiry support.
-                </p>
-                {% if site.gst_number %}
-                <p style="font-size:0.85rem; color:#FFA500;"><strong>GST:</strong> {{ site.gst_number }}</p>
-                {% endif %}
-            </div>
+<footer class="site-footer">
+  <div class="container-lg">
+    <div class="site-footer-main">
+      <div class="site-footer-intro">
+        <a href="{% url 'home' %}" class="site-footer-brand">{{ site.business_name|default:"Our Company" }}</a>
+        <p>Wall clocks for homes, offices, retailers and business requirements, with support for wholesale quantities and custom branding enquiries.</p>
+        <a class="site-footer-enquiry" href="{% url 'contact' %}">Discuss your requirement <i class="fas fa-arrow-right"></i></a>
+      </div>
 
-            <div class="col-lg-2 col-md-6">
-                <h6 style="color:white; font-weight:700; margin-bottom:15px;">Quick Links</h6>
-                <ul class="hv-footer-link-grid">
-                    <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'products_list' %}">Products</a></li>
-                    <li><a href="{% url 'categories_index' %}">Categories</a></li>
-                    <li><a href="{% url 'about' %}">About HOOVALE</a></li>
-                    <li><a href="{% url 'blog_list' %}">Wall Clock Guides</a></li>
-                    <li><a href="{% url 'contact' %}">Contact</a></li>
-                </ul>
-            </div>
+      <div class="site-footer-col">
+        <h2>Explore</h2>
+        <a href="{% url 'products_list' %}">Wall Clocks</a>
+        <a href="{% url 'categories_index' %}">Collections</a>
+        <a href="{% url 'services_index' %}">Business Solutions</a>
+        <a href="{% url 'blog_list' %}">Buying Guides</a>
+      </div>
 
-            <div class="col-lg-3 col-md-6">
-                <h6 style="color:white; font-weight:700; margin-bottom:15px;">Top Services</h6>
-                <ul class="hv-footer-link-grid">
-                    <li><a href="{% url 'service_page' slug='bulk-wall-clock-supply' %}">Bulk Wall Clock Supply</a></li>
-                    <li><a href="{% url 'service_page' slug='custom-logo-printing' %}">Custom Logo Printing</a></li>
-                    <li><a href="{% url 'service_page' slug='oem-manufacturing' %}">OEM Manufacturing</a></li>
-                    <li><a href="{% url 'service_page' slug='corporate-gifting' %}">Corporate Gifting</a></li>
-                    <li><a href="{% url 'service_page' slug='promotional-clocks' %}">Promotional Clocks</a></li>
-                </ul>
-            </div>
+      <div class="site-footer-col">
+        <h2>Company</h2>
+        <a href="{% url 'about' %}">About us</a>
+        <a href="{% url 'contact' %}">Contact</a>
+        <a href="/sitemap.xml">Sitemap</a>
+        <a href="/robots.txt">Robots</a>
+      </div>
 
-            {# NAP — Name, Address, Phone (CRITICAL for local SEO) #}
-            <div class="col-lg-3 col-md-6">
-                <h6 style="color:white; font-weight:700; margin-bottom:15px;">Contact</h6>
-                <p style="font-size:0.9rem; line-height:1.8;">
-                    <i class="fas fa-map-marker-alt" style="color:#FFA500;"></i> {{ site.street_address }}<br>
-                    <i class="fas fa-phone" style="color:#FFA500;"></i> <a href="{% call_link %}" style="color:#ccc; text-decoration:none;">{{ site.primary_phone }}</a><br>
-                    <i class="fab fa-whatsapp" style="color:#25D366;"></i> <a href="{% whatsapp_link 'Hi, I need wall clock pricing' %}" target="_blank" style="color:#ccc; text-decoration:none;">WhatsApp Us</a><br>
-                    <i class="fas fa-envelope" style="color:#FFA500;"></i> <a href="mailto:{{ site.email }}" style="color:#ccc; text-decoration:none;">{{ site.email }}</a>
-                </p>
-            </div>
-        </div>
-
-        <hr style="border-color:#333; margin:40px 0 20px;">
-
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <p style="font-size:0.85rem; margin:0;">© {% now "Y" %} {{ site.business_name }}. All rights reserved.</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <a href="/sitemap.xml" style="color:#888; font-size:0.85rem; text-decoration:none; margin-right:15px;">Sitemap</a>
-                <a href="/robots.txt" style="color:#888; font-size:0.85rem; text-decoration:none;">Robots</a>
-            </div>
-        </div>
+      <div class="site-footer-col site-footer-contact">
+        <h2>Talk to us</h2>
+        <p>{{ site.street_address }}{% if site.locality %}, {{ site.locality }}{% endif %}{% if site.region %}, {{ site.region }}{% endif %}{% if site.postal_code %} - {{ site.postal_code }}{% endif %}</p>
+        <a href="{% call_link %}"><i class="fas fa-phone" aria-hidden="true"></i>{{ site.primary_phone }}</a>
+        <a href="mailto:{{ site.email }}"><i class="fas fa-envelope" aria-hidden="true"></i>{{ site.email }}</a>
+        <a href="{% whatsapp_link 'Hi, I have a wall clock requirement.' %}" target="_blank" rel="noopener"><i class="fab fa-whatsapp" aria-hidden="true"></i>WhatsApp</a>
+      </div>
     </div>
+
+    <div class="site-footer-bottom">
+      <span>© {% now "Y" %} {{ site.business_name|default:"" }}. All rights reserved.</span>
+      <span>Jaipur · Rajasthan · India</span>
+    </div>
+  </div>
 </footer>
+<style>
+.site-footer{background:#111820;color:#aeb8c3;padding:58px 0 21px}
+.site-footer .container-lg{max-width:1240px}
+.site-footer-main{display:grid;grid-template-columns:1.7fr .75fr .75fr 1.15fr;gap:42px}
+.site-footer-brand{display:inline-block;color:#fff;text-decoration:none;font:800 1.15rem/1 Manrope,sans-serif;letter-spacing:-.025em}
+.site-footer-brand:hover{color:#fff}
+.site-footer-intro p{max-width:370px;margin:14px 0 17px;color:#8e9aa8;font-size:.74rem;line-height:1.8}
+.site-footer-enquiry{display:inline-flex;align-items:center;gap:8px;color:#fff!important;text-decoration:none;background:#c56a2d;padding:10px 13px;border-radius:8px;font:800 .7rem/1 "DM Sans",sans-serif}
+.site-footer-enquiry:hover{background:#df7b38}
+.site-footer-col{display:flex;flex-direction:column;align-items:flex-start}
+.site-footer-col h2{margin:2px 0 14px;color:#fff;font:800 .66rem/1 "DM Sans",sans-serif;text-transform:uppercase;letter-spacing:1.4px}
+.site-footer-col>a{color:#8e9aa8;text-decoration:none;font:500 .73rem/1.4 "DM Sans",sans-serif;margin:0 0 10px}
+.site-footer-col>a:hover{color:#fff}
+.site-footer-contact p{margin:0 0 12px;color:#8e9aa8;font:500 .72rem/1.7 "DM Sans",sans-serif}
+.site-footer-contact a i{width:18px;color:#c56a2d}
+.site-footer-bottom{display:flex;justify-content:space-between;gap:15px;border-top:1px solid rgba(255,255,255,.09);margin-top:42px;padding-top:17px;color:#697584;font:500 .63rem/1.4 "DM Sans",sans-serif}
+@media(max-width:900px){.site-footer-main{grid-template-columns:1.3fr 1fr 1fr;gap:30px}.site-footer-intro{grid-column:1/-1}}
+@media(max-width:575px){.site-footer{padding:45px 0 18px}.site-footer-main{grid-template-columns:1fr 1fr;gap:27px}.site-footer-intro,.site-footer-contact{grid-column:1/-1}.site-footer-bottom{flex-direction:column;gap:6px}}
+</style>
 
 {# ================================================== #}
 
@@ -255,7 +274,25 @@
 {# JS                                                  #}
 {# ================================================== #}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{% static 'js/main.js' %}?v=20260924-scrollfix"></script>
+<script src="{% static 'js/main.js' %}?v=20260924-scrollfix"></script>\n<script>
+document.addEventListener('DOMContentLoaded',function(){
+  const toggle=document.getElementById('siteMenuToggle');
+  const menu=document.getElementById('siteNavMenu');
+  if(!toggle||!menu)return;
+  toggle.addEventListener('click',function(){
+    const open=menu.classList.toggle('is-open');
+    toggle.classList.toggle('is-open',open);
+    toggle.setAttribute('aria-expanded',open?'true':'false');
+  });
+  menu.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click',function(){
+      menu.classList.remove('is-open');
+      toggle.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded','false');
+    });
+  });
+});
+</script>
 
 {% block extra_js %}{% endblock %}
 
