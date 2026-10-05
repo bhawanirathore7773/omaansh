@@ -8,7 +8,7 @@ build:
 
 services:
   - type: web
-    name: hoovale
+    name: wall-clock-site
     runtime: python
     startCommand: python manage.py migrate --noinput && gunicorn hoovale.wsgi:application --bind 0.0.0.0:$PORT --workers 1
     envVars:
@@ -16,12 +16,12 @@ services:
         value: "3.12.14"
       - key: DATABASE_URL
         fromDatabase:
-          name: hoovale_db
+          name: wall-clock-db
           property: connectionString
       - key: DEBUG
         value: "False"
       - key: ALLOWED_HOSTS
-        value: "*.onrender.com,www.hoovale.com,hoovale.com"
+        value: "*.onrender.com"
       - key: ADMIN_USERNAME
         value: "admin"
       - key: ADMIN_EMAIL
@@ -31,6 +31,6 @@ services:
 
 databases:
   - name: hoovale_db
-    databaseName: hoovale_db
-    user: hoovale_user
+    databaseName: wall_clock_db
+    user: wall_clock_user
     plan: free
