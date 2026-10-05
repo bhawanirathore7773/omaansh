@@ -5,8 +5,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 from django.db.models import Q
+from django.core.cache import cache
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 import json
 from .models import (
     Product, Category, Blog, CityPage, IndustryPage,
@@ -539,35 +542,68 @@ def robots_txt(request):
 # ============================================================
 # ENQUIRY (Existing — kept compatible)
 # ============================================================
-@csrf_exempt
+@csrf_protect
 @require_http_methods(["POST"])
 def submit_enquiry(request):
-    try:
-        from enquiries.models import Enquiry
-        product_id = request.POST.get('product_id')
-        name = request.POST.get('name', '').strip()
-        phone = request.POST.get('phone', '').strip()
-        email = request.POST.get('email', '').strip()
-        city = request.POST.get('city', '').strip()
-        message = request.POST.get('message', '').strip()
+    """Accept a small, validated enquiry payload without leaking server errors."""
+    from enquiries.models import Enquiry
 
-        if not all([name, phone, city, message]):
-            return JsonResponse({'success': False, 'error': 'Please fill all required fields'}, status=400)
-
-        product = None
-        if product_id:
-            try:
-                product = Product.objects.get(id=product_id)
-            except Product.DoesNotExist:
-                pass
-
-        enquiry = Enquiry.objects.create(
-            product=product, name=name, phone=phone, email=email,
-            city=city, message=message, status='new'
+    # Basic abuse protection: keep the public endpoint useful without adding
+    # CAPTCHA friction to genuine buyers. Five submissions/IP/hour is enough
+    # to stop simple automated floods while allowing normal follow-up enquiries.
+    forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR", "")
+    client_ip = forwarded_for.split(",")[0].strip() or request.META.get("REMOTE_ADDR", "unknown")
+    rate_key = f"enquiry-rate:{client_ip}"
+    attempts = cache.get(rate_key, 0)
+    if attempts >= 5:
+        return JsonResponse(
+            {"success": False, "error": "Too many enquiries. Please try again later."},
+            status=429,
         )
-        return JsonResponse({'success': True, 'message': 'Enquiry submitted!', 'enquiry_id': enquiry.id})
-    except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    cache.set(rate_key, attempts + 1, 60 * 60)
+
+    product_id = request.POST.get("product_id", "").strip()
+    name = request.POST.get("name", "").strip()
+    phone = request.POST.get("phone", "").strip()
+    email = request.POST.get("email", "").strip()
+    city = request.POST.get("city", "").strip()
+    message = request.POST.get("message", "").strip()
+
+    if not all([name, phone, city, message]):
+        return JsonResponse({"success": False, "error": "Please fill all required fields."}, status=400)
+    if len(name) > 200 or len(phone) > 20 or len(email) > 254 or len(city) > 100 or len(message) > 5000:
+        return JsonResponse({"success": False, "error": "Please check the length of the submitted fields."}, status=400)
+    if email:
+        try:
+            validate_email(email)
+        except ValidationError:
+            return JsonResponse({"success": False, "error": "Please enter a valid email address."}, status=400)
+
+    product = None
+    if product_id:
+        try:
+            product = Product.objects.get(id=product_id, is_active=True)
+        except (Product.DoesNotExist, ValueError):
+            return JsonResponse({"success": False, "error": "The selected product is unavailable."}, status=400)
+
+    try:
+        enquiry = Enquiry.objects.create(
+            product=product,
+            name=name,
+            phone=phone,
+            email=email,
+            city=city,
+            message=message,
+            status="new",
+        )
+    except Exception:
+        # Do not expose database/provider internals to a public endpoint.
+        return JsonResponse(
+            {"success": False, "error": "We could not save your enquiry. Please try again."},
+            status=500,
+        )
+
+    return JsonResponse({"success": True, "message": "Enquiry submitted!", "enquiry_id": enquiry.id})
 
 
 # ============================================================
