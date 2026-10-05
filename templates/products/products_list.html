@@ -4,6 +4,7 @@
 {% block meta_title %}Wall Clocks in Jaipur | Wholesale, Custom & Bulk Wall Clock Supplier{% endblock %}
 {% block meta_description %}Browse wall clocks for homes, offices, retailers and business orders. Compare categories, prices and availability, then enquire about wholesale supply or custom logo wall clocks from Jaipur.{% endblock %}
 {% block meta_keywords %}wall clocks Jaipur, wall clock manufacturer in Jaipur, wall clock supplier Jaipur, wholesale wall clocks, bulk wall clocks, custom logo wall clocks{% endblock %}
+{% block robots %}{% if is_filtered_catalogue %}noindex, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{% else %}index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{% endif %}{% endblock %}
 {% block og_title %}Wall Clocks | Wholesale & Custom Supply from Jaipur{% endblock %}
 {% block og_description %}Browse wall clock designs by category, price and availability, with wholesale and custom enquiry options.{% endblock %}
 {% block page_schema %}{% breadcrumb_schema breadcrumb_items %}{% endblock %}
@@ -183,11 +184,11 @@
 
         {% if total_pages > 1 %}
         <nav class="nx-pagination" aria-label="Product pages">
-          {% if current_page > 1 %}<a href="?page={{ current_page|add:'-1' }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">←</a>{% endif %}
+          {% if current_page > 1 %}<a href="?page={{ current_page|add:'-1' }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if availability %}&availability={{ availability|urlencode }}{% endif %}{% if badge %}&badge={{ badge|urlencode }}{% endif %}{% if sort and sort != 'featured' %}&sort={{ sort|urlencode }}{% endif %}">←</a>{% endif %}
           {% for page_num in "x"|rjust:total_pages %}
-            {% if forloop.counter == current_page %}<span class="active">{{ forloop.counter }}</span>{% else %}<a href="?page={{ forloop.counter }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ forloop.counter }}</a>{% endif %}
+            {% if forloop.counter == current_page %}<span class="active">{{ forloop.counter }}</span>{% else %}<a href="?page={{ forloop.counter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if availability %}&availability={{ availability|urlencode }}{% endif %}{% if badge %}&badge={{ badge|urlencode }}{% endif %}{% if sort and sort != 'featured' %}&sort={{ sort|urlencode }}{% endif %}">{{ forloop.counter }}</a>{% endif %}
           {% endfor %}
-          {% if current_page < total_pages %}<a href="?page={{ current_page|add:'1' }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">→</a>{% endif %}
+          {% if current_page < total_pages %}<a href="?page={{ current_page|add:'1' }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if availability %}&availability={{ availability|urlencode }}{% endif %}{% if badge %}&badge={{ badge|urlencode }}{% endif %}{% if sort and sort != 'featured' %}&sort={{ sort|urlencode }}{% endif %}">→</a>{% endif %}
         </nav>
         {% endif %}
         {% else %}
