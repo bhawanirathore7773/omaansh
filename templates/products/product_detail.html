@@ -22,15 +22,24 @@
 .pv2-breadcrumb a{color:#667085;text-decoration:none}.pv2-breadcrumb a:hover{color:#c56a2d}.pv2-breadcrumb i{font-size:.55rem;color:#98a2b3}.pv2-breadcrumb span{max-width:430px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pv2-hero{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(390px,.96fr);gap:34px;align-items:start}
 .pv2-gallery{background:#fff;border:1px solid #e4e7ec;border-radius:20px;padding:14px;position:sticky;top:88px}
-.pv2-main{height:590px;background:#f0f1f2;border-radius:14px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.pv2-main img{width:100%;height:100%;object-fit:contain;display:block}
+.pv2-main{height:590px;background:#f4f2ed;border-radius:14px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.pv2-main img{width:100%;height:100%;object-fit:contain;display:block;mix-blend-mode:multiply}
+.pv2-main:after{content:"";position:absolute;left:12%;right:12%;bottom:5%;height:24px;background:rgba(16,24,40,.08);filter:blur(15px);border-radius:50%;pointer-events:none}
+.pv2-gallery .pv2-view{z-index:3}
 .pv2-view{position:absolute;right:14px;bottom:14px;border:1px solid #d9dee6;background:rgba(255,255,255,.94);border-radius:8px;padding:8px 11px;font-size:.65rem;font-weight:800;color:#344054}
 .pv2-badge{position:absolute;left:14px;top:14px;background:#101828;color:#fff;padding:7px 10px;border-radius:7px;font-size:.62rem;text-transform:uppercase;letter-spacing:.8px;font-weight:900;z-index:2}
 .pv2-thumbs{display:flex;gap:8px;margin-top:10px;overflow:auto;padding:2px}
 .pv2-thumb{flex:0 0 70px;width:70px;height:70px;border:1px solid #e4e7ec;border-radius:9px;background:#f5f6f7;padding:3px;cursor:pointer}
 .pv2-thumb.is-active{border:2px solid #c56a2d}.pv2-thumb img{width:100%;height:100%;object-fit:contain;border-radius:6px}
 
-.pv2-info{background:#fff;border:1px solid #e4e7ec;border-radius:20px;padding:27px}
+.pv2-info{background:#fff;border:1px solid #e4e7ec;border-radius:20px;padding:27px;position:relative}
+.pv2-info-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pv2-stock{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;background:#eef8f2;color:#157347;font-size:.62rem;font-weight:800}
+.pv2-stock:before{content:"";width:6px;height:6px;border-radius:50%;background:#20a464}
+.pv2-buybox{margin-top:18px;padding:14px;background:#f7f8fa;border:1px solid #e8ebef;border-radius:12px}
+.pv2-buybox-row{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.7rem;color:#667085}
+.pv2-buybox-row+.pv2-buybox-row{margin-top:8px;padding-top:8px;border-top:1px solid #e5e8ec}
+.pv2-buybox-row strong{color:#17202b}
 .pv2-category{font-size:.68rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:900;color:#9e4f1d}
 .pv2-info h1{font-family:"Manrope",sans-serif;font-size:clamp(2rem,4vw,3.25rem);line-height:1.05;letter-spacing:-.05em;font-weight:800;margin:9px 0 13px}
 .pv2-short{font-size:.92rem;line-height:1.7;color:#667085;margin:0 0 18px}
@@ -79,7 +88,7 @@
 .pv2-lightbox{position:fixed;inset:0;background:rgba(8,12,18,.88);z-index:20000;display:flex;align-items:center;justify-content:center;padding:20px}.pv2-lightbox[hidden]{display:none}.pv2-lightbox img{max-width:94vw;max-height:88vh;object-fit:contain;background:#fff;border-radius:10px}.pv2-close{position:absolute;right:20px;top:18px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.3);color:#fff}
 
 @media(max-width:991px){.pv2-hero{grid-template-columns:1fr}.pv2-gallery{position:relative;top:auto}.pv2-main{height:500px}.pv2-info-grid{grid-template-columns:1fr}.pv2-steps{grid-template-columns:1fr 1fr}.pv2-related-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:767px){.pv2{padding:12px 0 70px}.pv2-hero{gap:15px}.pv2-gallery,.pv2-info{border-radius:15px;padding:12px}.pv2-main{height:340px}.pv2-info{padding:19px}.pv2-info h1{font-size:2rem}.pv2-price{font-size:1.75rem}.pv2-highlights{grid-template-columns:1fr 1fr}.pv2-actions{grid-template-columns:1fr}.pv2-section{margin-top:38px}.pv2-panel{padding:17px}.pv2-branding{grid-template-columns:1fr;padding:19px}.pv2-steps{grid-template-columns:1fr 1fr}.pv2-related-grid{gap:8px}.pv2-related-img{height:145px}.pv2-related-info{padding:9px}.pv2-related-info h3{font-size:.73rem}.pv2-price-row{grid-template-columns:1fr .8fr;padding:13px 16px}.pv2-price-save{display:none}}
+@media(max-width:767px){.pv2{padding:10px 0 60px}.pv2-hero{gap:10px}.pv2-gallery,.pv2-info{border-radius:14px}.pv2-gallery{padding:8px}.pv2-main{height:330px;border-radius:10px}.pv2-view{right:9px;bottom:9px;padding:7px 9px}.pv2-thumbs{margin-top:7px}.pv2-thumb{flex-basis:58px;width:58px;height:58px}.pv2-info{padding:17px}.pv2-info h1{font-size:1.8rem;line-height:1.08;margin-top:8px}.pv2-short{font-size:.82rem;line-height:1.6;margin-bottom:13px}.pv2-meta{padding:10px 0}.pv2-price-row{padding:17px 0}.pv2-price{font-size:1.65rem}.pv2-moq{padding:9px 10px}.pv2-buybox{margin-top:13px;padding:11px}.pv2-highlights{grid-template-columns:1fr 1fr;gap:6px;margin-top:14px}.pv2-highlight{padding:9px;font-size:.64rem}.pv2-actions{grid-template-columns:1fr 1fr;margin-top:16px}.pv2-actions a,.pv2-actions button{min-height:46px;font-size:.68rem}.pv2-section{margin-top:32px}.pv2-panel{padding:15px}.pv2-branding{grid-template-columns:1fr;padding:17px}.pv2-steps{grid-template-columns:1fr 1fr}.pv2-related-grid{gap:8px}.pv2-related-img{height:190px}.pv2-related-info{padding:12px}.pv2-price-save{display:none}}
 @media(max-width:390px){.pv2-highlights,.pv2-steps{grid-template-columns:1fr}.pv2-related-grid{grid-template-columns:1fr}.pv2-main{height:300px}}
 </style>
 {% endblock %}
@@ -110,12 +119,15 @@
     </div>
 
     <div class="pv2-info">
-      <div class="pv2-category">{{ product.category.name }}</div>
+      <div class="pv2-info-top">
+        <div class="pv2-category">{{ product.category.name }}</div>
+        <span class="pv2-stock">{{ product.get_availability_display }}</span>
+      </div>
       <h1>{{ product.name }}</h1>
       {% if product.short_description %}<p class="pv2-short">{{ product.short_description }}</p>{% endif %}
       <div class="pv2-meta">
         {% if product.sku %}<span>SKU <strong>{{ product.sku }}</strong></span>{% endif %}
-        <span>Availability <strong>{{ product.get_availability_display }}</strong></span>
+        {% if product.category %}<span>Category <strong>{{ product.category.name }}</strong></span>{% endif %}
       </div>
 
       <div class="pv2-price-row">
@@ -124,6 +136,11 @@
           {% else %}<span class="pv2-price-label">Pricing</span><div class="pv2-price">On enquiry</div>{% endif %}
         </div>
         <div class="pv2-moq"><span>Minimum order</span><strong>{{ product.moq }} pcs</strong></div>
+      </div>
+
+      <div class="pv2-buybox">
+        <div class="pv2-buybox-row"><span>Minimum order quantity</span><strong>{{ product.moq }} pcs</strong></div>
+        <div class="pv2-buybox-row"><span>Best for</span><strong>Retail, gifting & business orders</strong></div>
       </div>
 
       <div class="pv2-highlights">
