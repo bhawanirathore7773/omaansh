@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load static seo_tags %}
 
-{% block meta_title %}Contact HOOVALE | Wall Clock Manufacturer in Jaipur{% endblock %}
+{% block meta_title %}Contact {{ site.business_name }} | Wall Clock Manufacturer in Jaipur{% endblock %}
 {% block meta_description %}Contact HOOVALE in Jaipur for wall clock wholesale orders, custom logo printing, OEM manufacturing and bulk supply. Call, WhatsApp or send an enquiry online.{% endblock %}
-{% block meta_keywords %}contact hoovale, wall clock manufacturer contact jaipur, hoovale phone whatsapp, wall clock supplier contact{% endblock %}
+{% block meta_keywords %}contact wall clock supplier, wall clock manufacturer contact jaipur, hoovale phone whatsapp, wall clock supplier contact{% endblock %}
 
 {% block page_schema %}
     {% breadcrumb_schema breadcrumb_items %}
@@ -46,7 +46,7 @@
         <div class="row g-4">
 
             <div class="col-6 col-md-6 col-lg-3">
-                <a href="{% whatsapp_link 'Hi HOOVALE, I have a wall clock enquiry.' %}"
+                <a href="{% whatsapp_link 'Hi {{ site.business_name }}, I have a wall clock enquiry.' %}"
                    target="_blank"
                    style="text-decoration:none;">
                     <div class="contact-card whatsapp-card">
@@ -149,7 +149,7 @@
 
             {# Address + Map #}
             <div class="col-lg-6 contact-info-column">
-                <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:20px;">Office Address</h2>
+                <h2 style="font-family:'Montserrat',sans-serif; color:#1a1a1a; font-weight:800; margin-bottom:20px;">Our location</h2>
                 <div class="contact-info-card" style="margin-bottom:18px;">
                     <p style="font-size:1rem; line-height:1.8; color:#444; margin:0;">
                         <strong style="color:#1a1a1a; font-size:1.1rem; display:block; margin-bottom:8px;">{{ site.business_name }}</strong>
