@@ -22,9 +22,9 @@ from .models import (
 # ============================================================
 def home(request):
     site = SiteSettings.load()
-    all_banners = Banner.objects.filter(is_active=True).order_by('order', 'created_at')
-    website_banners = all_banners.filter(banner_type='website')
-    mobile_banners = all_banners.filter(banner_type='mobile')
+    all_banners = list(Banner.objects.filter(is_active=True).order_by('order', 'created_at'))
+    website_banners = [b for b in all_banners if b.banner_type == 'website'] or all_banners
+    mobile_banners = [b for b in all_banners if b.banner_type == 'mobile'] or website_banners
     # New campaign records carry both desktop and mobile images. Keep the
     # legacy banner_type split compatible, but never render an empty carousel.
     if not website_banners.exists():
@@ -97,9 +97,9 @@ def home(request):
 
     product_base = Product.objects.filter(is_active=True).select_related('category')
     featured_products = product_base.filter(is_featured=True)[:8]
-    new_arrivals = product_base.filter(is_new_arrival=True).order_by('-created_at')[:8]
-    if not new_arrivals.exists():
-        new_arrivals = product_base.order_by('-created_at')[:8]
+    new_arrivals = list(product_base.filter(is_new_arrival=True).order_by('-created_at')[:8])
+    if not new_arrivals:
+        new_arrivals = list(product_base.order_by('-created_at')[:8])
 
     bestseller_products = product_base.filter(
         is_bestseller=True
@@ -116,11 +116,21 @@ def home(request):
     # Marketplace-style homepage product shelves: each featured category
     # gets its own small product rail so buyers can scan products quickly.
     category_product_sections = []
-    for category in categories[:5]:
-        section_products = product_base.filter(
-            category=category
-        ).order_by('-is_featured', '-is_bestseller', '-created_at')[:4]
-        if section_products.exists():
+    featured_categories = list(categories[:5])
+    category_ids = [category.id for category in featured_categories]
+    category_products = list(
+        product_base.filter(category_id__in=category_ids)
+        .order_by('category_id', '-is_featured', '-is_bestseller', '-created_at')
+    )
+    products_by_category = {}
+    for product in category_products:
+        products_by_category.setdefault(product.category_id, [])
+        if len(products_by_category[product.category_id]) < 4:
+            products_by_category[product.category_id].append(product)
+
+    for category in featured_categories:
+        section_products = products_by_category.get(category.id, [])
+        if section_products:
             category_product_sections.append({
                 'category': category,
                 'products': section_products,
