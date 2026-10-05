@@ -161,7 +161,7 @@
           <article class="nx-product-card">
             <a href="{{ product.get_absolute_url }}" class="nx-product-link" aria-label="View {{ product.name }}">
               <div class="nx-product-image">
-                {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }} wall clock" loading="lazy">{% else %}<img src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} wall clock" loading="lazy">{% endif %}
+                {% if product.image %}<img decoding="async" src="{{ product.image.url }}" alt="{{ product.name }} wall clock" loading="lazy">{% else %}<img decoding="async" src="{% static 'images/product-placeholder.svg' %}" alt="{{ product.name }} wall clock" loading="lazy">{% endif %}
                 {% if product.is_new_arrival %}<span class="nx-product-label new">New</span>{% elif product.is_bestseller %}<span class="nx-product-label best">Bestseller</span>{% elif product.is_featured %}<span class="nx-product-label">Featured</span>{% endif %}
               </div>
               <div class="nx-product-info">
