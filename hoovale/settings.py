@@ -214,10 +214,10 @@ LOGGING = {
 }
 
 
-# Professional HOOVALE admin configuration
+# Professional site admin configuration
 UNFOLD = {
-    "SITE_TITLE": "HOOVALE Admin",
-    "SITE_HEADER": "HOOVALE",
+    "SITE_TITLE": "Site Admin",
+    "SITE_HEADER": "Site",
     "SITE_SUBHEADER": "Website Management",
     "SITE_URL": "/",
     "SITE_SYMBOL": "schedule",
