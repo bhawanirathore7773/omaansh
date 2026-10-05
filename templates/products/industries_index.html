@@ -1,42 +1,14 @@
 {% extends 'base.html' %}
 {% load static seo_tags %}
-
-{% block meta_title %}Industries We Serve — Wall Clock Manufacturer for Every Sector | HOOVALE{% endblock %}
-{% block meta_description %}HOOVALE supplies wall clocks for corporate offices, hotels, hospitals, schools, retail stores, and real estate. Industry-specific solutions with bulk pricing.{% endblock %}
-{% block meta_keywords %}wall clock manufacturer industries, corporate clocks, hotel clocks, hospital clocks, school clocks, retail wall clocks{% endblock %}
-
+{% block meta_title %}Industries We Serve | Wall Clocks for Offices, Hotels & More{% endblock %}
+{% block meta_description %}Explore industry-specific wall clock solutions for offices, hotels, hospitals, schools, retailers and other business spaces. Compare requirements and enquire for bulk supply from Jaipur.{% endblock %}
+{% block meta_keywords %}wall clocks for offices, hotel wall clocks, hospital wall clocks, school wall clocks, retail wall clocks, business wall clocks Jaipur{% endblock %}
 {% block content %}
-
-<section style="padding:80px 0; background:linear-gradient(135deg,#1a1a1a,#2d2d2d); color:white; text-align:center;">
-    <div class="container-lg">
-        <h1 style="font-family:'Montserrat',sans-serif; font-size:3rem; font-weight:900; margin-bottom:16px;">
-            <i class="fas fa-industry" style="color:#FFA500;"></i> Industries We Serve
-        </h1>
-        <p style="font-size:1.2rem; opacity:0.9; max-width:800px; margin:0 auto;">
-            From corporate offices to luxury hotels, hospitals to schools — we manufacture wall clocks tailored to every industry's specific needs.
-        </p>
-    </div>
-</section>
-
-<section style="padding:60px 0;">
-    <div class="container-lg">
-        <div class="row g-4">
-            {% for industry in industries %}
-            <div class="col-md-6 col-lg-4">
-                <a href="{{ industry.get_absolute_url }}" style="text-decoration:none; color:inherit;">
-                    <div style="background:white; border:1px solid #eee; padding:34px; border-radius:12px; height:100%; transition:all 0.3s;"
-                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 35px rgba(0,81,163,0.15)'; this.style.borderColor='#FFA500';"
-                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee';">
-                        <i class="{{ industry.icon_class|default:'fas fa-building' }}" style="font-size:3rem; color:#FFA500; margin-bottom:18px;"></i>
-                        <h2 style="font-size:1.3rem; font-weight:800; color:#1a1a1a; margin-bottom:10px;">{{ industry.industry_name }}</h2>
-                        <p style="color:#555; font-size:0.95rem; line-height:1.6; margin-bottom:16px;">{{ industry.hero_subheading|truncatewords:20 }}</p>
-                        <span style="color:#FFA500; font-weight:700; font-size:0.9rem;">Learn More <i class="fas fa-arrow-right"></i></span>
-                    </div>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
+<section class="industries-hero"><div class="container-lg"><span class="eyebrow">INDUSTRY SOLUTIONS</span><h1>Wall clocks chosen for the way each space works.</h1><p>Different spaces need different clocks. Browse industry-focused solutions for appearance, visibility, quantity, branding and everyday use.</p><div><a href="{% url 'products_list' %}" class="btn main">Browse all wall clocks</a><a href="{% url 'contact' %}" class="btn ghost">Discuss a project</a></div></div></section>
+<section class="industries-main"><div class="container-lg"><div class="head"><div><span class="eyebrow">WHO WE SERVE</span><h2>Choose your application</h2></div><span>{{ industries|length }} sectors</span></div>{% if industries %}<div class="industry-grid">{% for industry in industries %}<a href="{{ industry.get_absolute_url }}" class="industry-card">{% if industry.hero_image %}<div class="image"><img src="{{ industry.hero_image.url }}" alt="Wall clocks for {{ industry.industry_name }}" loading="lazy"></div>{% else %}<div class="icon"><i class="{{ industry.icon_class|default:'fas fa-building' }}"></i></div>{% endif %}<div class="body"><small>{{ forloop.counter|stringformat:"02d" }}</small><h2>{{ industry.industry_name }}</h2><p>{{ industry.hero_subheading|truncatewords:24 }}</p><b>View solution ↗</b></div></a>{% endfor %}</div>{% else %}<div class="empty"><h3>Industry solutions are being prepared.</h3><p>Contact us for business wall clock requirements.</p></div>{% endif %}</div></section>
+<section class="industries-process"><div class="container-lg"><div><span class="eyebrow">FOR PROCUREMENT TEAMS</span><h2>From application to the right shortlist.</h2><p>Tell us where the clocks will be used, approximate quantity, preferred look and delivery location. We can then point you towards relevant products and buying options.</p></div><div class="points"><div><b>01</b><strong>Application</strong><span>Office, hotel, hospital, school, retail or another setting.</span></div><div><b>02</b><strong>Specification</strong><span>Size, finish, visibility, branding and quantity.</span></div><div><b>03</b><strong>Order</strong><span>Confirm products, commercial terms and dispatch.</span></div></div></div></section>
+<style>
+.industries-hero{background:#101719;color:#fff;padding:82px 0 78px}.eyebrow{display:inline-block;color:#d18b5a;font-size:.69rem;font-weight:900;letter-spacing:2px;margin-bottom:14px}.industries-hero h1{font-family:Manrope,sans-serif;font-size:clamp(2.5rem,5vw,4.8rem);line-height:1.02;letter-spacing:-2px;max-width:850px;margin:0 0 20px}.industries-hero p{max-width:720px;color:#c8d0cf;line-height:1.75}.btn{display:inline-flex;padding:13px 19px;border-radius:7px;text-decoration:none;font-weight:800;font-size:.84rem;margin:14px 8px 0 0}.btn.main{background:#d18b5a;color:#fff}.btn.ghost{border:1px solid #52605d;color:#fff}.industries-main{background:#f6f5f1;padding:74px 0 92px}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:30px}.head h2{font-family:Manrope,sans-serif;font-size:2rem;margin:0}.head>span{font-size:.8rem;color:#7a8583}.industry-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.industry-card{background:#fff;border:1px solid #e5e3dd;border-radius:11px;overflow:hidden;text-decoration:none;color:#172022;transition:.22s}.industry-card:hover{transform:translateY(-5px);box-shadow:0 16px 35px #10171914;color:#172022}.image{height:220px;background:#ebe9e3}.image img{width:100%;height:100%;object-fit:cover}.icon{height:220px;background:#ebe9e3;display:grid;place-items:center;font-size:3.3rem;color:#c17c4c}.body{padding:19px}.body small{color:#c17c4c;font-weight:900;font-size:.65rem}.body h2{font-size:1.08rem;margin:8px 0}.body p{font-size:.8rem;color:#707a78;line-height:1.6;min-height:42px}.body b{font-size:.75rem}.industries-process{background:#172022;color:#fff;padding:72px 0}.industries-process .container-lg{display:grid;grid-template-columns:1fr 1.2fr;gap:70px;align-items:start}.industries-process h2{font-family:Manrope,sans-serif;font-size:2.4rem;margin:0 0 13px}.industries-process p{color:#b8c1bf;line-height:1.75}.points{display:grid;gap:14px}.points>div{display:grid;grid-template-columns:38px 120px 1fr;gap:10px;border-top:1px solid #ffffff20;padding:16px 0}.points b{color:#d18b5a;font-size:.68rem}.points strong{font-size:.88rem}.points span{color:#9da9a6;font-size:.76rem}.empty{background:#fff;padding:55px;text-align:center;border-radius:11px}
+@media(max-width:800px){.industry-grid{grid-template-columns:repeat(2,1fr)}.industries-process .container-lg{grid-template-columns:1fr;gap:35px}}@media(max-width:600px){.industries-hero{padding:58px 0}.industries-hero h1{font-size:2.5rem}.industries-main{padding:50px 0 65px}.head{align-items:flex-start;flex-direction:column;gap:6px}.industry-grid{grid-template-columns:1fr}.image,.icon{height:210px}.industries-process h2{font-size:2rem}.points>div{grid-template-columns:30px 95px 1fr}}
+</style>
 {% endblock %}
