@@ -1,5 +1,5 @@
 """
-HOOVALE Admin Configuration
+Site Admin Configuration
 Phase 1: All SEO models registered with rich admin interfaces
 """
 from django.contrib import admin
@@ -398,8 +398,8 @@ class BlogAdmin(ModelAdmin):
 # ============================================================
 # Customize admin site
 # ============================================================
-admin.site.site_header = "🕐 HOOVALE Admin"
-admin.site.site_title = "HOOVALE - Wall Clock Manufacturer"
+admin.site.site_header = "🕐 Site Admin"
+admin.site.site_title = "Site - Wall Clock Manufacturer"
 admin.site.index_title = "SEO + Content Management"
 
 
