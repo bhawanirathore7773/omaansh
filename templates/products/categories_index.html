@@ -1,65 +1,14 @@
 {% extends 'base.html' %}
 {% load static seo_tags %}
-
-{% block meta_title %}Wall Clock Categories | HOOVALE{% endblock %}
-{% block meta_description %}Browse HOOVALE wall clock categories. Select a category to view all available designs, wholesale products and bulk-order options.{% endblock %}
-
+{% block meta_title %}Wall Clock Collections in Jaipur | Browse by Style & Use{% endblock %}
+{% block meta_description %}Explore wall clock collections for homes, offices, retailers and bulk buyers. Browse styles and enquire about wholesale or custom wall clocks from Jaipur.{% endblock %}
+{% block meta_keywords %}wall clock collections Jaipur, wall clock categories, wholesale wall clocks Jaipur, custom wall clocks, office wall clocks{% endblock %}
 {% block content %}
-<section class="hv-category-page">
-    <div class="container-lg">
-        <div class="hv-category-head">
-            <span class="hv-category-eyebrow"><i class="fas fa-layer-group"></i> SHOP BY CATEGORY</span>
-            <h1>Explore Our Categories</h1>
-            <p>Choose a category to discover the wall clocks available in that collection.</p>
-        </div>
-
-        {% if categories %}
-        <div class="hv-category-grid">
-            {% for category in categories %}
-            <a href="{{ category.get_absolute_url }}" class="hv-category-card" aria-label="View {{ category.name }} products">
-                <div class="hv-category-image">
-                    {% if category.image %}
-                        <img src="{{ category.image.url }}" alt="{{ category.name }} wall clocks" loading="lazy">
-                    {% else %}
-                        <span><i class="fas fa-clock"></i></span>
-                    {% endif %}
-                </div>
-                <div class="hv-category-name">{{ category.name }}</div>
-                <div class="hv-category-count">{{ category.products.count }} products</div>
-            </a>
-            {% endfor %}
-        </div>
-        {% else %}
-        <div class="hv-category-empty">
-            <i class="fas fa-box-open"></i>
-            <h2>Categories coming soon</h2>
-            <p>Products will appear here once categories are added.</p>
-            <a href="{% url 'products_list' %}" class="btn btn-primary">Browse Products</a>
-        </div>
-        {% endif %}
-    </div>
-</section>
-
+<section class="collections-hero"><div class="container-lg"><div class="collections-hero-grid"><div><span class="eyebrow">WALL CLOCK COLLECTIONS</span><h1>Find the right clock for the space and the order.</h1><p>Browse collections by style, application and buying requirement. Each category takes you directly to the relevant products.</p><div class="collections-actions"><a href="{% url 'products_list' %}" class="collections-btn primary">Browse all wall clocks</a><a href="{% url 'contact' %}" class="collections-btn ghost">Talk to our team</a></div></div><div class="hero-note"><small>BUYING GUIDE</small><strong>Start with the requirement, not the product.</strong><p>Choose a collection first, then compare designs, quantities and branding options.</p></div></div></div></section>
+<section class="collections-main"><div class="container-lg"><div class="section-heading"><div><span class="eyebrow">SHOP BY REQUIREMENT</span><h2>Collections made easier to scan</h2></div><p>{{ categories|length }} collections</p></div>{% if categories %}<div class="collection-grid">{% for category in categories %}<a href="{{ category.get_absolute_url }}" class="collection-card"><div class="collection-image">{% if category.image %}<img src="{{ category.image.url }}" alt="{{ category.name }} wall clock collection" loading="lazy">{% else %}<div class="placeholder"><i class="far fa-clock"></i></div>{% endif %}<span class="arrow">↗</span></div><div class="collection-body"><b>{{ forloop.counter|stringformat:"02d" }}</b><div><h3>{{ category.name }}</h3><p>{{ category.products.count }} product{{ category.products.count|pluralize }} · View collection</p></div></div></a>{% endfor %}</div>{% else %}<div class="empty"><i class="far fa-clock"></i><h2>Collections are being prepared</h2><p>Browse the complete wall clock catalogue or contact us for current availability.</p><a href="{% url 'products_list' %}" class="collections-btn primary">Browse products</a></div>{% endif %}</div></section>
+<section class="collections-buying"><div class="container-lg buying-grid"><div><span class="eyebrow">FOR BUSINESS BUYERS</span><h2>Need more than one design?</h2><p>For retailers, resellers, offices and promotional campaigns, we can help shortlist suitable designs and quantities before you place an order.</p></div><div class="buying-points"><div><span>01</span><strong>Shortlist</strong><small>Choose designs from a collection.</small></div><div><span>02</span><strong>Quote</strong><small>Share quantity and delivery city.</small></div><div><span>03</span><strong>Confirm</strong><small>Finalize product and dispatch details.</small></div></div></div></section>
 <style>
-.hv-category-page{padding:42px 0 90px;background:#fff;min-height:65vh}
-.hv-category-head{text-align:center;max-width:720px;margin:0 auto 34px}
-.hv-category-eyebrow{display:inline-flex;align-items:center;gap:8px;color:#b28732;font-size:.74rem;font-weight:800;letter-spacing:1.8px;margin-bottom:10px}
-.hv-category-head h1{font-family:'Montserrat',sans-serif;font-size:clamp(1.8rem,5vw,2.7rem);font-weight:900;color:#151515;margin:0 0 8px}
-.hv-category-head p{margin:0;color:#667085;font-size:.96rem}
-.hv-category-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:28px 18px}
-.hv-category-card{display:flex;flex-direction:column;align-items:center;text-align:center;text-decoration:none;color:#161616;min-width:0}
-.hv-category-image{width:118px;height:118px;border-radius:50%;overflow:hidden;background:linear-gradient(145deg,#f8f8f8,#ececec);border:1px solid #e7e7e7;box-shadow:0 7px 22px rgba(0,0,0,.09);display:flex;align-items:center;justify-content:center;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
-.hv-category-image img{width:100%;height:100%;object-fit:cover;display:block}
-.hv-category-image span{font-size:2.4rem;color:#c49a4a}
-.hv-category-name{font-weight:800;font-size:.88rem;line-height:1.25;margin-top:11px;max-width:130px}
-.hv-category-count{font-size:.68rem;color:#98a2b3;margin-top:4px}
-.hv-category-card:hover .hv-category-image{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,81,163,.15);border-color:rgba(0,81,163,.25)}
-.hv-category-card:active .hv-category-image{transform:scale(.96)}
-.hv-category-empty{text-align:center;padding:70px 20px;color:#667085}
-.hv-category-empty>i{font-size:3rem;color:#c49a4a;margin-bottom:15px}
-.hv-category-empty h2{font-size:1.4rem}
-@media(max-width:991px){.hv-category-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:26px 12px}.hv-category-image{width:94px;height:94px}}
-@media(max-width:576px){.hv-category-page{padding:28px 14px 82px}.hv-category-head{margin-bottom:26px}.hv-category-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px 7px}.hv-category-image{width:72px;height:72px}.hv-category-image span{font-size:1.65rem}.hv-category-name{font-size:.68rem;max-width:82px;margin-top:8px}.hv-category-count{font-size:.58rem}.hv-category-head h1{font-size:1.75rem}.hv-category-head p{font-size:.83rem}}
-@media(max-width:360px){.hv-category-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px 8px}.hv-category-image{width:82px;height:82px}.hv-category-name{font-size:.72rem;max-width:95px}}
+.collections-hero{background:#101719;color:#fff;padding:78px 0}.collections-hero-grid{display:grid;grid-template-columns:1.6fr .7fr;gap:70px;align-items:end}.eyebrow{display:inline-block;color:#d18b5a;font-size:.7rem;font-weight:900;letter-spacing:2px;margin-bottom:14px}.collections-hero h1{font-family:Manrope,sans-serif;font-size:clamp(2.4rem,5vw,4.8rem);line-height:1.02;letter-spacing:-2px;margin:0 0 22px;max-width:800px}.collections-hero p{color:#c8d0cf;line-height:1.75;max-width:720px}.collections-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}.collections-btn{display:inline-flex;padding:13px 19px;border-radius:7px;text-decoration:none;font-weight:800;font-size:.84rem}.collections-btn.primary{background:#d18b5a;color:#fff}.collections-btn.ghost{border:1px solid #52605d;color:#fff}.hero-note{border-left:1px solid #45504e;padding-left:26px}.hero-note small{color:#9ba8a6;letter-spacing:1.8px;font-weight:800}.hero-note strong{display:block;font-size:1.2rem;margin:13px 0 8px}.hero-note p{font-size:.84rem}.collections-main{padding:74px 0 92px;background:#f6f5f1}.section-heading{display:flex;justify-content:space-between;align-items:end;margin-bottom:30px}.section-heading h2{font-family:Manrope,sans-serif;font-size:2rem;margin:0}.section-heading p{color:#7a8583;font-size:.8rem}.collection-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.collection-card{background:#fff;border:1px solid #e5e3dd;border-radius:12px;overflow:hidden;text-decoration:none;color:#172022;transition:.25s}.collection-card:hover{transform:translateY(-5px);box-shadow:0 18px 42px #1017191a;color:#172022}.collection-image{height:270px;background:#ebe9e3;position:relative}.collection-image img{width:100%;height:100%;object-fit:cover}.placeholder{height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;color:#a8aaa3}.arrow{position:absolute;right:13px;top:13px;width:38px;height:38px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 5px 16px #0002}.collection-body{display:grid;grid-template-columns:42px 1fr;gap:13px;padding:19px}.collection-body>b{color:#c17c4c;font-size:.68rem}.collection-body h3{font-size:1rem;margin:0 0 5px}.collection-body p{font-size:.76rem;color:#7c8582;margin:0}.collections-buying{padding:72px 0;background:#172022;color:#fff}.buying-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}.buying-grid h2{font-family:Manrope,sans-serif;font-size:2.5rem;margin:0 0 14px}.buying-grid>div>p{color:#b8c1bf;line-height:1.75}.buying-points{display:grid;gap:13px}.buying-points>div{display:grid;grid-template-columns:38px 100px 1fr;gap:12px;border-top:1px solid #ffffff1f;padding:15px 0}.buying-points span{color:#d18b5a;font-weight:900;font-size:.7rem}.buying-points small{color:#9da9a6;font-size:.74rem}.empty{text-align:center;background:#fff;padding:60px 20px;border-radius:12px}.empty>i{font-size:3rem;color:#c17c4c}.empty p{color:#707a78}
+@media(max-width:900px){.collections-hero-grid,.buying-grid{grid-template-columns:1fr;gap:35px}.collection-grid{grid-template-columns:repeat(2,1fr)}.hero-note{border-left:0;border-top:1px solid #45504e;padding:20px 0 0}}@media(max-width:600px){.collections-hero{padding:55px 0}.collections-hero h1{font-size:2.45rem}.collections-main{padding:50px 0 65px}.collection-grid{grid-template-columns:1fr;gap:14px}.collection-image{height:230px}.section-heading{align-items:flex-start;flex-direction:column;gap:5px}.buying-grid h2{font-size:2rem}}
 </style>
 {% endblock %}
