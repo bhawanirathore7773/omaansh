@@ -32,7 +32,7 @@ export class AdminController {
     try {
       const result = await this.admin.login(body.email || '', body.password || '');
       setCookie(res, 'osira_admin', result.token, 60 * 60 * 12, true);
-      setCookie(res, 'osira_admin_csrf', result.csrfToken, 60 * 60 * 12, false);
+      setCookie(res, 'osira_admin_csrf', result.csrfToken, 60 * 60 * 12, true);
       return res.redirect(303, '/admin');
     } catch {
       return res.redirect(303, '/admin/login?error=1');
