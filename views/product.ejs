@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+<main class="product-page">
+  <div class="breadcrumbs"><a href="/">Home</a> / <a href="/products">Wall Clocks</a> / <strong><%= product.name %></strong></div>
+  <section class="product-hero">
+    <div class="gallery"><div class="main-image"><% if(product.image){ %><img id="mainImage" src="<%= product.image %>" alt="<%= product.name %>"><% } else { %><div class="placeholder">OSIRA</div><% } %></div>
+      <div class="thumbs">
+        <% const imgs = [product.image, ...(Array.isArray(product.additionalImages) ? product.additionalImages : [])].filter(Boolean).slice(0,4); imgs.forEach((img, i) => { %>
+          <button type="button" class="thumb <%= i===0 ? 'active' : '' %>" onclick="document.getElementById('mainImage').src='<%= img %>'"><img src="<%= img %>" alt="<%= product.name %> view <%= i+1 %>"></button>
+        <% }) %>
+      </div>
+    </div>
+    <div class="product-info"><span class="kicker"><%= product.category?.name || 'Wall Clock' %></span><h1><%= product.name %></h1><p><%= product.shortDescription || product.description %></p><div class="price"><%= product.price ? '₹' + product.price : 'Price on enquiry' %></div><div class="buybox"><span>Minimum order</span><strong><%= product.moq %> pcs</strong></div><div class="actions"><a class="btn primary" href="/#enquiry">Request a quote →</a><a class="btn secondary" href="https://wa.me/919509912556?text=I%20need%20a%20quotation%20for%20<%= encodeURIComponent(product.name) %>" target="_blank">WhatsApp</a></div></div>
+  </section>
+  <section class="section pricing"><div class="section-head"><div><span class="kicker">QUANTITY PRICING</span><h2>Buying more? Ask for the right price tier.</h2></div></div>
+    <div class="tier-grid">
+      <% (product.pricingTierTemplate ? [
+        [product.pricingTierTemplate.tier1MinQty, product.pricingTierTemplate.tier1MaxQty, product.pricingTierTemplate.tier1Label, product.pricingTierTemplate.tier1DiscountType, product.pricingTierTemplate.tier1DiscountValue],
+        [product.pricingTierTemplate.tier2MinQty, product.pricingTierTemplate.tier2MaxQty, product.pricingTierTemplate.tier2Label, product.pricingTierTemplate.tier2DiscountType, product.pricingTierTemplate.tier2DiscountValue],
+        [product.pricingTierTemplate.tier3MinQty, product.pricingTierTemplate.tier3MaxQty, product.pricingTierTemplate.tier3Label, product.pricingTierTemplate.tier3DiscountType, product.pricingTierTemplate.tier3DiscountValue],
+        [product.pricingTierTemplate.tier4MinQty, product.pricingTierTemplate.tier4MaxQty, product.pricingTierTemplate.tier4Label, product.pricingTierTemplate.tier4DiscountType, product.pricingTierTemplate.tier4DiscountValue],
+        [product.pricingTierTemplate.tier5MinQty, product.pricingTierTemplate.tier5MaxQty, product.pricingTierTemplate.tier5Label, product.pricingTierTemplate.tier5DiscountType, product.pricingTierTemplate.tier5DiscountValue]
+      ] : []).forEach(t => { %>
+        <div class="tier"><strong><%= t[0] %>–<%= t[1] >= 99999 ? '+' : t[1] %> pcs</strong><span><%= t[2] %></span><b><%= product.price ? '₹' + Number(product.price * (1 - (t[3] === 'percent' ? t[4] / 100 : t[4] / product.price))).toFixed(2) : 'Quote' %> / piece</b></div>
+      <% }) %>
+    </div>
+  </section>
+  <section class="section"><div class="section-head"><div><span class="kicker">RELATED</span><h2>More wall clocks</h2></div></div><div class="product-grid">
+    <% related.forEach(p => { %><a class="product-card" href="/products/<%= p.slug %>"><div class="product-media"><% if(p.image){ %><img src="<%= p.image %>" alt="<%= p.name %>"><% } else { %><div class="placeholder">OSIRA</div><% } %></div><div class="product-body"><span><%= p.category?.name || 'Wall Clock' %></span><h2><%= p.name %></h2><strong><%= p.price ? 'From ₹' + p.price : 'Price on enquiry' %></strong></div></a><% }) %>
+  </div></section>
+</main>
+<%- include('partials/footer') %>
