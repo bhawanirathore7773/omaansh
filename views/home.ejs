@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <span>JAIPUR · EST. 2021</span>
+      <h1>Wall clocks that fit the space, brand and budget.</h1>
+      <p>OSIRA creates thoughtfully crafted wall clocks and décor products for homes, workplaces and commercial spaces, with custom, corporate gifting, promotional and OEM support.</p>
+      <div class="actions"><a class="btn primary" href="/products">Explore wall clocks →</a><a class="btn secondary" href="#enquiry">Start an enquiry</a></div>
+    </div>
+    <div class="hero-panel"><div class="hero-stat"><strong>4,000+ sq. ft.</strong><span>in-house facility</span></div><div class="hero-stat"><strong>Up to 1 lakh</strong><span>clocks/month stated capacity</span></div><div class="hero-stat"><strong>10</strong><span>team members</span></div></div>
+  </section>
+
+  <section class="section" id="collections">
+    <div class="section-head"><div><span class="kicker">COLLECTIONS</span><h2>Browse wall clocks by requirement</h2></div><a href="/products">View all →</a></div>
+    <div class="category-grid">
+      <% categories.forEach(category => { %>
+        <a class="category-card" href="/products?category=<%= category.slug %>"><strong><%= category.name %></strong><span><%= category.description || 'Explore the collection' %></span></a>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="section dark" id="business">
+    <div class="section-head"><div><span class="kicker">BUSINESS ORDERS</span><h2>From one design to a complete business order.</h2><p>Retail, wholesale, corporate gifting, promotional branding and custom/OEM requirements.</p></div></div>
+    <div class="business-grid">
+      <article><b>01</b><h3>Retail & wholesale</h3><p>Ready-to-sell designs for retailers, dealers and distributors.</p></article>
+      <article><b>02</b><h3>Corporate gifting</h3><p>Wall clocks for employee gifts, dealer programmes and milestones.</p></article>
+      <article><b>03</b><h3>Promotional & branded</h3><p>Logo, artwork and quantity-led promotional orders.</p></article>
+      <article><b>04</b><h3>Custom & OEM</h3><p>Discuss product direction, dimensions, finish and branding.</p></article>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="about-grid"><div><span class="kicker">ABOUT OSIRA</span><h2>Designed in Jaipur. Built for everyday spaces.</h2><p>OSIRA is the market-facing brand of Omaansh Industries, established in 2021.</p></div><div class="about-card"><strong>4,000+ sq. ft.</strong><span>in-house facility</span><strong>1 lakh/month</strong><span>stated production capability</span></div></div>
+  </section>
+
+  <section class="section enquiry" id="enquiry"><div><span class="kicker">START A CONVERSATION</span><h2>Have a wall clock requirement?</h2><p>Share quantity, preferred style, branding and delivery city.</p><a class="btn primary" href="/products">Browse products →</a></div></section>
+</main>
+<%- include('partials/footer', { site }) %>
