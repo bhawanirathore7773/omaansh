@@ -1,0 +1,17 @@
+<%- include('partials/header', {title:'OSIRA Admin Dashboard', user}) %>
+<div class="admin-heading"><div><p class="admin-kicker">OVERVIEW</p><h1>Business dashboard</h1><p>Monitor the core website catalogue and incoming enquiries.</p></div></div>
+<section class="admin-stats">
+  <a href="/products"><strong><%= data.products %></strong><span>Active products</span></a>
+  <a href="/categories"><strong><%= data.categories %></strong><span>Collections</span></a>
+  <a href="/services"><strong><%= data.services %></strong><span>Services</span></a>
+  <a href="/industries"><strong><%= data.industries %></strong><span>Industries</span></a>
+  <a href="/cities"><strong><%= data.cities %></strong><span>City pages</span></a>
+  <a href="/blog"><strong><%= data.blogs %></strong><span>Published guides</span></a>
+  <a href="/admin/enquiries"><strong><%= data.enquiries %></strong><span>Total enquiries</span></a>
+  <a href="/admin/enquiries?status=new"><strong><%= data.newEnquiries %></strong><span>New enquiries</span></a>
+</section>
+<section class="admin-panel">
+  <div><p class="admin-kicker">NEXT</p><h2>Content management</h2><p>The public NestJS site is live alongside the migration. CRUD screens for catalogue and content entities can now be added without touching the legacy Django application.</p></div>
+  <div class="admin-actions"><a class="admin-button" href="/admin/enquiries">Review enquiries</a><a class="admin-secondary" href="/products">Open catalogue</a></div>
+</section>
+<%- include('partials/footer') %>
