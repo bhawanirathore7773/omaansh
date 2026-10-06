@@ -87,6 +87,67 @@ async function main() {
   if (!defaultTier) {
     await prisma.pricingTierTemplate.create({ data: { name: 'Default' } });
   }
+
+  const services = [
+    {
+      name: 'Wholesale Wall Clocks',
+      slug: 'wholesale-wall-clocks',
+      h1Heading: 'Wholesale wall clocks for retailers and distributors',
+      heroSubheading: 'Ready-to-sell wall clock designs with quantity-led pricing and business order support.',
+      shortDescription: 'Source wall clocks for retail stores, dealers and distributors with practical MOQ and repeat-order support.',
+      fullDescription: '<p>OSIRA supports wholesale buyers with a focused wall clock catalogue, quantity-led pricing and a straightforward enquiry process.</p>',
+      processContent: '<ol><li>Share designs and required quantity.</li><li>Confirm pricing, packaging and delivery.</li><li>Approve the order and production plan.</li><li>Dispatch against the agreed schedule.</li></ol>',
+      benefitsContent: '<p>Suitable for retailers, dealers and distributors looking for consistent designs, clear communication and repeat supply.</p>',
+      metaTitle: 'Wholesale Wall Clocks Supplier | OSIRA Jaipur',
+      metaDescription: 'Source wholesale wall clocks from OSIRA Jaipur for retailers, dealers and distributors.',
+    },
+    {
+      name: 'Corporate Gifting',
+      slug: 'corporate-gifting',
+      h1Heading: 'Corporate gifting wall clocks with business branding',
+      heroSubheading: 'Wall clocks for employee gifts, dealer programmes, milestones and institutional gifting.',
+      shortDescription: 'Plan quantity-based gifting orders with branding, artwork and packaging requirements.',
+      fullDescription: '<p>Turn a useful everyday product into a branded business gift. OSIRA can support corporate wall clock programmes around quantity, artwork and delivery requirements.</p>',
+      processContent: '<ol><li>Share event, quantity and branding brief.</li><li>Review suitable product options.</li><li>Confirm artwork and commercial details.</li><li>Move into production and dispatch.</li></ol>',
+      benefitsContent: '<p>Useful for employee recognition, dealer meets, anniversaries, launches and institutional programmes.</p>',
+      metaTitle: 'Corporate Gifting Wall Clocks | OSIRA',
+      metaDescription: 'Corporate gifting wall clocks with branding and quantity support from OSIRA Jaipur.',
+    },
+    {
+      name: 'Promotional Branding',
+      slug: 'promotional-branding',
+      h1Heading: 'Promotional wall clocks for branded campaigns',
+      heroSubheading: 'Put your logo, campaign artwork or business identity on a practical wall clock.',
+      shortDescription: 'Promotional wall clocks for brands, dealers, distributors and marketing campaigns.',
+      fullDescription: '<p>OSIRA supports promotional wall clock requirements where the product needs to carry a visible brand identity while remaining useful in homes, shops and workplaces.</p>',
+      processContent: '<ol><li>Share logo, artwork and target quantity.</li><li>Discuss product and placement options.</li><li>Approve artwork and commercial terms.</li><li>Schedule production and dispatch.</li></ol>',
+      benefitsContent: '<p>Suitable for dealer promotions, festive campaigns, product launches and brand visibility programmes.</p>',
+      metaTitle: 'Promotional Wall Clocks | Custom Branding | OSIRA',
+      metaDescription: 'Order promotional wall clocks with logo and campaign branding from OSIRA.',
+    },
+    {
+      name: 'Custom OEM Manufacturing',
+      slug: 'custom-oem-manufacturing',
+      h1Heading: 'Custom wall clock manufacturing and OEM support',
+      heroSubheading: 'Develop a wall clock around your dimensions, finish, branding and commercial requirement.',
+      shortDescription: 'Custom and OEM wall clock support for product development, private-label and large business orders.',
+      fullDescription: '<p>For custom or OEM projects, OSIRA can discuss the product direction, dimensions, finish, branding and quantity before production is planned.</p>',
+      processContent: '<ol><li>Share the product brief or reference.</li><li>Review feasibility, materials and quantity.</li><li>Finalize sample or artwork requirements.</li><li>Confirm production and dispatch plan.</li></ol>',
+      benefitsContent: '<p>Best suited to brands, importers, distributors and businesses that need a product adapted to a specific commercial brief.</p>',
+      metaTitle: 'Custom OEM Wall Clock Manufacturer | OSIRA Jaipur',
+      metaDescription: 'Custom and OEM wall clock manufacturing support for brands and business buyers in Jaipur.',
+    },
+  ];
+
+  for (let i = 0; i < services.length; i++) {
+    const service = services[i];
+    await prisma.servicePage.upsert({
+      where: { slug: service.slug },
+      update: service,
+      create: { ...service, displayOrder: i + 1 },
+    });
+  }
+
   console.log('OSIRA Prisma seed complete:', rows.length, 'catalogue rows processed');
 }
 
