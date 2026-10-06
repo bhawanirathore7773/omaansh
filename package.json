@@ -1,0 +1,41 @@
+{
+  "name": "osira-wall-clocks",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OSIRA wall clock manufacturing website - NestJS + Prisma + MySQL",
+  "scripts": {
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "start:dev": "nest start --watch",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "prisma:seed": "tsx prisma/seed.ts",
+    "postinstall": "prisma generate"
+  },
+  "engines": {
+    "node": ">=22 <25",
+    "npm": ">=10"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.11",
+    "@nestjs/core": "^11.0.11",
+    "@nestjs/platform-express": "^11.0.11",
+    "@prisma/client": "^6.16.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "ejs": "^3.1.10",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.7",
+    "@nestjs/schematics": "^11.0.5",
+    "@nestjs/testing": "^11.0.11",
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.15.21",
+    "prisma": "^6.16.1",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
