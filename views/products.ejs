@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+<main class="section"><div class="section-head"><div><span class="kicker">CATALOGUE</span><h1>Wall clocks for homes, offices and business orders.</h1></div></div>
+<form class="search"><input name="q" value="<%= typeof q !== 'undefined' ? q : '' %>" placeholder="Search wall clocks"><button>Search</button></form>
+<div class="product-grid">
+<% products.forEach(product => { %>
+<a class="product-card" href="/products/<%= product.slug %>">
+  <div class="product-media"><% if(product.image){ %><img src="<%= product.image %>" alt="<%= product.name %>"><% } else { %><div class="placeholder">OSIRA</div><% } %></div>
+  <div class="product-body"><span><%= product.category?.name || 'Wall Clock' %></span><h2><%= product.name %></h2><strong><%= product.price ? 'From ₹' + product.price : 'Price on enquiry' %></strong></div>
+</a>
+<% }) %>
+</div></main>
+<%- include('partials/footer', { site: undefined }) %>
