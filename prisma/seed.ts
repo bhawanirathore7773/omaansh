@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { readFileSync } from 'fs';
+import { randomBytes, scryptSync } from 'crypto';
 import { join } from 'path';
 
 const prisma = new PrismaClient();
@@ -26,6 +27,12 @@ function parseCsv(text: string): string[][] {
   }
   if (field.length || row.length) { row.push(field.trim()); rows.push(row); }
   return rows;
+}
+
+function hashPassword(password: string) {
+  const salt = randomBytes(16).toString('hex');
+  const hash = scryptSync(password, salt, 64).toString('hex');
+  return `scrypt${salt}${hash}`;
 }
 
 function slugify(value: string) {
@@ -359,6 +366,18 @@ async function main() {
       update: post,
       create: post,
     });
+  }
+
+  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (adminEmail && adminPassword && adminPassword !== 'CHANGE_THIS_TO_A_STRONG_PASSWORD') {
+    const passwordHash = hashPassword(adminPassword);
+    await prisma.adminUser.upsert({
+      where: { email: adminEmail },
+      update: { passwordHash, isActive: true, name: 'OSIRA Admin' },
+      create: { email: adminEmail, passwordHash, name: 'OSIRA Admin', role: 'admin' },
+    });
+    console.log('OSIRA admin account configured:', adminEmail);
   }
 
   console.log('OSIRA Prisma seed complete:', rows.length, 'catalogue rows processed');
