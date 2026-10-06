@@ -1,0 +1,29 @@
+<%- include('partials/header', {title:'Enquiries | OSIRA Admin', user}) %>
+<div class="admin-heading"><div><p class="admin-kicker">LEADS</p><h1>Enquiries</h1><p>Review incoming product and business enquiries and move each lead through its current stage.</p></div></div>
+<div class="admin-table-wrap">
+<table class="admin-table">
+<thead><tr><th>Lead</th><th>Requirement</th><th>Product</th><th>Received</th><th>Status</th></tr></thead>
+<tbody>
+<% if (!rows.length) { %><tr><td colspan="5" class="admin-empty">No enquiries yet.</td></tr><% } %>
+<% rows.forEach(row => { %>
+<tr>
+<td><strong><%= row.name %></strong><small><%= row.phone %><% if (row.email) { %> · <%= row.email %><% } %></small><small><%= row.city %></small></td>
+<td><%= row.message %></td>
+<td><%= row.product?.name || 'General enquiry' %></td>
+<td><%= new Date(row.createdAt).toLocaleString('en-IN') %></td>
+<td>
+<form method="post" action="/admin/enquiries/<%= row.id %>/status" class="status-form">
+<input type="hidden" name="csrfToken" value="<%= csrfToken %>">
+<select name="status">
+<% ['new','contacted','quoted','won','lost','closed'].forEach(status => { %><option value="<%= status %>" <%= row.status===status?'selected':'' %>><%= status %></option><% }) %>
+</select>
+<input name="notes" value="<%= row.notes || '' %>" placeholder="Notes">
+<button type="submit">Save</button>
+</form>
+</td>
+</tr>
+<% }) %>
+</tbody>
+</table>
+</div>
+<%- include('partials/footer') %>
