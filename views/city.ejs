@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+<main>
+  <section class="section service-hero">
+    <div class="breadcrumbs"><a href="/cities">Cities</a> / <%= city.cityName %></div>
+    <div class="service-detail-copy">
+      <span class="kicker">CITY SUPPLY PAGE</span>
+      <h1><%= city.h1Heading %></h1>
+      <p><%= city.heroSubheading %></p>
+      <div class="actions">
+        <a class="btn primary" href="/#enquiry">Get a business quote</a>
+        <a class="btn secondary" href="/products">Browse products</a>
+      </div>
+    </div>
+  </section>
+  <section class="section rich-sections">
+    <article><span class="kicker">INTRODUCTION</span><div class="rich-copy"><%- city.introContent %></div></article>
+    <% if (city.whyChooseContent) { %><article><span class="kicker">WHY OSIRA</span><div class="rich-copy"><%- city.whyChooseContent %></div></article><% } %>
+    <% if (city.servicesContent) { %><article><span class="kicker">SERVICES</span><div class="rich-copy"><%- city.servicesContent %></div></article><% } %>
+    <% if (city.deliveryContent) { %><article><span class="kicker">DELIVERY</span><div class="rich-copy"><%- city.deliveryContent %><p><strong>Typical delivery:</strong> <%= city.deliveryTime %></p></div></article><% } %>
+    <% if (city.industriesContent) { %><article><span class="kicker">BUSINESS USE</span><div class="rich-copy"><%- city.industriesContent %></div></article><% } %>
+    <% if (city.nearbyAreas) { %><article><span class="kicker">AREAS</span><div class="rich-copy"><p><%= city.nearbyAreas %></p></div></article><% } %>
+    <% if (city.closingContent) { %><article><span class="kicker">NEXT STEP</span><div class="rich-copy"><%- city.closingContent %></div></article><% } %>
+  </section>
+</main>
+<%- include('partials/footer', { site }) %>
