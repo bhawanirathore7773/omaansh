@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+<main>
+  <article class="section article">
+    <div class="breadcrumbs"><a href="/blog">Guides</a> / <%= post.category %></div>
+    <span class="kicker"><%= post.category %></span>
+    <h1><%= post.title %></h1>
+    <p class="article-lead"><%= post.description %></p>
+    <% if(post.featuredImage){ %><img class="article-image" src="<%= post.featuredImage %>" alt="<%= post.title %>"><% } %>
+    <div class="article-content"><%- post.contentHtml || '<p>More details will be published soon.</p>' %></div>
+  </article>
+</main>
+<%- include('partials/footer', { site }) %>
