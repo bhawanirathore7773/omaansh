@@ -11,6 +11,6 @@ import { SiteModule } from './site/site.module';
 import { AdminModule } from './admin/admin.module';
 
 @Module({
-  imports: [PrismaModule, ProductsModule, CategoriesModule, ServicesModule, IndustriesModule, CitiesModule, BlogModule, EnquiriesModule, SiteModule, AdminModule],
+  imports: [PrismaModule, ProductsModule, CategoriesModule, ServicesModule, IndustriesModule, CitiesModule, BlogModule, EnquiriesModule, SiteModule, AdminModule, AdminModule],
 })
 export class AppModule {}
