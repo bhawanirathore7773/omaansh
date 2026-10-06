@@ -15,12 +15,21 @@ export class ProductsController {
     @Query('q') q?: string,
     @Query('category') category?: string,
   ) {
-    const [products, site] = await Promise.all([
+    const [products, categories, site] = await Promise.all([
       this.products.list(q, category),
+      this.prisma.category.findMany({
+        orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }],
+      }),
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
 
-    return { products, site, q: q || '', category: category || '' };
+    return {
+      products,
+      categories,
+      site,
+      q: q || '',
+      category: category || '',
+    };
   }
 
   @Get('products/:slug')
