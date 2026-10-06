@@ -148,6 +148,219 @@ async function main() {
     });
   }
 
+
+  const industries = [
+    {
+      industryName: 'Hotels & Hospitality',
+      slug: 'hotels-hospitality',
+      iconClass: 'HOSPITALITY',
+      h1Heading: 'Wall clocks for hotels and hospitality spaces',
+      heroSubheading: 'Coordinate practical timekeeping with room aesthetics, common areas and brand identity.',
+      introContent: '<p>OSIRA wall clocks can support hotel rooms, reception areas, lounges, restaurants and back-office spaces where clear timekeeping and visual consistency matter.</p>',
+      benefitsContent: '<p>Choose designs around the interior style, viewing distance, placement and quantity required across multiple locations.</p>',
+      customizationContent: '<p>Business buyers can discuss branding, finishes, dimensions and quantity-led requirements before placing an order.</p>',
+      caseStudyContent: '<p>Suitable for hotel chains, boutique properties, resorts, restaurants and hospitality projects.</p>',
+      metaTitle: 'Hotel Wall Clocks Supplier | OSIRA',
+      metaDescription: 'Wall clocks for hotels, resorts and hospitality spaces with business-order support from OSIRA.',
+    },
+    {
+      industryName: 'Corporate Offices',
+      slug: 'corporate-offices',
+      iconClass: 'OFFICES',
+      h1Heading: 'Wall clocks for corporate offices and workplaces',
+      heroSubheading: 'Professional wall clocks for meeting rooms, cabins, reception areas and shared workplaces.',
+      introContent: '<p>OSIRA supplies wall clocks for offices where readability, design and consistent placement are part of the workplace environment.</p>',
+      benefitsContent: '<p>Use a consistent design language across departments, floors or multiple office locations.</p>',
+      customizationContent: '<p>Discuss logo placement, finishes and quantities for corporate projects, office openings and employee programmes.</p>',
+      caseStudyContent: '<p>Useful for headquarters, branches, coworking spaces, training centres and institutional offices.</p>',
+      metaTitle: 'Office Wall Clocks Supplier | OSIRA Jaipur',
+      metaDescription: 'Professional wall clocks for offices, meeting rooms and corporate workplaces.',
+    },
+    {
+      industryName: 'Retail Stores',
+      slug: 'retail-stores',
+      iconClass: 'RETAIL',
+      h1Heading: 'Wall clocks for retail stores and dealer networks',
+      heroSubheading: 'Retail-ready wall clocks for stores, showrooms, dealers and distribution networks.',
+      introContent: '<p>Retail buyers can source wall clocks around design demand, selling price, MOQ and repeat availability.</p>',
+      benefitsContent: '<p>Build a practical assortment for stores with a mix of modern, minimal and statement designs.</p>',
+      customizationContent: '<p>Promotional and branded programmes can be planned for dealer networks and seasonal campaigns.</p>',
+      caseStudyContent: '<p>Suitable for home décor retailers, furniture stores, lifestyle shops and multi-location dealer networks.</p>',
+      metaTitle: 'Retail Wall Clocks Supplier | OSIRA',
+      metaDescription: 'Source retail wall clocks for stores, showrooms and dealer networks from OSIRA.',
+    },
+    {
+      industryName: 'Education',
+      slug: 'education',
+      iconClass: 'EDUCATION',
+      h1Heading: 'Wall clocks for schools, colleges and education spaces',
+      heroSubheading: 'Clear, dependable wall clocks for classrooms, corridors, offices and common areas.',
+      introContent: '<p>Educational institutions need easy-to-read clocks across classrooms, administration areas, laboratories and common spaces.</p>',
+      benefitsContent: '<p>Prioritize clear viewing, practical placement and consistent supply across buildings or campuses.</p>',
+      customizationContent: '<p>Institutional and branded requirements can be discussed for larger programmes and campus projects.</p>',
+      caseStudyContent: '<p>Suitable for schools, colleges, coaching centres, training institutes and campus facilities.</p>',
+      metaTitle: 'School & College Wall Clocks | OSIRA',
+      metaDescription: 'Wall clocks for schools, colleges, coaching centres and educational institutions.',
+    },
+    {
+      industryName: 'Healthcare',
+      slug: 'healthcare',
+      iconClass: 'HEALTHCARE',
+      h1Heading: 'Wall clocks for hospitals and healthcare facilities',
+      heroSubheading: 'Readable wall clocks for clinics, hospitals, waiting areas and staff spaces.',
+      introContent: '<p>Healthcare environments benefit from simple, highly visible timekeeping across reception, waiting areas, offices and staff spaces.</p>',
+      benefitsContent: '<p>Choose practical designs that remain easy to read without competing with the surrounding environment.</p>',
+      customizationContent: '<p>Quantity and institutional branding requirements can be planned for new facilities or refurbishment projects.</p>',
+      caseStudyContent: '<p>Suitable for hospitals, clinics, diagnostic centres, pharmacies and healthcare offices.</p>',
+      metaTitle: 'Hospital Wall Clocks Supplier | OSIRA',
+      metaDescription: 'Readable wall clocks for hospitals, clinics and healthcare facilities from OSIRA.',
+    },
+    {
+      industryName: 'Residential Projects',
+      slug: 'residential-projects',
+      iconClass: 'RESIDENTIAL',
+      h1Heading: 'Wall clocks for residential projects and home décor',
+      heroSubheading: 'Design-led wall clocks for homes, apartments, interior projects and décor programmes.',
+      introContent: '<p>OSIRA offers wall clocks for living rooms, bedrooms, dining areas, work-from-home spaces and residential interior projects.</p>',
+      benefitsContent: '<p>Choose styles that balance readability with the visual character of the room and overall décor.</p>',
+      customizationContent: '<p>Interior designers and project buyers can discuss quantities, coordinated designs and custom requirements.</p>',
+      caseStudyContent: '<p>Suitable for builders, interior designers, home décor retailers and residential project procurement.</p>',
+      metaTitle: 'Residential Wall Clocks | Home Décor Supplier | OSIRA',
+      metaDescription: 'Wall clocks for homes, interior designers and residential projects from OSIRA.',
+    },
+  ];
+
+  for (let i = 0; i < industries.length; i++) {
+    const industry = industries[i];
+    await prisma.industryPage.upsert({
+      where: { slug: industry.slug },
+      update: industry,
+      create: { ...industry, displayOrder: i + 1 },
+    });
+  }
+
+  const cities = [
+    {
+      cityName: 'Jaipur',
+      slug: 'jaipur',
+      state: 'Rajasthan',
+      pageType: 'supplier',
+      h1Heading: 'Wall Clock Manufacturer & Supplier in Jaipur',
+      heroSubheading: 'Source wall clocks in Jaipur for retail, wholesale, corporate gifting and custom business requirements.',
+      introContent: '<p>OSIRA serves Jaipur buyers looking for wall clocks for homes, offices, stores, hospitality projects and business programmes.</p>',
+      whyChooseContent: '<p>Local business buyers can discuss designs, quantities, branding, delivery and repeat supply with a Jaipur-based team.</p>',
+      servicesContent: '<p>Wholesale supply, corporate gifting, promotional branding and custom/OEM requirements are supported through a direct enquiry process.</p>',
+      deliveryContent: '<p>Delivery timelines depend on product, quantity and destination. Confirm the schedule before ordering.</p>',
+      industriesContent: '<p>Common requirements include retail stores, offices, hotels, schools, healthcare facilities and residential projects.</p>',
+      closingContent: '<p>Share your design preference, quantity and delivery requirement to receive a suitable recommendation.</p>',
+      metaTitle: 'Wall Clock Manufacturer in Jaipur | OSIRA',
+      metaDescription: 'OSIRA wall clock manufacturer and supplier in Jaipur for wholesale, custom and business orders.',
+      nearbyAreas: 'Gokulpura, Kalwar Road, Vaishali Nagar, Jhotwara, Mansarovar, Ajmer Road and nearby Jaipur areas.',
+      deliveryTime: '3-5 business days',
+    },
+    {
+      cityName: 'Delhi',
+      slug: 'delhi',
+      state: 'Delhi',
+      pageType: 'supplier',
+      h1Heading: 'Wall Clock Supplier in Delhi for Business Orders',
+      heroSubheading: 'Wholesale and custom wall clock supply for retailers, offices and commercial projects in Delhi.',
+      introContent: '<p>Businesses in Delhi can source OSIRA wall clocks for retail, gifting, promotional and commercial requirements.</p>',
+      whyChooseContent: '<p>Choose from an active catalogue and share quantity, branding and delivery details for a business quotation.</p>',
+      servicesContent: '<p>Wholesale, corporate gifting, promotional branding and custom requirements are available.</p>',
+      deliveryContent: '<p>Delivery depends on product availability, quantity and destination. Confirm the schedule with the team.</p>',
+      industriesContent: '<p>Suitable for retail, offices, hospitality, education, healthcare and residential projects.</p>',
+      closingContent: '<p>Send your requirement to discuss suitable designs and quantities.</p>',
+      metaTitle: 'Wall Clock Supplier in Delhi | OSIRA',
+      metaDescription: 'Wholesale and custom wall clock supplier for Delhi businesses, retailers and projects.',
+      nearbyAreas: 'Delhi NCR and nearby business locations.',
+      deliveryTime: 'As confirmed for the order',
+    },
+    {
+      cityName: 'Mumbai',
+      slug: 'mumbai',
+      state: 'Maharashtra',
+      pageType: 'supplier',
+      h1Heading: 'Wall Clock Supplier in Mumbai for Wholesale & Custom Orders',
+      heroSubheading: 'Wall clocks for Mumbai retailers, corporate buyers, hospitality and commercial projects.',
+      introContent: '<p>OSIRA supports Mumbai buyers with wall clock options for retail, gifting, promotional and interior requirements.</p>',
+      whyChooseContent: '<p>Share the quantity, style and branding brief so the team can recommend a practical product mix.</p>',
+      servicesContent: '<p>Wholesale supply, corporate gifting, promotional branding and custom/OEM discussions are available.</p>',
+      deliveryContent: '<p>Delivery timelines vary by order size and destination and are confirmed before dispatch.</p>',
+      industriesContent: '<p>Useful for stores, offices, hotels, educational institutions, healthcare and residential projects.</p>',
+      closingContent: '<p>Tell us what you need and the team will help with the next step.</p>',
+      metaTitle: 'Wall Clock Supplier in Mumbai | OSIRA',
+      metaDescription: 'Wholesale, custom and business wall clock supplier for Mumbai buyers.',
+      nearbyAreas: 'Mumbai and surrounding business locations.',
+      deliveryTime: 'As confirmed for the order',
+    },
+    {
+      cityName: 'Ahmedabad',
+      slug: 'ahmedabad',
+      state: 'Gujarat',
+      pageType: 'supplier',
+      h1Heading: 'Wall Clock Supplier in Ahmedabad for Business Requirements',
+      heroSubheading: 'Source wall clocks for retail, corporate gifting, offices and commercial projects in Ahmedabad.',
+      introContent: '<p>OSIRA supplies wall clocks for Ahmedabad businesses that need practical designs, quantity support and custom branding options.</p>',
+      whyChooseContent: '<p>Discuss the product type, quantity, target price and branding requirement before placing a business order.</p>',
+      servicesContent: '<p>Wholesale, corporate gifting, promotional branding and custom/OEM support are available.</p>',
+      deliveryContent: '<p>Delivery is planned around product availability, order size and destination.</p>',
+      industriesContent: '<p>Suitable for retail, corporate offices, hospitality, education, healthcare and residential projects.</p>',
+      closingContent: '<p>Send your requirement to receive a suitable recommendation.</p>',
+      metaTitle: 'Wall Clock Supplier in Ahmedabad | OSIRA',
+      metaDescription: 'Wall clock supplier for Ahmedabad retailers, offices, gifting and commercial projects.',
+      nearbyAreas: 'Ahmedabad and nearby Gujarat business locations.',
+      deliveryTime: 'As confirmed for the order',
+    },
+  ];
+
+  for (let i = 0; i < cities.length; i++) {
+    const city = cities[i];
+    await prisma.cityPage.upsert({
+      where: { slug: city.slug },
+      update: city,
+      create: { ...city, displayOrder: i + 1 },
+    });
+  }
+
+  const posts = [
+    {
+      title: 'How to Choose Wall Clocks for Different Room Sizes',
+      slug: 'how-to-choose-wall-clocks-for-different-room-sizes',
+      category: 'Wall Clock Buying Guide',
+      description: 'A practical guide to choosing wall clock size, readability and placement for different room dimensions.',
+      contentHtml: '<p>The right wall clock should be easy to read from the intended viewing distance while fitting naturally into the room.</p><h2>Start with viewing distance</h2><p>Larger rooms and commercial spaces generally benefit from larger dials or stronger visual contrast.</p><h2>Match the clock to the space</h2><p>Consider the wall width, surrounding furniture, lighting and overall interior direction before choosing a design.</p><h2>For business buyers</h2><p>For multiple rooms or locations, keep the product family consistent where a coordinated look is important.</p>',
+      metaTitle: 'How to Choose Wall Clock Size | OSIRA Guide',
+      metaDescription: 'Learn how to choose wall clock size, readability and placement for different room sizes.',
+    },
+    {
+      title: 'Wholesale Wall Clocks: What Buyers Should Check Before Ordering',
+      slug: 'wholesale-wall-clocks-buyer-checklist',
+      category: 'Business Buying',
+      description: 'Key points retailers and distributors should confirm before placing a wholesale wall clock order.',
+      contentHtml: '<p>Wholesale buying is easier when product, quantity and delivery expectations are clear before the order is confirmed.</p><h2>Check MOQ and pricing</h2><p>Understand minimum quantity and how pricing changes at different order volumes.</p><h2>Check product consistency</h2><p>For repeat orders, confirm the product specification and expected finish so future purchases remain aligned.</p><h2>Confirm packaging and delivery</h2><p>Discuss packaging, dispatch schedule and destination requirements before production or dispatch.</p>',
+      metaTitle: 'Wholesale Wall Clock Buyer Checklist | OSIRA',
+      metaDescription: 'A practical checklist for retailers and distributors buying wall clocks wholesale.',
+    },
+    {
+      title: 'Custom Wall Clocks for Corporate Gifting and Branding',
+      slug: 'custom-wall-clocks-corporate-gifting-branding',
+      category: 'Custom & Branding',
+      description: 'How businesses can plan branded wall clock programmes for gifting, promotions and milestones.',
+      contentHtml: '<p>A branded wall clock can combine useful everyday value with visible business identity.</p><h2>Define the programme</h2><p>Start with event, quantity, audience, budget and delivery date.</p><h2>Plan artwork</h2><p>Confirm logo placement, artwork dimensions and the visual relationship between the brand and the clock design.</p><h2>Allow time for approval</h2><p>For larger programmes, include time for artwork review, sampling where required, production and dispatch.</p>',
+      metaTitle: 'Custom Wall Clocks for Corporate Gifting | OSIRA',
+      metaDescription: 'Plan custom branded wall clocks for corporate gifting, promotions and business events.',
+    },
+  ];
+
+  for (const post of posts) {
+    await prisma.blog.upsert({
+      where: { slug: post.slug },
+      update: post,
+      create: post,
+    });
+  }
+
   console.log('OSIRA Prisma seed complete:', rows.length, 'catalogue rows processed');
 }
 
