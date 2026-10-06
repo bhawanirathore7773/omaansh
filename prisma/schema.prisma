@@ -1,0 +1,318 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String @unique @db.VarChar(200)
+  slug String @unique @db.VarChar(220)
+  description String @db.Text
+  image String? @db.VarChar(500)
+  staticImagePath String? @db.VarChar(300)
+  metaTitle String? @db.VarChar(70)
+  metaDescription String? @db.VarChar(160)
+  metaKeywords String? @db.VarChar(300)
+  h1Heading String? @db.VarChar(200)
+  seoContent String? @db.Text
+  isFeatured Boolean @default(false)
+  displayOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  products Product[]
+  @@index([displayOrder, name])
+}
+
+model PricingTierTemplate {
+  id Int @id @default(autoincrement())
+  name String @unique @db.VarChar(200)
+  description String? @db.VarChar(300)
+  tier1MinQty Int @default(1)
+  tier1MaxQty Int @default(49)
+  tier1Label String @default("Sample / Trial") @db.VarChar(50)
+  tier1DiscountType String @default("percent") @db.VarChar(10)
+  tier1DiscountValue Decimal @default(0) @db.Decimal(8,2)
+  tier1Badge String? @db.VarChar(30)
+  tier2MinQty Int @default(50)
+  tier2MaxQty Int @default(99)
+  tier2Label String @default("Small Order") @db.VarChar(50)
+  tier2DiscountType String @default("percent") @db.VarChar(10)
+  tier2DiscountValue Decimal @default(5) @db.Decimal(8,2)
+  tier2Badge String? @db.VarChar(30)
+  tier3MinQty Int @default(100)
+  tier3MaxQty Int @default(249)
+  tier3Label String @default("Standard Bulk") @db.VarChar(50)
+  tier3DiscountType String @default("percent") @db.VarChar(10)
+  tier3DiscountValue Decimal @default(10) @db.Decimal(8,2)
+  tier3Badge String? @db.VarChar(30)
+  tier4MinQty Int @default(250)
+  tier4MaxQty Int @default(499)
+  tier4Label String @default("Large Order") @db.VarChar(50)
+  tier4DiscountType String @default("percent") @db.VarChar(10)
+  tier4DiscountValue Decimal @default(15) @db.Decimal(8,2)
+  tier4Badge String? @db.VarChar(30)
+  tier5MinQty Int @default(500)
+  tier5MaxQty Int @default(99999)
+  tier5Label String @default("Wholesale / OEM") @db.VarChar(50)
+  tier5DiscountType String @default("percent") @db.VarChar(10)
+  tier5DiscountValue Decimal @default(20) @db.Decimal(8,2)
+  tier5Badge String? @db.VarChar(30)
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  products Product[]
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(300)
+  slug String @unique @db.VarChar(320)
+  categoryId Int
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  description String @db.Text
+  shortDescription String? @db.VarChar(300)
+  specifications String? @db.Text
+  price Decimal? @db.Decimal(10,2)
+  bulkPrice Decimal? @db.Decimal(10,2)
+  moq Int @default(1)
+  pricingTierTemplateId Int?
+  pricingTierTemplate PricingTierTemplate? @relation(fields: [pricingTierTemplateId], references: [id], onDelete: SetNull)
+  customPricingTiers Json?
+  useCustomTiers Boolean @default(false)
+  image String? @db.VarChar(500)
+  additionalImages Json?
+  sizeOptions Json?
+  materialOptions Json?
+  colorOptions Json?
+  metaTitle String? @db.VarChar(70)
+  metaDescription String? @db.VarChar(160)
+  metaKeywords String? @db.VarChar(300)
+  ogTitle String? @db.VarChar(100)
+  ogDescription String? @db.VarChar(160)
+  ogImage String? @db.VarChar(500)
+  brand String @default("OSIRA") @db.VarChar(100)
+  sku String? @db.VarChar(50)
+  availability String @default("InStock") @db.VarChar(30)
+  isFeatured Boolean @default(false)
+  isActive Boolean @default(true)
+  isBestseller Boolean @default(false)
+  isNewArrival Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  industries IndustryProduct[]
+  banners BannerProduct[]
+  enquiries Enquiry[]
+  @@index([isActive, isFeatured])
+  @@index([categoryId])
+}
+
+model CityPage {
+  id Int @id @default(autoincrement())
+  cityName String @unique @db.VarChar(100)
+  slug String @unique @db.VarChar(120)
+  state String? @db.VarChar(100)
+  pageType String @default("supplier") @db.VarChar(20)
+  h1Heading String @db.VarChar(200)
+  heroSubheading String? @db.VarChar(300)
+  heroImage String? @db.VarChar(500)
+  introContent String @db.Text
+  whyChooseContent String? @db.Text
+  servicesContent String? @db.Text
+  deliveryContent String? @db.Text
+  industriesContent String? @db.Text
+  closingContent String? @db.Text
+  metaTitle String? @db.VarChar(70)
+  metaDescription String? @db.VarChar(160)
+  metaKeywords String? @db.VarChar(400)
+  nearbyAreas String? @db.Text
+  deliveryTime String @default("3-5 business days") @db.VarChar(50)
+  isPublished Boolean @default(true)
+  displayOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model IndustryPage {
+  id Int @id @default(autoincrement())
+  industryName String @unique @db.VarChar(100)
+  slug String @unique @db.VarChar(120)
+  iconClass String? @db.VarChar(50)
+  h1Heading String @db.VarChar(200)
+  heroSubheading String? @db.VarChar(300)
+  heroImage String? @db.VarChar(500)
+  introContent String @db.Text
+  benefitsContent String? @db.Text
+  customizationContent String? @db.Text
+  caseStudyContent String? @db.Text
+  metaTitle String? @db.VarChar(70)
+  metaDescription String? @db.VarChar(160)
+  metaKeywords String? @db.VarChar(400)
+  isPublished Boolean @default(true)
+  displayOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  featuredProducts IndustryProduct[]
+}
+
+model IndustryProduct {
+  industryId Int
+  productId Int
+  industry IndustryPage @relation(fields: [industryId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  @@id([industryId, productId])
+}
+
+model FAQ {
+  id Int @id @default(autoincrement())
+  question String @db.VarChar(300)
+  answer String @db.Text
+  scope String @default("global") @db.VarChar(20)
+  displayOrder Int @default(0)
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  @@index([scope, displayOrder])
+}
+
+model Testimonial {
+  id Int @id @default(autoincrement())
+  customerName String @db.VarChar(200)
+  customerDesignation String? @db.VarChar(200)
+  customerCity String? @db.VarChar(100)
+  customerImage String? @db.VarChar(500)
+  rating Int @default(5)
+  reviewTitle String? @db.VarChar(200)
+  reviewContent String @db.Text
+  isFeatured Boolean @default(false)
+  displayOrder Int @default(0)
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+}
+
+model ServicePage {
+  id Int @id @default(autoincrement())
+  name String @unique @db.VarChar(200)
+  slug String @unique @db.VarChar(220)
+  iconClass String? @db.VarChar(50)
+  h1Heading String @db.VarChar(200)
+  heroSubheading String? @db.VarChar(300)
+  heroImage String? @db.VarChar(500)
+  shortDescription String @db.VarChar(300)
+  fullDescription String @db.Text
+  processContent String? @db.Text
+  benefitsContent String? @db.Text
+  metaTitle String? @db.VarChar(70)
+  metaDescription String? @db.VarChar(160)
+  metaKeywords String? @db.VarChar(400)
+  isPublished Boolean @default(true)
+  displayOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Banner {
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(200)
+  slug String @unique @db.VarChar(220)
+  bannerType String @default("website") @db.VarChar(20)
+  image String? @db.VarChar(500)
+  desktopImage String? @db.VarChar(500)
+  mobileImage String? @db.VarChar(500)
+  fallbackDesktop String? @db.VarChar(300)
+  fallbackMobile String? @db.VarChar(300)
+  heading String? @db.VarChar(200)
+  subheading String? @db.VarChar(400)
+  ctaText String @default("Explore") @db.VarChar(100)
+  ctaUrl String? @db.VarChar(500)
+  order Int @default(0)
+  isActive Boolean @default(true)
+  pageHeading String? @db.VarChar(220)
+  pageSubheading String? @db.VarChar(400)
+  pageIntro String? @db.Text
+  pageContent String? @db.Text
+  pageImage String? @db.VarChar(500)
+  seoTitle String? @db.VarChar(70)
+  seoDescription String? @db.VarChar(160)
+  seoKeywords String? @db.VarChar(400)
+  isPagePublished Boolean @default(true)
+  textColor String @default("#FFFFFF") @db.VarChar(7)
+  textPosition String @default("center-center") @db.VarChar(20)
+  overlayOpacity Float @default(0.4)
+  createdAt DateTime @default(now())
+  products BannerProduct[]
+}
+
+model BannerProduct {
+  bannerId Int
+  productId Int
+  banner Banner @relation(fields: [bannerId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  @@id([bannerId, productId])
+}
+
+model SiteSettings {
+  id Int @id @default(1)
+  businessName String @default("OSIRA") @db.VarChar(200)
+  tagline String @default("Thoughtfully crafted wall clocks and décor for modern spaces") @db.VarChar(300)
+  primaryPhone String @default("+91141616961") @db.VarChar(20)
+  whatsappNumber String @default("919509912556") @db.VarChar(20)
+  email String @default("hello@omaansh.com") @db.VarChar(254)
+  streetAddress String @default("24, Shree Shyam Vatika, Gokulpura, Kalwar Road, Jaipur, Rajasthan 302012") @db.VarChar(300)
+  locality String @default("Gokulpura, Jaipur") @db.VarChar(100)
+  region String @default("Rajasthan") @db.VarChar(100)
+  postalCode String @default("302012") @db.VarChar(10)
+  country String @default("IN") @db.VarChar(10)
+  latitude Float @default(26.9312482)
+  longitude Float @default(75.7159318)
+  gstNumber String? @db.VarChar(20)
+  establishmentYear Int @default(2021)
+  employeeCount String? @default("10") @db.VarChar(20)
+  facebookUrl String? @db.VarChar(500)
+  instagramUrl String? @db.VarChar(500)
+  youtubeUrl String? @db.VarChar(500)
+  linkedinUrl String? @db.VarChar(500)
+  defaultMetaTitle String @default("OSIRA | Wall Clock Manufacturer & Supplier in Jaipur") @db.VarChar(70)
+  defaultMetaDescription String @default("OSIRA creates wall clocks and décor products for homes, workplaces and commercial spaces, with custom and business order support.") @db.VarChar(160)
+  googleVerification String? @db.VarChar(200)
+  bingVerification String? @db.VarChar(200)
+}
+
+model Blog {
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(200)
+  slug String @unique @db.VarChar(220)
+  category String @default("Wall Clocks") @db.VarChar(100)
+  featuredImage String? @db.VarChar(500)
+  description String @db.Text
+  contentHtml String? @db.LongText
+  inlineImage1 String? @db.VarChar(500)
+  inlineImage2 String? @db.VarChar(500)
+  inlineImage3 String? @db.VarChar(500)
+  inlineImage1Caption String? @db.VarChar(180)
+  inlineImage2Caption String? @db.VarChar(180)
+  inlineImage3Caption String? @db.VarChar(180)
+  metaTitle String? @db.VarChar(70)
+  metaDescription String? @db.VarChar(160)
+  metaKeywords String? @db.VarChar(300)
+  isPublished Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Enquiry {
+  id Int @id @default(autoincrement())
+  productId Int?
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  name String @db.VarChar(200)
+  phone String @db.VarChar(20)
+  email String? @db.VarChar(254)
+  city String @db.VarChar(100)
+  message String @db.Text
+  status String @default("new") @db.VarChar(20)
+  notes String? @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
