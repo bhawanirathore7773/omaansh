@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+<main>
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <span class="kicker">CITY COVERAGE</span>
+        <h1>Wall clock supply and business-order support by city.</h1>
+        <p>Find a city-specific OSIRA page for delivery information, local business requirements and enquiry support.</p>
+      </div>
+    </div>
+    <div class="city-grid">
+      <% cities.forEach(city => { %>
+        <a class="city-card" href="/cities/<%= city.slug %>">
+          <span><%= city.state || 'India' %></span>
+          <h2><%= city.cityName %></h2>
+          <p><%= city.h1Heading %></p>
+          <strong>View city page →</strong>
+        </a>
+      <% }) %>
+    </div>
+  </section>
+</main>
+<%- include('partials/footer', { site }) %>
