@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable, Redirect, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { AdminService } from './admin.service';
 
@@ -17,7 +17,9 @@ export class AdminAuthGuard implements CanActivate {
     const session = await this.admin.getSession(getCookie(req, 'osira_admin'));
     if (!session) {
       if (req.path.startsWith('/admin/api')) throw new UnauthorizedException('Admin authentication required');
-      throw new Redirect(302, '/admin/login');
+      const res = context.switchToHttp().getResponse();
+      res.redirect(302, '/admin/login');
+      return false;
     }
     (req as any).adminSession = session;
     (req as any).adminUser = session.user;
