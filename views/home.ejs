@@ -33,6 +33,24 @@
     <div class="about-grid"><div><span class="kicker">ABOUT OSIRA</span><h2>Designed in Jaipur. Built for everyday spaces.</h2><p>OSIRA is the market-facing brand of Omaansh Industries, established in 2021.</p></div><div class="about-card"><strong>4,000+ sq. ft.</strong><span>in-house facility</span><strong>1 lakh/month</strong><span>stated production capability</span></div></div>
   </section>
 
-  <section class="section enquiry" id="enquiry"><div><span class="kicker">START A CONVERSATION</span><h2>Have a wall clock requirement?</h2><p>Share quantity, preferred style, branding and delivery city.</p><a class="btn primary" href="/products">Browse products →</a></div></section>
+  <section class="section enquiry" id="enquiry">
+  <div>
+    <span class="kicker">START A CONVERSATION</span>
+    <h2>Have a wall clock requirement?</h2>
+    <p>Share quantity, preferred style, branding and delivery city.</p>
+    <% if (enquirySent) { %>
+      <div class="form-success">Thank you. Your requirement has been received. Our team will get back to you.</div>
+    <% } %>
+  </div>
+  <form class="enquiry-form" method="post" action="/enquiries">
+    <input type="text" name="name" placeholder="Your name" autocomplete="name" required>
+    <input type="tel" name="phone" placeholder="Phone number" autocomplete="tel" required>
+    <input type="email" name="email" placeholder="Email (optional)" autocomplete="email">
+    <input type="text" name="city" placeholder="Delivery city" autocomplete="address-level2" required>
+    <textarea name="message" rows="5" placeholder="Quantity, style, branding or other requirement" required></textarea>
+    <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <button class="btn primary" type="submit">Send requirement →</button>
+  </form>
+</section>
 </main>
 <%- include('partials/footer', { site }) %>
