@@ -1,4 +1,5 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Render } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { CreateEnquiryDto } from './dto/create-enquiry.dto';
 import { EnquiriesService } from './enquiries.service';
 
@@ -7,9 +8,8 @@ export class EnquiriesController {
   constructor(private readonly enquiries: EnquiriesService) {}
 
   @Post('enquiries')
-  @HttpCode(HttpStatus.SEE_OTHER)
-  async create(@Body() dto: CreateEnquiryDto) {
+  async create(@Body() dto: CreateEnquiryDto, @Res() res: Response) {
     await this.enquiries.create(dto);
-    return { ok: true };
+    return res.redirect(303, '/?enquiry=sent#enquiry');
   }
 }
