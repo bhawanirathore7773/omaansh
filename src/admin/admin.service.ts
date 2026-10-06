@@ -103,6 +103,32 @@ export class AdminService {
     });
   }
 
+  async listServicesAdmin() { return this.prisma.servicePage.findMany({ orderBy: [{displayOrder:'asc'},{name:'asc'}] }); }
+  async saveService(b:any,id?:number) {
+    const data:any={name:String(b.name||'').trim(),slug:String(b.slug||'').trim().toLowerCase(),iconClass:b.iconClass||null,h1Heading:String(b.h1Heading||b.name||''),heroSubheading:b.heroSubheading||null,heroImage:b.heroImage||null,shortDescription:String(b.shortDescription||''),fullDescription:String(b.fullDescription||''),processContent:b.processContent||null,benefitsContent:b.benefitsContent||null,metaTitle:b.metaTitle||null,metaDescription:b.metaDescription||null,metaKeywords:b.metaKeywords||null,isPublished:b.isPublished==='on',displayOrder:Number(b.displayOrder||0)};
+    return id?this.prisma.servicePage.update({where:{id},data}):this.prisma.servicePage.create({data});
+  }
+  async listIndustriesAdmin() { return this.prisma.industryPage.findMany({ orderBy:[{displayOrder:'asc'},{industryName:'asc'}] }); }
+  async saveIndustry(b:any,id?:number) {
+    const data:any={industryName:String(b.industryName||'').trim(),slug:String(b.slug||'').trim().toLowerCase(),iconClass:b.iconClass||null,h1Heading:String(b.h1Heading||b.industryName||''),heroSubheading:b.heroSubheading||null,heroImage:b.heroImage||null,introContent:String(b.introContent||''),benefitsContent:b.benefitsContent||null,customizationContent:b.customizationContent||null,caseStudyContent:b.caseStudyContent||null,metaTitle:b.metaTitle||null,metaDescription:b.metaDescription||null,metaKeywords:b.metaKeywords||null,isPublished:b.isPublished==='on',displayOrder:Number(b.displayOrder||0)};
+    return id?this.prisma.industryPage.update({where:{id},data}):this.prisma.industryPage.create({data});
+  }
+  async listCitiesAdmin() { return this.prisma.cityPage.findMany({ orderBy:[{displayOrder:'asc'},{cityName:'asc'}] }); }
+  async saveCity(b:any,id?:number) {
+    const data:any={cityName:String(b.cityName||'').trim(),slug:String(b.slug||'').trim().toLowerCase(),state:b.state||null,pageType:b.pageType||'supplier',h1Heading:String(b.h1Heading||b.cityName||''),heroSubheading:b.heroSubheading||null,heroImage:b.heroImage||null,introContent:String(b.introContent||''),whyChooseContent:b.whyChooseContent||null,servicesContent:b.servicesContent||null,deliveryContent:b.deliveryContent||null,industriesContent:b.industriesContent||null,closingContent:b.closingContent||null,metaTitle:b.metaTitle||null,metaDescription:b.metaDescription||null,metaKeywords:b.metaKeywords||null,nearbyAreas:b.nearbyAreas||null,deliveryTime:b.deliveryTime||'3-5 business days',isPublished:b.isPublished==='on',displayOrder:Number(b.displayOrder||0)};
+    return id?this.prisma.cityPage.update({where:{id},data}):this.prisma.cityPage.create({data});
+  }
+  async listBlogsAdmin() { return this.prisma.blog.findMany({ orderBy:{createdAt:'desc'} }); }
+  async saveBlog(b:any,id?:number) {
+    const data:any={title:String(b.title||'').trim(),slug:String(b.slug||'').trim().toLowerCase(),category:b.category||'Wall Clocks',featuredImage:b.featuredImage||null,description:String(b.description||''),contentHtml:b.contentHtml||null,inlineImage1:b.inlineImage1||null,inlineImage2:b.inlineImage2||null,inlineImage3:b.inlineImage3||null,inlineImage1Caption:b.inlineImage1Caption||null,inlineImage2Caption:b.inlineImage2Caption||null,inlineImage3Caption:b.inlineImage3Caption||null,metaTitle:b.metaTitle||null,metaDescription:b.metaDescription||null,metaKeywords:b.metaKeywords||null,isPublished:b.isPublished==='on'};
+    return id?this.prisma.blog.update({where:{id},data}):this.prisma.blog.create({data});
+  }
+  async getSiteSettings() { return this.prisma.siteSettings.findUnique({where:{id:1}}); }
+  async saveSiteSettings(b:any) {
+    const data:any={businessName:b.businessName||'OSIRA',tagline:b.tagline||'',primaryPhone:b.primaryPhone||'',whatsappNumber:b.whatsappNumber||'',email:b.email||'',streetAddress:b.streetAddress||'',locality:b.locality||'',region:b.region||'',postalCode:b.postalCode||'',country:b.country||'IN',latitude:Number(b.latitude||0),longitude:Number(b.longitude||0),gstNumber:b.gstNumber||null,establishmentYear:Number(b.establishmentYear||2021),employeeCount:b.employeeCount||null,facebookUrl:b.facebookUrl||null,instagramUrl:b.instagramUrl||null,youtubeUrl:b.youtubeUrl||null,linkedinUrl:b.linkedinUrl||null,defaultMetaTitle:b.defaultMetaTitle||'OSIRA | Wall Clock Manufacturer & Supplier in Jaipur',defaultMetaDescription:b.defaultMetaDescription||'',googleVerification:b.googleVerification||null,bingVerification:b.bingVerification||null};
+    return this.prisma.siteSettings.upsert({where:{id:1},update:data,create:{id:1,...data}});
+  }
+
   async createAdminIfConfigured() {
     const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
     const password = process.env.ADMIN_PASSWORD;
