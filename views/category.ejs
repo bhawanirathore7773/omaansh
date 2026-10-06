@@ -1,0 +1,58 @@
+<%- include('partials/header') %>
+<main>
+  <section class="section category-detail-hero">
+    <div class="breadcrumbs"><a href="/categories">Collections</a> / <%= category.name %></div>
+    <div class="category-detail-copy">
+      <span class="kicker">OSIRA COLLECTION</span>
+      <h1><%= category.h1Heading || category.name + ' Wall Clocks' %></h1>
+      <p><%= category.description || 'Explore wall clocks designed for practical sourcing, retail and business orders.' %></p>
+      <div class="actions">
+        <a class="btn primary" href="/#enquiry">Start an enquiry</a>
+        <a class="btn secondary" href="/products">View all products</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section category-products">
+    <div class="section-head">
+      <div>
+        <span class="kicker">PRODUCTS</span>
+        <h2><%= category._count.products %> wall clocks in this collection</h2>
+      </div>
+    </div>
+    <% if (category.products.length) { %>
+      <div class="product-grid">
+        <% category.products.forEach(product => { %>
+          <a class="product-card" href="/products/<%= product.slug %>">
+            <div class="product-media">
+              <% if(product.image){ %>
+                <img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy">
+              <% } else { %>
+                <div class="placeholder">OSIRA</div>
+              <% } %>
+            </div>
+            <div class="product-body">
+              <span><%= category.name %></span>
+              <h2><%= product.name %></h2>
+              <strong><%= product.price ? 'From ₹' + product.price : 'Price on enquiry' %></strong>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <h2>Products are being added to this collection.</h2>
+        <p>Tell us what style, quantity and delivery city you need and our team can help with the right option.</p>
+        <a class="btn primary" href="/#enquiry">Send requirement</a>
+      </div>
+    <% } %>
+  </section>
+
+  <% if (category.seoContent) { %>
+    <section class="section seo-copy">
+      <span class="kicker">ABOUT THIS COLLECTION</span>
+      <div class="rich-copy"><%- category.seoContent %></div>
+    </section>
+  <% } %>
+</main>
+<%- include('partials/footer', { site }) %>
