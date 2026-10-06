@@ -19,7 +19,14 @@ export class SiteController {
       }),
     ]);
 
-    return { site, categories, featuredProducts };
+    return {
+      site,
+      categories,
+      featuredProducts,
+      pageTitle: site?.defaultMetaTitle || 'OSIRA | Wall Clock Manufacturer & Supplier in Jaipur',
+      metaDescription: site?.defaultMetaDescription || 'OSIRA creates wall clocks and décor products for homes, workplaces and commercial spaces, with custom and business order support.',
+      canonical: process.env.SITE_URL || undefined,
+    };
   }
 
   @Get('health')
