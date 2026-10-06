@@ -48,6 +48,81 @@ export class AdminController {
   }
 
   @UseGuards(AdminAuthGuard)
+  @Get('services')
+  async services(@Req() req: Request, @Res() res: Response) {
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Services', kicker: 'SERVICES', description: 'Manage service pages.', rows: await this.admin.listServicesAdmin(), type: 'services', nameField: 'name' });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('industries')
+  async industries(@Req() req: Request, @Res() res: Response) {
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Industries', kicker: 'INDUSTRIES', description: 'Manage industry landing pages.', rows: await this.admin.listIndustriesAdmin(), type: 'industries', nameField: 'industryName' });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('cities')
+  async cities(@Req() req: Request, @Res() res: Response) {
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Cities', kicker: 'LOCAL SEO', description: 'Manage city landing pages.', rows: await this.admin.listCitiesAdmin(), type: 'cities', nameField: 'cityName' });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('blog')
+  async blog(@Req() req: Request, @Res() res: Response) {
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Blog', kicker: 'CONTENT', description: 'Manage SEO guides and articles.', rows: await this.admin.listBlogsAdmin(), type: 'blog', nameField: 'title' });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('settings')
+  async settings(@Req() req: Request, @Res() res: Response) {
+    return res.render('admin/settings', { user: (req as any).adminUser, settings: await this.admin.getSiteSettings(), csrfToken: (req as any).adminCsrf });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('services/save')
+  async serviceSave(@Body() b: any, @Req() req: Request, @Res() res: Response) {
+    const s = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(s.id, b.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    await this.admin.saveService(b, b.id ? Number(b.id) : undefined);
+    return res.redirect(303, '/admin/services');
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('industries/save')
+  async industrySave(@Body() b: any, @Req() req: Request, @Res() res: Response) {
+    const s = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(s.id, b.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    await this.admin.saveIndustry(b, b.id ? Number(b.id) : undefined);
+    return res.redirect(303, '/admin/industries');
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('cities/save')
+  async citySave(@Body() b: any, @Req() req: Request, @Res() res: Response) {
+    const s = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(s.id, b.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    await this.admin.saveCity(b, b.id ? Number(b.id) : undefined);
+    return res.redirect(303, '/admin/cities');
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('blog/save')
+  async blogSave(@Body() b: any, @Req() req: Request, @Res() res: Response) {
+    const s = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(s.id, b.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    await this.admin.saveBlog(b, b.id ? Number(b.id) : undefined);
+    return res.redirect(303, '/admin/blog');
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('settings/save')
+  async settingsSave(@Body() b: any, @Req() req: Request, @Res() res: Response) {
+    const s = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(s.id, b.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    await this.admin.saveSiteSettings(b);
+    return res.redirect(303, '/admin/settings?saved=1');
+  }
+
+  @UseGuards(AdminAuthGuard)
   @Get()
   async dashboard(@Req() req: Request, @Res() res: Response) {
     const data = await this.admin.dashboard();
