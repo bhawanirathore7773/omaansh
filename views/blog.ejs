@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+<main>
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <span class="kicker">GUIDES</span>
+        <h1>Wall clock buying guides and business resources.</h1>
+        <p>Useful information for choosing, sourcing, customizing and using wall clocks in homes, offices and commercial programmes.</p>
+      </div>
+    </div>
+    <div class="blog-grid">
+      <% posts.forEach(post => { %>
+        <a class="blog-card" href="/blog/<%= post.slug %>">
+          <% if(post.featuredImage){ %><img src="<%= post.featuredImage %>" alt="<%= post.title %>" loading="lazy"><% } %>
+          <span><%= post.category %></span>
+          <h2><%= post.title %></h2>
+          <p><%= post.description %></p>
+          <strong>Read guide →</strong>
+        </a>
+      <% }) %>
+    </div>
+    <% if (!posts.length) { %><div class="empty-state"><h2>New guides are on the way.</h2><p>For product or business-order questions, contact OSIRA directly.</p><a class="btn primary" href="/#enquiry">Start an enquiry</a></div><% } %>
+  </section>
+</main>
+<%- include('partials/footer', { site }) %>
