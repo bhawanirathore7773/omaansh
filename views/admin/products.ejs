@@ -1,0 +1,6 @@
+<%- include('partials/header', {title:'Products | OSIRA Admin', user}) %>
+<div class="admin-heading"><div><p class="admin-kicker">CATALOGUE</p><h1>Products</h1><p>Manage your active and inactive wall clock products.</p></div><a class="admin-button" href="/admin/products/new">+ Add product</a></div>
+<form class="admin-search" method="get" action="/admin/products"><input name="q" value="<%= q %>" placeholder="Search product or SKU"><button>Search</button></form>
+<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>MOQ</th><th>Visibility</th><th>Action</th></tr></thead><tbody>
+<% rows.forEach(row=>{ %><tr><td><strong><%= row.name %></strong><small><%= row.sku || 'No SKU' %></small></td><td><%= row.category.name %></td><td><%= row.price != null ? '₹'+row.price : '—' %></td><td><%= row.moq %></td><td><span class="pill <%= row.isActive?'pill-on':'pill-off' %>"><%= row.isActive?'Active':'Hidden' %></span></td><td><a class="table-link" href="/admin/products/<%= row.id %>/edit">Edit</a></td></tr><% }) %>
+<% if(!rows.length){ %><tr><td colspan="6" class="admin-empty">No products found.</td></tr><% } %></tbody></table></div><%- include('partials/footer') %>
