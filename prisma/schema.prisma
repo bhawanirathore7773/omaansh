@@ -302,6 +302,29 @@ model Blog {
   updatedAt DateTime @updatedAt
 }
 
+model AdminUser {
+  id Int @id @default(autoincrement())
+  email String @unique @db.VarChar(254)
+  name String @db.VarChar(120)
+  passwordHash String @db.VarChar(300)
+  role String @default("admin") @db.VarChar(30)
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sessions AdminSession[]
+}
+
+model AdminSession {
+  id Int @id @default(autoincrement())
+  tokenHash String @unique @db.VarChar(128)
+  csrfTokenHash String @db.VarChar(128)
+  userId Int
+  user AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  @@index([userId, expiresAt])
+}
+
 model Enquiry {
   id Int @id @default(autoincrement())
   productId Int?
