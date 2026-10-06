@@ -1,12 +1,49 @@
 <%- include('partials/header') %>
-<main class="section"><div class="section-head"><div><span class="kicker">CATALOGUE</span><h1>Wall clocks for homes, offices and business orders.</h1></div></div>
-<form class="search"><input name="q" value="<%= typeof q !== 'undefined' ? q : '' %>" placeholder="Search wall clocks"><button>Search</button></form>
-<div class="product-grid">
-<% products.forEach(product => { %>
-<a class="product-card" href="/products/<%= product.slug %>">
-  <div class="product-media"><% if(product.image){ %><img src="<%= product.image %>" alt="<%= product.name %>"><% } else { %><div class="placeholder">OSIRA</div><% } %></div>
-  <div class="product-body"><span><%= product.category?.name || 'Wall Clock' %></span><h2><%= product.name %></h2><strong><%= product.price ? 'From ₹' + product.price : 'Price on enquiry' %></strong></div>
-</a>
-<% }) %>
-</div></main>
-<%- include('partials/footer', { site: undefined }) %>
+<main class="section">
+  <div class="section-head">
+    <div>
+      <span class="kicker">CATALOGUE</span>
+      <h1>Wall clocks for homes, offices and business orders.</h1>
+      <p>Browse active OSIRA products, compare collections and start a bulk or custom enquiry.</p>
+    </div>
+  </div>
+
+  <form class="search catalogue-filters" method="get" action="/products">
+    <input name="q" value="<%= q %>" placeholder="Search wall clocks" aria-label="Search wall clocks">
+    <select name="category" aria-label="Filter by collection">
+      <option value="">All collections</option>
+      <% categories.forEach(item => { %>
+        <option value="<%= item.slug %>" <%= category === item.slug ? 'selected' : '' %>><%= item.name %></option>
+      <% }) %>
+    </select>
+    <button>Search</button>
+  </form>
+
+  <div class="product-grid">
+    <% products.forEach(product => { %>
+      <a class="product-card" href="/products/<%= product.slug %>">
+        <div class="product-media">
+          <% if(product.image){ %>
+            <img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy">
+          <% } else { %>
+            <div class="placeholder">OSIRA</div>
+          <% } %>
+        </div>
+        <div class="product-body">
+          <span><%= product.category?.name || 'Wall Clock' %></span>
+          <h2><%= product.name %></h2>
+          <strong><%= product.price ? 'From ₹' + product.price : 'Price on enquiry' %></strong>
+        </div>
+      </a>
+    <% }) %>
+  </div>
+
+  <% if (!products.length) { %>
+    <div class="empty-state">
+      <h2>No matching wall clocks found.</h2>
+      <p>Try another search or collection, or send us your requirement directly.</p>
+      <a class="btn primary" href="/#enquiry">Send requirement</a>
+    </div>
+  <% } %>
+</main>
+<%- include('partials/footer', { site }) %>
