@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OSIRA Admin Login</title>
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body class="admin-auth">
+  <main class="login-card">
+    <div class="admin-mark">OSIRA</div>
+    <p class="admin-kicker">CONTROL CENTRE</p>
+    <h1>Sign in to manage your website.</h1>
+    <p class="admin-muted">Products, enquiries, content and business settings in one place.</p>
+    <% if (error) { %><div class="admin-alert">Invalid email or password.</div><% } %>
+    <form method="post" action="/admin/login" class="admin-form">
+      <label>Email<input type="email" name="email" autocomplete="username" required></label>
+      <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+      <button class="admin-button" type="submit">Sign in</button>
+    </form>
+    <a class="back-link" href="/">← Back to website</a>
+  </main>
+</body>
+</html>
