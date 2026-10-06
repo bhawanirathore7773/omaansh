@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+<main>
+  <section class="section category-hero">
+    <div class="section-head">
+      <div>
+        <span class="kicker">COLLECTIONS</span>
+        <h1>Wall clock collections for retail, wholesale and custom orders.</h1>
+        <p>Explore OSIRA collections by design direction and buying requirement. Every collection is built for practical sourcing, repeat orders and business use.</p>
+      </div>
+    </div>
+    <div class="category-grid">
+      <% categories.forEach(category => { %>
+        <a class="category-card category-card-large" href="/categories/<%= category.slug %>">
+          <div class="category-card-top">
+            <span><%= category._count.products %> active products</span>
+          </div>
+          <div>
+            <strong><%= category.name %></strong>
+            <span><%= category.description || 'Explore this wall clock collection.' %></span>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  </section>
+</main>
+<%- include('partials/footer', { site }) %>
