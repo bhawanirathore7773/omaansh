@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
+import { ServicesModule } from './services/services.module';
 import { SiteModule } from './site/site.module';
 
 @Module({
-  imports: [PrismaModule, ProductsModule, CategoriesModule, SiteModule],
+  imports: [PrismaModule, ProductsModule, CategoriesModule, ServicesModule, SiteModule],
 })
 export class AppModule {}
