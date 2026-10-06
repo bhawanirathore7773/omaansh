@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+<main>
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <span class="kicker">BUSINESS SERVICES</span>
+        <h1>From product selection to custom production, built around your order.</h1>
+        <p>OSIRA supports retailers, distributors, corporate buyers, promotional programmes and custom/OEM requirements from Jaipur.</p>
+      </div>
+    </div>
+    <div class="service-grid">
+      <% services.forEach(service => { %>
+        <a class="service-card" href="/services/<%= service.slug %>">
+          <span class="kicker"><%= service.iconClass || 'OSIRA' %></span>
+          <h2><%= service.h1Heading %></h2>
+          <p><%= service.shortDescription %></p>
+          <strong>Explore service →</strong>
+        </a>
+      <% }) %>
+    </div>
+  </section>
+</main>
+<%- include('partials/footer', { site }) %>
