@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { randomBytes, scryptSync, timingSafeEqual } from 'crypto';
+import { createHash, randomBytes, scryptSync, timingSafeEqual } from 'crypto';
 
 function hashPassword(password: string) {
   const salt = randomBytes(16).toString('hex');
@@ -17,7 +17,7 @@ function verifyPassword(password: string, stored: string) {
 }
 
 function sha256(value: string) {
-  return require('crypto').createHash('sha256').update(value).digest('hex');
+  return createHash('sha256').update(value).digest('hex');
 }
 
 @Injectable()
