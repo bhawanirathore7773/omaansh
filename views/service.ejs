@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+<main>
+  <section class="section service-hero">
+    <div class="breadcrumbs"><a href="/services">Services</a> / <%= service.name %></div>
+    <div class="service-detail-copy">
+      <span class="kicker">OSIRA BUSINESS SERVICE</span>
+      <h1><%= service.h1Heading %></h1>
+      <p><%= service.heroSubheading || service.shortDescription %></p>
+      <div class="actions">
+        <a class="btn primary" href="/#enquiry">Discuss your requirement</a>
+        <a class="btn secondary" href="/products">Browse products</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section rich-sections">
+    <article>
+      <span class="kicker">OVERVIEW</span>
+      <div class="rich-copy"><%- service.fullDescription %></div>
+    </article>
+    <% if (service.processContent) { %>
+      <article>
+        <span class="kicker">PROCESS</span>
+        <div class="rich-copy"><%- service.processContent %></div>
+      </article>
+    <% } %>
+    <% if (service.benefitsContent) { %>
+      <article>
+        <span class="kicker">WHY OSIRA</span>
+        <div class="rich-copy"><%- service.benefitsContent %></div>
+      </article>
+    <% } %>
+  </section>
+</main>
+<%- include('partials/footer', { site }) %>
