@@ -51,7 +51,7 @@ export class CategoriesController {
     ];
     return {
       category, site, schemaJsonLd,
-      pageTitle: category.metaTitle || category.name + ' Wall Clocks | Wholesale & Custom | OSIRA',
+      pageTitle: category.metaTitle || category.name + ' Wall Clocks | OSIRA Jaipur',
       metaDescription: category.metaDescription || category.description || 'Explore ' + category.name + ' wall clocks from OSIRA.',
       canonical: baseUrl ? baseUrl + '/categories/' + category.slug : undefined,
     };
