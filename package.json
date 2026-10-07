@@ -10,7 +10,10 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:seed": "tsx prisma/seed.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "start:prod": "node dist/main.js",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:validate": "prisma validate"
   },
   "engines": {
     "node": ">=22 <25",
