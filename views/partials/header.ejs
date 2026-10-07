@@ -7,7 +7,7 @@
   <meta name="description" content="<%= metaDescription || site?.defaultMetaDescription || 'OSIRA supplies wall clocks from Jaipur for retail, wholesale, corporate gifting, promotional branding and custom business requirements.' %>">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <% if (canonical) { %><link rel="canonical" href="<%= canonical %>"><% } %>
-  <% const pageUrl = canonical || ((site?.defaultMetaTitle && (siteUrl || '')) || undefined); %>
+  <% const pageUrl = canonical || undefined; %>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="<%= site?.businessName || 'OSIRA' %>">
   <meta property="og:title" content="<%= pageTitle || site?.defaultMetaTitle || 'OSIRA | Wall Clock Manufacturer & Supplier in Jaipur' %>">
