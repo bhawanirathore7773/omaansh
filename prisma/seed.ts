@@ -90,6 +90,74 @@ async function main() {
     });
   }
 
+  // Import the market-research catalogue as unpublished draft products.
+  // These records are research variants, not verified OSIRA inventory; admin must verify
+  // actual design, price, MOQ and images before activating them for public SEO.
+  const marketPath = join(process.cwd(), 'data', 'market_researched_products.csv');
+  try {
+    const marketRows = parseCsv(readFileSync(marketPath, 'utf8'));
+    const marketHeaders = marketRows.shift()!;
+    const mcol = (name: string) => marketHeaders.indexOf(name);
+    for (const r of marketRows) {
+      const name = r[mcol('name')];
+      const categoryName = r[mcol('category')];
+      if (!name || !categoryName) continue;
+      const category = await prisma.category.upsert({
+        where: { slug: r[mcol('slug')] || slugify(categoryName) },
+        update: {
+          metaTitle: (categoryName + ' | OSIRA').slice(0, 70),
+          metaDescription: ('Explore ' + categoryName.toLowerCase() + ' for wholesale, retail and business orders from OSIRA.').slice(0, 160),
+        },
+        create: {
+          name: categoryName,
+          slug: r[mcol('slug')] || slugify(categoryName),
+          description: r[mcol('description')] || ('Explore ' + categoryName.toLowerCase() + ' from OSIRA.'),
+          metaTitle: (categoryName + ' | OSIRA').slice(0, 70),
+          metaDescription: ('Explore ' + categoryName.toLowerCase() + ' for wholesale, retail and business orders from OSIRA.').slice(0, 160),
+          h1Heading: categoryName,
+          seoContent: '<p>Market-researched category for wall clock buyers. Confirm current designs, specifications, MOQ and commercial pricing before ordering.</p>',
+        },
+      });
+      await prisma.product.upsert({
+        where: { slug: r[mcol('product_slug')] },
+        update: {
+          categoryId: category.id,
+          availability: 'Research',
+          isActive: false,
+          metaTitle: (r[mcol('meta_title')] || name).slice(0, 70),
+          metaDescription: (r[mcol('meta_description')] || r[mcol('description')] || name).slice(0, 160),
+          metaKeywords: r[mcol('secondary_keywords')] || null,
+        },
+        create: {
+          name,
+          slug: r[mcol('product_slug')],
+          categoryId: category.id,
+          description: r[mcol('description')] || name,
+          shortDescription: r[mcol('h1')] || name,
+          specifications: [
+            'Size: ' + (r[mcol('size')] || 'Confirm'),
+            'Material: ' + (r[mcol('material')] || 'Confirm'),
+            'Shape: ' + (r[mcol('shape')] || 'Confirm'),
+            'Movement: ' + (r[mcol('movement')] || 'Confirm'),
+            'Finish: ' + (r[mcol('finish')] || 'Confirm'),
+            'Colours: ' + (r[mcol('color_options')] || 'Confirm'),
+            'MOQ: ' + (r[mcol('moq')] || 'Confirm'),
+          ].join('\n'),
+          price: r[mcol('price_inr')] ? Number(r[mcol('price_inr')]) : null,
+          moq: r[mcol('moq')] ? Number(r[mcol('moq')]) : 1,
+          metaTitle: (r[mcol('meta_title')] || name).slice(0, 70),
+          metaDescription: (r[mcol('meta_description')] || r[mcol('description')] || name).slice(0, 160),
+          metaKeywords: r[mcol('secondary_keywords')] || null,
+          brand: 'OSIRA',
+          availability: 'Research',
+          isActive: false,
+        },
+      });
+    }
+  } catch {
+    // The research CSV is optional during local development.
+  }
+
   const defaultTier = await prisma.pricingTierTemplate.findUnique({ where: { name: 'Default' } });
   if (!defaultTier) {
     await prisma.pricingTierTemplate.create({ data: { name: 'Default' } });
