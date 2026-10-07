@@ -1,25 +1,6 @@
 <%- include('partials/header') %>
-<main>
-  <section class="section">
-    <div class="section-head">
-      <div>
-        <span class="kicker">GUIDES</span>
-        <h1>Wall clock buying guides and business resources.</h1>
-        <p>Useful information for choosing, sourcing, customizing and using wall clocks in homes, offices and commercial programmes.</p>
-      </div>
-    </div>
-    <div class="blog-grid">
-      <% posts.forEach(post => { %>
-        <a class="blog-card" href="/blog/<%= post.slug %>">
-          <% if(post.featuredImage){ %><img src="<%= post.featuredImage %>" alt="<%= post.title %>" loading="lazy"><% } %>
-          <span><%= post.category %></span>
-          <h2><%= post.title %></h2>
-          <p><%= post.description %></p>
-          <strong>Read guide →</strong>
-        </a>
-      <% }) %>
-    </div>
-    <% if (!posts.length) { %><div class="empty-state"><h2>New guides are on the way.</h2><p>For product or business-order questions, contact OSIRA directly.</p><a class="btn primary" href="/#enquiry">Start an enquiry</a></div><% } %>
-  </section>
-</main>
-<%- include('partials/footer', { site }) %>
+<main class="guides-page">
+<section class="section guides-hero"><span class="kicker">OSIRA GUIDES</span><h1>Wall clock buying guides for better product and business decisions.</h1><p>Practical resources covering sizes, office selection, promotional branding, plastic clock buying and wholesale sourcing. Start with the guide closest to your requirement.</p></section>
+<section class="section guides-grid-section"><div class="guides-index"><span class="kicker">BUYING RESOURCES</span><span><%= posts.length %> guides</span></div><div class="blog-grid blog-grid-v2"><% posts.forEach((post,i)=>{ %><a class="blog-card blog-card-v2" href="/blog/<%= post.slug %>"><span class="guide-number"><%= String(i+1).padStart(2,'0') %></span><span><%= post.category %></span><h2><%= post.title %></h2><p><%= post.description %></p><strong>Read guide →</strong></a><% }) %></div></section>
+<section class="section guide-cta"><div><span class="kicker">NEED A PRODUCT NOW?</span><h2>Use the catalogue for current product information.</h2></div><a class="btn primary" href="/products">Browse wall clocks →</a></section>
+</main><%- include('partials/footer',{site}) %>
