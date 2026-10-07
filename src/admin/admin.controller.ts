@@ -74,7 +74,7 @@ export class AdminController {
   @UseGuards(AdminAuthGuard)
   @Get('settings')
   async settings(@Req() req: Request, @Res() res: Response) {
-    return res.render('admin/settings', { user: (req as any).adminUser, settings: await this.admin.getSiteSettings(), csrfToken: (req as any).adminCsrf });
+    return res.render('admin/settings', { user: (req as any).adminUser, settings: await this.admin.getSiteSettings(), csrfToken: (req as any).adminCsrf, saved: req.query.saved === '1' });
   }
 
   @UseGuards(AdminAuthGuard)
