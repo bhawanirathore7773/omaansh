@@ -73,7 +73,7 @@ export class AdminService {
   }
 
   async dashboard() {
-    const [products, categories, services, industries, cities, blogs, enquiries, newEnquiries] = await Promise.all([
+    const [products, categories, services, industries, cities, blogs, enquiries, newEnquiries, contactedEnquiries, quotedEnquiries, wonEnquiries] = await Promise.all([
       this.prisma.product.count({ where: { isActive: true } }),
       this.prisma.category.count(),
       this.prisma.servicePage.count({ where: { isPublished: true } }),
@@ -82,12 +82,18 @@ export class AdminService {
       this.prisma.blog.count({ where: { isPublished: true } }),
       this.prisma.enquiry.count(),
       this.prisma.enquiry.count({ where: { status: 'new' } }),
+      this.prisma.enquiry.count({ where: { status: 'contacted' } }),
+      this.prisma.enquiry.count({ where: { status: 'quoted' } }),
+      this.prisma.enquiry.count({ where: { status: 'won' } }),
     ]);
-    return { products, categories, services, industries, cities, blogs, enquiries, newEnquiries };
+    return { products, categories, services, industries, cities, blogs, enquiries, newEnquiries, contactedEnquiries, quotedEnquiries, wonEnquiries };
   }
 
-  async recentEnquiries() {
+  async recentEnquiries(status?: string) {
+    const allowed = ['new', 'contacted', 'quoted', 'won', 'lost', 'closed'];
+    const where = status && allowed.includes(status) ? { status } : {};
     return this.prisma.enquiry.findMany({
+      where,
       include: { product: { select: { name: true } } },
       orderBy: { createdAt: 'desc' },
       take: 50,
