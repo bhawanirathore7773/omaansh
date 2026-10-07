@@ -200,25 +200,75 @@ async function main() {
   }
 
   const cities = [
-    ['Jaipur','jaipur','Rajasthan','Wall Clock Manufacturer in Jaipur','OSIRA supplies wall clocks from Jaipur for retail, wholesale, corporate gifting and custom business requirements.'],
-    ['Delhi','delhi','Delhi','Wall Clock Supplier for Delhi Buyers','Source wall clocks for Delhi retail, corporate, institutional and promotional requirements from OSIRA.'],
-    ['Gurugram','gurugram','Haryana','Wall Clock Supplier for Gurugram Buyers','Wall clocks for Gurugram offices, retailers, gifting programmes and business requirements.'],
-    ['Noida','noida','Uttar Pradesh','Wall Clock Supplier for Noida Buyers','Explore wall clock options for Noida offices, retail stores, institutions and branded programmes.'],
-    ['Ahmedabad','ahmedabad','Gujarat','Wall Clock Supplier for Ahmedabad Buyers','Wall clocks for Ahmedabad retail, corporate, institutional and promotional orders.'],
-    ['Mumbai','mumbai','Maharashtra','Wall Clock Supplier for Mumbai Buyers','Wall clocks for Mumbai business, retail, gifting and commercial interior requirements.'],
+    {
+      cityName:'Jaipur',slug:'jaipur',state:'Rajasthan',h1:'Wall Clock Manufacturer in Jaipur',
+      intro:'<p>OSIRA is presented as a Jaipur-based wall clock business serving retail, wholesale, corporate gifting, promotional branding and custom order enquiries. Buyers can browse the catalogue first and then share quantity, size, application and delivery requirements.</p><p>For Jaipur buyers, the useful starting point is the product format and order requirement rather than a generic catalogue promise. Current price, availability, branding feasibility and dispatch details should be confirmed before an order is approved.</p>',
+      why:'<p>OSIRA keeps the buying journey focused on product selection and requirement-based quotation. Retailers can compare practical formats, while organisations can discuss branded or quantity-led orders.</p>',
+      services:'<p>Wholesale supply, corporate gifting, promotional wall clocks and custom/OEM discussions are available through the business enquiry process.</p>',
+      delivery:'<p>For Jaipur orders, delivery or pickup arrangements depend on product availability, quantity and the agreed commercial terms. Do not rely on a fixed delivery promise until the current order is confirmed.</p>',
+      areas:'Jaipur business and commercial areas including Gokulpura, Kalwar Road, Vaishali Nagar, Jhotwara, Sikar Road, Mansarovar and Sitapura.',
+      industries:'<p>Relevant buyers include retailers, offices, institutions, hospitality businesses, corporate gifting teams and promotional agencies.</p>',
+      close:'<p>Share the product or collection, approximate quantity and delivery requirement to request a current quotation.</p>'
+    },
+    {
+      cityName:'Delhi',slug:'delhi',state:'Delhi',h1:'Wall Clock Supplier for Delhi Buyers',
+      intro:'<p>OSIRA accepts enquiries for wall clocks required by Delhi retailers, offices, institutions, gifting teams and promotional buyers. The catalogue provides a starting point for comparing sizes, shapes and business-use formats.</p><p>Delhi orders can be discussed around quantity, product selection, branding and delivery requirements. Commercial terms are confirmed for the specific order.</p>',
+      why:'<p>A requirement-led process helps Delhi buyers compare suitable wall clock formats without assuming that one product or price fits every order.</p>',
+      services:'<p>Wholesale, corporate gifting, promotional branding and custom wall clock requirements can be discussed.</p>',
+      delivery:'<p>Delivery timing depends on destination, quantity, stock or production requirements and the confirmed order terms.</p>',
+      areas:'Business and commercial locations across Delhi; provide the exact delivery area with the enquiry.',
+      industries:'<p>Retail, corporate offices, institutions, hospitality and promotional programmes are common business-use contexts for wall clocks.</p>',
+      close:'<p>Send the quantity, preferred format and delivery area to begin a Delhi business enquiry.</p>'
+    },
+    {
+      cityName:'Gurugram',slug:'gurugram',state:'Haryana',h1:'Wall Clock Supplier for Gurugram Buyers',
+      intro:'<p>OSIRA supports Gurugram enquiries for office wall clocks, retail supply, corporate gifting and promotional requirements. Buyers can use the catalogue to shortlist practical and business-oriented formats.</p><p>For larger requirements, share the intended application, quantity, branding and delivery details so the current commercial option can be confirmed.</p>',
+      why:'<p>Gurugram workplaces and business programmes can require different clock sizes and visual styles. The enquiry process keeps the selection tied to the actual application.</p>',
+      services:'<p>Wholesale, corporate gifting, promotional branding and custom/OEM discussions are available.</p>',
+      delivery:'<p>Delivery is confirmed according to product, order quantity, destination and production or dispatch requirements.</p>',
+      areas:'Commercial and business areas across Gurugram; include the delivery location in your enquiry.',
+      industries:'<p>Corporate offices, retail, hospitality, institutions and promotional programmes can use the available wall clock ranges.</p>',
+      close:'<p>Tell us the application, quantity and preferred size to request suitable options for Gurugram.</p>'
+    },
+    {
+      cityName:'Noida',slug:'noida',state:'Uttar Pradesh',h1:'Wall Clock Supplier for Noida Buyers',
+      intro:'<p>OSIRA provides a catalogue and enquiry route for Noida buyers looking for wall clocks for offices, retail stores, institutions, gifting or promotional programmes.</p><p>Business buyers can shortlist a product and then confirm quantity, specifications, branding requirements and delivery terms for the order.</p>',
+      why:'<p>The catalogue separates everyday wall clocks from promotional and custom requirements, making it easier to start with the intended application.</p>',
+      services:'<p>Wholesale, corporate gifting, promotional branding and custom/OEM wall clock enquiries are supported.</p>',
+      delivery:'<p>Delivery timing is requirement-specific and depends on the destination, quantity, product availability and agreed terms.</p>',
+      areas:'Commercial and business areas across Noida; provide the specific delivery location when enquiring.',
+      industries:'<p>Office, retail, education, hospitality and corporate programmes can be relevant applications.</p>',
+      close:'<p>Send your quantity, preferred format and delivery location to start a Noida enquiry.</p>'
+    },
+    {
+      cityName:'Ahmedabad',slug:'ahmedabad',state:'Gujarat',h1:'Wall Clock Supplier for Ahmedabad Buyers',
+      intro:'<p>OSIRA accepts Ahmedabad enquiries for wall clocks used in retail, corporate spaces, institutions, gifting and promotional campaigns. Product pages provide the initial specifications and business-order context.</p><p>For quantity orders, current pricing and availability should be confirmed against the exact product, quantity, branding and delivery requirement.</p>',
+      why:'<p>A product-first catalogue helps Ahmedabad buyers compare wall clock formats before moving to a requirement-specific commercial discussion.</p>',
+      services:'<p>Wholesale, corporate gifting, promotional branding and custom/OEM programmes can be discussed.</p>',
+      delivery:'<p>Delivery depends on destination, quantity, product availability and confirmed dispatch terms.</p>',
+      areas:'Commercial and business areas across Ahmedabad; include the delivery location in the enquiry.',
+      industries:'<p>Retailers, offices, institutions, hospitality businesses and promotional buyers can explore relevant formats.</p>',
+      close:'<p>Share the product direction, quantity and delivery details to request an Ahmedabad quotation.</p>'
+    },
+    {
+      cityName:'Mumbai',slug:'mumbai',state:'Maharashtra',h1:'Wall Clock Supplier for Mumbai Buyers',
+      intro:'<p>OSIRA supports Mumbai business enquiries for wall clocks across retail, corporate gifting, promotional branding and commercial interiors. The catalogue can be used to shortlist suitable products before requesting a quote.</p><p>For business orders, quantity, specification, branding, packaging and destination can influence the final commercial terms.</p>',
+      why:'<p>Mumbai buyers can start with the required application and clock format, then confirm the current availability and commercial option for the order.</p>',
+      services:'<p>Wholesale, corporate gifting, promotional branding and custom/OEM wall clock enquiries are supported.</p>',
+      delivery:'<p>Delivery timing is confirmed for the individual order based on product, quantity, destination and dispatch requirements.</p>',
+      areas:'Commercial and business locations across Mumbai; provide the delivery area when submitting an enquiry.',
+      industries:'<p>Retail, offices, hospitality, institutions, gifting teams and promotional agencies are relevant use cases.</p>',
+      close:'<p>Share the quantity, preferred product style and delivery location to begin a Mumbai enquiry.</p>'
+    }
   ];
   for (let i=0;i<cities.length;i++) {
-    const [city,slug,state,h1,intro]=cities[i];
+    const c=cities[i];
     await prisma.cityPage.create({data:{
-      cityName:city,slug,state,pageType:'supplier',h1Heading:h1,heroSubheading:'Business-ready wall clocks with requirement-based enquiry support.',
-      introContent:`<p>${intro}</p>`,
-      whyChooseContent:'<p>Start with the required quantity, size, shape, application and branding needs. Current availability, commercial pricing and delivery timelines should be confirmed before order approval.</p>',
-      servicesContent:'<p>Wholesale, corporate gifting, promotional branding and custom business requirements can be discussed.</p>',
-      deliveryContent:'<p>Delivery timing depends on product, quantity, destination and production requirements.</p>',
-      metaTitle:`${h1} | OSIRA`.slice(0,70),
-      metaDescription:`${intro} Enquire for current availability and business pricing.`.slice(0,160),
-      nearbyAreas:city==='Jaipur'?'Vaishali Nagar, Jhotwara, Kalwar Road, Sikar Road, Mansarovar, Sitapura':'Business and commercial areas across '+city,
-      displayOrder:i+1
+      cityName:c.cityName,slug:c.slug,state:c.state,pageType:'supplier',h1Heading:c.h1,heroSubheading:'Business-ready wall clocks with requirement-based enquiry support.',
+      introContent:c.intro,whyChooseContent:c.why,servicesContent:c.services,deliveryContent:c.delivery,
+      industriesContent:c.industries,closingContent:c.close,metaTitle:(c.h1+' | OSIRA').slice(0,70),
+      metaDescription:(c.h1+'. Explore wholesale, corporate gifting and custom wall clock enquiries from OSIRA.').slice(0,160),
+      nearbyAreas:c.areas,displayOrder:i+1
     }});
   }
 
