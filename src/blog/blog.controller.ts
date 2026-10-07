@@ -34,9 +34,29 @@ export class BlogController {
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
     const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const articleUrl = baseUrl ? baseUrl + '/blog/' + post.slug : '/blog/' + post.slug;
+    const schemaJsonLd = [{
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: post.title,
+      description: post.description,
+      datePublished: post.createdAt,
+      dateModified: post.updatedAt,
+      mainEntityOfPage: articleUrl,
+      publisher: { '@type': 'Organization', name: site?.businessName || 'OSIRA', url: baseUrl || undefined }
+    },{
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: baseUrl || '/' },
+        { '@type': 'ListItem', position: 2, name: 'Guides', item: (baseUrl || '') + '/blog' },
+        { '@type': 'ListItem', position: 3, name: post.title, item: articleUrl }
+      ]
+    }];
     return {
       post,
       site,
+      schemaJsonLd,
       pageTitle: post.metaTitle || post.title + ' | OSIRA',
       metaDescription: post.metaDescription || post.description.slice(0, 155),
       canonical: baseUrl ? baseUrl + '/blog/' + post.slug : undefined,
