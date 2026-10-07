@@ -53,26 +53,22 @@ Create the MySQL database/user in Hostinger first. Use the exact Hostinger datab
 
 The database is separate from the Node application files. Prisma connects to it through `DATABASE_URL`.
 
-## Prisma production rule
+## Prisma — easiest fresh deployment
 
-Development may use:
+This deployment uses a **new empty Hostinger MySQL database**. Historical Django data is not required for the new OSIRA site.
+
+After the Node.js app is deployed and the Hostinger environment variables are saved, run these once from the Hostinger Node.js terminal:
 
 ```bash
 npx prisma db push
-```
-
-For production, do **not** rely on `db push` as the long-term deployment mechanism. Once the production migration baseline is generated and committed under `prisma/migrations`, Hostinger should run the migration as part of the deployment/build workflow:
-
-```bash
-npm run prisma:migrate:deploy
 npm run prisma:seed
 ```
 
-Run `prisma:seed` only after the database schema is present and the seed data has been reviewed. The market-research catalogue is intentionally inserted as inactive draft products.
+This creates the Prisma schema and loads the fresh OSIRA catalogue/content into the new database.
 
-Use `migrate deploy` for subsequent schema changes as well.
+Do **not** run `prisma db push --accept-data-loss` against a database containing important production data. For future schema changes, introduce Prisma migrations before making changes to the live database.
 
-**Important:** do not run `prisma migrate deploy` against the existing Django database until the migration baseline has been reconciled with that database. A baseline must match the actual production schema before Django data is imported.
+The seed is the new OSIRA baseline; it does not require the old Django database or historical product data.
 
 ## Current NestJS routes
 
