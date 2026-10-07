@@ -90,6 +90,43 @@ async function main() {
     });
   }
 
+  // SEO collection pages are represented by curated categories so each landing page
+  // has a distinct search intent instead of creating duplicate keyword-only URLs.
+  const seoCollections = [
+    ['8-inch-wall-clocks', '8 Inch Wall Clocks', 'Compact 8 inch wall clocks for homes, offices, retail counters and gifting.'],
+    ['10-inch-wall-clocks', '10 Inch Wall Clocks', '10 inch wall clocks for everyday home, office, retail and institutional use.'],
+    ['12-inch-wall-clocks', '12 Inch Wall Clocks', '12 inch wall clocks for clear readability and practical commercial spaces.'],
+    ['14-inch-wall-clocks', '14 Inch Wall Clocks', '14 inch wall clocks for larger walls, offices, halls and commercial interiors.'],
+    ['plastic-wall-clocks', 'Plastic Wall Clocks', 'Plastic wall clocks covering practical, decorative and promotional buying requirements.'],
+    ['designer-wall-clocks', 'Designer Wall Clocks', 'Designer wall clocks for contemporary interiors, décor stores and premium spaces.'],
+    ['decorative-wall-clocks', 'Decorative Wall Clocks', 'Decorative wall clocks for homes, hospitality spaces, offices and gifting.'],
+    ['promotional-wall-clocks', 'Promotional Wall Clocks', 'Promotional wall clocks for branded corporate gifting, campaigns and bulk orders.'],
+    ['custom-wall-clocks', 'Custom Wall Clocks', 'Custom wall clocks for logos, branding, colour requirements and business orders.'],
+    ['square-rectangle-wall-clocks', 'Square & Rectangle Wall Clocks', 'Square and rectangular wall clocks for modern interiors and commercial spaces.'],
+  ];
+  for (const [slug, name, description] of seoCollections) {
+    await prisma.category.upsert({
+      where: { slug },
+      update: {
+        description,
+        metaTitle: (name + ' | OSIRA Jaipur').slice(0, 70),
+        metaDescription: (description + ' Wholesale and business enquiries from OSIRA.').slice(0, 160),
+        h1Heading: name,
+        seoContent: '<p>' + description + ' Explore available OSIRA designs, specifications and business-order options before requesting a quotation.</p>',
+      },
+      create: {
+        name,
+        slug,
+        description,
+        metaTitle: (name + ' | OSIRA Jaipur').slice(0, 70),
+        metaDescription: (description + ' Wholesale and business enquiries from OSIRA.').slice(0, 160),
+        h1Heading: name,
+        seoContent: '<p>' + description + ' Explore available OSIRA designs, specifications and business-order options before requesting a quotation.</p>',
+        displayOrder: 20,
+      },
+    });
+  }
+
   // Import the market-research catalogue as unpublished draft products.
   // These records are research variants, not verified OSIRA inventory; admin must verify
   // actual design, price, MOQ and images before activating them for public SEO.
