@@ -1,25 +1,6 @@
 <%- include('partials/header') %>
-<main>
-  <section class="section service-hero">
-    <div class="breadcrumbs"><a href="/cities">Cities</a> / <%= city.cityName %></div>
-    <div class="service-detail-copy">
-      <span class="kicker">CITY SUPPLY PAGE</span>
-      <h1><%= city.h1Heading %></h1>
-      <p><%= city.heroSubheading %></p>
-      <div class="actions">
-        <a class="btn primary" href="/#enquiry">Get a business quote</a>
-        <a class="btn secondary" href="/products">Browse products</a>
-      </div>
-    </div>
-  </section>
-  <section class="section rich-sections">
-    <article><span class="kicker">INTRODUCTION</span><div class="rich-copy"><%- city.introContent %></div></article>
-    <% if (city.whyChooseContent) { %><article><span class="kicker">WHY OSIRA</span><div class="rich-copy"><%- city.whyChooseContent %></div></article><% } %>
-    <% if (city.servicesContent) { %><article><span class="kicker">SERVICES</span><div class="rich-copy"><%- city.servicesContent %></div></article><% } %>
-    <% if (city.deliveryContent) { %><article><span class="kicker">DELIVERY</span><div class="rich-copy"><%- city.deliveryContent %><p><strong>Typical delivery:</strong> <%= city.deliveryTime %></p></div></article><% } %>
-    <% if (city.industriesContent) { %><article><span class="kicker">BUSINESS USE</span><div class="rich-copy"><%- city.industriesContent %></div></article><% } %>
-    <% if (city.nearbyAreas) { %><article><span class="kicker">AREAS</span><div class="rich-copy"><p><%= city.nearbyAreas %></p></div></article><% } %>
-    <% if (city.closingContent) { %><article><span class="kicker">NEXT STEP</span><div class="rich-copy"><%- city.closingContent %></div></article><% } %>
-  </section>
-</main>
-<%- include('partials/footer', { site }) %>
+<main class="city-detail-page">
+<section class="section city-detail-hero"><div class="breadcrumbs"><a href="/cities">Cities</a><span>›</span><%= city.cityName %></div><div class="city-detail-copy"><span class="kicker">OSIRA CITY SUPPLY</span><h1><%= city.h1Heading %></h1><p><%= city.heroSubheading %></p><div class="actions"><a class="btn primary" href="/#enquiry">Get a business quote</a><a class="btn secondary" href="/products">Browse wall clocks</a></div></div><div class="city-facts"><div><strong><%= city.cityName %></strong><span><%= city.state || 'India' %></span></div><div><strong>Wholesale</strong><span>Business orders</span></div><div><strong>Custom</strong><span>Branding enquiries</span></div></div></section>
+<section class="section city-content"><article><span class="kicker">ABOUT SUPPLY TO <%= city.cityName.toUpperCase() %></span><div class="rich-copy"><%- city.introContent %></div></article><% if(city.whyChooseContent){ %><article><span class="kicker">WHY OSIRA</span><div class="rich-copy"><%- city.whyChooseContent %></div></article><% } %><% if(city.servicesContent){ %><article><span class="kicker">BUSINESS SERVICES</span><div class="rich-copy"><%- city.servicesContent %></div><div class="inline-links"><a href="/services/wholesale-wall-clocks">Wholesale</a><a href="/services/corporate-gifting">Corporate gifting</a><a href="/services/promotional-wall-clocks">Promotional branding</a><a href="/services/custom-oem-wall-clocks">Custom & OEM</a></div></article><% } %><% if(city.deliveryContent){ %><article><span class="kicker">DELIVERY & COMMERCIAL TERMS</span><div class="rich-copy"><%- city.deliveryContent %><p><strong>Delivery:</strong> <%= city.deliveryTime %></p></div></article><% } %><% if(city.industriesContent){ %><article><span class="kicker">WHO BUYS</span><div class="rich-copy"><%- city.industriesContent %></div></article><% } %><% if(city.nearbyAreas){ %><article><span class="kicker">LOCATION CONTEXT</span><div class="rich-copy"><p><%= city.nearbyAreas %></p></div></article><% } %><% if(city.closingContent){ %><article><span class="kicker">NEXT STEP</span><div class="rich-copy"><%- city.closingContent %></div></article><% } %></section>
+<section class="section city-cta"><div><span class="kicker">READY TO ORDER?</span><h2>Tell us the quantity and delivery city.</h2></div><a class="btn primary" href="/#enquiry">Start an enquiry →</a></section>
+</main><%- include('partials/footer',{site}) %>
