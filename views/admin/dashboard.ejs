@@ -1,17 +1,23 @@
 <%- include('partials/header', {title:'OSIRA Admin Dashboard', user}) %>
-<div class="admin-heading"><div><p class="admin-kicker">OVERVIEW</p><h1>Business dashboard</h1><p>Monitor the core website catalogue and incoming enquiries.</p></div></div>
+<div class="admin-heading"><div><p class="admin-kicker">OVERVIEW</p><h1>Business dashboard</h1><p>Track catalogue health and move incoming enquiries through the sales pipeline.</p></div><a class="admin-button" href="/admin/enquiries">Open enquiries</a></div>
 <section class="admin-stats">
-  <a href="/admin/products"><strong><%= data.products %></strong><span>Active products</span></a>
-  <a href="/admin/categories"><strong><%= data.categories %></strong><span>Collections</span></a>
-  <a href="/services"><strong><%= data.services %></strong><span>Services</span></a>
-  <a href="/industries"><strong><%= data.industries %></strong><span>Industries</span></a>
-  <a href="/cities"><strong><%= data.cities %></strong><span>City pages</span></a>
-  <a href="/blog"><strong><%= data.blogs %></strong><span>Published guides</span></a>
-  <a href="/admin/enquiries"><strong><%= data.enquiries %></strong><span>Total enquiries</span></a>
-  <a href="/admin/enquiries?status=new"><strong><%= data.newEnquiries %></strong><span>New enquiries</span></a>
+<a href="/admin/products"><strong><%= data.products %></strong><span>Active products</span></a>
+<a href="/admin/categories"><strong><%= data.categories %></strong><span>Collections</span></a>
+<a href="/admin/enquiries"><strong><%= data.enquiries %></strong><span>Total enquiries</span></a>
+<a href="/admin/enquiries?status=new"><strong><%= data.newEnquiries %></strong><span>New</span></a>
+<a href="/admin/enquiries?status=contacted"><strong><%= data.contactedEnquiries %></strong><span>Contacted</span></a>
+<a href="/admin/enquiries?status=quoted"><strong><%= data.quotedEnquiries %></strong><span>Quoted</span></a>
+<a href="/admin/enquiries?status=won"><strong><%= data.wonEnquiries %></strong><span>Won</span></a>
+<a href="/blog"><strong><%= data.blogs %></strong><span>Published guides</span></a>
 </section>
 <section class="admin-panel">
-  <div><p class="admin-kicker">NEXT</p><h2>Content management</h2><p>The public NestJS site is live alongside the migration. CRUD screens for catalogue and content entities can now be added without touching the legacy Django application.</p></div>
-  <div class="admin-actions"><a class="admin-button" href="/admin/enquiries">Review enquiries</a><a class="admin-secondary" href="/products">Open catalogue</a></div>
+<div><p class="admin-kicker">SALES FLOW</p><h2>Enquiry pipeline</h2><p>Use the enquiry board to qualify requirements, record follow-up notes and move leads from new to quoted, won or closed.</p></div>
+<div class="admin-actions"><a class="admin-button" href="/admin/enquiries?status=new">Review new leads</a><a class="admin-secondary" href="/products">Open catalogue</a></div>
+</section>
+<section class="admin-quick-grid">
+<a href="/admin/services"><strong>Services</strong><span><%= data.services %> published pages</span></a>
+<a href="/admin/industries"><strong>Industries</strong><span><%= data.industries %> published pages</span></a>
+<a href="/admin/cities"><strong>City SEO</strong><span><%= data.cities %> published pages</span></a>
+<a href="/admin/blog"><strong>Content</strong><span><%= data.blogs %> published guides</span></a>
 </section>
 <%- include('partials/footer') %>
