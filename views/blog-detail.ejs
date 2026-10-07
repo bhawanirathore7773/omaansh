@@ -1,12 +1,7 @@
 <%- include('partials/header') %>
-<main>
-  <article class="section article">
-    <div class="breadcrumbs"><a href="/blog">Guides</a> / <%= post.category %></div>
-    <span class="kicker"><%= post.category %></span>
-    <h1><%= post.title %></h1>
-    <p class="article-lead"><%= post.description %></p>
-    <% if(post.featuredImage){ %><img class="article-image" src="<%= post.featuredImage %>" alt="<%= post.title %>"><% } %>
-    <div class="article-content"><%- post.contentHtml || '<p>More details will be published soon.</p>' %></div>
-  </article>
-</main>
-<%- include('partials/footer', { site }) %>
+<main class="article-page">
+<section class="section article-hero"><div class="breadcrumbs"><a href="/blog">Guides</a><span>›</span><%= post.category %></div><span class="kicker"><%= post.category %></span><h1><%= post.title %></h1><p><%= post.description %></p></section>
+<article class="section article-layout"><div class="article-main"><div class="article-body"><%- post.contentHtml || '<p>'+post.description+'</p>' %></div>
+<div class="article-next"><span class="kicker">NEXT STEP</span><h2>Need wall clocks for a real order?</h2><p>Use the catalogue to compare products, then send quantity and delivery requirements for a current quotation.</p><div class="actions"><a class="btn primary" href="/products">Browse products</a><a class="btn secondary" href="/#enquiry">Request a quote</a></div></div></div>
+<aside class="article-aside"><div><span class="kicker">EXPLORE</span><a href="/categories">Wall clock collections →</a><a href="/services">Business services →</a><a href="/industries">Industry solutions →</a><a href="/cities/jaipur">Jaipur supply →</a></div></aside></article>
+</main><%- include('partials/footer',{site}) %>
