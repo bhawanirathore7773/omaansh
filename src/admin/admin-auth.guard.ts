@@ -23,7 +23,8 @@ export class AdminAuthGuard implements CanActivate {
     }
     (req as any).adminSession = session;
     (req as any).adminUser = session.user;
-    (req as any).adminCsrf = getCookie(req, 'osira_admin_csrf');
+    const csrfCookie = getCookie(req, 'osira_admin_csrf');
+    (req as any).adminCsrf = csrfCookie || null;
     return true;
   }
 }
