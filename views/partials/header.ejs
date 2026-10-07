@@ -8,6 +8,7 @@
   <meta name="robots" content="index,follow,max-image-preview:large">
   <% if (canonical) { %><link rel="canonical" href="<%= canonical %>"><% } %>
   <link rel="stylesheet" href="/styles.css">
+  <% if (schemaJsonLd) { %><script type="application/ld+json"><%- JSON.stringify(schemaJsonLd).replace(/</g, "\\u003c") %></script><% } %>
 </head>
 <body>
 <header class="site-header">
