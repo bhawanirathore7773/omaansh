@@ -1,35 +1,5 @@
 <%- include('partials/header') %>
-<main>
-  <section class="section service-hero">
-    <div class="breadcrumbs"><a href="/industries">Industries</a> / <%= industry.industryName %></div>
-    <div class="service-detail-copy">
-      <span class="kicker">INDUSTRY SOLUTION</span>
-      <h1><%= industry.h1Heading %></h1>
-      <p><%= industry.heroSubheading %></p>
-      <div class="actions">
-        <a class="btn primary" href="/#enquiry">Discuss your requirement</a>
-        <a class="btn secondary" href="/products">Browse wall clocks</a>
-      </div>
-    </div>
-  </section>
-  <section class="section rich-sections">
-    <article><span class="kicker">OVERVIEW</span><div class="rich-copy"><%- industry.introContent %></div></article>
-    <% if (industry.benefitsContent) { %><article><span class="kicker">BENEFITS</span><div class="rich-copy"><%- industry.benefitsContent %></div></article><% } %>
-    <% if (industry.customizationContent) { %><article><span class="kicker">CUSTOMIZATION</span><div class="rich-copy"><%- industry.customizationContent %></div></article><% } %>
-    <% if (industry.caseStudyContent) { %><article><span class="kicker">USE CASE</span><div class="rich-copy"><%- industry.caseStudyContent %></div></article><% } %>
-  </section>
-  <% if (industry.featuredProducts.length) { %>
-    <section class="section">
-      <div class="section-head"><div><span class="kicker">RECOMMENDED PRODUCTS</span><h2>Products for this requirement</h2></div></div>
-      <div class="product-grid">
-        <% industry.featuredProducts.forEach(item => { const product = item.product; %>
-          <a class="product-card" href="/products/<%= product.slug %>">
-            <div class="product-media"><% if(product.image){ %><img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy"><% } else { %><div class="placeholder">OSIRA</div><% } %></div>
-            <div class="product-body"><span><%= product.category?.name || 'Wall Clock' %></span><h2><%= product.name %></h2><strong><%= product.price ? 'From ₹' + product.price : 'Price on enquiry' %></strong></div>
-          </a>
-        <% }) %>
-      </div>
-    </section>
-  <% } %>
-</main>
-<%- include('partials/footer', { site }) %>
+<main class="solution-detail"><section class="section solution-detail-hero"><div class="breadcrumbs"><a href="/industries">Industries</a><span>›</span><%= industry.industryName %></div><div class="solution-detail-copy"><span class="kicker">INDUSTRY SOLUTION</span><h1><%= industry.h1Heading %></h1><p><%= industry.heroSubheading %></p><div class="actions"><a class="btn primary" href="/#enquiry">Discuss your requirement</a><a class="btn secondary" href="/products">Browse wall clocks</a></div></div></section>
+<section class="section solution-content"><article><span class="kicker">OVERVIEW</span><div class="rich-copy"><%- industry.introContent %></div></article><% if(industry.benefitsContent){ %><article><span class="kicker">BENEFITS</span><div class="rich-copy"><%- industry.benefitsContent %></div></article><% } %><% if(industry.customizationContent){ %><article><span class="kicker">CUSTOMIZATION</span><div class="rich-copy"><%- industry.customizationContent %></div></article><% } %><% if(industry.caseStudyContent){ %><article><span class="kicker">USE CASE</span><div class="rich-copy"><%- industry.caseStudyContent %></div></article><% } %></section>
+<% if (industry.featuredProducts.length) { %><section class="section"><div class="section-head"><div><span class="kicker">RECOMMENDED PRODUCTS</span><h2>Products for this application</h2></div><a href="/products">View catalogue →</a></div><div class="product-grid"><% industry.featuredProducts.forEach(item=>{ const product=item.product; %><a class="product-card" href="/products/<%= product.slug %>"><div class="product-media"><% if(product.image){ %><img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy" width="800" height="600"><% }else{ %><div class="placeholder">OSIRA</div><% } %></div><div class="product-body"><span><%= product.category?.name || "Wall Clock" %></span><h2><%= product.name %></h2><strong><%= product.price ? "From ₹"+Number(product.price).toLocaleString("en-IN") : "Request current price" %></strong></div></a><% }) %></div></section><% } %>
+<section class="section solution-cta"><div><span class="kicker">READY TO SOURCE?</span><h2>Tell OSIRA what the space requires.</h2></div><a class="btn primary" href="/#enquiry">Start an enquiry →</a></section></main><%- include('partials/footer',{site}) %>
