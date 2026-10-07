@@ -14,7 +14,7 @@
 <label>Default meta description<textarea name="defaultMetaDescription" maxlength="160" rows="4"><%= settings?.defaultMetaDescription || '' %></textarea></label>
 <div class="field-grid"><label>Latitude<input name="latitude" value="<%= settings?.latitude || '' %>"></label><label>Longitude<input name="longitude" value="<%= settings?.longitude || '' %>"></label><label>Establishment year<input name="establishmentYear" value="<%= settings?.establishmentYear || '' %>"></label><label>Employees<input name="employeeCount" value="<%= settings?.employeeCount || '' %>"></label></div>
 <h2>Social profiles</h2>
-<label>Facebook<input name="facebookUrl" value="<%= settings?.facebookUrl || '' %>"></label><label>Instagram<input name="instagramUrl" value="<%= settings?.instagramUrl || '' %>"></label><label>YouTube<input name="youtubeUrl" value="<%= settings?.youtubeUrl || '' %>"></label><label>LinkedIn<input name="linkedinUrl" value="<%= settings?.linkedinUrl || '' %>"></label>
+<label>Facebook<input name="facebookUrl" value="<%= settings?.facebookUrl || '' %>"></label><label>Instagram<input name="instagramUrl" value="<%= settings?.instagramUrl || '' %>"></label><label>YouTube<input name="youtubeUrl" value="<%= settings?.youtubeUrl || '' %>"></label><label>LinkedIn<input name="linkedinUrl" value="<%= settings?.linkedinUrl || '' %>" placeholder="https://www.linkedin.com/company/..."></label><label>IndiaMART<input name="indiamartUrl" value="<%= settings?.indiamartUrl || '' %>" placeholder="https://www.indiamart.com/..."></label>
 <button class="admin-button" type="submit">Save site settings</button>
 </section></form>
 <%- include('partials/footer') %>
