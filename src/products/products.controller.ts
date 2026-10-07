@@ -47,6 +47,7 @@ export class ProductsController {
       '@context':'https://schema.org','@type':'Product',name:product.name,description:product.shortDescription || product.description,
       image:product.image ? [product.image] : undefined,sku:product.sku || undefined,brand:{'@type':'Brand',name:product.brand || 'OSIRA'},
       category:product.category?.name,
+      url: productUrl,
       offers:product.price ? {'@type':'Offer',url:productUrl,priceCurrency:'INR',price:Number(product.price),availability:'https://schema.org/' + (product.availability === 'InStock' ? 'InStock' : 'PreOrder')} : undefined
     },{
       '@context':'https://schema.org','@type':'BreadcrumbList',
