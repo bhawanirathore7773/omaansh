@@ -32,7 +32,7 @@ Recommended:
 - Branch: `main`
 - Node.js: **22.x**
 - Build command: `npm run build`
-- Start command: `npm run start`
+- Start command: `npm run start:prod`
 
 Required environment variables:
 
@@ -61,12 +61,14 @@ Development may use:
 npx prisma db push
 ```
 
-For production, do **not** rely on `db push` as the long-term deployment mechanism. Once the production migration baseline is generated and committed under `prisma/migrations`, Hostinger should run:
+For production, do **not** rely on `db push` as the long-term deployment mechanism. Once the production migration baseline is generated and committed under `prisma/migrations`, Hostinger should run the migration as part of the deployment/build workflow:
 
 ```bash
-npx prisma migrate deploy
+npm run prisma:migrate:deploy
 npm run prisma:seed
 ```
+
+Run `prisma:seed` only after the database schema is present and the seed data has been reviewed. The market-research catalogue is intentionally inserted as inactive draft products.
 
 Use `migrate deploy` for subsequent schema changes as well.
 
@@ -135,6 +137,5 @@ Recommended final sequence:
 - Never commit `.env`.
 - Keep admin session cookies secure.
 - Keep CSRF protection on admin POST actions.
-- Add public enquiry rate limiting before production launch.
-- Add login rate limiting before production launch.
+- Public enquiry and admin-login rate limiting are enabled in the NestJS bootstrap; review the limits before launch.
 - Review npm audit findings before final deployment; do not use `npm audit fix --force` blindly.
