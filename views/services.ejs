@@ -1,23 +1,6 @@
 <%- include('partials/header') %>
-<main>
-  <section class="section">
-    <div class="section-head">
-      <div>
-        <span class="kicker">BUSINESS SERVICES</span>
-        <h1>From product selection to custom production, built around your order.</h1>
-        <p>OSIRA supports retailers, distributors, corporate buyers, promotional programmes and custom/OEM requirements from Jaipur.</p>
-      </div>
-    </div>
-    <div class="service-grid">
-      <% services.forEach(service => { %>
-        <a class="service-card" href="/services/<%= service.slug %>">
-          <span class="kicker"><%= service.iconClass || 'OSIRA' %></span>
-          <h2><%= service.h1Heading %></h2>
-          <p><%= service.shortDescription %></p>
-          <strong>Explore service →</strong>
-        </a>
-      <% }) %>
-    </div>
-  </section>
-</main>
-<%- include('partials/footer', { site }) %>
+<main class="solutions-page">
+<section class="section solutions-hero"><span class="kicker">BUSINESS SERVICES</span><h1>Wall clock supply built around the way your organisation buys.</h1><p>Choose a route for wholesale sourcing, corporate gifting, promotional branding or custom/OEM requirements. Each service starts with the quantity, product direction and delivery requirement.</p></section>
+<section class="section solutions-grid-section"><div class="solution-index"><span class="kicker">HOW OSIRA CAN HELP</span><span><%= services.length %> services</span></div><div class="service-grid service-grid-v2"><% services.forEach((service,i)=>{ %><a class="service-card service-card-v2" href="/services/<%= service.slug %>"><span class="solution-number"><%= String(i+1).padStart(2,'0') %></span><div><span class="kicker"><%= service.iconClass || 'OSIRA' %></span><h2><%= service.h1Heading %></h2><p><%= service.shortDescription %></p><strong>Explore service →</strong></div></a><% }) %></div></section>
+<section class="section solution-note"><div><span class="kicker">START WITH THE REQUIREMENT</span><h2>Quantity, application, size and branding are the useful starting points.</h2></div><div><p>For business orders, commercial terms can depend on product selection, quantity, artwork, packaging and delivery destination. Send those details and confirm the current quotation before ordering.</p><a class="btn primary" href="/#enquiry">Request a quotation</a></div></section>
+</main><%- include('partials/footer',{site}) %>
