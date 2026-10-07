@@ -1,23 +1,6 @@
 <%- include('partials/header') %>
-<main>
-  <section class="section">
-    <div class="section-head">
-      <div>
-        <span class="kicker">CITY COVERAGE</span>
-        <h1>Wall clock supply and business-order support by city.</h1>
-        <p>Find a city-specific OSIRA page for delivery information, local business requirements and enquiry support.</p>
-      </div>
-    </div>
-    <div class="city-grid">
-      <% cities.forEach(city => { %>
-        <a class="city-card" href="/cities/<%= city.slug %>">
-          <span><%= city.state || 'India' %></span>
-          <h2><%= city.cityName %></h2>
-          <p><%= city.h1Heading %></p>
-          <strong>View city page →</strong>
-        </a>
-      <% }) %>
-    </div>
-  </section>
-</main>
-<%- include('partials/footer', { site }) %>
+<main class="city-pages">
+<section class="section city-index-hero"><span class="kicker">CITY COVERAGE</span><h1>Wall clock supply pages for business buyers across India.</h1><p>Explore city-specific information for wholesale, corporate gifting, promotional branding and custom wall clock enquiries. Delivery and commercial terms are confirmed for the individual requirement.</p></section>
+<section class="section"><div class="city-index-bar"><span class="kicker">SELECT A CITY</span><span><%= cities.length %> locations</span></div><div class="city-grid city-grid-v2"><% cities.forEach((city,i)=>{ %><a class="city-card city-card-v2" href="/cities/<%= city.slug %>"><span class="city-number"><%= String(i+1).padStart(2,'0') %></span><div><span><%= city.state || 'India' %></span><h2><%= city.cityName %></h2><p><%= city.h1Heading %></p><strong>View supply page →</strong></div></a><% }) %></div></section>
+<section class="section city-note"><div><span class="kicker">BUSINESS ENQUIRY</span><h2>Ordering for a city not listed?</h2></div><div><p>Send the delivery city, quantity, preferred clock style and any branding requirement. We can confirm the current supply route and commercial details.</p><a class="btn primary" href="/#enquiry">Request a quotation</a></div></section>
+</main><%- include('partials/footer',{site}) %>
