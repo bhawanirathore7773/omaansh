@@ -1,11 +1,56 @@
 <footer class="footer">
   <div class="footer-inner footer-v2">
-    <div class="footer-brand"><strong><%= site?.businessName || 'OSIRA' %></strong><p><%= site?.tagline || 'Wall clocks for retail, workplaces and business orders.' %></p><p class="footer-note">Jaipur-based supply for wholesale, corporate gifting, promotional branding and custom/OEM requirements.</p></div>
-    <div><h4>Explore</h4><a href="/products">Wall clocks</a><a href="/categories">Collections</a><a href="/services">Services</a><a href="/industries">Industries</a><a href="/blog">Buying guides</a></div>
-    <div><h4>Business</h4><a href="/services/wholesale-wall-clocks">Wholesale supply</a><a href="/services/corporate-gifting">Corporate gifting</a><a href="/services/promotional-wall-clocks">Promotional branding</a><a href="/services/custom-oem-wall-clocks">Custom & OEM</a><a href="/cities/jaipur">Wall clocks in Jaipur</a></div>
-    <div><h4>Contact</h4><p><%= site?.streetAddress || 'Jaipur, Rajasthan, India' %></p><a href="tel:<%= site?.primaryPhone || '+91141616961' %>"><%= site?.primaryPhone || '+91 141 616961' %></a><a href="mailto:<%= site?.email || 'hello@omaansh.com' %>"><%= site?.email || 'hello@omaansh.com' %></a><% if(site?.whatsappNumber){ %><a href="https://wa.me/<%= site.whatsappNumber %>" rel="noopener">WhatsApp enquiry</a><% } %></div>
+    <div class="footer-brand">
+      <a class="footer-logo" href="/" aria-label="<%= site?.businessName || 'OSIRA' %> home"><%= site?.businessName || 'OSIRA' %></a>
+      <p class="footer-tagline"><%= site?.tagline || 'Wall clocks for retail, workplaces and business orders.' %></p>
+      <p class="footer-note">Jaipur-based supply for wholesale, corporate gifting, promotional branding and custom/OEM requirements.</p>
+      <div class="footer-social" aria-label="OSIRA social profiles">
+        <% if (site?.facebookUrl) { %>
+          <a class="social-icon" href="<%= site.facebookUrl %>" target="_blank" rel="noopener noreferrer" aria-label="OSIRA on Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-3.31 0-5 1.79-5 5v3H6v4h3v8h4v-8h3.5l.5-4H13V9c0-.67.33-1 1-1Z"/></svg></a>
+        <% } %>
+        <% if (site?.instagramUrl) { %>
+          <a class="social-icon" href="<%= site.instagramUrl %>" target="_blank" rel="noopener noreferrer" aria-label="OSIRA on Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <% } %>
+        <% if (site?.linkedinUrl) { %>
+          <a class="social-icon" href="<%= site.linkedinUrl %>" target="_blank" rel="noopener noreferrer" aria-label="OSIRA on LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5A2.5 2.5 0 1 1 5 8.5 2.5 2.5 0 0 1 5 3.5ZM3 10h4v11H3V10Zm7 0h3.8v1.5h.1c.53-.96 1.83-1.97 3.77-1.97 4.03 0 4.77 2.65 4.77 6.1V21h-4v-4.76c0-1.14-.02-2.61-1.59-2.61-1.59 0-1.83 1.24-1.83 2.52V21h-4V10Z"/></svg></a>
+        <% } %>
+        <% if (site?.indiamartUrl) { %>
+          <a class="social-icon social-indiamart" href="<%= site.indiamartUrl %>" target="_blank" rel="noopener noreferrer" aria-label="OSIRA on IndiaMART" title="IndiaMART">IM</a>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <a href="/products">Wall clocks</a>
+      <a href="/categories">Collections</a>
+      <a href="/services">Services</a>
+      <a href="/industries">Industries</a>
+      <a href="/blog">Buying guides</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Business</h4>
+      <a href="/services/wholesale-wall-clocks">Wholesale supply</a>
+      <a href="/services/corporate-gifting">Corporate gifting</a>
+      <a href="/services/promotional-wall-clocks">Promotional branding</a>
+      <a href="/services/custom-oem-wall-clocks">Custom &amp; OEM</a>
+      <a href="/cities/jaipur">Wall clocks in Jaipur</a>
+    </div>
+
+    <div class="footer-col footer-contact">
+      <h4>Contact</h4>
+      <p><%= site?.streetAddress || 'Jaipur, Rajasthan, India' %></p>
+      <a href="tel:<%= site?.primaryPhone || '+91141616961' %>"><%= site?.primaryPhone || '+91 141 616961' %></a>
+      <a href="mailto:<%= site?.email || 'hello@omaansh.com' %>"><%= site?.email || 'hello@omaansh.com' %></a>
+      <% if(site?.whatsappNumber){ %><a href="https://wa.me/<%= site.whatsappNumber %>" target="_blank" rel="noopener noreferrer">WhatsApp enquiry</a><% } %>
+    </div>
   </div>
-  <div class="footer-bottom"><span>© <%= new Date().getFullYear() %> <%= site?.businessName || 'OSIRA' %>. All rights reserved.</span><span>Wall clock manufacturer & supplier in Jaipur</span></div>
+
+  <div class="footer-bottom">
+    <span>© <%= new Date().getFullYear() %> <%= site?.businessName || 'OSIRA' %>. All rights reserved.</span>
+    <span>Wall clock manufacturer &amp; supplier in Jaipur</span>
+  </div>
 </footer>
 </body>
 </html>
