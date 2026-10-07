@@ -16,7 +16,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
-  <% if (schemaJsonLd) { %><script type="application/ld+json"><%- JSON.stringify(schemaJsonLd).replace(/</g, "\u003c") %></script><% } %>
+  <% if (typeof schemaJsonLd !== 'undefined' && schemaJsonLd) { %><script type="application/ld+json"><%- JSON.stringify(schemaJsonLd).replace(/</g, "\u003c") %></script><% } %>
 </head>
 <body>
 <header class="site-header">
