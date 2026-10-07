@@ -13,7 +13,9 @@
     "postinstall": "prisma generate",
     "start:prod": "node dist/main.js",
     "prisma:migrate:deploy": "prisma migrate deploy",
-    "prisma:validate": "prisma validate"
+    "prisma:validate": "prisma validate",
+    "prisma:db:push": "prisma db push",
+    "prisma:fresh": "prisma db push --accept-data-loss && prisma generate && prisma seed"
   },
   "engines": {
     "node": ">=22 <25",
@@ -40,5 +42,8 @@
     "prisma": "^6.16.1",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }
