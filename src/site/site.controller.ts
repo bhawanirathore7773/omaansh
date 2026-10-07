@@ -19,9 +19,46 @@ export class SiteController {
       }),
     ]);
 
+    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const siteUrl = baseUrl || undefined;
+    const organization = {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: site?.businessName || 'OSIRA',
+      url: siteUrl,
+      logo: siteUrl ? siteUrl + '/favicon.svg' : undefined,
+      telephone: site?.primaryPhone || undefined,
+      email: site?.email || undefined,
+      address: site ? {
+        '@type': 'PostalAddress',
+        streetAddress: site.streetAddress,
+        addressLocality: site.locality,
+        addressRegion: site.region,
+        postalCode: site.postalCode,
+        addressCountry: site.country || 'IN'
+      } : undefined,
+      geo: site?.latitude && site?.longitude ? {
+        '@type': 'GeoCoordinates',
+        latitude: site.latitude,
+        longitude: site.longitude
+      } : undefined,
+      sameAs: [site?.facebookUrl, site?.instagramUrl, site?.youtubeUrl, site?.linkedinUrl].filter(Boolean)
+    };
+    const website = {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: site?.businessName || 'OSIRA',
+      url: siteUrl,
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: siteUrl ? siteUrl + '/products?q={search_term_string}' : '/products?q={search_term_string}',
+        'query-input': 'required name=search_term_string'
+      }
+    };
     return {
       site,
       categories,
+      schemaJsonLd: [organization, website],
       featuredProducts,
       enquirySent: enquiry === 'sent',
       pageTitle: site?.defaultMetaTitle || 'OSIRA | Wall Clock Manufacturer & Supplier in Jaipur',
