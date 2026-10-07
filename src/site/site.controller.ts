@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Render } from '@nestjs/common';
+import { Controller, Get, Header, Query, Render } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Controller()
@@ -31,12 +31,14 @@ export class SiteController {
   }
 
   @Get('robots.txt')
+  @Header('Content-Type', 'text/plain; charset=utf-8')
   robots() {
     const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
     return ['User-agent: *', 'Allow: /', 'Disallow: /admin', 'Disallow: /api', 'Sitemap: ' + (baseUrl ? baseUrl + '/sitemap.xml' : '/sitemap.xml')].join('\n');
   }
 
   @Get('sitemap.xml')
+  @Header('Content-Type', 'application/xml; charset=utf-8')
   async sitemap() {
     const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
     const [products, categories, services, industries, cities, blogs] = await Promise.all([
