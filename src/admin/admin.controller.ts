@@ -125,6 +125,7 @@ export class AdminController {
   @UseGuards(AdminAuthGuard)
   @Get()
   async dashboard(@Req() req: Request, @Res() res: Response) {
+    await this.admin.cleanupExpiredSessions();
     const data = await this.admin.dashboard();
     return res.render('admin/dashboard', { user: (req as any).adminUser, data });
   }
