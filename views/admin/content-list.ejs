@@ -1,0 +1,12 @@
+<%- include('partials/header', {title: title + ' | OSIRA Admin', user}) %>
+<div class="admin-heading"><div><p class="admin-kicker"><%= kicker %></p><h1><%= title %></h1><p><%= description %></p></div></div>
+<div class="admin-content-grid">
+  <% rows.forEach(row => { %>
+  <article class="admin-content-card">
+    <div><span class="pill <%= (row.isPublished ?? true) ? 'pill-on' : 'pill-off' %>"><%= (row.isPublished ?? true) ? 'Published' : 'Draft' %></span><h2><%= row[nameField] %></h2><p><%= row.h1Heading || row.description || row.shortDescription || '' %></p></div>
+    <div class="admin-card-actions"><a class="admin-secondary" href="/<%= type === 'blog' ? 'blog' : type + '/' + row.slug %>" target="_blank">View ↗</a><span>Slug: /<%= type === 'blog' ? 'blog' : type %>/<%= row.slug %></span></div>
+  </article>
+  <% }) %>
+  <% if(!rows.length){ %><div class="admin-empty-card">No records found.</div><% } %>
+</div>
+<%- include('partials/footer') %>
