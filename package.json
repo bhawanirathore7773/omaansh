@@ -35,13 +35,14 @@
     "@nestjs/schematics": "^11.0.5",
     "prisma": "^6.16.1",
     "tsx": "^4.19.4",
-    "typescript": "^5.8.3"
-  },
-  "devDependencies": {
-    "@nestjs/testing": "^11.0.11",
+    "typescript": "^5.8.3",
     "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.3",
-    "@types/node": "^22.15.21"
+    "@types/node": "^22.15.21",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^11.0.11"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
