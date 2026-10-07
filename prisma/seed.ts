@@ -1,491 +1,266 @@
 import { PrismaClient } from '@prisma/client';
-import { readFileSync } from 'fs';
 import { randomBytes, scryptSync } from 'crypto';
-import { join } from 'path';
 
 const prisma = new PrismaClient();
 
-function parseCsv(text: string): string[][] {
-  const rows: string[][] = [];
-  let row: string[] = [];
-  let field = '';
-  let quoted = false;
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
-    const next = text[i + 1];
-    if (ch === '"' && quoted && next === '"') { field += '"'; i++; continue; }
-    if (ch === '"') { quoted = !quoted; continue; }
-    if (ch === ',' && !quoted) { row.push(field.trim()); field = ''; continue; }
-    if ((ch === '\n' || ch === '\r') && !quoted) {
-      if (ch === '\r' && next === '\n') i++;
-      row.push(field.trim()); field = '';
-      if (row.some(Boolean)) rows.push(row);
-      row = [];
-      continue;
-    }
-    field += ch;
-  }
-  if (field.length || row.length) { row.push(field.trim()); rows.push(row); }
-  return rows;
-}
+const slugify = (value: string) =>
+  value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-function hashPassword(password: string) {
+const hashPassword = (password: string) => {
   const salt = randomBytes(16).toString('hex');
-  const hash = scryptSync(password, salt, 64).toString('hex');
-  return `scrypt${salt}${hash}`;
-}
+  return `scrypt${salt}${scryptSync(password, salt, 64).toString('hex')}`;
+};
 
-function slugify(value: string) {
-  return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
+type ProductSeed = {
+  name: string;
+  category: string;
+  size: string;
+  shape: string;
+  material: string;
+  movement: string;
+  finish: string;
+  useCase: string;
+  description: string;
+  price?: number;
+  moq?: number;
+  featured?: boolean;
+  newArrival?: boolean;
+};
+
+const categories = [
+  ['plastic-wall-clocks','Plastic Wall Clocks','Practical plastic wall clocks for homes, offices, retail counters and institutional spaces.'],
+  ['designer-wall-clocks','Designer Wall Clocks','Contemporary wall clock designs for décor stores, modern interiors and premium gifting.'],
+  ['decorative-wall-clocks','Decorative Wall Clocks','Decorative wall clocks selected for visual appeal, everyday readability and interior styling.'],
+  ['promotional-wall-clocks','Promotional Wall Clocks','Wall clocks for branded campaigns, corporate gifting, dealer programmes and bulk promotions.'],
+  ['custom-wall-clocks','Custom Wall Clocks','Custom wall clock programmes for logos, artwork, colour requirements and business orders.'],
+  ['corporate-wall-clocks','Corporate Wall Clocks','Business-ready wall clocks for offices, institutions, reception areas and branded spaces.'],
+  ['round-wall-clocks','Round Wall Clocks','Classic round wall clocks in practical sizes for everyday spaces and commercial use.'],
+  ['square-wall-clocks','Square Wall Clocks','Clean square wall clocks for modern offices, retail interiors and contemporary homes.'],
+  ['rectangle-wall-clocks','Rectangle Wall Clocks','Rectangular wall clock formats for distinctive layouts and commercial interiors.'],
+  ['large-wall-clocks','Large Wall Clocks','Larger-format wall clocks for halls, reception areas, classrooms and commercial walls.'],
+  ['10-inch-wall-clocks','10 Inch Wall Clocks','10 inch wall clocks for compact walls, offices, retail and promotional requirements.'],
+  ['12-inch-wall-clocks','12 Inch Wall Clocks','12 inch wall clocks balancing readability, footprint and everyday utility.'],
+  ['14-inch-wall-clocks','14 Inch Wall Clocks','14 inch wall clocks for larger walls, offices, halls and commercial spaces.'],
+];
+
+const products: ProductSeed[] = [
+  {name:'OSIRA Classic Round 10 Inch Wall Clock',category:'plastic-wall-clocks',size:'10 inch',shape:'Round',material:'ABS plastic frame',movement:'Quartz',finish:'Matte',useCase:'Home, office, retail',description:'A clean, easy-to-read round wall clock designed for everyday home, office and retail use.',price:150,moq:25,featured:true},
+  {name:'OSIRA Classic Round 12 Inch Wall Clock',category:'plastic-wall-clocks',size:'12 inch',shape:'Round',material:'ABS plastic frame',movement:'Quartz',finish:'Matte',useCase:'Home, office, institutional',description:'A practical 12 inch wall clock with a balanced dial size for clear everyday time reading.',price:199,moq:25,featured:true},
+  {name:'OSIRA Classic Round 14 Inch Wall Clock',category:'plastic-wall-clocks',size:'14 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Office, hall, retail',description:'A larger round wall clock for spaces that need stronger visual readability from a distance.',price:300,moq:25},
+  {name:'OSIRA Minimal Round 8 Inch Wall Clock',category:'8-inch-wall-clocks',size:'8 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Bedroom, study, office',description:'Compact wall clock for smaller walls, workstations, study areas and retail displays.',moq:25,newArrival:true},
+  {name:'OSIRA Minimal Round 10 Inch Wall Clock',category:'10-inch-wall-clocks',size:'10 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Home, office, retail',description:'A compact everyday wall clock with a simple dial and practical footprint.',price:150,moq:25},
+  {name:'OSIRA Clear Dial 12 Inch Wall Clock',category:'12-inch-wall-clocks',size:'12 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Gloss',useCase:'Office, classroom, home',description:'A readable 12 inch wall clock for spaces where quick time visibility matters.',price:199,moq:25,featured:true},
+  {name:'OSIRA Modern Square 10 Inch Wall Clock',category:'square-wall-clocks',size:'10 inch',shape:'Square',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Office, retail, home',description:'A square wall clock with a structured silhouette for modern interiors.',price:110,moq:25,featured:true},
+  {name:'OSIRA Modern Square 12 Inch Wall Clock',category:'square-wall-clocks',size:'12 inch',shape:'Square',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Office, reception, home',description:'A practical square format with a larger dial for improved wall presence.',moq:25},
+  {name:'OSIRA Rectangle Office Wall Clock',category:'rectangle-wall-clocks',size:'12 inch class',shape:'Rectangle',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Office, reception, commercial',description:'A rectangular wall clock concept for contemporary office and commercial interiors.',moq:25,newArrival:true},
+  {name:'OSIRA Designer Line Wall Clock',category:'designer-wall-clocks',size:'12 inch class',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Decorative',useCase:'Home, décor store, gifting',description:'A decorative wall clock direction for buyers looking for a stronger visual element than a basic timepiece.',moq:25,featured:true},
+  {name:'OSIRA Decorative Floral Wall Clock',category:'decorative-wall-clocks',size:'12 inch class',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Decorative',useCase:'Home, boutique, gifting',description:'A decorative wall clock style intended to complement colourful and traditional interiors.',moq:25},
+  {name:'OSIRA Decorative Contemporary Wall Clock',category:'decorative-wall-clocks',size:'14 inch class',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Decorative',useCase:'Living room, office, hospitality',description:'A larger decorative format for walls that need both time visibility and visual character.',moq:25},
+  {name:'OSIRA Corporate Logo Wall Clock',category:'promotional-wall-clocks',size:'10-12 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Custom artwork',useCase:'Corporate gifting, promotions',description:'A promotional wall clock format that can be discussed for business branding, artwork and quantity requirements.',moq:100,featured:true},
+  {name:'OSIRA Promotional Business Wall Clock',category:'promotional-wall-clocks',size:'10 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Custom artwork',useCase:'Dealer gifts, campaigns',description:'A business-order wall clock concept for promotional campaigns and quantity-led gifting.',moq:100},
+  {name:'OSIRA Custom Brand Wall Clock',category:'custom-wall-clocks',size:'10-14 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Custom',useCase:'Branding, gifting, institutional',description:'A custom programme for customers who need a logo, artwork, colour or design discussion before production.',moq:100,featured:true},
+  {name:'OSIRA Custom Logo Square Clock',category:'custom-wall-clocks',size:'10-12 inch',shape:'Square',material:'Plastic frame',movement:'Quartz',finish:'Custom',useCase:'Corporate, retail, events',description:'A square custom wall clock option for branded business programmes and institutional orders.',moq:100},
+  {name:'OSIRA Corporate Office Wall Clock',category:'corporate-wall-clocks',size:'12 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Office, reception, meeting room',description:'An understated wall clock format for workplaces, reception areas and meeting spaces.',moq:25},
+  {name:'OSIRA Reception Wall Clock 14 Inch',category:'corporate-wall-clocks',size:'14 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Reception, institution, office',description:'A larger-format office clock designed for visibility across reception and common areas.',moq:25,featured:true},
+  {name:'OSIRA Round Everyday Clock 8 Inch',category:'round-wall-clocks',size:'8 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Bedroom, study, retail',description:'A compact round clock for smaller spaces and display applications.',moq:25},
+  {name:'OSIRA Round Everyday Clock 10 Inch',category:'round-wall-clocks',size:'10 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Home, office, retail',description:'An everyday round clock format suited to common residential and commercial spaces.',moq:25},
+  {name:'OSIRA Round Everyday Clock 12 Inch',category:'round-wall-clocks',size:'12 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Home, office, institution',description:'A versatile 12 inch round wall clock for clear everyday time reading.',moq:25},
+  {name:'OSIRA Large Visibility 14 Inch Clock',category:'large-wall-clocks',size:'14 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Hall, office, classroom',description:'A larger wall clock for spaces where the dial needs to remain visible from farther away.',price:300,moq:25},
+  {name:'OSIRA Large Visibility 16 Inch Clock',category:'large-wall-clocks',size:'16 inch class',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Hall, reception, commercial',description:'A larger wall clock format for commercial spaces with broader viewing distances.',moq:25},
+  {name:'OSIRA 14 Inch Decorative Clock',category:'14-inch-wall-clocks',size:'14 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Decorative',useCase:'Home, office, hospitality',description:'A 14 inch decorative wall clock format for larger interior walls.',price:300,moq:25},
+  {name:'OSIRA 12 Inch Promotional Clock',category:'promotional-wall-clocks',size:'12 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Custom artwork',useCase:'Corporate campaigns',description:'A 12 inch promotional format for branded business requirements subject to artwork and quantity confirmation.',moq:100},
+  {name:'OSIRA Square Business Clock',category:'square-wall-clocks',size:'10 inch',shape:'Square',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Office, retail, promotion',description:'A square business-oriented wall clock format for clean modern displays.',moq:25},
+  {name:'OSIRA 10 Inch Custom Promotional Clock',category:'10-inch-wall-clocks',size:'10 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Custom artwork',useCase:'Promotional, gifting',description:'A 10 inch format for promotional orders where branding and quantity are part of the buying brief.',moq:100},
+  {name:'OSIRA 12 Inch Custom Brand Clock',category:'12-inch-wall-clocks',size:'12 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Custom artwork',useCase:'Corporate, dealer, institutional',description:'A 12 inch custom wall clock format for business branding and gifting requirements.',moq:100},
+  {name:'OSIRA Rectangle Business Clock',category:'rectangle-wall-clocks',size:'10-12 inch class',shape:'Rectangle',material:'Plastic frame',movement:'Quartz',finish:'Matte',useCase:'Office, retail, commercial',description:'A clean rectangular format for business and contemporary interior applications.',moq:25},
+  {name:'OSIRA Decorative Retail Display Clock',category:'decorative-wall-clocks',size:'10-12 inch',shape:'Round',material:'Plastic frame',movement:'Quartz',finish:'Decorative',useCase:'Retail, gifting, décor',description:'A decorative format for retail shelves, décor displays and everyday gifting programmes.',moq:25},
+];
 
 async function main() {
+  console.log('OSIRA fresh database seed: clearing application data...');
+
+  await prisma.bannerProduct.deleteMany();
+  await prisma.industryProduct.deleteMany();
+  await prisma.adminSession.deleteMany();
+  await prisma.enquiry.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.category.deleteMany();
+  await prisma.pricingTierTemplate.deleteMany();
+  await prisma.fAQ.deleteMany();
+  await prisma.testimonial.deleteMany();
+  await prisma.banner.deleteMany();
+  await prisma.servicePage.deleteMany();
+  await prisma.industryPage.deleteMany();
+  await prisma.cityPage.deleteMany();
+  await prisma.blog.deleteMany();
+  await prisma.adminUser.deleteMany();
+
   await prisma.siteSettings.upsert({
     where: { id: 1 },
-    update: { businessName: 'OSIRA', gstNumber: '08BVNPS9491J1ZG' },
-    create: { id: 1, businessName: 'OSIRA', gstNumber: '08BVNPS9491J1ZG' },
+    update: {
+      businessName: 'OSIRA',
+      tagline: 'Wall clocks for homes, workplaces, retailers and business orders',
+      defaultMetaTitle: 'Wall Clock Manufacturer in Jaipur | OSIRA',
+      defaultMetaDescription: 'OSIRA supplies wall clocks from Jaipur for retail, wholesale, corporate gifting, promotional branding and custom business requirements.',
+    },
+    create: {
+      id: 1,
+      businessName: 'OSIRA',
+      tagline: 'Wall clocks for homes, workplaces, retailers and business orders',
+      gstNumber: '08BVNPS9491J1ZG',
+      defaultMetaTitle: 'Wall Clock Manufacturer in Jaipur | OSIRA',
+      defaultMetaDescription: 'OSIRA supplies wall clocks from Jaipur for retail, wholesale, corporate gifting, promotional branding and custom business requirements.',
+    },
   });
 
-  const rows = parseCsv(readFileSync(join(process.cwd(), 'wall_clock_products.csv'), 'utf8'));
-  const headers = rows.shift()!;
-  const col = (name: string) => headers.indexOf(name);
-
-  for (const name of [...new Set(rows.map(r => r[col('category')]).filter(Boolean))]) {
-    await prisma.category.upsert({
-      where: { slug: slugify(name) },
-      update: {},
-      create: { name, slug: slugify(name), description: 'Explore ' + name.toLowerCase() + ' wall clocks from OSIRA.' },
-    });
-  }
-
-  for (const r of rows) {
-    const name = r[col('product_name')];
-    if (!name) continue;
-    const categoryName = r[col('category')] || 'Wall Clocks';
-    const category = await prisma.category.upsert({
-      where: { slug: slugify(categoryName) },
-      update: {},
-      create: { name: categoryName, slug: slugify(categoryName), description: 'Explore ' + categoryName.toLowerCase() + ' wall clocks from OSIRA.' },
-    });
-    const images = [r[col('image_1')], r[col('image_2')], r[col('image_3')], r[col('image_4')]].filter(Boolean).map(v => '/static/images/products/' + v);
-    await prisma.product.upsert({
-      where: { slug: slugify(name) },
-      update: {},
-      create: {
-        name,
-        slug: slugify(name),
-        categoryId: category.id,
-        description: r[col('description')] || name,
-        shortDescription: r[col('short_description')] || null,
-        price: r[col('price')] ? Number(r[col('price')]) : null,
-        moq: r[col('moq')] ? Number(r[col('moq')]) : 1,
-        image: images[0] || null,
-        additionalImages: images.slice(1),
-        metaTitle: (r[col('meta_title')] || (name + ' | OSIRA')).slice(0, 70),
-        metaDescription: (r[col('meta_description')] || r[col('description')] || name).slice(0, 160),
-        metaKeywords: r[col('meta_keywords')] || null,
-        isFeatured: (r[col('is_featured')] || '').toLowerCase() === 'yes',
-        brand: 'OSIRA',
-      },
-    });
-  }
-
-  // SEO collection pages are represented by curated categories so each landing page
-  // has a distinct search intent instead of creating duplicate keyword-only URLs.
-  const seoCollections = [
-    ['8-inch-wall-clocks', '8 Inch Wall Clocks', 'Compact 8 inch wall clocks for homes, offices, retail counters and gifting.'],
-    ['10-inch-wall-clocks', '10 Inch Wall Clocks', '10 inch wall clocks for everyday home, office, retail and institutional use.'],
-    ['12-inch-wall-clocks', '12 Inch Wall Clocks', '12 inch wall clocks for clear readability and practical commercial spaces.'],
-    ['14-inch-wall-clocks', '14 Inch Wall Clocks', '14 inch wall clocks for larger walls, offices, halls and commercial interiors.'],
-    ['plastic-wall-clocks', 'Plastic Wall Clocks', 'Plastic wall clocks covering practical, decorative and promotional buying requirements.'],
-    ['designer-wall-clocks', 'Designer Wall Clocks', 'Designer wall clocks for contemporary interiors, décor stores and premium spaces.'],
-    ['decorative-wall-clocks', 'Decorative Wall Clocks', 'Decorative wall clocks for homes, hospitality spaces, offices and gifting.'],
-    ['promotional-wall-clocks', 'Promotional Wall Clocks', 'Promotional wall clocks for branded corporate gifting, campaigns and bulk orders.'],
-    ['custom-wall-clocks', 'Custom Wall Clocks', 'Custom wall clocks for logos, branding, colour requirements and business orders.'],
-    ['square-rectangle-wall-clocks', 'Square & Rectangle Wall Clocks', 'Square and rectangular wall clocks for modern interiors and commercial spaces.'],
-  ];
-  for (const [slug, name, description] of seoCollections) {
-    await prisma.category.upsert({
-      where: { slug },
-      update: {
-        description,
-        metaTitle: (name + ' | OSIRA Jaipur').slice(0, 70),
-        metaDescription: (description + ' Wholesale and business enquiries from OSIRA.').slice(0, 160),
+  const categoryMap = new Map<string, number>();
+  for (let i = 0; i < categories.length; i++) {
+    const [slug, name, description] = categories[i];
+    const category = await prisma.category.create({
+      data: {
+        slug, name, description,
         h1Heading: name,
-        seoContent: '<p>' + description + ' Explore available OSIRA designs, specifications and business-order options before requesting a quotation.</p>',
+        metaTitle: `${name} | OSIRA Jaipur`.slice(0, 70),
+        metaDescription: `${description} Request wholesale and business pricing from OSIRA.`.slice(0, 160),
+        seoContent: `<p>${description}</p><p>OSIRA supports product selection, quantity planning and business enquiries. Specifications, availability, pricing and customisation should be confirmed for the current requirement.</p>`,
+        displayOrder: i + 1,
+        isFeatured: i < 8,
       },
-      create: {
-        name,
+    });
+    categoryMap.set(slug, category.id);
+  }
+
+  for (let i = 0; i < products.length; i++) {
+    const p = products[i];
+    const categoryId = categoryMap.get(p.category);
+    if (!categoryId) throw new Error(`Missing category: ${p.category}`);
+    const slug = slugify(p.name);
+    await prisma.product.create({
+      data: {
+        name: p.name,
         slug,
-        description,
-        metaTitle: (name + ' | OSIRA Jaipur').slice(0, 70),
-        metaDescription: (description + ' Wholesale and business enquiries from OSIRA.').slice(0, 160),
-        h1Heading: name,
-        seoContent: '<p>' + description + ' Explore available OSIRA designs, specifications and business-order options before requesting a quotation.</p>',
-        displayOrder: 20,
+        categoryId,
+        description: p.description,
+        shortDescription: `${p.size} ${p.shape.toLowerCase()} wall clock for ${p.useCase.toLowerCase()}.`,
+        specifications: [`Size: ${p.size}`, `Shape: ${p.shape}`, `Material: ${p.material}`, `Movement: ${p.movement}`, `Finish: ${p.finish}`, `Application: ${p.useCase}`, `MOQ: ${p.moq || 1} units`].join('\\n'),
+        price: p.price ?? null,
+        moq: p.moq || 1,
+        metaTitle: `${p.name} | OSIRA`.slice(0, 70),
+        metaDescription: `${p.description} View specifications and enquire for current OSIRA pricing and availability.`.slice(0, 160),
+        metaKeywords: [`${p.size} wall clock`, `${p.shape.toLowerCase()} wall clock`, 'wall clock supplier Jaipur'].join(', '),
+        brand: 'OSIRA',
+        sku: `OS-${String(i + 1).padStart(4, '0')}`,
+        availability: 'InStock',
+        isFeatured: !!p.featured,
+        isNewArrival: !!p.newArrival,
+        isActive: true,
       },
     });
   }
 
-  // Import the market-research catalogue as unpublished draft products.
-  // These records are research variants, not verified OSIRA inventory; admin must verify
-  // actual design, price, MOQ and images before activating them for public SEO.
-  const marketPath = join(process.cwd(), 'data', 'market_researched_products.csv');
-  try {
-    const marketRows = parseCsv(readFileSync(marketPath, 'utf8'));
-    const marketHeaders = marketRows.shift()!;
-    const mcol = (name: string) => marketHeaders.indexOf(name);
-    for (const r of marketRows) {
-      const name = r[mcol('name')];
-      const categoryName = r[mcol('category')];
-      if (!name || !categoryName) continue;
-      const category = await prisma.category.upsert({
-        where: { slug: r[mcol('slug')] || slugify(categoryName) },
-        update: {
-          metaTitle: (categoryName + ' | OSIRA').slice(0, 70),
-          metaDescription: ('Explore ' + categoryName.toLowerCase() + ' for wholesale, retail and business orders from OSIRA.').slice(0, 160),
-        },
-        create: {
-          name: categoryName,
-          slug: r[mcol('slug')] || slugify(categoryName),
-          description: r[mcol('description')] || ('Explore ' + categoryName.toLowerCase() + ' from OSIRA.'),
-          metaTitle: (categoryName + ' | OSIRA').slice(0, 70),
-          metaDescription: ('Explore ' + categoryName.toLowerCase() + ' for wholesale, retail and business orders from OSIRA.').slice(0, 160),
-          h1Heading: categoryName,
-          seoContent: '<p>Market-researched category for wall clock buyers. Confirm current designs, specifications, MOQ and commercial pricing before ordering.</p>',
-        },
-      });
-      await prisma.product.upsert({
-        where: { slug: r[mcol('product_slug')] },
-        update: {
-          categoryId: category.id,
-          availability: 'Research',
-          isActive: false,
-          metaTitle: (r[mcol('meta_title')] || name).slice(0, 70),
-          metaDescription: (r[mcol('meta_description')] || r[mcol('description')] || name).slice(0, 160),
-          metaKeywords: r[mcol('secondary_keywords')] || null,
-        },
-        create: {
-          name,
-          slug: r[mcol('product_slug')],
-          categoryId: category.id,
-          description: r[mcol('description')] || name,
-          shortDescription: r[mcol('h1')] || name,
-          specifications: [
-            'Size: ' + (r[mcol('size')] || 'Confirm'),
-            'Material: ' + (r[mcol('material')] || 'Confirm'),
-            'Shape: ' + (r[mcol('shape')] || 'Confirm'),
-            'Movement: ' + (r[mcol('movement')] || 'Confirm'),
-            'Finish: ' + (r[mcol('finish')] || 'Confirm'),
-            'Colours: ' + (r[mcol('color_options')] || 'Confirm'),
-            'MOQ: ' + (r[mcol('moq')] || 'Confirm'),
-          ].join('\n'),
-          price: r[mcol('price_inr')] ? Number(r[mcol('price_inr')]) : null,
-          moq: r[mcol('moq')] ? Number(r[mcol('moq')]) : 1,
-          metaTitle: (r[mcol('meta_title')] || name).slice(0, 70),
-          metaDescription: (r[mcol('meta_description')] || r[mcol('description')] || name).slice(0, 160),
-          metaKeywords: r[mcol('secondary_keywords')] || null,
-          brand: 'OSIRA',
-          availability: 'Research',
-          isActive: false,
-        },
-      });
-    }
-  } catch {
-    // The research CSV is optional during local development.
-  }
-
-  const defaultTier = await prisma.pricingTierTemplate.findUnique({ where: { name: 'Default' } });
-  if (!defaultTier) {
-    await prisma.pricingTierTemplate.create({ data: { name: 'Default' } });
-  }
+  await prisma.pricingTierTemplate.create({
+    data: { name: 'Business Default', description: 'Quantity-led pricing framework. Final quote depends on product, artwork, packaging and delivery.' },
+  });
 
   const services = [
-    {
-      name: 'Wholesale Wall Clocks',
-      slug: 'wholesale-wall-clocks',
-      h1Heading: 'Wholesale wall clocks for retailers and distributors',
-      heroSubheading: 'Ready-to-sell wall clock designs with quantity-led pricing and business order support.',
-      shortDescription: 'Source wall clocks for retail stores, dealers and distributors with practical MOQ and repeat-order support.',
-      fullDescription: '<p>OSIRA supports wholesale buyers with a focused wall clock catalogue, quantity-led pricing and a straightforward enquiry process.</p>',
-      processContent: '<ol><li>Share designs and required quantity.</li><li>Confirm pricing, packaging and delivery.</li><li>Approve the order and production plan.</li><li>Dispatch against the agreed schedule.</li></ol>',
-      benefitsContent: '<p>Suitable for retailers, dealers and distributors looking for consistent designs, clear communication and repeat supply.</p>',
-      metaTitle: 'Wholesale Wall Clocks Supplier | OSIRA Jaipur',
-      metaDescription: 'Source wholesale wall clocks from OSIRA Jaipur for retailers, dealers and distributors.',
-    },
-    {
-      name: 'Corporate Gifting',
-      slug: 'corporate-gifting',
-      h1Heading: 'Corporate gifting wall clocks with business branding',
-      heroSubheading: 'Wall clocks for employee gifts, dealer programmes, milestones and institutional gifting.',
-      shortDescription: 'Plan quantity-based gifting orders with branding, artwork and packaging requirements.',
-      fullDescription: '<p>Turn a useful everyday product into a branded business gift. OSIRA can support corporate wall clock programmes around quantity, artwork and delivery requirements.</p>',
-      processContent: '<ol><li>Share event, quantity and branding brief.</li><li>Review suitable product options.</li><li>Confirm artwork and commercial details.</li><li>Move into production and dispatch.</li></ol>',
-      benefitsContent: '<p>Useful for employee recognition, dealer meets, anniversaries, launches and institutional programmes.</p>',
-      metaTitle: 'Corporate Gifting Wall Clocks | OSIRA',
-      metaDescription: 'Corporate gifting wall clocks with branding and quantity support from OSIRA Jaipur.',
-    },
-    {
-      name: 'Promotional Branding',
-      slug: 'promotional-branding',
-      h1Heading: 'Promotional wall clocks for branded campaigns',
-      heroSubheading: 'Put your logo, campaign artwork or business identity on a practical wall clock.',
-      shortDescription: 'Promotional wall clocks for brands, dealers, distributors and marketing campaigns.',
-      fullDescription: '<p>OSIRA supports promotional wall clock requirements where the product needs to carry a visible brand identity while remaining useful in homes, shops and workplaces.</p>',
-      processContent: '<ol><li>Share logo, artwork and target quantity.</li><li>Discuss product and placement options.</li><li>Approve artwork and commercial terms.</li><li>Schedule production and dispatch.</li></ol>',
-      benefitsContent: '<p>Suitable for dealer promotions, festive campaigns, product launches and brand visibility programmes.</p>',
-      metaTitle: 'Promotional Wall Clocks | Custom Branding | OSIRA',
-      metaDescription: 'Order promotional wall clocks with logo and campaign branding from OSIRA.',
-    },
-    {
-      name: 'Custom OEM Manufacturing',
-      slug: 'custom-oem-manufacturing',
-      h1Heading: 'Custom wall clock manufacturing and OEM support',
-      heroSubheading: 'Develop a wall clock around your dimensions, finish, branding and commercial requirement.',
-      shortDescription: 'Custom and OEM wall clock support for product development, private-label and large business orders.',
-      fullDescription: '<p>For custom or OEM projects, OSIRA can discuss the product direction, dimensions, finish, branding and quantity before production is planned.</p>',
-      processContent: '<ol><li>Share the product brief or reference.</li><li>Review feasibility, materials and quantity.</li><li>Finalize sample or artwork requirements.</li><li>Confirm production and dispatch plan.</li></ol>',
-      benefitsContent: '<p>Best suited to brands, importers, distributors and businesses that need a product adapted to a specific commercial brief.</p>',
-      metaTitle: 'Custom OEM Wall Clock Manufacturer | OSIRA Jaipur',
-      metaDescription: 'Custom and OEM wall clock manufacturing support for brands and business buyers in Jaipur.',
-    },
+    ['Wholesale Wall Clocks','wholesale-wall-clocks','Wholesale wall clocks for retailers, dealers and distributors','Source wall clocks for retail and distribution requirements with quantity-led commercial discussions.'],
+    ['Corporate Gifting','corporate-gifting','Corporate gifting wall clocks with business branding','Wall clocks for employee gifts, dealer programmes, anniversaries, milestones and institutional gifting.'],
+    ['Promotional Branding','promotional-wall-clocks','Promotional wall clocks for branded campaigns','Plan branded wall clock orders around logo artwork, quantity, packaging and delivery requirements.'],
+    ['Custom & OEM','custom-oem-wall-clocks','Custom and OEM wall clock programmes','Discuss product format, dimensions, artwork, colours and business quantities for a custom programme.'],
   ];
-
-  for (let i = 0; i < services.length; i++) {
-    const service = services[i];
-    await prisma.servicePage.upsert({
-      where: { slug: service.slug },
-      update: service,
-      create: { ...service, displayOrder: i + 1 },
-    });
+  for (let i=0;i<services.length;i++) {
+    const [name,slug,h1,desc]=services[i];
+    await prisma.servicePage.create({data:{
+      name,slug,h1Heading:h1,heroSubheading:desc,shortDescription:desc,
+      fullDescription:`<p>${desc}</p><p>Share the required quantity, product direction, branding or packaging brief. OSIRA can confirm feasibility, current pricing and delivery details for the specific requirement.</p>`,
+      processContent:'<ol><li>Share quantity and product requirement.</li><li>Review suitable designs and specifications.</li><li>Confirm artwork, pricing and commercial terms.</li><li>Approve production and dispatch plan.</li></ol>',
+      benefitsContent:'<p>Clear requirement-based communication, product selection support and quantity-focused ordering.</p>',
+      metaTitle:`${h1} | OSIRA`.slice(0,70),metaDescription:desc.slice(0,160),displayOrder:i+1
+    }});
   }
 
-
   const industries = [
-    {
-      industryName: 'Hotels & Hospitality',
-      slug: 'hotels-hospitality',
-      iconClass: 'HOSPITALITY',
-      h1Heading: 'Wall clocks for hotels and hospitality spaces',
-      heroSubheading: 'Coordinate practical timekeeping with room aesthetics, common areas and brand identity.',
-      introContent: '<p>OSIRA wall clocks can support hotel rooms, reception areas, lounges, restaurants and back-office spaces where clear timekeeping and visual consistency matter.</p>',
-      benefitsContent: '<p>Choose designs around the interior style, viewing distance, placement and quantity required across multiple locations.</p>',
-      customizationContent: '<p>Business buyers can discuss branding, finishes, dimensions and quantity-led requirements before placing an order.</p>',
-      caseStudyContent: '<p>Suitable for hotel chains, boutique properties, resorts, restaurants and hospitality projects.</p>',
-      metaTitle: 'Hotel Wall Clocks Supplier | OSIRA',
-      metaDescription: 'Wall clocks for hotels, resorts and hospitality spaces with business-order support from OSIRA.',
-    },
-    {
-      industryName: 'Corporate Offices',
-      slug: 'corporate-offices',
-      iconClass: 'OFFICES',
-      h1Heading: 'Wall clocks for corporate offices and workplaces',
-      heroSubheading: 'Professional wall clocks for meeting rooms, cabins, reception areas and shared workplaces.',
-      introContent: '<p>OSIRA supplies wall clocks for offices where readability, design and consistent placement are part of the workplace environment.</p>',
-      benefitsContent: '<p>Use a consistent design language across departments, floors or multiple office locations.</p>',
-      customizationContent: '<p>Discuss logo placement, finishes and quantities for corporate projects, office openings and employee programmes.</p>',
-      caseStudyContent: '<p>Useful for headquarters, branches, coworking spaces, training centres and institutional offices.</p>',
-      metaTitle: 'Office Wall Clocks Supplier | OSIRA Jaipur',
-      metaDescription: 'Professional wall clocks for offices, meeting rooms and corporate workplaces.',
-    },
-    {
-      industryName: 'Retail Stores',
-      slug: 'retail-stores',
-      iconClass: 'RETAIL',
-      h1Heading: 'Wall clocks for retail stores and dealer networks',
-      heroSubheading: 'Retail-ready wall clocks for stores, showrooms, dealers and distribution networks.',
-      introContent: '<p>Retail buyers can source wall clocks around design demand, selling price, MOQ and repeat availability.</p>',
-      benefitsContent: '<p>Build a practical assortment for stores with a mix of modern, minimal and statement designs.</p>',
-      customizationContent: '<p>Promotional and branded programmes can be planned for dealer networks and seasonal campaigns.</p>',
-      caseStudyContent: '<p>Suitable for home décor retailers, furniture stores, lifestyle shops and multi-location dealer networks.</p>',
-      metaTitle: 'Retail Wall Clocks Supplier | OSIRA',
-      metaDescription: 'Source retail wall clocks for stores, showrooms and dealer networks from OSIRA.',
-    },
-    {
-      industryName: 'Education',
-      slug: 'education',
-      iconClass: 'EDUCATION',
-      h1Heading: 'Wall clocks for schools, colleges and education spaces',
-      heroSubheading: 'Clear, dependable wall clocks for classrooms, corridors, offices and common areas.',
-      introContent: '<p>Educational institutions need easy-to-read clocks across classrooms, administration areas, laboratories and common spaces.</p>',
-      benefitsContent: '<p>Prioritize clear viewing, practical placement and consistent supply across buildings or campuses.</p>',
-      customizationContent: '<p>Institutional and branded requirements can be discussed for larger programmes and campus projects.</p>',
-      caseStudyContent: '<p>Suitable for schools, colleges, coaching centres, training institutes and campus facilities.</p>',
-      metaTitle: 'School & College Wall Clocks | OSIRA',
-      metaDescription: 'Wall clocks for schools, colleges, coaching centres and educational institutions.',
-    },
-    {
-      industryName: 'Healthcare',
-      slug: 'healthcare',
-      iconClass: 'HEALTHCARE',
-      h1Heading: 'Wall clocks for hospitals and healthcare facilities',
-      heroSubheading: 'Readable wall clocks for clinics, hospitals, waiting areas and staff spaces.',
-      introContent: '<p>Healthcare environments benefit from simple, highly visible timekeeping across reception, waiting areas, offices and staff spaces.</p>',
-      benefitsContent: '<p>Choose practical designs that remain easy to read without competing with the surrounding environment.</p>',
-      customizationContent: '<p>Quantity and institutional branding requirements can be planned for new facilities or refurbishment projects.</p>',
-      caseStudyContent: '<p>Suitable for hospitals, clinics, diagnostic centres, pharmacies and healthcare offices.</p>',
-      metaTitle: 'Hospital Wall Clocks Supplier | OSIRA',
-      metaDescription: 'Readable wall clocks for hospitals, clinics and healthcare facilities from OSIRA.',
-    },
-    {
-      industryName: 'Residential Projects',
-      slug: 'residential-projects',
-      iconClass: 'RESIDENTIAL',
-      h1Heading: 'Wall clocks for residential projects and home décor',
-      heroSubheading: 'Design-led wall clocks for homes, apartments, interior projects and décor programmes.',
-      introContent: '<p>OSIRA offers wall clocks for living rooms, bedrooms, dining areas, work-from-home spaces and residential interior projects.</p>',
-      benefitsContent: '<p>Choose styles that balance readability with the visual character of the room and overall décor.</p>',
-      customizationContent: '<p>Interior designers and project buyers can discuss quantities, coordinated designs and custom requirements.</p>',
-      caseStudyContent: '<p>Suitable for builders, interior designers, home décor retailers and residential project procurement.</p>',
-      metaTitle: 'Residential Wall Clocks | Home Décor Supplier | OSIRA',
-      metaDescription: 'Wall clocks for homes, interior designers and residential projects from OSIRA.',
-    },
+    ['Retail Stores','retail-stores','Wall clocks for retail stores and dealers'],
+    ['Corporate Offices','corporate-offices','Wall clocks for offices, reception areas and workplaces'],
+    ['Hotels & Hospitality','hotels-hospitality','Wall clocks for hospitality interiors and common areas'],
+    ['Schools & Institutions','schools-institutions','Wall clocks for classrooms, institutions and administrative spaces'],
+    ['Corporate Gifting','corporate-gifting-industry','Wall clocks for employee, dealer and milestone gifting'],
+    ['Advertising & Promotions','advertising-promotions','Promotional wall clocks for branded campaigns'],
   ];
-
-  for (let i = 0; i < industries.length; i++) {
-    const industry = industries[i];
-    await prisma.industryPage.upsert({
-      where: { slug: industry.slug },
-      update: industry,
-      create: { ...industry, displayOrder: i + 1 },
-    });
+  for (let i=0;i<industries.length;i++) {
+    const [name,slug,h1]=industries[i];
+    await prisma.industryPage.create({data:{
+      industryName:name,slug,h1Heading:h1,heroSubheading:'Choose a suitable wall clock format for your space or business programme.',
+      introContent:`<p>OSIRA supports ${name.toLowerCase()} with wall clock options covering practical, decorative and business-order requirements.</p>`,
+      benefitsContent:'<p>Product selection can be aligned to size, shape, readability, branding, quantity and delivery requirements.</p>',
+      customizationContent:'<p>For business programmes, share artwork, quantity and desired format so current options can be reviewed.</p>',
+      metaTitle:`${h1} | OSIRA`.slice(0,70),metaDescription:`Wall clocks for ${name.toLowerCase()} from OSIRA. Explore suitable formats and enquire for current business pricing.`.slice(0,160),
+      displayOrder:i+1
+    }});
   }
 
   const cities = [
-    {
-      cityName: 'Jaipur',
-      slug: 'jaipur',
-      state: 'Rajasthan',
-      pageType: 'supplier',
-      h1Heading: 'Wall Clock Manufacturer & Supplier in Jaipur',
-      heroSubheading: 'Source wall clocks in Jaipur for retail, wholesale, corporate gifting and custom business requirements.',
-      introContent: '<p>OSIRA serves Jaipur buyers looking for wall clocks for homes, offices, stores, hospitality projects and business programmes.</p>',
-      whyChooseContent: '<p>Local business buyers can discuss designs, quantities, branding, delivery and repeat supply with a Jaipur-based team.</p>',
-      servicesContent: '<p>Wholesale supply, corporate gifting, promotional branding and custom/OEM requirements are supported through a direct enquiry process.</p>',
-      deliveryContent: '<p>Delivery timelines depend on product, quantity and destination. Confirm the schedule before ordering.</p>',
-      industriesContent: '<p>Common requirements include retail stores, offices, hotels, schools, healthcare facilities and residential projects.</p>',
-      closingContent: '<p>Share your design preference, quantity and delivery requirement to receive a suitable recommendation.</p>',
-      metaTitle: 'Wall Clock Manufacturer in Jaipur | OSIRA',
-      metaDescription: 'OSIRA wall clock manufacturer and supplier in Jaipur for wholesale, custom and business orders.',
-      nearbyAreas: 'Gokulpura, Kalwar Road, Vaishali Nagar, Jhotwara, Mansarovar, Ajmer Road and nearby Jaipur areas.',
-      deliveryTime: '3-5 business days',
-    },
-    {
-      cityName: 'Delhi',
-      slug: 'delhi',
-      state: 'Delhi',
-      pageType: 'supplier',
-      h1Heading: 'Wall Clock Supplier in Delhi for Business Orders',
-      heroSubheading: 'Wholesale and custom wall clock supply for retailers, offices and commercial projects in Delhi.',
-      introContent: '<p>Businesses in Delhi can source OSIRA wall clocks for retail, gifting, promotional and commercial requirements.</p>',
-      whyChooseContent: '<p>Choose from an active catalogue and share quantity, branding and delivery details for a business quotation.</p>',
-      servicesContent: '<p>Wholesale, corporate gifting, promotional branding and custom requirements are available.</p>',
-      deliveryContent: '<p>Delivery depends on product availability, quantity and destination. Confirm the schedule with the team.</p>',
-      industriesContent: '<p>Suitable for retail, offices, hospitality, education, healthcare and residential projects.</p>',
-      closingContent: '<p>Send your requirement to discuss suitable designs and quantities.</p>',
-      metaTitle: 'Wall Clock Supplier in Delhi | OSIRA',
-      metaDescription: 'Wholesale and custom wall clock supplier for Delhi businesses, retailers and projects.',
-      nearbyAreas: 'Delhi NCR and nearby business locations.',
-      deliveryTime: 'As confirmed for the order',
-    },
-    {
-      cityName: 'Mumbai',
-      slug: 'mumbai',
-      state: 'Maharashtra',
-      pageType: 'supplier',
-      h1Heading: 'Wall Clock Supplier in Mumbai for Wholesale & Custom Orders',
-      heroSubheading: 'Wall clocks for Mumbai retailers, corporate buyers, hospitality and commercial projects.',
-      introContent: '<p>OSIRA supports Mumbai buyers with wall clock options for retail, gifting, promotional and interior requirements.</p>',
-      whyChooseContent: '<p>Share the quantity, style and branding brief so the team can recommend a practical product mix.</p>',
-      servicesContent: '<p>Wholesale supply, corporate gifting, promotional branding and custom/OEM discussions are available.</p>',
-      deliveryContent: '<p>Delivery timelines vary by order size and destination and are confirmed before dispatch.</p>',
-      industriesContent: '<p>Useful for stores, offices, hotels, educational institutions, healthcare and residential projects.</p>',
-      closingContent: '<p>Tell us what you need and the team will help with the next step.</p>',
-      metaTitle: 'Wall Clock Supplier in Mumbai | OSIRA',
-      metaDescription: 'Wholesale, custom and business wall clock supplier for Mumbai buyers.',
-      nearbyAreas: 'Mumbai and surrounding business locations.',
-      deliveryTime: 'As confirmed for the order',
-    },
-    {
-      cityName: 'Ahmedabad',
-      slug: 'ahmedabad',
-      state: 'Gujarat',
-      pageType: 'supplier',
-      h1Heading: 'Wall Clock Supplier in Ahmedabad for Business Requirements',
-      heroSubheading: 'Source wall clocks for retail, corporate gifting, offices and commercial projects in Ahmedabad.',
-      introContent: '<p>OSIRA supplies wall clocks for Ahmedabad businesses that need practical designs, quantity support and custom branding options.</p>',
-      whyChooseContent: '<p>Discuss the product type, quantity, target price and branding requirement before placing a business order.</p>',
-      servicesContent: '<p>Wholesale, corporate gifting, promotional branding and custom/OEM support are available.</p>',
-      deliveryContent: '<p>Delivery is planned around product availability, order size and destination.</p>',
-      industriesContent: '<p>Suitable for retail, corporate offices, hospitality, education, healthcare and residential projects.</p>',
-      closingContent: '<p>Send your requirement to receive a suitable recommendation.</p>',
-      metaTitle: 'Wall Clock Supplier in Ahmedabad | OSIRA',
-      metaDescription: 'Wall clock supplier for Ahmedabad retailers, offices, gifting and commercial projects.',
-      nearbyAreas: 'Ahmedabad and nearby Gujarat business locations.',
-      deliveryTime: 'As confirmed for the order',
-    },
+    ['Jaipur','jaipur','Rajasthan','Wall Clock Manufacturer in Jaipur','OSIRA supplies wall clocks from Jaipur for retail, wholesale, corporate gifting and custom business requirements.'],
+    ['Delhi','delhi','Delhi','Wall Clock Supplier for Delhi Buyers','Source wall clocks for Delhi retail, corporate, institutional and promotional requirements from OSIRA.'],
+    ['Gurugram','gurugram','Haryana','Wall Clock Supplier for Gurugram Buyers','Wall clocks for Gurugram offices, retailers, gifting programmes and business requirements.'],
+    ['Noida','noida','Uttar Pradesh','Wall Clock Supplier for Noida Buyers','Explore wall clock options for Noida offices, retail stores, institutions and branded programmes.'],
+    ['Ahmedabad','ahmedabad','Gujarat','Wall Clock Supplier for Ahmedabad Buyers','Wall clocks for Ahmedabad retail, corporate, institutional and promotional orders.'],
+    ['Mumbai','mumbai','Maharashtra','Wall Clock Supplier for Mumbai Buyers','Wall clocks for Mumbai business, retail, gifting and commercial interior requirements.'],
   ];
-
-  for (let i = 0; i < cities.length; i++) {
-    const city = cities[i];
-    await prisma.cityPage.upsert({
-      where: { slug: city.slug },
-      update: city,
-      create: { ...city, displayOrder: i + 1 },
-    });
+  for (let i=0;i<cities.length;i++) {
+    const [city,slug,state,h1,intro]=cities[i];
+    await prisma.cityPage.create({data:{
+      cityName:city,slug,state,pageType:'supplier',h1Heading:h1,heroSubheading:'Business-ready wall clocks with requirement-based enquiry support.',
+      introContent:`<p>${intro}</p>`,
+      whyChooseContent:'<p>Start with the required quantity, size, shape, application and branding needs. Current availability, commercial pricing and delivery timelines should be confirmed before order approval.</p>',
+      servicesContent:'<p>Wholesale, corporate gifting, promotional branding and custom business requirements can be discussed.</p>',
+      deliveryContent:'<p>Delivery timing depends on product, quantity, destination and production requirements.</p>',
+      metaTitle:`${h1} | OSIRA`.slice(0,70),
+      metaDescription:`${intro} Enquire for current availability and business pricing.`.slice(0,160),
+      nearbyAreas:city==='Jaipur'?'Vaishali Nagar, Jhotwara, Kalwar Road, Sikar Road, Mansarovar, Sitapura':'Business and commercial areas across '+city,
+      displayOrder:i+1
+    }});
   }
 
-  const posts = [
-    {
-      title: 'How to Choose Wall Clocks for Different Room Sizes',
-      slug: 'how-to-choose-wall-clocks-for-different-room-sizes',
-      category: 'Wall Clock Buying Guide',
-      description: 'A practical guide to choosing wall clock size, readability and placement for different room dimensions.',
-      contentHtml: '<p>The right wall clock should be easy to read from the intended viewing distance while fitting naturally into the room.</p><h2>Start with viewing distance</h2><p>Larger rooms and commercial spaces generally benefit from larger dials or stronger visual contrast.</p><h2>Match the clock to the space</h2><p>Consider the wall width, surrounding furniture, lighting and overall interior direction before choosing a design.</p><h2>For business buyers</h2><p>For multiple rooms or locations, keep the product family consistent where a coordinated look is important.</p>',
-      metaTitle: 'How to Choose Wall Clock Size | OSIRA Guide',
-      metaDescription: 'Learn how to choose wall clock size, readability and placement for different room sizes.',
-    },
-    {
-      title: 'Wholesale Wall Clocks: What Buyers Should Check Before Ordering',
-      slug: 'wholesale-wall-clocks-buyer-checklist',
-      category: 'Business Buying',
-      description: 'Key points retailers and distributors should confirm before placing a wholesale wall clock order.',
-      contentHtml: '<p>Wholesale buying is easier when product, quantity and delivery expectations are clear before the order is confirmed.</p><h2>Check MOQ and pricing</h2><p>Understand minimum quantity and how pricing changes at different order volumes.</p><h2>Check product consistency</h2><p>For repeat orders, confirm the product specification and expected finish so future purchases remain aligned.</p><h2>Confirm packaging and delivery</h2><p>Discuss packaging, dispatch schedule and destination requirements before production or dispatch.</p>',
-      metaTitle: 'Wholesale Wall Clock Buyer Checklist | OSIRA',
-      metaDescription: 'A practical checklist for retailers and distributors buying wall clocks wholesale.',
-    },
-    {
-      title: 'Custom Wall Clocks for Corporate Gifting and Branding',
-      slug: 'custom-wall-clocks-corporate-gifting-branding',
-      category: 'Custom & Branding',
-      description: 'How businesses can plan branded wall clock programmes for gifting, promotions and milestones.',
-      contentHtml: '<p>A branded wall clock can combine useful everyday value with visible business identity.</p><h2>Define the programme</h2><p>Start with event, quantity, audience, budget and delivery date.</p><h2>Plan artwork</h2><p>Confirm logo placement, artwork dimensions and the visual relationship between the brand and the clock design.</p><h2>Allow time for approval</h2><p>For larger programmes, include time for artwork review, sampling where required, production and dispatch.</p>',
-      metaTitle: 'Custom Wall Clocks for Corporate Gifting | OSIRA',
-      metaDescription: 'Plan custom branded wall clocks for corporate gifting, promotions and business events.',
-    },
+  const blogs = [
+    ['How to Choose a Wall Clock for an Office','how-to-choose-a-wall-clock-for-an-office','Office wall clock buying guide','Compare clock size, readability, wall distance, room use and visual style before selecting an office wall clock.'],
+    ['Wall Clock Sizes Explained: 8, 10, 12 and 14 Inch','wall-clock-sizes-8-10-12-14-inch','Wall clock size guide','Understand how 8, 10, 12 and 14 inch wall clocks differ in footprint and typical applications.'],
+    ['Promotional Wall Clocks for Corporate Branding','promotional-wall-clocks-corporate-branding','Promotional wall clock guide','A practical guide to logo placement, quantities, artwork, packaging and planning branded wall clock orders.'],
+    ['Plastic Wall Clocks: Practical Buying Guide','plastic-wall-clocks-buying-guide','Plastic wall clock buying guide','Learn what to check when buying plastic wall clocks for homes, offices, retail and institutional applications.'],
+    ['Wholesale Wall Clock Buying Guide for Retailers','wholesale-wall-clock-buying-guide','Wholesale wall clock guide','Plan a wholesale wall clock purchase around product mix, MOQ, pricing, packaging and repeat demand.'],
   ];
-
-  for (const post of posts) {
-    await prisma.blog.upsert({
-      where: { slug: post.slug },
-      update: post,
-      create: post,
-    });
+  for (const [title,slug,category,desc] of blogs) {
+    await prisma.blog.create({data:{
+      title,slug,category,description:desc,
+      contentHtml:`<p>${desc}</p><h2>What to compare</h2><p>Compare size, shape, material, movement, finish, application, quantity and current commercial terms. Product availability and pricing can change, so confirm the current specification before ordering.</p><h2>For business buyers</h2><p>Share quantity, preferred designs, branding requirements and delivery city to receive a requirement-specific response.</p>`,
+      metaTitle:`${title} | OSIRA`.slice(0,70),metaDescription:desc.slice(0,160),isPublished:true
+    }});
   }
 
-  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-  const adminPassword = process.env.ADMIN_PASSWORD;
+  const faqs = [
+    ['Do you supply wall clocks in bulk?','Yes. OSIRA accepts business enquiries for wholesale, promotional, corporate gifting and custom requirements. Quantity and product-specific terms should be confirmed for the current order.'],
+    ['Can I request a custom logo wall clock?','Yes. Share the logo or artwork, preferred clock format and quantity. Feasibility, artwork requirements, MOQ and pricing can then be confirmed.'],
+    ['What wall clock sizes are available?','The catalogue covers compact and larger formats including 8, 10, 12 and 14 inch classes, plus selected larger business formats.'],
+    ['How do I get the latest price?','Use the enquiry form with the product name and quantity. Product prices can vary by quantity, customization, packaging and delivery requirements.'],
+    ['Do you supply outside Jaipur?','Business enquiries can be submitted with the delivery city. Delivery feasibility and timeline depend on the order and destination.'],
+  ];
+  for (let i=0;i<faqs.length;i++) await prisma.fAQ.create({data:{question:faqs[i][0],answer:faqs[i][1],displayOrder:i+1,scope:'global'}});
+
+  const adminEmail=process.env.ADMIN_EMAIL;
+  const adminPassword=process.env.ADMIN_PASSWORD;
   if (adminEmail && adminPassword && adminPassword !== 'CHANGE_THIS_TO_A_STRONG_PASSWORD') {
-    const passwordHash = hashPassword(adminPassword);
-    await prisma.adminUser.upsert({
-      where: { email: adminEmail },
-      update: { passwordHash, isActive: true, name: 'OSIRA Admin' },
-      create: { email: adminEmail, passwordHash, name: 'OSIRA Admin', role: 'admin' },
-    });
-    console.log('OSIRA admin account configured:', adminEmail);
+    await prisma.adminUser.create({data:{email:adminEmail.toLowerCase(),name:'OSIRA Admin',passwordHash:hashPassword(adminPassword),role:'admin'}});
+    console.log('Admin user created from ADMIN_EMAIL / ADMIN_PASSWORD.');
+  } else {
+    console.log('No production admin created. Set ADMIN_EMAIL and ADMIN_PASSWORD before running the seed.');
   }
 
-  console.log('OSIRA Prisma seed complete:', rows.length, 'catalogue rows processed');
+  console.log(`Fresh OSIRA seed complete: ${categories.length} categories, ${products.length} products, ${services.length} services, ${industries.length} industries, ${cities.length} city pages, ${blogs.length} guides.`);
 }
 
-main().catch(error => { console.error(error); process.exitCode = 1; }).finally(() => prisma.$disconnect());
+main().catch(async (error) => {
+  console.error(error);
+  process.exitCode = 1;
+}).finally(async () => {
+  await prisma.$disconnect();
+});
