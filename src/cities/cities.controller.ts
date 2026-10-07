@@ -34,9 +34,27 @@ export class CitiesController {
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
     const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const cityUrl = baseUrl ? baseUrl + '/cities/' + city.slug : '/cities/' + city.slug;
+    const schemaJsonLd = [{
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: city.h1Heading,
+      description: city.metaDescription || city.heroSubheading,
+      url: cityUrl,
+      isPartOf: { '@type': 'WebSite', name: site?.businessName || 'OSIRA', url: baseUrl || undefined }
+    },{
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: baseUrl || '/' },
+        { '@type': 'ListItem', position: 2, name: 'Cities', item: (baseUrl || '') + '/cities' },
+        { '@type': 'ListItem', position: 3, name: city.cityName, item: cityUrl }
+      ]
+    }];
     return {
       city,
       site,
+      schemaJsonLd,
       pageTitle: city.metaTitle || city.h1Heading + ' | OSIRA',
       metaDescription: city.metaDescription || city.heroSubheading || city.introContent.slice(0, 155),
       canonical: baseUrl ? baseUrl + '/cities/' + city.slug : undefined,
