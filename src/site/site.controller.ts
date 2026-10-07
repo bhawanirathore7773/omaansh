@@ -96,12 +96,13 @@ export class SiteController {
       ...blogs.map(x => ['/blog/' + x.slug, x.updatedAt] as [string, Date]),
     ];
     const xml = urls.map(([path, updatedAt]) => {
-      const loc = (baseUrl || '') + path || '/';
+      const loc = (baseUrl ? baseUrl : '') + (path || '/');
       return '<url><loc>' + loc.replace(/&/g, '&amp;') + '</loc><lastmod>' + new Date(updatedAt).toISOString() + '</lastmod></url>';
     }).join('');
     return '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + xml + '</urlset>';
   }
   @Get('health')
+  @Header('Cache-Control', 'no-store')
   health() {
     return { ok: true, service: 'osira-web', timestamp: new Date().toISOString() };
   }
