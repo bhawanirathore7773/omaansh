@@ -4,7 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { Request, Response, NextFunction } from 'express';
 import { AppModule } from './app.module';
-import express from 'express';
+import * as express from 'express';
 
 const buckets = new Map<string, { count: number; resetAt: number }>();
 
