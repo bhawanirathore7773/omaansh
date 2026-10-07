@@ -4,25 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= pageTitle || site?.defaultMetaTitle || 'OSIRA | Wall Clock Manufacturer & Supplier in Jaipur' %></title>
-  <meta name="description" content="<%= metaDescription || site?.defaultMetaDescription || 'OSIRA creates wall clocks and décor products for homes, workplaces and commercial spaces, with custom and business order support.' %>">
-  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="description" content="<%= metaDescription || site?.defaultMetaDescription || 'OSIRA supplies wall clocks from Jaipur for retail, wholesale, corporate gifting, promotional branding and custom business requirements.' %>">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <% if (canonical) { %><link rel="canonical" href="<%= canonical %>"><% } %>
+  <% const pageUrl = canonical || ((site?.defaultMetaTitle && (siteUrl || '')) || undefined); %>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="<%= site?.businessName || 'OSIRA' %>">
+  <meta property="og:title" content="<%= pageTitle || site?.defaultMetaTitle || 'OSIRA | Wall Clock Manufacturer & Supplier in Jaipur' %>">
+  <meta property="og:description" content="<%= metaDescription || site?.defaultMetaDescription || '' %>">
+  <% if (pageUrl) { %><meta property="og:url" content="<%= pageUrl %>"><% } %>
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
-  <% if (schemaJsonLd) { %><script type="application/ld+json"><%- JSON.stringify(schemaJsonLd).replace(/</g, "\\u003c") %></script><% } %>
+  <% if (schemaJsonLd) { %><script type="application/ld+json"><%- JSON.stringify(schemaJsonLd).replace(/</g, "\u003c") %></script><% } %>
 </head>
 <body>
 <header class="site-header">
   <div class="nav-inner">
-    <a class="brand" href="/">OSIRA</a>
-    <nav>
+    <a class="brand" href="/" aria-label="OSIRA home">OSIRA</a>
+    <nav aria-label="Primary navigation">
       <a href="/">Home</a>
       <a href="/products">Wall Clocks</a>
       <a href="/categories">Collections</a>
       <a href="/services">Services</a>
       <a href="/industries">Industries</a>
       <a href="/blog">Guides</a>
-      <a href="/#business">Business Solutions</a>
-      <a href="/#about">About</a>
+      <a href="/cities/jaipur">Jaipur</a>
     </nav>
     <a class="nav-cta" href="/#enquiry">Start an enquiry</a>
   </div>
