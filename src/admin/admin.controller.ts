@@ -132,8 +132,9 @@ export class AdminController {
   @UseGuards(AdminAuthGuard)
   @Get('enquiries')
   async enquiries(@Req() req: Request, @Res() res: Response) {
-    const rows = await this.admin.recentEnquiries();
-    return res.render('admin/enquiries', { user: (req as any).adminUser, rows, csrfToken: (req as any).adminCsrf });
+    const status = typeof req.query.status === 'string' ? req.query.status : undefined;
+    const rows = await this.admin.recentEnquiries(status);
+    return res.render('admin/enquiries', { user: (req as any).adminUser, rows, status: status || '', csrfToken: (req as any).adminCsrf });
   }
 
   @UseGuards(AdminAuthGuard)
