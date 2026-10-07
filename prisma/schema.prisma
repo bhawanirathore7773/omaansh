@@ -274,6 +274,7 @@ model SiteSettings {
   instagramUrl String? @db.VarChar(500)
   youtubeUrl String? @db.VarChar(500)
   linkedinUrl String? @db.VarChar(500)
+  indiamartUrl String? @db.VarChar(500)
   defaultMetaTitle String @default("OSIRA | Wall Clock Manufacturer & Supplier in Jaipur") @db.VarChar(70)
   defaultMetaDescription String @default("OSIRA creates wall clocks and décor products for homes, workplaces and commercial spaces, with custom and business order support.") @db.VarChar(160)
   googleVerification String? @db.VarChar(200)
