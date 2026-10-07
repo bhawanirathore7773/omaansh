@@ -1,26 +1,26 @@
 <%- include('partials/header') %>
-<main>
-  <section class="section category-hero">
-    <div class="section-head">
-      <div>
-        <span class="kicker">COLLECTIONS</span>
-        <h1>Wall clock collections for retail, wholesale and custom orders.</h1>
-        <p>Explore OSIRA collections by design direction and buying requirement. Every collection is built for practical sourcing, repeat orders and business use.</p>
-      </div>
+<main class="collections-page">
+  <section class="section collections-hero">
+    <span class="kicker">OSIRA COLLECTIONS</span>
+    <h1>Wall clock collections organised around real buying needs.</h1>
+    <p>Compare practical, decorative, promotional and custom wall clock ranges. Select a collection to see available products, specifications and business-order options.</p>
+  </section>
+  <section class="section collections-grid-section">
+    <div class="collection-index">
+      <span class="kicker">BROWSE COLLECTIONS</span><span><%= categories.length %> collections</span>
     </div>
-    <div class="category-grid">
-      <% categories.forEach(category => { %>
-        <a class="category-card category-card-large" href="/categories/<%= category.slug %>">
-          <div class="category-card-top">
-            <span><%= category._count.products %> active products</span>
-          </div>
-          <div>
-            <strong><%= category.name %></strong>
-            <span><%= category.description || 'Explore this wall clock collection.' %></span>
-          </div>
-        </a>
+    <div class="category-grid category-grid-v2">
+      <% categories.forEach((category,index)=>{ %>
+      <a class="category-card category-card-v2" href="/categories/<%= category.slug %>">
+        <div class="collection-number"><%= String(index+1).padStart(2,'0') %></div>
+        <div class="category-card-content"><span class="collection-count"><%= category._count.products %> active products</span><h2><%= category.name %></h2><p><%= category.description %></p><span class="collection-link">Explore collection →</span></div>
+      </a>
       <% }) %>
     </div>
+  </section>
+  <section class="section collection-buying-note">
+    <div><span class="kicker">NEED HELP CHOOSING?</span><h2>Start with your application, quantity and preferred size.</h2></div>
+    <div><p>For wholesale, corporate gifting, promotional branding or custom requirements, tell us what the clocks are for and approximately how many you need. We can then confirm the suitable current options.</p><a class="btn primary" href="/#enquiry">Request a quotation</a></div>
   </section>
 </main>
 <%- include('partials/footer', { site }) %>
