@@ -1,8 +1,11 @@
 <footer class="footer">
-  <div class="footer-inner">
-    <div><strong><%= site?.businessName || 'OSIRA' %></strong><p>Thoughtfully crafted wall clocks and décor for modern spaces, with support for wholesale, custom and OEM requirements.</p></div>
-    <div><h4>Contact</h4><p><%= site?.primaryPhone || '+91 141 616961' %></p><p><%= site?.email || 'hello@omaansh.com' %></p></div>
+  <div class="footer-inner footer-v2">
+    <div class="footer-brand"><strong><%= site?.businessName || 'OSIRA' %></strong><p><%= site?.tagline || 'Wall clocks for retail, workplaces and business orders.' %></p><p class="footer-note">Jaipur-based supply for wholesale, corporate gifting, promotional branding and custom/OEM requirements.</p></div>
+    <div><h4>Explore</h4><a href="/products">Wall clocks</a><a href="/categories">Collections</a><a href="/services">Services</a><a href="/industries">Industries</a><a href="/blog">Buying guides</a></div>
+    <div><h4>Business</h4><a href="/services/wholesale-wall-clocks">Wholesale supply</a><a href="/services/corporate-gifting">Corporate gifting</a><a href="/services/promotional-wall-clocks">Promotional branding</a><a href="/services/custom-oem-wall-clocks">Custom & OEM</a><a href="/cities/jaipur">Wall clocks in Jaipur</a></div>
+    <div><h4>Contact</h4><p><%= site?.streetAddress || 'Jaipur, Rajasthan, India' %></p><a href="tel:<%= site?.primaryPhone || '+91141616961' %>"><%= site?.primaryPhone || '+91 141 616961' %></a><a href="mailto:<%= site?.email || 'hello@omaansh.com' %>"><%= site?.email || 'hello@omaansh.com' %></a><% if(site?.whatsappNumber){ %><a href="https://wa.me/<%= site.whatsappNumber %>" rel="noopener">WhatsApp enquiry</a><% } %></div>
   </div>
+  <div class="footer-bottom"><span>© <%= new Date().getFullYear() %> <%= site?.businessName || 'OSIRA' %>. All rights reserved.</span><span>Wall clock manufacturer & supplier in Jaipur</span></div>
 </footer>
 </body>
 </html>
