@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { join } from 'path';
 import { Request, Response, NextFunction } from 'express';
 import { AppModule } from './app.module';
+import express from 'express';
 
 const buckets = new Map<string, { count: number; resetAt: number }>();
 
@@ -45,8 +46,8 @@ async function bootstrap() {
     if (process.env.NODE_ENV === 'production') res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     next();
   });
-  app.use(require('express').urlencoded({ extended: false, limit: '100kb' }));
-  app.use(require('express').json({ limit: '100kb' }));
+  app.use(express.urlencoded({ extended: false, limit: '100kb' }));
+  app.use(express.json({ limit: '100kb' }));
   app.use(rateLimit);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
