@@ -38,6 +38,7 @@ const categories = [
   ['square-wall-clocks','Square Wall Clocks','Clean square wall clocks for modern offices, retail interiors and contemporary homes.'],
   ['rectangle-wall-clocks','Rectangle Wall Clocks','Rectangular wall clock formats for distinctive layouts and commercial interiors.'],
   ['large-wall-clocks','Large Wall Clocks','Larger-format wall clocks for halls, reception areas, classrooms and commercial walls.'],
+  ['8-inch-wall-clocks','8 Inch Wall Clocks','Compact 8 inch wall clocks for bedrooms, studies, offices, retail displays and smaller spaces.'],
   ['10-inch-wall-clocks','10 Inch Wall Clocks','10 inch wall clocks for compact walls, offices, retail and promotional requirements.'],
   ['12-inch-wall-clocks','12 Inch Wall Clocks','12 inch wall clocks balancing readability, footprint and everyday utility.'],
   ['14-inch-wall-clocks','14 Inch Wall Clocks','14 inch wall clocks for larger walls, offices, halls and commercial spaces.'],
