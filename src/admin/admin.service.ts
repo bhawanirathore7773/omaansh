@@ -48,6 +48,10 @@ export class AdminService {
     return { token, csrfToken, expiresAt, user: { id: user.id, email: user.email, name: user.name, role: user.role } };
   }
 
+  async cleanupExpiredSessions() {
+    await this.prisma.adminSession.deleteMany({ where: { expiresAt: { lt: new Date() } } });
+  }
+
   async getSession(token: string | undefined) {
     if (!token) return null;
     const session = await this.prisma.adminSession.findUnique({
