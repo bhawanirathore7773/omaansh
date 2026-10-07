@@ -4,7 +4,7 @@
   "private": true,
   "description": "OSIRA wall clock manufacturing website - NestJS + Prisma + MySQL",
   "scripts": {
-    "build": "nest build",
+    "build": "npm run prisma:init && nest build",
     "start": "node dist/main.js",
     "start:dev": "nest start --watch",
     "prisma:generate": "prisma generate",
@@ -15,7 +15,8 @@
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:validate": "prisma validate",
     "prisma:db:push": "prisma db push",
-    "prisma:fresh": "prisma db push --accept-data-loss && prisma generate && prisma seed"
+    "prisma:fresh": "prisma db push --accept-data-loss && prisma generate && prisma seed",
+    "prisma:init": "tsx prisma/init.ts"
   },
   "engines": {
     "node": ">=22 <25",
