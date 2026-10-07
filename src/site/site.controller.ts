@@ -42,7 +42,7 @@ export class SiteController {
         latitude: site.latitude,
         longitude: site.longitude
       } : undefined,
-      sameAs: [site?.facebookUrl, site?.instagramUrl, site?.youtubeUrl, site?.linkedinUrl].filter(Boolean)
+      sameAs: [site?.facebookUrl, site?.instagramUrl, site?.youtubeUrl, site?.linkedinUrl, site?.indiamartUrl].filter(Boolean)
     };
     const website = {
       '@context': 'https://schema.org',
