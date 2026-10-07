@@ -30,8 +30,27 @@ export class CategoriesController {
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
     const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const categoryUrl = baseUrl ? baseUrl + '/categories/' + category.slug : '/categories/' + category.slug;
+    const schemaJsonLd = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: category.h1Heading || category.name,
+        description: category.metaDescription || category.description,
+        url: categoryUrl
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: baseUrl || '/' },
+          { '@type': 'ListItem', position: 2, name: 'Collections', item: (baseUrl || '') + '/categories' },
+          { '@type': 'ListItem', position: 3, name: category.name, item: categoryUrl }
+        ]
+      }
+    ];
     return {
-      category, site,
+      category, site, schemaJsonLd,
       pageTitle: category.metaTitle || category.name + ' Wall Clocks | Wholesale & Custom | OSIRA',
       metaDescription: category.metaDescription || category.description || 'Explore ' + category.name + ' wall clocks from OSIRA.',
       canonical: baseUrl ? baseUrl + '/categories/' + category.slug : undefined,
