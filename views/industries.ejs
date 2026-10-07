@@ -1,23 +1,4 @@
 <%- include('partials/header') %>
-<main>
-  <section class="section">
-    <div class="section-head">
-      <div>
-        <span class="kicker">INDUSTRIES</span>
-        <h1>Wall clocks selected for commercial spaces and business programmes.</h1>
-        <p>Explore practical sourcing options for hotels, offices, retail, education, healthcare and other environments where clocks need to work with the space and the brand.</p>
-      </div>
-    </div>
-    <div class="industry-grid">
-      <% industries.forEach(industry => { %>
-        <a class="industry-card" href="/industries/<%= industry.slug %>">
-          <span class="kicker"><%= industry.iconClass || 'OSIRA' %></span>
-          <h2><%= industry.h1Heading %></h2>
-          <p><%= industry.heroSubheading || industry.introContent.replace(/<[^>]*>/g, '').slice(0, 180) %></p>
-          <strong>View solution →</strong>
-        </a>
-      <% }) %>
-    </div>
-  </section>
-</main>
-<%- include('partials/footer', { site }) %>
+<main class="solutions-page"><section class="section solutions-hero"><span class="kicker">INDUSTRY SOLUTIONS</span><h1>Wall clocks selected around the needs of different commercial spaces.</h1><p>Explore application-led solutions for retail stores, offices, hospitality, institutions, gifting programmes and promotional campaigns.</p></section>
+<section class="section solutions-grid-section"><div class="solution-index"><span class="kicker">APPLICATIONS</span><span><%= industries.length %> industries</span></div><div class="industry-grid industry-grid-v2"><% industries.forEach((industry,i)=>{ %><a class="industry-card industry-card-v2" href="/industries/<%= industry.slug %>"><span class="solution-number"><%= String(i+1).padStart(2,'0') %></span><div><span class="kicker"><%= industry.iconClass || 'OSIRA' %></span><h2><%= industry.h1Heading %></h2><p><%= industry.heroSubheading || industry.introContent.replace(/<[^>]*>/g,'').slice(0,190) %></p><strong>View solution →</strong></div></a><% }) %></div></section>
+<section class="section solution-note"><div><span class="kicker">NOT SURE WHICH FORMAT?</span><h2>Tell us where the clocks will be used.</h2></div><div><p>Share the space, quantity, preferred size and any branding requirement. We can then discuss the most relevant current catalogue options.</p><a class="btn primary" href="/#enquiry">Discuss your requirement</a></div></section></main><%- include('partials/footer',{site}) %>
