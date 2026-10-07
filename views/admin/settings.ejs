@@ -1,0 +1,20 @@
+<%- include('partials/header', {title:'Site Settings | OSIRA Admin', user}) %>
+<div class="admin-heading"><div><p class="admin-kicker">SETTINGS</p><h1>Site settings</h1><p>Manage OSIRA contact details, local business data and default SEO metadata.</p></div></div>
+<% if (typeof saved !== 'undefined' && saved) { %><div class="admin-success">Settings saved successfully.</div><% } %>
+<form method="post" action="/admin/settings/save" class="editor-grid">
+<input type="hidden" name="csrfToken" value="<%= csrfToken %>">
+<section class="editor-card"><h2>Business identity</h2>
+<div class="field-grid"><label>Business name<input name="businessName" value="<%= settings?.businessName || '' %>" required></label><label>Tagline<input name="tagline" value="<%= settings?.tagline || '' %>"></label></div>
+<label>Street address<input name="streetAddress" value="<%= settings?.streetAddress || '' %>"></label>
+<div class="field-grid"><label>Locality<input name="locality" value="<%= settings?.locality || '' %>"></label><label>Region<input name="region" value="<%= settings?.region || '' %>"></label><label>Postal code<input name="postalCode" value="<%= settings?.postalCode || '' %>"></label><label>Country<input name="country" value="<%= settings?.country || 'IN' %>"></label></div>
+<div class="field-grid"><label>Phone<input name="primaryPhone" value="<%= settings?.primaryPhone || '' %>"></label><label>WhatsApp number<input name="whatsappNumber" value="<%= settings?.whatsappNumber || '' %>"></label><label>Email<input type="email" name="email" value="<%= settings?.email || '' %>"></label><label>GST number<input name="gstNumber" value="<%= settings?.gstNumber || '' %>"></label></div>
+</section>
+<section class="editor-card"><h2>SEO & location</h2>
+<label>Default SEO title<input name="defaultMetaTitle" maxlength="70" value="<%= settings?.defaultMetaTitle || '' %>"></label>
+<label>Default meta description<textarea name="defaultMetaDescription" maxlength="160" rows="4"><%= settings?.defaultMetaDescription || '' %></textarea></label>
+<div class="field-grid"><label>Latitude<input name="latitude" value="<%= settings?.latitude || '' %>"></label><label>Longitude<input name="longitude" value="<%= settings?.longitude || '' %>"></label><label>Establishment year<input name="establishmentYear" value="<%= settings?.establishmentYear || '' %>"></label><label>Employees<input name="employeeCount" value="<%= settings?.employeeCount || '' %>"></label></div>
+<h2>Social profiles</h2>
+<label>Facebook<input name="facebookUrl" value="<%= settings?.facebookUrl || '' %>"></label><label>Instagram<input name="instagramUrl" value="<%= settings?.instagramUrl || '' %>"></label><label>YouTube<input name="youtubeUrl" value="<%= settings?.youtubeUrl || '' %>"></label><label>LinkedIn<input name="linkedinUrl" value="<%= settings?.linkedinUrl || '' %>"></label>
+<button class="admin-button" type="submit">Save site settings</button>
+</section></form>
+<%- include('partials/footer') %>
