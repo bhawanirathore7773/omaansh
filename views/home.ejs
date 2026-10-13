@@ -18,6 +18,78 @@
     </div>
   </section>
 
+
+  <% if (banners && banners.length) { %>
+  <section class="home-banner-section" aria-label="OSIRA featured collections">
+    <div class="home-banner-carousel" data-carousel>
+      <div class="home-banner-track">
+        <% banners.forEach((banner, index) => { %>
+        <article class="home-banner-slide <%= index === 0 ? 'is-active' : '' %>" data-slide="<%= index %>" aria-hidden="<%= index === 0 ? 'false' : 'true' %>" style="--banner-bg:<%= banner.backgroundColor || '#17212b' %>">
+          <% if (banner.desktopImage || banner.mobileImage) { %>
+          <picture class="home-banner-picture">
+            <% if (banner.mobileImage) { %><source media="(max-width: 700px)" srcset="<%= banner.mobileImage %>"><% } %>
+            <% if (banner.desktopImage) { %><img src="<%= banner.desktopImage %>" alt="<%= banner.title %>" <%= index === 0 ? 'fetchpriority="high"' : 'loading="lazy"' %>><% } else if (banner.mobileImage) { %><img src="<%= banner.mobileImage %>" alt="<%= banner.title %>" loading="lazy"><% } %>
+          </picture>
+          <% } %>
+          <div class="home-banner-shade"></div>
+          <div class="home-banner-copy">
+            <span class="home-banner-eyebrow">OSIRA <i></i> WALL CLOCKS</span>
+            <h2><%= banner.title %></h2>
+            <% if (banner.subtitle) { %><p><%= banner.subtitle %></p><% } %>
+            <% if (banner.buttonLabel && banner.linkUrl) { %><a class="home-banner-cta" href="<%= banner.linkUrl %>"><%= banner.buttonLabel %><span aria-hidden="true">↗</span></a><% } %>
+          </div>
+        </article>
+        <% }) %>
+      </div>
+      <% if (banners.length > 1) { %>
+      <button class="home-banner-arrow prev" type="button" aria-label="Previous banner" data-prev>‹</button>
+      <button class="home-banner-arrow next" type="button" aria-label="Next banner" data-next>›</button>
+      <div class="home-banner-dots" aria-label="Choose banner">
+        <% banners.forEach((banner, index) => { %><button type="button" data-dot="<%= index %>" class="<%= index === 0 ? 'is-active' : '' %>" aria-label="Go to banner <%= index + 1 %>" aria-current="<%= index === 0 ? 'true' : 'false' %>"></button><% }) %>
+      </div>
+      <% } %>
+    </div>
+  </section>
+  <script>
+  (() => {
+    const root = document.querySelector('[data-carousel]');
+    if (!root) return;
+    const slides = Array.from(root.querySelectorAll('[data-slide]'));
+    const dots = Array.from(root.querySelectorAll('[data-dot]'));
+    if (slides.length < 2) return;
+    let active = 0, timer, startX = 0;
+    const show = (index) => {
+      active = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('is-active', i === active);
+        slide.setAttribute('aria-hidden', i === active ? 'false' : 'true');
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === active);
+        dot.setAttribute('aria-current', i === active ? 'true' : 'false');
+      });
+    };
+    const stop = () => window.clearInterval(timer);
+    const start = () => { stop(); timer = window.setInterval(() => show(active + 1), 5200); };
+    root.querySelector('[data-prev]')?.addEventListener('click', () => { show(active - 1); start(); });
+    root.querySelector('[data-next]')?.addEventListener('click', () => { show(active + 1); start(); });
+    dots.forEach(dot => dot.addEventListener('click', () => { show(Number(dot.dataset.dot)); start(); }));
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+    root.addEventListener('touchstart', event => { startX = event.changedTouches[0].clientX; stop(); }, {passive:true});
+    root.addEventListener('touchend', event => {
+      const delta = event.changedTouches[0].clientX - startX;
+      if (Math.abs(delta) > 45) show(active + (delta < 0 ? 1 : -1));
+      start();
+    }, {passive:true});
+    document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+    start();
+  })();
+  </script>
+  <% } %>
+
   <section class="section intro-strip">
     <div><span class="kicker">WALL CLOCK MANUFACTURER IN JAIPUR</span><h2>A focused catalogue for real buying decisions.</h2></div>
     <p>From everyday plastic wall clocks to promotional and custom business programmes, OSIRA keeps product information, quantity requirements and enquiries in one place.</p>
