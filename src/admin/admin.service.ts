@@ -133,6 +133,33 @@ export class AdminService {
     const data:any={title:String(b.title||'').trim(),slug:String(b.slug||'').trim().toLowerCase(),category:b.category||'Wall Clocks',featuredImage:b.featuredImage||null,description:String(b.description||''),contentHtml:b.contentHtml||null,inlineImage1:b.inlineImage1||null,inlineImage2:b.inlineImage2||null,inlineImage3:b.inlineImage3||null,inlineImage1Caption:b.inlineImage1Caption||null,inlineImage2Caption:b.inlineImage2Caption||null,inlineImage3Caption:b.inlineImage3Caption||null,metaTitle:b.metaTitle||null,metaDescription:b.metaDescription||null,metaKeywords:b.metaKeywords||null,isPublished:b.isPublished==='on'};
     return id?this.prisma.blog.update({where:{id},data}):this.prisma.blog.create({data});
   }
+
+  async listHomeBanners() {
+    return this.prisma.homeBanner.findMany({ orderBy: [{ displayOrder: 'asc' }, { id: 'asc' }], take: 4 });
+  }
+
+  async saveHomeBanners(body: any) {
+    const rows = Array.isArray(body.banners) ? body.banners : [];
+    for (const row of rows.slice(0, 4)) {
+      const id = Number(row.id);
+      if (!Number.isInteger(id) || id < 1) continue;
+      await this.prisma.homeBanner.update({
+        where: { id },
+        data: {
+          title: String(row.title || '').trim().slice(0, 160) || 'OSIRA',
+          subtitle: String(row.subtitle || '').trim().slice(0, 300) || null,
+          desktopImage: String(row.desktopImage || '').trim().slice(0, 700) || null,
+          mobileImage: String(row.mobileImage || '').trim().slice(0, 700) || null,
+          buttonLabel: String(row.buttonLabel || '').trim().slice(0, 80) || null,
+          linkUrl: String(row.linkUrl || '').trim().slice(0, 500) || null,
+          backgroundColor: /^#[0-9a-fA-F]{6}$/.test(String(row.backgroundColor || '')) ? String(row.backgroundColor) : '#17212b',
+          displayOrder: Number(row.displayOrder || 0),
+          isActive: row.isActive === 'on',
+        },
+      });
+    }
+  }
+
   async getSiteSettings() { return this.prisma.siteSettings.findUnique({where:{id:1}}); }
   async saveSiteSettings(b:any) {
     const data:any={businessName:b.businessName||'OSIRA',tagline:b.tagline||'',primaryPhone:b.primaryPhone||'',whatsappNumber:b.whatsappNumber||'',email:b.email||'',streetAddress:b.streetAddress||'',locality:b.locality||'',region:b.region||'',postalCode:b.postalCode||'',country:b.country||'IN',latitude:Number(b.latitude||0),longitude:Number(b.longitude||0),gstNumber:b.gstNumber||null,establishmentYear:Number(b.establishmentYear||2021),employeeCount:b.employeeCount||null,facebookUrl:b.facebookUrl||null,instagramUrl:b.instagramUrl||null,youtubeUrl:b.youtubeUrl||null,linkedinUrl:b.linkedinUrl||null,indiamartUrl:b.indiamartUrl||null,defaultMetaTitle:b.defaultMetaTitle||'OSIRA | Wall Clock Manufacturer & Supplier in Jaipur',defaultMetaDescription:b.defaultMetaDescription||'',googleVerification:b.googleVerification||null,bingVerification:b.bingVerification||null};
