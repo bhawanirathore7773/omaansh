@@ -8,6 +8,16 @@ export class SiteController {
   @Get()
   @Render('home')
   async home(@Query('enquiry') enquiry?: string) {
+
+    const bannerCount = await this.prisma.homeBanner.count();
+    if (bannerCount === 0) {
+      await this.prisma.homeBanner.createMany({ data: [
+        { title: 'Wall clocks for every space', subtitle: 'Explore practical and decorative designs for homes, offices and retail.', buttonLabel: 'Explore collections', linkUrl: '/categories', backgroundColor: '#17212b', displayOrder: 1, isActive: true },
+        { title: 'Wholesale wall clock supply', subtitle: 'Planning a retail or distribution order? Share your product and quantity requirements.', buttonLabel: 'Wholesale enquiries', linkUrl: '/services/wholesale-wall-clocks', backgroundColor: '#263d50', displayOrder: 2, isActive: true },
+        { title: 'Make your brand part of the moment', subtitle: 'Discuss promotional wall clocks, logo artwork and corporate gifting requirements.', buttonLabel: 'Discuss custom orders', linkUrl: '/services/promotional-wall-clocks', backgroundColor: '#573b32', displayOrder: 3, isActive: true },
+        { title: 'Need a tailored business order?', subtitle: 'Tell us the preferred style, quantity, branding and delivery city for a quotation.', buttonLabel: 'Request a quotation', linkUrl: '/#enquiry', backgroundColor: '#303c35', displayOrder: 4, isActive: true },
+      ] });
+    }
     const [site, categories, featuredProducts, banners] = await Promise.all([
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
       this.prisma.category.findMany({ orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }], take: 8 }),
