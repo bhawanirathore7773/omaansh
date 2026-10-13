@@ -1,0 +1,33 @@
+<%- include('partials/header', {title:'Homepage Banners | OSIRA Admin', user}) %>
+<div class="admin-heading"><div><p class="admin-kicker">HOMEPAGE</p><h1>Carousel banners</h1><p>Manage the four homepage slides. Add desktop and mobile image URLs, links and copy, then save all changes.</p></div><a class="admin-button" href="/" target="_blank" rel="noopener noreferrer">Preview website ↗</a></div>
+<% if (saved) { %><div class="admin-success">Banner settings saved successfully.</div><% } %>
+<div class="banner-help"><strong>Recommended artwork sizes</strong><span>Desktop: 1920 × 600 px</span><span>Mobile: 1080 × 430 px</span><small>Use landscape artwork with key text/logos away from the edges. Images should be hosted on your website or a trusted image CDN. If mobile image is blank, the desktop image is used.</small></div>
+<form method="post" action="/admin/banners/save" class="home-banner-admin-form">
+  <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
+  <% rows.forEach((banner, index) => { %>
+  <section class="editor-card home-banner-editor">
+    <div class="banner-editor-heading"><div><span class="banner-number">0<%= index + 1 %></span><div><h2>Banner <%= index + 1 %></h2><p>Slide order <%= index + 1 %> · Auto-rotates smoothly</p></div></div><label class="toggle-field"><input type="checkbox" name="banners[<%= index %>][isActive]" <%= banner.isActive ? 'checked' : '' %>> Show on homepage</label></div>
+    <input type="hidden" name="banners[<%= index %>][id]" value="<%= banner.id %>">
+    <input type="hidden" name="banners[<%= index %>][displayOrder]" value="<%= index + 1 %>">
+    <div class="banner-preview" style="--banner-bg:<%= banner.backgroundColor || '#17212b' %>">
+      <% if (banner.desktopImage) { %><img src="<%= banner.desktopImage %>" alt="" loading="lazy"><% } %>
+      <div><span>OSIRA · WALL CLOCKS</span><strong><%= banner.title %></strong><small><%= banner.subtitle || '' %></small></div>
+    </div>
+    <div class="field-grid">
+      <label>Headline<input name="banners[<%= index %>][title]" maxlength="160" required value="<%= banner.title %>"></label>
+      <label>Button label<input name="banners[<%= index %>][buttonLabel]" maxlength="80" value="<%= banner.buttonLabel || '' %>" placeholder="Explore collections"></label>
+    </div>
+    <label>Supporting text<textarea name="banners[<%= index %>][subtitle]" rows="2" maxlength="300"><%= banner.subtitle || '' %></textarea></label>
+    <div class="field-grid">
+      <label>Desktop image URL<input type="url" name="banners[<%= index %>][desktopImage]" value="<%= banner.desktopImage || '' %>" placeholder="https://.../desktop-banner.webp"><small>1920 × 600 px · WebP recommended</small></label>
+      <label>Mobile image URL<input type="url" name="banners[<%= index %>][mobileImage]" value="<%= banner.mobileImage || '' %>" placeholder="https://.../mobile-banner.webp"><small>1080 × 430 px · WebP recommended</small></label>
+    </div>
+    <div class="field-grid">
+      <label>Click-through link<input name="banners[<%= index %>][linkUrl]" value="<%= banner.linkUrl || '' %>" placeholder="/categories"></label>
+      <label>Background colour<input type="color" name="banners[<%= index %>][backgroundColor]" value="<%= /^#[0-9a-fA-F]{6}$/.test(banner.backgroundColor || '') ? banner.backgroundColor : '#17212b' %>"></label>
+    </div>
+  </section>
+  <% }) %>
+  <div class="banner-save-bar"><p>Changes apply to the live homepage after saving and deploying if code/schema has changed.</p><button class="admin-button" type="submit">Save all banners</button></div>
+</form>
+<%- include('partials/footer') %>
