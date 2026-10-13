@@ -71,6 +71,23 @@ export class AdminController {
     return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Blog', kicker: 'CONTENT', description: 'Manage SEO guides and articles.', rows: await this.admin.listBlogsAdmin(), type: 'blog', nameField: 'title' });
   }
 
+
+  @UseGuards(AdminAuthGuard)
+  @Get('banners')
+  async banners(@Req() req: Request, @Res() res: Response) {
+    const rows = await this.admin.listHomeBanners();
+    return res.render('admin/banners', { user: (req as any).adminUser, rows, csrfToken: (req as any).adminCsrf, saved: req.query.saved === '1' });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('banners/save')
+  async bannersSave(@Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    await this.admin.saveHomeBanners(body);
+    return res.redirect(303, '/admin/banners?saved=1');
+  }
+
   @UseGuards(AdminAuthGuard)
   @Get('settings')
   async settings(@Req() req: Request, @Res() res: Response) {
