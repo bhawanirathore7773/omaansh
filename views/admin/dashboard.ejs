@@ -1,5 +1,5 @@
 <%- include('partials/header', {title:'OSIRA Admin Dashboard', user}) %>
-<div class="admin-heading"><div><p class="admin-kicker">OVERVIEW</p><h1>Business dashboard</h1><p>Track catalogue health and move incoming enquiries through the sales pipeline.</p></div><a class="admin-button" href="/admin/enquiries">Open enquiries</a></div>
+<div class="admin-heading"><div><p class="admin-kicker">OVERVIEW</p><h1>Business dashboard</h1><p>Track catalogue health and move incoming enquiries through the sales pipeline.</p></div><div class="admin-heading-actions"><a class="admin-button" href="/admin/banners">Manage homepage banners</a><a class="admin-button" href="/admin/enquiries">Open enquiries</a></div></div>
 <section class="admin-stats">
 <a href="/admin/products"><strong><%= data.products %></strong><span>Active products</span></a>
 <a href="/admin/categories"><strong><%= data.categories %></strong><span>Collections</span></a>
