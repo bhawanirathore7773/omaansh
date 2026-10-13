@@ -90,6 +90,7 @@ async function main() {
   await prisma.fAQ.deleteMany();
   await prisma.testimonial.deleteMany();
   await prisma.banner.deleteMany();
+  await prisma.homeBanner.deleteMany();
   await prisma.servicePage.deleteMany();
   await prisma.industryPage.deleteMany();
   await prisma.cityPage.deleteMany();
@@ -296,6 +297,17 @@ async function main() {
     ['Do you supply outside Jaipur?','Business enquiries can be submitted with the delivery city. Delivery feasibility and timeline depend on the order and destination.'],
   ];
   for (let i=0;i<faqs.length;i++) await prisma.fAQ.create({data:{question:faqs[i][0],answer:faqs[i][1],displayOrder:i+1,scope:'global'}});
+
+
+  const homeBanners = [
+    { title: 'Wall clocks for every space', subtitle: 'Explore practical and decorative designs for homes, offices and retail.', buttonLabel: 'Explore collections', linkUrl: '/categories', backgroundColor: '#17212b', displayOrder: 1 },
+    { title: 'Wholesale wall clock supply', subtitle: 'Planning a retail or distribution order? Share your product and quantity requirements.', buttonLabel: 'Wholesale enquiries', linkUrl: '/services/wholesale-wall-clocks', backgroundColor: '#263d50', displayOrder: 2 },
+    { title: 'Make your brand part of the moment', subtitle: 'Discuss promotional wall clocks, logo artwork and corporate gifting requirements.', buttonLabel: 'Discuss custom orders', linkUrl: '/services/promotional-wall-clocks', backgroundColor: '#573b32', displayOrder: 3 },
+    { title: 'Need a tailored business order?', subtitle: 'Tell us the preferred style, quantity, branding and delivery city for a quotation.', buttonLabel: 'Request a quotation', linkUrl: '/#enquiry', backgroundColor: '#303c35', displayOrder: 4 },
+  ];
+  for (const banner of homeBanners) {
+    await prisma.homeBanner.create({ data: { ...banner, isActive: true } });
+  }
 
   const adminEmail=process.env.ADMIN_EMAIL;
   const adminPassword=process.env.ADMIN_PASSWORD;
