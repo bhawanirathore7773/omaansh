@@ -8,7 +8,7 @@ export class SiteController {
   @Get()
   @Render('home')
   async home(@Query('enquiry') enquiry?: string) {
-    const [site, categories, featuredProducts] = await Promise.all([
+    const [site, categories, featuredProducts, banners] = await Promise.all([
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
       this.prisma.category.findMany({ orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }], take: 8 }),
       this.prisma.product.findMany({
@@ -17,6 +17,7 @@ export class SiteController {
         orderBy: { createdAt: 'desc' },
         take: 6,
       }),
+      this.prisma.homeBanner.findMany({ where: { isActive: true }, orderBy: { displayOrder: 'asc' }, take: 4 }),
     ]);
 
     const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
@@ -58,6 +59,7 @@ export class SiteController {
     return {
       site,
       categories,
+      banners,
       schemaJsonLd: [organization, website],
       featuredProducts,
       enquirySent: enquiry === 'sent',
