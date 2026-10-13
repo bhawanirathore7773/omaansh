@@ -281,6 +281,23 @@ model SiteSettings {
   bingVerification String? @db.VarChar(200)
 }
 
+
+model HomeBanner {
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(160)
+  subtitle String? @db.VarChar(300)
+  desktopImage String? @db.VarChar(700)
+  mobileImage String? @db.VarChar(700)
+  buttonLabel String? @db.VarChar(80)
+  linkUrl String? @db.VarChar(500)
+  backgroundColor String @default("#17212b") @db.VarChar(30)
+  displayOrder Int @default(0)
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([isActive, displayOrder])
+}
+
 model Blog {
   id Int @id @default(autoincrement())
   title String @db.VarChar(200)
