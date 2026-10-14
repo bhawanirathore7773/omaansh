@@ -84,11 +84,21 @@
   <section class="section" id="collections">
     <div class="section-head"><div><span class="kicker">SHOP BY REQUIREMENT</span><h2>Find the right wall clock collection.</h2></div><a href="/categories">View collections →</a></div>
     <div class="category-grid">
-      <% categories.slice(0,8).forEach(category => { %>
-        <a class="category-card" href="/categories/<%= category.slug %>">
+      <% const categoryPhotos = [
+        'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=900&q=82',
+        'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=82',
+        'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=82',
+        'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=82',
+        'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=82',
+        'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=900&q=82',
+        'https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=900&q=82',
+        'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=82'
+      ]; %>
+      <% categories.slice(0,8).forEach((category, index) => { %>
+        <a class="category-card category-card-visual" href="/categories/<%= category.slug %>" style="--category-image:url('<%= category.image || categoryPhotos[index % categoryPhotos.length] %>')">
+          <img src="<%= category.image || categoryPhotos[index % categoryPhotos.length] %>" alt="<%= category.name %>" loading="lazy" width="700" height="500">
           <span class="card-index"><%= String(category.displayOrder).padStart(2,'0') %></span>
-          <strong><%= category.name %></strong>
-          <span><%= category.description %></span>
+          <div class="category-card-copy"><strong><%= category.name %></strong><span><%= category.description %></span><b>Explore collection <i>↗</i></b></div>
         </a>
       <% }) %>
     </div>
@@ -100,9 +110,17 @@
       <% featuredProducts.forEach(product => { %>
         <a class="product-card" href="/products/<%= product.slug %>">
           <div class="product-media">
-            <% if (product.image) { %><img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy" width="800" height="600"><% } else { %><div class="placeholder">OSIRA</div><% } %>
+            <% if (product.image) { %><img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy" width="800" height="600"><% } else { %><img src="https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=900&q=82" alt="Wall clock product image" loading="lazy" width="800" height="600"><% } %>
+            <span class="product-image-label">OSIRA · WALL CLOCKS</span>
           </div>
-          <div class="product-body"><span><%= product.category?.name || 'Wall Clock' %></span><h2><%= product.name %></h2><strong><%= product.price ? 'From ₹' + Number(product.price).toLocaleString('en-IN') : 'Request current price' %></strong></div>
+          <div class="product-body"><span class="product-category-label"><%= product.category?.name || 'Wall Clock' %></span><h2><%= product.name %></h2>
+            <ul class="product-quick-specs">
+              <% if (product.size) { %><li><span>Size</span><b><%= product.size %></b></li><% } %>
+              <% if (product.shape) { %><li><span>Shape</span><b><%= product.shape %></b></li><% } %>
+              <% if (product.material) { %><li><span>Material</span><b><%= product.material %></b></li><% } %>
+            </ul>
+            <div class="product-card-bottom"><strong><%= product.price ? 'From ₹' + Number(product.price).toLocaleString('en-IN') : 'Request current price' %></strong><span class="product-explore">View details ↗</span></div>
+          </div>
         </a>
       <% }) %>
     </div>
@@ -110,11 +128,11 @@
 
   <section class="section dark business-section">
     <div class="section-head"><div><span class="kicker">BUSINESS SOLUTIONS</span><h2>One supplier for different order requirements.</h2><p>Start with the application, quantity and product direction. We can then discuss the most suitable current option.</p></div></div>
-    <div class="business-grid">
-      <article><b>01</b><h3>Wholesale & retail supply</h3><p>For retailers, dealers and distributors building a practical wall clock assortment.</p><a href="/services/wholesale-wall-clocks">Explore wholesale →</a></article>
-      <article><b>02</b><h3>Corporate gifting</h3><p>Useful branded gifting formats for employees, dealers, milestones and institutions.</p><a href="/services/corporate-gifting">Explore gifting →</a></article>
-      <article><b>03</b><h3>Promotional branding</h3><p>Discuss logo artwork, quantity, packaging and campaign requirements.</p><a href="/services/promotional-wall-clocks">Explore promotional →</a></article>
-      <article><b>04</b><h3>Custom & OEM</h3><p>Discuss format, dimensions, artwork, colours and business quantities.</p><a href="/services/custom-oem-wall-clocks">Explore custom →</a></article>
+    <div class="business-grid business-grid-visual">
+      <a class="business-visual-card" href="/services/wholesale-wall-clocks" style="--business-image:url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1100&q=82')"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1100&q=82" alt="Wholesale supply for retail and offices" loading="lazy"><div><b>01 / BUSINESS SUPPLY</b><h3>Wholesale & retail supply</h3><p>Build a practical wall clock assortment for retail, dealers and distribution.</p><span>Explore wholesale ↗</span></div></a>
+      <a class="business-visual-card" href="/services/corporate-gifting" style="--business-image:url('https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=1100&q=82')"><img src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=1100&q=82" alt="Corporate gifting presentation" loading="lazy"><div><b>02 / GIFTING</b><h3>Corporate gifting</h3><p>Explore useful gifting formats for employees, dealers and institutions.</p><span>Explore gifting ↗</span></div></a>
+      <a class="business-visual-card" href="/services/promotional-wall-clocks" style="--business-image:url('https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1100&q=82')"><img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1100&q=82" alt="Promotional branding materials" loading="lazy"><div><b>03 / BRANDING</b><h3>Promotional branding</h3><p>Discuss artwork, quantities and packaging for campaign requirements.</p><span>Explore promotional ↗</span></div></a>
+      <a class="business-visual-card" href="/services/custom-oem-wall-clocks" style="--business-image:url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1100&q=82')"><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1100&q=82" alt="Custom interior and OEM inspiration" loading="lazy"><div><b>04 / CUSTOM & OEM</b><h3>Custom & OEM</h3><p>Discuss formats, dimensions, colours and business quantities.</p><span>Explore custom ↗</span></div></a>
     </div>
   </section>
 
