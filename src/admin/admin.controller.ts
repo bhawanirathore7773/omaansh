@@ -72,7 +72,7 @@ export class AdminController {
   async editProduct(@Param('id') id: string, @Req() req: Request, @Res() res: Response) {
     const product = await this.admin.getProductAdmin(Number(id));
     if (!product) return res.status(404).send('Product not found');
-    const categories = await this.admin['prisma'].category.findMany({ orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }] });
+    const categories = await this.admin.listCategoriesAdmin();
     return res.render('admin/product-form', { user: (req as any).adminUser, product, categories, csrfToken: (req as any).adminCsrf });
   }
 
