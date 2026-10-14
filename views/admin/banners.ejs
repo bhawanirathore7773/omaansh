@@ -16,8 +16,8 @@
       <% if (banner.desktopImage || banner.mobileImage) { %><picture><% if (banner.mobileImage) { %><source media="(max-width:700px)" srcset="<%= banner.mobileImage %>"><% } %><img src="<%= banner.desktopImage || banner.mobileImage %>" alt="Banner <%= index + 1 %> preview" loading="lazy"></picture><% } else { %><div class="empty-banner-preview"><strong>Banner <%= index + 1 %></strong><span>Image not added yet</span></div><% } %>
     </div>
     <div class="field-grid">
-      <label>Desktop banner image URL<input type="url" name="banners[<%= index %>][desktopImage]" value="<%= banner.desktopImage || '' %>" placeholder="https://.../banner-desktop.webp"><small>Landscape/4:3 artwork · WebP recommended</small></label>
-      <label>Mobile banner image URL<input type="url" name="banners[<%= index %>][mobileImage]" value="<%= banner.mobileImage || '' %>" placeholder="https://.../banner-mobile.webp"><small>Portrait/3:4 artwork · optional but recommended</small></label>
+      <label>Desktop banner image<input type="url" data-image-url name="banners[<%= index %>][desktopImage]" value="<%= banner.desktopImage || '' %>" placeholder="/uploads/banners/..." ><input type="file" accept="image/jpeg,image/png,image/webp,image/avif" data-image-file><button class="admin-button upload-banner-button" type="button" data-upload>Upload desktop image</button><small>Landscape/4:3 artwork · max 8 MB · JPG, PNG, WebP or AVIF</small></label>
+      <label>Mobile banner image<input type="url" data-image-url name="banners[<%= index %>][mobileImage]" value="<%= banner.mobileImage || '' %>" placeholder="/uploads/banners/..."><input type="file" accept="image/jpeg,image/png,image/webp,image/avif" data-image-file><button class="admin-button upload-banner-button" type="button" data-upload>Upload mobile image</button><small>Portrait/3:4 artwork · max 8 MB · optional but recommended</small></label>
     </div>
     <label>Destination URL (optional)<input name="banners[<%= index %>][linkUrl]" value="<%= banner.linkUrl || '' %>" placeholder="/categories or https://example.com"><small>Leave blank if tapping the banner should do nothing.</small></label>
     <input type="hidden" name="banners[<%= index %>][backgroundColor]" value="<%= banner.backgroundColor || '#17212b' %>">
@@ -25,4 +25,40 @@
   <% }) %>
   <div class="banner-save-bar"><p>Exactly four banner slots are managed here. Save to update the homepage.</p><button class="admin-button" type="submit">Save all banner images</button></div>
 </form>
+<script>
+document.querySelectorAll('[data-upload]').forEach(button => {
+  button.addEventListener('click', async () => {
+    const field = button.closest('label');
+    const fileInput = field.querySelector('[data-image-file]');
+    const urlInput = field.querySelector('[data-image-url]');
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) { alert('Please select an image first.'); return; }
+    if (file.size > 8 * 1024 * 1024) { alert('Image must be 8 MB or smaller.'); return; }
+    const form = document.querySelector('.home-banner-admin-form');
+    const data = new FormData();
+    data.append('image', file);
+    data.append('csrfToken', form.querySelector('[name="csrfToken"]').value);
+    const original = button.textContent;
+    button.disabled = true; button.textContent = 'Uploading…';
+    try {
+      const response = await fetch('/admin/banners/upload', {method:'POST', body:data, credentials:'same-origin'});
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Upload failed');
+      urlInput.value = result.url;
+      button.textContent = 'Uploaded ✓';
+      const preview = button.closest('.home-banner-editor').querySelector('.banner-preview');
+      const img = preview.querySelector('img');
+      if (img) img.src = result.url;
+      else {
+        preview.innerHTML = '<img src="' + result.url.replace(/&/g,'&amp;').replace(/"/g,'&quot;') + '" alt="Banner preview"><div class="empty-banner-preview" hidden></div>';
+      }
+    } catch (error) {
+      alert(error.message || 'Unable to upload image.');
+      button.textContent = original;
+    } finally {
+      button.disabled = false;
+    }
+  });
+});
+</script>
 <%- include('partials/footer') %>
