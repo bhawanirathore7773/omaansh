@@ -31,7 +31,7 @@
 </header>
 <div class="drawer-backdrop" data-drawer-close hidden></div>
 <aside class="mobile-drawer" id="mobile-drawer" aria-label="Mobile navigation" aria-hidden="true">
-  <div class="drawer-head"><a class="brand" href="/">OSIRA</a><button type="button" class="drawer-close" aria-label="Close navigation menu" data-drawer-close>×</button></div>
+  <div class="drawer-head"><span class="drawer-title">MENU</span></div>
   <p class="drawer-kicker">EXPLORE OSIRA</p>
   <nav>
     <a href="/">Home <span>↗</span></a><a href="/products">Wall Clocks <span>↗</span></a><a href="/categories">Collections <span>↗</span></a><a href="/services">Services <span>↗</span></a><a href="/industries">Industries <span>↗</span></a><a href="/blog">Buying Guides <span>↗</span></a><a href="/cities/jaipur">Jaipur <span>↗</span></a>
@@ -43,11 +43,11 @@
 (() => {
  const toggle=document.querySelector('.menu-toggle'), drawer=document.querySelector('.mobile-drawer'), backdrop=document.querySelector('.drawer-backdrop');
  if(!toggle||!drawer||!backdrop)return;
- const closeEls=document.querySelectorAll('[data-drawer-close]');
- const open=()=>{drawer.classList.add('is-open');toggle.classList.add('is-open');backdrop.hidden=false;requestAnimationFrame(()=>backdrop.classList.add('is-visible'));toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','Close navigation menu');drawer.setAttribute('aria-hidden','false');document.body.classList.add('drawer-open');};
- const close=()=>{drawer.classList.remove('is-open');toggle.classList.remove('is-open');backdrop.classList.remove('is-visible');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open navigation menu');drawer.setAttribute('aria-hidden','true');document.body.classList.remove('drawer-open');window.setTimeout(()=>{if(!backdrop.classList.contains('is-visible'))backdrop.hidden=true;},280);};
+ const drawerHead=drawer.querySelector('.drawer-head');
+ const navInner=document.querySelector('.nav-inner');
+ const open=()=>{drawerHead.appendChild(toggle);drawer.classList.add('is-open');toggle.classList.add('is-open');backdrop.hidden=false;requestAnimationFrame(()=>backdrop.classList.add('is-visible'));toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','Close navigation menu');drawer.setAttribute('aria-hidden','false');document.body.classList.add('drawer-open');};
+ const close=()=>{drawer.classList.remove('is-open');toggle.classList.remove('is-open');navInner.appendChild(toggle);backdrop.classList.remove('is-visible');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open navigation menu');drawer.setAttribute('aria-hidden','true');document.body.classList.remove('drawer-open');window.setTimeout(()=>{if(!backdrop.classList.contains('is-visible'))backdrop.hidden=true;},280);};
  toggle.addEventListener('click',()=>drawer.classList.contains('is-open')?close():open());
- closeEls.forEach(el=>el.addEventListener('click',close));
  drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
 })();
