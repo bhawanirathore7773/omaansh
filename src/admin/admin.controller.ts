@@ -63,7 +63,7 @@ export class AdminController {
   @UseGuards(AdminAuthGuard)
   @Get('products/new')
   async newProduct(@Req() req: Request, @Res() res: Response) {
-    const categories = await this.admin['prisma'].category.findMany({ orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }] });
+    const categories = await this.admin.listCategoriesAdmin();
     return res.render('admin/product-form', { user: (req as any).adminUser, product: null, categories, csrfToken: (req as any).adminCsrf });
   }
 
