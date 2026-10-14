@@ -453,3 +453,11 @@ body>.footer{position:relative;flex-shrink:0;margin-top:auto}
 
 .tier-saving{display:inline-flex;align-self:start;padding:4px 6px;border-radius:5px;background:#e7f7ed;color:#187443;font-size:.62rem;font-style:normal;font-weight:850}
 .product-gallery-admin{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:12px;background:#f9fafb}.product-gallery-admin h3{margin:0 0 6px}.product-gallery-admin>p{margin:0 0 14px;color:var(--muted);font-size:.8rem;line-height:1.6}.product-gallery-admin input[type=file]{display:block;width:100%;margin-top:8px;padding:9px;border:1px dashed #cbd2da;border-radius:8px;background:#fff;font-size:.72rem}.product-image-upload{display:inline-flex;margin-top:7px;min-height:34px;padding:0 10px;font-size:.72rem;cursor:pointer}.product-image-upload:disabled{opacity:.6;cursor:wait}
+
+
+/* Match the drawer close control to the exact hamburger button footprint and header position */
+.mobile-drawer{padding-top:15px}
+.mobile-drawer .drawer-head{min-height:44px;padding-bottom:22px;padding-right:58px;position:relative}
+.mobile-drawer .drawer-head>.drawer-close{position:absolute;top:0;right:0;width:44px;height:44px;min-width:44px;min-height:44px;flex:0 0 44px;box-sizing:border-box;display:grid;place-items:center;margin:0;padding:0;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);font-family:Arial,sans-serif;font-size:27px;font-weight:400;line-height:1;cursor:pointer;transform:none;box-shadow:none}
+.mobile-drawer .drawer-head>.drawer-close:active{background:#f8fafc}
+@media(max-width:390px){.mobile-drawer{padding-top:15px}.mobile-drawer .drawer-head{padding-right:54px}.mobile-drawer .drawer-head>.drawer-close{top:0;right:0;width:44px;height:44px;min-width:44px;min-height:44px}}
