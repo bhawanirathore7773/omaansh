@@ -53,6 +53,32 @@ export class AdminController {
   }
 
 
+
+  @UseGuards(AdminAuthGuard)
+  @Post('products/upload-image')
+  @UseInterceptors(FileInterceptor('image', {
+    storage: diskStorage({
+      destination: (_req, _file, cb) => {
+        const destination = join(process.cwd(), 'public', 'uploads', 'products');
+        mkdirSync(destination, { recursive: true });
+        cb(null, destination);
+      },
+      filename: (_req, file, cb) => cb(null, `${Date.now()}-${randomUUID()}${extname(file.originalname).toLowerCase()}`),
+    }),
+    limits: { fileSize: 8 * 1024 * 1024, files: 1 },
+    fileFilter: (_req, file, cb) => {
+      const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
+      if (!allowed.includes(file.mimetype)) return cb(new BadRequestException('Use JPG, PNG, WebP or AVIF image files.') as any, false);
+      cb(null, true);
+    },
+  }))
+  async uploadProductImage(@UploadedFile() file: Express.Multer.File, @Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).json({ error: 'Invalid CSRF token' });
+    if (!file) return res.status(400).json({ error: 'Select a JPG, PNG, WebP or AVIF image up to 8 MB.' });
+    return res.json({ url: `/uploads/products/${file.filename}` });
+  }
+
   @UseGuards(AdminAuthGuard)
   @Get('products')
   async products(@Req() req: Request, @Res() res: Response) {
