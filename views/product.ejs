@@ -47,7 +47,7 @@
        [product.pricingTierTemplate.tier3MinQty,product.pricingTierTemplate.tier3MaxQty,product.pricingTierTemplate.tier3Label,product.pricingTierTemplate.tier3DiscountType,product.pricingTierTemplate.tier3DiscountValue],
        [product.pricingTierTemplate.tier4MinQty,product.pricingTierTemplate.tier4MaxQty,product.pricingTierTemplate.tier4Label,product.pricingTierTemplate.tier4DiscountType,product.pricingTierTemplate.tier4DiscountValue],
        [product.pricingTierTemplate.tier5MinQty,product.pricingTierTemplate.tier5MaxQty,product.pricingTierTemplate.tier5Label,product.pricingTierTemplate.tier5DiscountType,product.pricingTierTemplate.tier5DiscountValue]
-      ].forEach(t=>{ %><div class="tier"><strong><%= t[0] %>–<%= t[1]>=99999?'+':t[1] %> pcs</strong><span><%= t[2] %></span><b><%= product.price ? '₹'+Number(product.price*(1-(t[3]==='percent'?Number(t[4])/100:Number(t[4])/Number(product.price)))).toFixed(2) : 'Quote' %> / piece</b></div><% }) %>
+      ].forEach(t=>{ %><div class="tier"><strong><%= t[0] %>–<%= t[1]>=99999?'+':t[1] %> pcs</strong><span><%= t[2] %></span><% if(Number(t[4])>0){ %><em class="tier-saving"><%= t[3]==='percent' ? Number(t[4])+'% bulk saving' : 'Bulk discount applied' %></em><% } %><b><%= product.price ? '₹'+Number(product.price*(1-(t[3]==='percent'?Number(t[4])/100:Number(t[4])/Number(product.price)))).toFixed(2) : 'Quote' %> / piece</b></div><% }) %>
     </div>
   </section><% } %>
 
