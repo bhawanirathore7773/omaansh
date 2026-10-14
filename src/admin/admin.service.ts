@@ -113,6 +113,50 @@ export class AdminService {
     });
   }
 
+
+  async listProductsAdmin(query?: string) {
+    const q = String(query || '').trim();
+    return this.prisma.product.findMany({
+      where: q ? { OR: [{ name: { contains: q } }, { sku: { contains: q } }] } : {},
+      include: { category: true },
+      orderBy: [{ updatedAt: 'desc' }],
+      take: 150,
+    });
+  }
+
+  async getProductAdmin(id: number) {
+    return this.prisma.product.findUnique({ where: { id }, include: { category: true } });
+  }
+
+  async saveProduct(body: any, id?: number) {
+    const imageList = [1, 2, 3, 4].map(i => String(body['additionalImage' + i] || '').trim()).filter(Boolean).slice(0, 4);
+    const data: any = {
+      name: String(body.name || '').trim(),
+      slug: String(body.slug || '').trim().toLowerCase(),
+      categoryId: Number(body.categoryId),
+      sku: String(body.sku || '').trim() || null,
+      price: body.price !== undefined && String(body.price).trim() !== '' ? Number(body.price) : null,
+      bulkPrice: body.bulkPrice !== undefined && String(body.bulkPrice).trim() !== '' ? Number(body.bulkPrice) : null,
+      moq: Math.max(1, Number(body.moq || 1)),
+      image: String(body.image || '').trim() || null,
+      additionalImages: imageList,
+      description: String(body.description || '').trim(),
+      shortDescription: String(body.shortDescription || '').trim() || null,
+      specifications: String(body.specifications || '').trim() || null,
+      metaTitle: String(body.metaTitle || '').trim().slice(0, 70) || null,
+      metaDescription: String(body.metaDescription || '').trim().slice(0, 160) || null,
+      metaKeywords: String(body.metaKeywords || '').trim().slice(0, 300) || null,
+      brand: String(body.brand || 'OSIRA').trim(),
+      availability: body.availability === 'OutOfStock' ? 'OutOfStock' : 'InStock',
+      isActive: body.isActive === 'on',
+      isFeatured: body.isFeatured === 'on',
+      isBestseller: body.isBestseller === 'on',
+      isNewArrival: body.isNewArrival === 'on',
+    };
+    if (!data.name || !data.slug || !Number.isInteger(data.categoryId) || !data.description) throw new Error('Product name, slug, category and description are required.');
+    return id ? this.prisma.product.update({ where: { id }, data }) : this.prisma.product.create({ data });
+  }
+
   async listServicesAdmin() { return this.prisma.servicePage.findMany({ orderBy: [{displayOrder:'asc'},{name:'asc'}] }); }
   async saveService(b:any,id?:number) {
     const data:any={name:String(b.name||'').trim(),slug:String(b.slug||'').trim().toLowerCase(),iconClass:b.iconClass||null,h1Heading:String(b.h1Heading||b.name||''),heroSubheading:b.heroSubheading||null,heroImage:b.heroImage||null,shortDescription:String(b.shortDescription||''),fullDescription:String(b.fullDescription||''),processContent:b.processContent||null,benefitsContent:b.benefitsContent||null,metaTitle:b.metaTitle||null,metaDescription:b.metaDescription||null,metaKeywords:b.metaKeywords||null,isPublished:b.isPublished==='on',displayOrder:Number(b.displayOrder||0)};
