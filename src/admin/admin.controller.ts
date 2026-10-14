@@ -52,6 +52,43 @@ export class AdminController {
     return res.redirect(303, '/admin/login');
   }
 
+
+  @UseGuards(AdminAuthGuard)
+  @Get('products')
+  async products(@Req() req: Request, @Res() res: Response) {
+    const q = typeof req.query.q === 'string' ? req.query.q : '';
+    return res.render('admin/products', { user: (req as any).adminUser, rows: await this.admin.listProductsAdmin(q), q });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('products/new')
+  async newProduct(@Req() req: Request, @Res() res: Response) {
+    const categories = await this.admin['prisma'].category.findMany({ orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }] });
+    return res.render('admin/product-form', { user: (req as any).adminUser, product: null, categories, csrfToken: (req as any).adminCsrf });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('products/:id/edit')
+  async editProduct(@Param('id') id: string, @Req() req: Request, @Res() res: Response) {
+    const product = await this.admin.getProductAdmin(Number(id));
+    if (!product) return res.status(404).send('Product not found');
+    const categories = await this.admin['prisma'].category.findMany({ orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }] });
+    return res.render('admin/product-form', { user: (req as any).adminUser, product, categories, csrfToken: (req as any).adminCsrf });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('products/save')
+  async saveProduct(@Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    try {
+      await this.admin.saveProduct(body, body.id ? Number(body.id) : undefined);
+      return res.redirect(303, '/admin/products');
+    } catch (error) {
+      return res.status(400).send(error instanceof Error ? error.message : 'Unable to save product');
+    }
+  }
+
   @UseGuards(AdminAuthGuard)
   @Get('services')
   async services(@Req() req: Request, @Res() res: Response) {
