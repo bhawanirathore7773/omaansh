@@ -28,7 +28,7 @@
           <% if (banner.linkUrl) { %><a class="home-banner-image-link" href="<%= banner.linkUrl %>" tabindex="<%= index === 0 ? '0' : '-1' %>" aria-label="Open banner <%= index + 1 %>"><% } %>
           <picture class="home-banner-picture">
             <% if (banner.mobileImage) { %><source media="(max-width: 700px)" srcset="<%= banner.mobileImage %>"><% } %>
-            <img src="<%= banner.desktopImage || banner.mobileImage || '/images/osira-banner-placeholder.svg' %>" alt="OSIRA wall clock banner <%= index + 1 %>" <%= index === 0 ? 'fetchpriority="high"' : 'loading="lazy"' %> width="1600" height="1200">
+            <img src="<%= banner.desktopImage || banner.mobileImage || ('/images/home-banner-' + (index + 1) + '.svg') %>" alt="OSIRA wall clock banner <%= index + 1 %>" <%= index === 0 ? 'fetchpriority="high"' : 'loading="lazy"' %> width="1600" height="1200">
           </picture>
           <% if (banner.linkUrl) { %></a><% } %>
         </article>
