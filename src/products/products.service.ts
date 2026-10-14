@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async list(query?: string, categorySlug?: string, size?: string, application?: string, page = 1, limit = 24) {
+  async list(query?: string, categorySlug?: string, size?: string, application?: string, page = 1, limit = 24, minPrice?: string, maxPrice?: string, sort = 'recommended') {
     const safePage = Math.max(1, Number(page) || 1);
     const safeLimit = Math.min(48, Math.max(12, Number(limit) || 24));
     const where: any = { isActive: true };
@@ -19,14 +19,21 @@ export class ProductsService {
       ];
     }
     if (categorySlug) where.category = { slug: categorySlug };
-    if (size?.trim()) where.specifications = { contains: 'Size: ' + size.trim() };
-    if (application?.trim()) where.specifications = { contains: application.trim() };
+    const filters: any[] = [];
+    if (size?.trim()) filters.push({ specifications: { contains: size.trim() } });
+    if (application?.trim()) filters.push({ specifications: { contains: application.trim() } });
+    const priceFilter: any = {};
+    if (minPrice && Number.isFinite(Number(minPrice)) && Number(minPrice) >= 0) priceFilter.gte = Number(minPrice);
+    if (maxPrice && Number.isFinite(Number(maxPrice)) && Number(maxPrice) >= 0) priceFilter.lte = Number(maxPrice);
+    if (Object.keys(priceFilter).length) where.price = priceFilter;
+    if (filters.length) where.AND = filters;
+    const orderBy: any = sort === 'price-low' ? [{ price: 'asc' }, { createdAt: 'desc' }] : sort === 'price-high' ? [{ price: 'desc' }, { createdAt: 'desc' }] : sort === 'newest' ? [{ createdAt: 'desc' }] : sort === 'name' ? [{ name: 'asc' }] : [{ isFeatured: 'desc' }, { isNewArrival: 'desc' }, { createdAt: 'desc' }];
 
     const [items, total] = await Promise.all([
       this.prisma.product.findMany({
         where,
         include: { category: true },
-        orderBy: [{ isFeatured: 'desc' }, { isNewArrival: 'desc' }, { createdAt: 'desc' }],
+        orderBy,
         skip: (safePage - 1) * safeLimit,
         take: safeLimit,
       }),
