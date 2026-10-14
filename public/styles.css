@@ -475,3 +475,16 @@ body>.footer{position:relative;flex-shrink:0;margin-top:auto}
  .mobile-drawer .drawer-head{padding-right:0}
 }
 @media(max-width:390px){.menu-toggle.is-open{right:20px;top:15px}}
+
+
+/* Real same-button morph: the menu control is moved into the drawer header while open */
+@media(max-width:800px){
+ .mobile-drawer .drawer-head{position:relative;display:flex;align-items:center;justify-content:space-between;min-height:64px;padding:0 0 18px;border-bottom:1px solid var(--line)}
+ .drawer-title{display:block;color:#101828;font-family:inherit;font-size:1.2rem;font-weight:900;letter-spacing:.04em;line-height:1}
+ .mobile-drawer .drawer-head>.menu-toggle.is-open{position:relative;inset:auto;top:auto;right:auto;z-index:1205;width:44px;height:44px;min-width:44px;min-height:44px;margin:0 0 0 auto;padding:0;border:1px solid var(--line);border-radius:11px;background:#fff;box-sizing:border-box}
+ .mobile-drawer .drawer-head>.menu-toggle.is-open span{position:absolute;left:11px;top:20px;width:20px;height:2px;background:#101828;transform-origin:center;opacity:1}
+ .mobile-drawer .drawer-head>.menu-toggle.is-open span:nth-child(1){transform:rotate(45deg)}
+ .mobile-drawer .drawer-head>.menu-toggle.is-open span:nth-child(2){transform:rotate(-45deg)}
+ .mobile-drawer .drawer-head>.menu-toggle.is-open span:nth-child(3){opacity:0;transform:scaleX(0)}
+ .mobile-drawer .drawer-close{display:none!important}
+}
