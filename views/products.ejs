@@ -9,6 +9,7 @@
   </section>
 
   <section class="section catalogue-body">
+    <% const filterUrl = (omit) => { const params = new URLSearchParams(); if(q)params.set('q',q); if(category && omit!=='category')params.set('category',category); if(size && omit!=='size')params.set('size',size); if(application && omit!=='application')params.set('application',application); if(minPrice && omit!=='price')params.set('minPrice',minPrice); if(maxPrice && omit!=='price')params.set('maxPrice',maxPrice); if(sort && sort!=='recommended')params.set('sort',sort); return '/products'+(params.toString()?'?'+params.toString():''); }; %>
     <div class="catalogue-toolbar">
       <div><strong id="catalogue-total"><%= total %></strong> products <span class="catalogue-results-note">for your business needs</span></div>
       <label class="catalogue-sort-label">Sort by <select id="catalogueSort" aria-label="Sort products">
@@ -32,13 +33,13 @@
         <input type="hidden" name="sort" value="<%= sort || 'recommended' %>">
         <button type="submit" aria-label="Search products">Search</button>
       </form>
-      <button type="button" class="catalogue-filter-trigger" id="openFilters" aria-haspopup="dialog" aria-controls="catalogueFilterSheet"><span class="filter-trigger-icon">☷</span> Filters <span class="filter-count" id="filterCount"><%= [category,size,application,minPrice,maxPrice].filter(Boolean).length %></span></button>
+      <button type="button" class="catalogue-filter-trigger" id="openFilters" aria-haspopup="dialog" aria-controls="catalogueFilterSheet"><span class="filter-trigger-icon">☷</span> Filters <span class="filter-count" id="filterCount"><%= [category,size,application].filter(Boolean).length + ((minPrice || maxPrice) ? 1 : 0) %></span></button>
     </div>
     <div class="active-filter-chips" id="activeFilterChips">
-      <% if(category){ const cat=categories.find(x=>x.slug===category); %><a href="/products" class="filter-chip">Collection: <%= cat?.name || category %> ×</a><% } %>
-      <% if(size){ %><a href="/products" class="filter-chip">Size: <%= size %> ×</a><% } %>
-      <% if(application){ %><a href="/products" class="filter-chip">Application ×</a><% } %>
-      <% if(minPrice || maxPrice){ %><a href="/products" class="filter-chip">Price range ×</a><% } %>
+      <% if(category){ const cat=categories.find(x=>x.slug===category); %><a href="<%= filterUrl('category') %>" class="filter-chip">Collection: <%= cat?.name || category %> ×</a><% } %>
+      <% if(size){ %><a href="<%= filterUrl('size') %>" class="filter-chip">Size: <%= size %> ×</a><% } %>
+      <% if(application){ %><a href="<%= filterUrl('application') %>" class="filter-chip">Application ×</a><% } %>
+      <% if(minPrice || maxPrice){ %><a href="<%= filterUrl('price') %>" class="filter-chip">Price range ×</a><% } %>
     </div>
     <div class="filter-sheet-backdrop" id="filterBackdrop" hidden></div>
     <aside class="filter-sheet" id="catalogueFilterSheet" role="dialog" aria-modal="true" aria-labelledby="filterSheetTitle" aria-hidden="true">
@@ -96,7 +97,7 @@
     const form=document.getElementById('catalogueFilterForm');
     form?.addEventListener('submit',e=>{const min=form.querySelector('[name="minPrice"]').value,max=form.querySelector('[name="maxPrice"]').value;if(min&&max&&Number(min)>Number(max)){e.preventDefault();alert('Maximum price should be greater than or equal to minimum price.');}});
     const count=document.getElementById('filterCount');
-    const updateCount=()=>{const n=['category','size','application','minPrice','maxPrice'].filter(name=>{const el=form?.elements.namedItem(name);return el&&el.value.trim()!=='';}).length;if(count)count.textContent=n;};
+    const updateCount=()=>{const n=['category','size','application'].filter(name=>{const el=form?.elements.namedItem(name);return el&&el.value.trim()!=='';}).length+((form?.elements.namedItem('minPrice')?.value.trim()||form?.elements.namedItem('maxPrice')?.value.trim())?1:0);if(count)count.textContent=n;};
     form?.addEventListener('change',updateCount);form?.addEventListener('input',updateCount);
     const loadBtn=document.getElementById('loadMoreProducts'),grid=document.getElementById('catalogueProductGrid');
     const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
