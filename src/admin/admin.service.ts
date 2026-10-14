@@ -114,6 +114,8 @@ export class AdminService {
   }
 
 
+  async listCategoriesAdmin() { return this.prisma.category.findMany({ orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }] }); }
+
   async listProductsAdmin(query?: string) {
     const q = String(query || '').trim();
     return this.prisma.product.findMany({
