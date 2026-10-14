@@ -1,4 +1,9 @@
-import { Body, Controller, Get, Param, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req, Res, UseGuards, UploadedFile, UseInterceptors, BadRequestException } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { mkdirSync } from 'fs';
+import { extname, join } from 'path';
+import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { AdminService } from './admin.service';
 import { AdminAuthGuard } from './admin-auth.guard';
@@ -71,6 +76,32 @@ export class AdminController {
     return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Blog', kicker: 'CONTENT', description: 'Manage SEO guides and articles.', rows: await this.admin.listBlogsAdmin(), type: 'blog', nameField: 'title' });
   }
 
+
+
+  @UseGuards(AdminAuthGuard)
+  @Post('banners/upload')
+  @UseInterceptors(FileInterceptor('image', {
+    storage: diskStorage({
+      destination: (_req, _file, cb) => {
+        const destination = join(process.cwd(), 'public', 'uploads', 'banners');
+        mkdirSync(destination, { recursive: true });
+        cb(null, destination);
+      },
+      filename: (_req, file, cb) => cb(null, `${Date.now()}-${randomUUID()}${extname(file.originalname).toLowerCase()}`),
+    }),
+    limits: { fileSize: 8 * 1024 * 1024, files: 1 },
+    fileFilter: (_req, file, cb) => {
+      const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
+      if (!allowed.includes(file.mimetype)) return cb(new BadRequestException('Use JPG, PNG, WebP or AVIF image files.') as any, false);
+      cb(null, true);
+    },
+  }))
+  async uploadBannerImage(@UploadedFile() file: Express.Multer.File, @Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).json({ error: 'Invalid CSRF token' });
+    if (!file) return res.status(400).json({ error: 'Select a JPG, PNG, WebP or AVIF image up to 8 MB.' });
+    return res.json({ url: `/uploads/banners/${file.filename}` });
+  }
 
   @UseGuards(AdminAuthGuard)
   @Get('banners')
