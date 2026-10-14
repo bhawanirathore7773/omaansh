@@ -461,3 +461,17 @@ body>.footer{position:relative;flex-shrink:0;margin-top:auto}
 .mobile-drawer .drawer-head>.drawer-close{position:absolute;top:0;right:0;width:44px;height:44px;min-width:44px;min-height:44px;flex:0 0 44px;box-sizing:border-box;display:grid;place-items:center;margin:0;padding:0;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);font-family:Arial,sans-serif;font-size:27px;font-weight:400;line-height:1;cursor:pointer;transform:none;box-shadow:none}
 .mobile-drawer .drawer-head>.drawer-close:active{background:#f8fafc}
 @media(max-width:390px){.mobile-drawer{padding-top:15px}.mobile-drawer .drawer-head{padding-right:54px}.mobile-drawer .drawer-head>.drawer-close{top:0;right:0;width:44px;height:44px;min-width:44px;min-height:44px}}
+
+
+/* Keep the original header control above the drawer and morph it into the X in-place */
+@media(max-width:800px){
+ .menu-toggle{position:relative;z-index:1203;transition:background .22s ease,border-color .22s ease}
+ .menu-toggle.is-open{position:fixed;top:15px;right:20px;margin:0;background:#fff;border-color:var(--line);border-radius:11px}
+ .menu-toggle.is-open span{position:absolute;left:11px;top:20px;width:20px;height:2px;transform-origin:center;opacity:1}
+ .menu-toggle.is-open span:nth-child(1){transform:rotate(45deg)}
+ .menu-toggle.is-open span:nth-child(2){transform:rotate(-45deg)}
+ .menu-toggle.is-open span:nth-child(3){opacity:0;transform:scaleX(0)}
+ .mobile-drawer .drawer-head>.drawer-close{display:none!important}
+ .mobile-drawer .drawer-head{padding-right:0}
+}
+@media(max-width:390px){.menu-toggle.is-open{right:20px;top:15px}}
