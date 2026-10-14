@@ -20,24 +20,17 @@
 
 
   <% if (banners && banners.length) { %>
-  <section class="home-banner-section" aria-label="OSIRA featured collections">
+  <section class="home-banner-section" aria-label="OSIRA featured banners">
     <div class="home-banner-carousel" data-carousel>
       <div class="home-banner-track">
         <% banners.forEach((banner, index) => { %>
-        <article class="home-banner-slide <%= index === 0 ? 'is-active' : '' %>" data-slide="<%= index %>" aria-hidden="<%= index === 0 ? 'false' : 'true' %>" style="--banner-bg:<%= banner.backgroundColor || '#17212b' %>">
-          <% if (banner.desktopImage || banner.mobileImage) { %>
+        <article class="home-banner-slide <%= index === 0 ? 'is-active' : '' %>" data-slide="<%= index %>" aria-hidden="<%= index === 0 ? 'false' : 'true' %>" style="--banner-bg:<%= banner.backgroundColor || '#f7f5ef' %>">
+          <% if (banner.linkUrl) { %><a class="home-banner-image-link" href="<%= banner.linkUrl %>" tabindex="<%= index === 0 ? '0' : '-1' %>" aria-label="Open banner <%= index + 1 %>"><% } %>
           <picture class="home-banner-picture">
             <% if (banner.mobileImage) { %><source media="(max-width: 700px)" srcset="<%= banner.mobileImage %>"><% } %>
-            <% if (banner.desktopImage) { %><img src="<%= banner.desktopImage %>" alt="<%= banner.title %>" <%= index === 0 ? 'fetchpriority="high"' : 'loading="lazy"' %>><% } else if (banner.mobileImage) { %><img src="<%= banner.mobileImage %>" alt="<%= banner.title %>" loading="lazy"><% } %>
+            <img src="<%= banner.desktopImage || banner.mobileImage || '/images/osira-banner-placeholder.svg' %>" alt="OSIRA wall clock banner <%= index + 1 %>" <%= index === 0 ? 'fetchpriority="high"' : 'loading="lazy"' %> width="1600" height="1200">
           </picture>
-          <% } %>
-          <div class="home-banner-shade"></div>
-          <div class="home-banner-copy">
-            <span class="home-banner-eyebrow">OSIRA <i></i> WALL CLOCKS</span>
-            <h2><%= banner.title %></h2>
-            <% if (banner.subtitle) { %><p><%= banner.subtitle %></p><% } %>
-            <% if (banner.buttonLabel && banner.linkUrl) { %><a class="home-banner-cta" href="<%= banner.linkUrl %>"><%= banner.buttonLabel %><span aria-hidden="true">↗</span></a><% } %>
-          </div>
+          <% if (banner.linkUrl) { %></a><% } %>
         </article>
         <% }) %>
       </div>
@@ -58,32 +51,25 @@
     const dots = Array.from(root.querySelectorAll('[data-dot]'));
     if (slides.length < 2) return;
     let active = 0, timer, startX = 0;
-    const show = (index) => {
+    const show = index => {
       active = (index + slides.length) % slides.length;
       slides.forEach((slide, i) => {
         slide.classList.toggle('is-active', i === active);
         slide.setAttribute('aria-hidden', i === active ? 'false' : 'true');
+        const link = slide.querySelector('a');
+        if (link) link.tabIndex = i === active ? 0 : -1;
       });
-      dots.forEach((dot, i) => {
-        dot.classList.toggle('is-active', i === active);
-        dot.setAttribute('aria-current', i === active ? 'true' : 'false');
-      });
+      dots.forEach((dot, i) => { dot.classList.toggle('is-active', i === active); dot.setAttribute('aria-current', i === active ? 'true' : 'false'); });
     };
     const stop = () => window.clearInterval(timer);
-    const start = () => { stop(); timer = window.setInterval(() => show(active + 1), 5200); };
+    const start = () => { stop(); if (!document.hidden) timer = window.setInterval(() => show(active + 1), 5000); };
     root.querySelector('[data-prev]')?.addEventListener('click', () => { show(active - 1); start(); });
     root.querySelector('[data-next]')?.addEventListener('click', () => { show(active + 1); start(); });
     dots.forEach(dot => dot.addEventListener('click', () => { show(Number(dot.dataset.dot)); start(); }));
-    root.addEventListener('mouseenter', stop);
-    root.addEventListener('mouseleave', start);
-    root.addEventListener('focusin', stop);
-    root.addEventListener('focusout', start);
+    root.addEventListener('mouseenter', stop); root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop); root.addEventListener('focusout', start);
     root.addEventListener('touchstart', event => { startX = event.changedTouches[0].clientX; stop(); }, {passive:true});
-    root.addEventListener('touchend', event => {
-      const delta = event.changedTouches[0].clientX - startX;
-      if (Math.abs(delta) > 45) show(active + (delta < 0 ? 1 : -1));
-      start();
-    }, {passive:true});
+    root.addEventListener('touchend', event => { const delta = event.changedTouches[0].clientX - startX; if (Math.abs(delta) > 45) show(active + (delta < 0 ? 1 : -1)); start(); }, {passive:true});
     document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
     start();
   })();
