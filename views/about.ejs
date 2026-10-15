@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+<main class="about-page">
+  <section class="section about-hero">
+    <span class="kicker">ABOUT OSIRA</span>
+    <h1>Wall clocks for spaces that bring people together.</h1>
+    <p>OSIRA helps retailers, businesses and organisations source wall clocks for everyday use, gifting, promotion and custom programmes.</p>
+    <div class="actions"><a class="btn primary" href="/products">Explore wall clocks</a><a class="btn secondary" href="/#enquiry">Discuss a business order</a></div>
+  </section>
+  <section class="section about-value-grid">
+    <article><span>01</span><h2>Built around your requirements</h2><p>Explore practical and decorative designs, then shortlist by size, style and application.</p></article>
+    <article><span>02</span><h2>Wholesale and bulk enquiries</h2><p>Share your quantity, target price and delivery needs to discuss suitable current options.</p></article>
+    <article><span>03</span><h2>Custom and promotional orders</h2><p>Discuss branding, artwork and product specifications for corporate gifting or promotional requirements.</p></article>
+  </section>
+  <section class="section about-location">
+    <div><span class="kicker">BUSINESS SUPPLY</span><h2>One catalogue. Multiple ways to source.</h2><p>From retail replenishment to office requirements and larger business orders, OSIRA keeps the focus on product fit, clear specifications and a practical quotation process.</p></div>
+    <div class="about-location-card"><strong><%= site?.businessName || 'OSIRA' %></strong><span><%= site?.locality || 'Jaipur' %><%= site?.region ? ', '+site.region : ', Rajasthan' %>, India</span><a href="/categories">Browse collections →</a></div>
+  </section>
+  <section class="section about-cta"><div><span class="kicker">LET'S TALK REQUIREMENTS</span><h2>Tell us what you need to source.</h2></div><a class="btn primary" href="/#enquiry">Start an enquiry →</a></section>
+</main>
+<%- include('partials/footer', { site }) %>
