@@ -186,26 +186,40 @@ export class AdminService {
   }
 
   async listHomeBanners() {
-    return this.prisma.homeBanner.findMany({ orderBy: [{ displayOrder: 'asc' }, { id: 'asc' }], take: 4 });
+    return this.prisma.homeBanner.findMany({ orderBy: [{ displayOrder: 'asc' }, { id: 'asc' }] });
+  }
+
+  async createHomeBanner() {
+    const count = await this.prisma.homeBanner.count();
+    if (count >= 20) throw new Error('You can create up to 20 homepage slides.');
+    return this.prisma.homeBanner.create({
+      data: {
+        title: 'OSIRA banner ' + (count + 1),
+        displayOrder: count + 1,
+        isActive: true,
+        backgroundColor: '#17212b',
+      },
+    });
   }
 
   async saveHomeBanners(body: any) {
-    const rows = Array.isArray(body.banners) ? body.banners : [];
-    for (const row of rows.slice(0, 4)) {
+    const input = body?.banners;
+    const rows = input ? (Array.isArray(input) ? input : [input]) : [];
+    for (const row of rows.slice(0, 20)) {
       const id = Number(row.id);
       if (!Number.isInteger(id) || id < 1) continue;
       await this.prisma.homeBanner.update({
         where: { id },
         data: {
-          title: String(row.title || '').trim().slice(0, 160) || 'OSIRA',
-          subtitle: String(row.subtitle || '').trim().slice(0, 300) || null,
+          title: String(row.title || '').trim().slice(0, 160) || ('OSIRA banner ' + id),
+          subtitle: null,
           desktopImage: String(row.desktopImage || '').trim().slice(0, 700) || null,
           mobileImage: String(row.mobileImage || '').trim().slice(0, 700) || null,
-          buttonLabel: String(row.buttonLabel || '').trim().slice(0, 80) || null,
-          linkUrl: String(row.linkUrl || '').trim().slice(0, 500) || null,
+          buttonLabel: null,
+          linkUrl: null,
           backgroundColor: /^#[0-9a-fA-F]{6}$/.test(String(row.backgroundColor || '')) ? String(row.backgroundColor) : '#17212b',
-          displayOrder: Number(row.displayOrder || 0),
-          isActive: row.isActive === 'on',
+          displayOrder: Number(row.displayOrder || id),
+          isActive: row.isActive === 'on' || row.isActive === true,
         },
       });
     }
