@@ -676,3 +676,16 @@ body.filter-sheet-open{position:fixed!important;overflow:hidden!important;width:
     object-position:center!important;
   }
 }
+
+
+/* Enlarge the artwork inside the hero banner so the clock uses the available canvas */
+.home-banner-picture img{
+  transform:scale(1.10);
+  transform-origin:center center;
+}
+@media(max-width:800px){
+  .home-banner-picture img{
+    transform:scale(1.16)!important;
+    transform-origin:center center!important;
+  }
+}
