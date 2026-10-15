@@ -47,7 +47,7 @@ async function bootstrap() {
     if (process.env.NODE_ENV === 'production') res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     next();
   });
-  app.use(express.urlencoded({ extended: false, limit: '100kb' }));
+  app.use(express.urlencoded({ extended: true, limit: '100kb' }));
   app.use(express.json({ limit: '100kb' }));
   app.use(rateLimit);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
