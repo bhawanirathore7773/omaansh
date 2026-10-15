@@ -731,3 +731,22 @@ body.filter-sheet-open{position:fixed!important;overflow:hidden!important;width:
     transform:none!important;
   }
 }
+
+
+/* Desktop hero carousel: reduce oversized banner height and remove extra zoom.
+   Keep mobile's approved 4:3 framing unchanged. */
+@media (min-width: 801px) {
+  .home-banner-section {
+    margin-bottom: 42px;
+  }
+  .home-banner-track,
+  .home-banner-slide {
+    height: clamp(300px, 27vw, 390px) !important;
+    min-height: 0 !important;
+  }
+  .home-banner-picture img {
+    transform: none !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+}
