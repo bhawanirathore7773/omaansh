@@ -785,3 +785,43 @@ body.filter-sheet-open{position:fixed!important;overflow:hidden!important;width:
     transform: none !important;
   }
 }
+
+
+/* Final carousel sizing: compact 16:9 mobile frame, matching the admin cropper.
+   Keep this block last so older responsive rules cannot override the ratio. */
+@media screen and (max-width: 800px) {
+  body .home-banner-section .home-banner-carousel {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+  body .home-banner-section .home-banner-carousel .home-banner-track {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 16 / 9 !important;
+    position: relative !important;
+  }
+  body .home-banner-section .home-banner-carousel .home-banner-slide,
+  body .home-banner-section .home-banner-carousel .home-banner-slide.is-active {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+  }
+  body .home-banner-section .home-banner-carousel .home-banner-picture img {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    transform: none !important;
+  }
+  body .home-banner-section .home-banner-arrow { top: 50% !important; }
+}
+@media screen and (max-width: 700px) {
+  .home-banner-editor .banner-preview.image-only-preview { aspect-ratio: 16 / 9 !important; }
+}
