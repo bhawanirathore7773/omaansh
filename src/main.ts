@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { uploadDirectory } from './upload-storage';
 import { Request, Response, NextFunction } from 'express';
 import { AppModule } from './app.module';
 import * as express from 'express';
@@ -54,6 +55,8 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
   app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/' });
+  // User uploads live outside the deployed source tree so Git deployments do not erase them.
+  app.useStaticAssets(uploadDirectory, { prefix: '/uploads' });
   app.useStaticAssets(join(__dirname, '..', 'static'), { prefix: '/static' });
   const port = Number(process.env.PORT || 3000);
   await app.listen(port, '0.0.0.0');
