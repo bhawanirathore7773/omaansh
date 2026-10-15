@@ -43,8 +43,10 @@
 (() => {
  const toggle=document.querySelector('.menu-toggle'), drawer=document.querySelector('.mobile-drawer'), backdrop=document.querySelector('.drawer-backdrop');
  if(!toggle||!drawer||!backdrop)return;
- const open=()=>{drawer.classList.add('is-open');toggle.classList.add('is-open');backdrop.hidden=false;requestAnimationFrame(()=>backdrop.classList.add('is-visible'));toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','Close navigation menu');drawer.setAttribute('aria-hidden','false');document.body.classList.add('drawer-open');};
- const close=()=>{drawer.classList.remove('is-open');toggle.classList.remove('is-open');backdrop.classList.remove('is-visible');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open navigation menu');drawer.setAttribute('aria-hidden','true');document.body.classList.remove('drawer-open');window.setTimeout(()=>{if(!backdrop.classList.contains('is-visible'))backdrop.hidden=true;},280);};
+ const drawerHead=drawer.querySelector('.drawer-head');
+ const navInner=document.querySelector('.nav-inner');
+ const open=()=>{drawerHead.appendChild(toggle);drawer.classList.add('is-open');toggle.classList.add('is-open');backdrop.hidden=false;requestAnimationFrame(()=>backdrop.classList.add('is-visible'));toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','Close navigation menu');drawer.setAttribute('aria-hidden','false');document.body.classList.add('drawer-open');};
+ const close=()=>{drawer.classList.remove('is-open');toggle.classList.remove('is-open');navInner.appendChild(toggle);backdrop.classList.remove('is-visible');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open navigation menu');drawer.setAttribute('aria-hidden','true');document.body.classList.remove('drawer-open');window.setTimeout(()=>{if(!backdrop.classList.contains('is-visible'))backdrop.hidden=true;},280);};
  toggle.addEventListener('click',()=>drawer.classList.contains('is-open')?close():open());
  backdrop.addEventListener('click',close);
  drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
