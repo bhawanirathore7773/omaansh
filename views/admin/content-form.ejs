@@ -74,7 +74,7 @@
      const response=await fetch('/admin/products/upload-image',{method:'POST',body:data,credentials:'same-origin'});
      const result=await response.json();if(!response.ok)throw new Error(result.error||'Upload failed');
      targetInput.value=result.url;targetInput.dispatchEvent(new Event('change',{bubbles:true}));
-     closeContentCrop();sourceButton.textContent='Uploaded ✓ · Crop another';
+     const completedButton=sourceButton;closeContentCrop();if(completedButton)completedButton.textContent='Uploaded ✓ · Crop another';
    }catch(error){alert(error.message||'Unable to upload image.');}
    finally{cropUpload.disabled=false;cropUpload.textContent='Crop & upload';}
  });
