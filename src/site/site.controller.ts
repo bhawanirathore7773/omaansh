@@ -87,7 +87,7 @@ export class SiteController {
       site,
       pageTitle: 'About OSIRA | Wall Clock Supplier for Business Orders',
       metaDescription: 'Learn about OSIRA wall clocks for retail, wholesale, corporate gifting and custom business requirements.',
-      canonical: process.env.SITE_URL ? process.env.SITE_URL.replace(/\\/$/, '') + '/about' : undefined,
+      canonical: process.env.SITE_URL ? process.env.SITE_URL.replace(/\/$/, '') + '/about' : undefined,
     };
   }
 
