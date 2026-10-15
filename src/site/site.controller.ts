@@ -79,6 +79,18 @@ export class SiteController {
     };
   }
 
+  @Get('about')
+  @Render('about')
+  async about() {
+    const site = await this.prisma.siteSettings.findUnique({ where: { id: 1 } });
+    return {
+      site,
+      pageTitle: 'About OSIRA | Wall Clock Supplier for Business Orders',
+      metaDescription: 'Learn about OSIRA wall clocks for retail, wholesale, corporate gifting and custom business requirements.',
+      canonical: (process.env.SITE_URL || '').replace(/\\/$/, '') + '/about',
+    };
+  }
+
   @Get('robots.txt')
   @Header('Content-Type', 'text/plain; charset=utf-8')
   robots() {
@@ -99,7 +111,7 @@ export class SiteController {
       this.prisma.blog.findMany({ where: { isPublished: true }, select: { slug: true, updatedAt: true } }),
     ]);
     const urls: Array<[string, Date]> = [
-      ['', new Date()], ['/products', new Date()], ['/categories', new Date()],
+      ['', new Date()], ['/products', new Date()], ['/categories', new Date()], ['/about', new Date()],
       ...products.map(x => ['/products/' + x.slug, x.updatedAt] as [string, Date]),
       ...categories.map(x => ['/categories/' + x.slug, x.updatedAt] as [string, Date]),
       ...services.map(x => ['/services/' + x.slug, x.updatedAt] as [string, Date]),
