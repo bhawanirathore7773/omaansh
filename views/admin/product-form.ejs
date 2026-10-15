@@ -1,26 +1,157 @@
 <%- include('partials/header', {title:(product?'Edit':'Add')+' Product | OSIRA Admin', user}) %>
-<div class="admin-heading"><div><p class="admin-kicker">CATALOGUE</p><h1><%= product?'Edit product':'Add product' %></h1><p>Keep product content, commercial details and SEO metadata consistent.</p></div></div>
-<% const productImages = Array.isArray(product?.additionalImages) ? product.additionalImages : []; %>
-<form method="post" action="/admin/products/save" class="editor-grid">
-<input type="hidden" name="csrfToken" value="<%= (typeof csrfToken!=='undefined'&&csrfToken)||'' %>"><% if(product){ %><input type="hidden" name="id" value="<%= product.id %>"><% } %>
-<section class="editor-card"><h2>Product details</h2><div class="field-grid"><label>Name<input name="name" required value="<%= product?.name||'' %>"></label><label>Slug<input name="slug" required value="<%= product?.slug||'' %>"></label><label>Category<select name="categoryId" required><% categories.forEach(c=>{ %><option value="<%= c.id %>" <%= product?.categoryId===c.id?'selected':'' %>><%= c.name %></option><% }) %></select></label><label>SKU<input name="sku" value="<%= product?.sku||'' %>"></label><label>Price<input type="number" step="0.01" name="price" value="<%= product?.price||'' %>"></label><label>Bulk price<input type="number" step="0.01" name="bulkPrice" value="<%= product?.bulkPrice||'' %>"></label><label>MOQ<input type="number" min="1" name="moq" value="<%= product?.moq||1 %>"></label><label>Main product image<input name="image" data-product-image-url value="<%= product?.image||'' %>" placeholder="/uploads/products/..."><input type="file" data-product-image-file accept="image/jpeg,image/png,image/webp,image/avif"><button type="button" class="admin-button product-image-upload" data-product-image-upload>Upload main image</button><small>Main catalogue and product-page image. JPG, PNG, WebP or AVIF · max 8 MB.</small></label></div>
-<div class="product-gallery-admin"><h3>Product gallery images</h3><p>Add up to four extra views. These appear as thumbnails below the main product image on the product page.</p><div class="field-grid">
-<% [0,1,2,3].forEach(i=>{ %><label>Gallery image <%= i+1 %><input name="additionalImage<%= i+1 %>" data-product-image-url value="<%= productImages[i] || '' %>" placeholder="/uploads/products/..."><input type="file" data-product-image-file accept="image/jpeg,image/png,image/webp,image/avif"><button type="button" class="admin-button product-image-upload" data-product-image-upload>Upload view <%= i+1 %></button></label><% }) %>
-</div></div><label>Description<textarea name="description" rows="7"><%= product?.description||'' %></textarea></label><label>Short description<input name="shortDescription" value="<%= product?.shortDescription||'' %>"></label><label>Specifications<textarea name="specifications" rows="5"><%= product?.specifications||'' %></textarea></label></section>
-<section class="editor-card"><h2>SEO & visibility</h2><label>Meta title<input name="metaTitle" maxlength="70" value="<%= product?.metaTitle||'' %>"></label><label>Meta description<textarea name="metaDescription" maxlength="160" rows="4"><%= product?.metaDescription||'' %></textarea></label><label>Meta keywords<input name="metaKeywords" value="<%= product?.metaKeywords||'' %>"></label><label>Brand<input name="brand" value="<%= product?.brand||'OSIRA' %>"></label><label>Availability<select name="availability"><option value="InStock" <%= product?.availability==='InStock'?'selected':'' %>>In stock</option><option value="OutOfStock" <%= product?.availability==='OutOfStock'?'selected':'' %>>Out of stock</option></select></label><div class="checks"><label><input type="checkbox" name="isActive" <%= product?.isActive!==false?'checked':'' %>> Active</label><label><input type="checkbox" name="isFeatured" <%= product?.isFeatured?'checked':'' %>> Featured</label><label><input type="checkbox" name="isBestseller" <%= product?.isBestseller?'checked':'' %>> Bestseller</label><label><input type="checkbox" name="isNewArrival" <%= product?.isNewArrival?'checked':'' %>> New arrival</label></div><button class="admin-button" type="submit">Save product</button></section>
+<%
+const productImages = Array.isArray(product?.additionalImages) ? product.additionalImages : [];
+const parsedSpecs = String(product?.specifications || '').split(/\r?\n/).map(line => { const index=line.indexOf(':'); return index>0 ? {key:line.slice(0,index).trim(),value:line.slice(index+1).trim()} : null; }).filter(Boolean);
+const defaultSpecs = [
+ {key:'Product Type',value:'Wall Clock'},{key:'Size / Diameter',value:'12 inch'},{key:'Shape',value:'Round'},
+ {key:'Frame Material',value:'ABS Plastic'},{key:'Dial Type',value:'Analog'},{key:'Movement',value:'Quartz'},
+ {key:'Power Source',value:'1 AA Battery'},{key:'Dial Colour',value:'As per design'},{key:'Frame Colour',value:'As per design'},
+ {key:'Display',value:'Analog'},{key:'Usage',value:'Home, office and commercial'},{key:'Packaging',value:'Individual box'},
+ {key:'Country of Origin',value:'India'},{key:'Warranty',value:'As per company policy'}
+];
+const specRows = parsedSpecs.length ? parsedSpecs : defaultSpecs;
+%>
+<div class="admin-heading product-page-heading">
+  <div><p class="admin-kicker">CATALOGUE / PRODUCTS</p><h1><%= product?'Edit product':'Create a product' %></h1><p>Build a complete, search-ready product listing with reusable defaults, flexible gallery and editable specifications.</p></div>
+  <div class="admin-heading-actions"><a class="admin-secondary" href="/admin/products">← Back to products</a><a class="admin-secondary" href="/products" target="_blank" rel="noopener">View storefront ↗</a></div>
+</div>
+<div class="product-editor-progress"><span class="progress-dot"></span><span><%= product?'Editing product #'+product.id:'New product' %></span><span class="progress-divider"></span><span>Changes are saved when you click Save product</span></div>
+<form method="post" action="/admin/products/save" class="product-editor-form" id="productEditor">
+<input type="hidden" name="csrfToken" value="<%= (typeof csrfToken!=='undefined'&&csrfToken)||'' %>">
+<% if(product){ %><input type="hidden" name="id" value="<%= product.id %>"><% } %>
+<div class="product-editor-main">
+  <section class="editor-card product-editor-card">
+    <div class="editor-section-heading"><span class="editor-step">01</span><div><h2>Product basics</h2><p>Start with the product name and category. We’ll prepare sensible clock specifications for you.</p></div></div>
+    <div class="field-grid">
+      <label class="field-span-2">Product name <span class="required-mark">*</span><input id="productName" name="name" required maxlength="300" value="<%= product?.name||'' %>" placeholder="e.g. OSIRA Classic Round 12 Inch Wall Clock"></label>
+      <label>URL slug <span class="required-mark">*</span><input id="productSlug" name="slug" required value="<%= product?.slug||'' %>" placeholder="classic-round-12-inch-wall-clock"><small>Auto-generated from the product name; editable anytime.</small></label>
+      <label>Category / collection <span class="required-mark">*</span><select id="productCategory" name="categoryId" required><option value="">Choose category</option><% categories.forEach(c=>{ %><option value="<%= c.id %>" data-category-name="<%= c.name %>" <%= product?.categoryId===c.id?'selected':'' %>><%= c.name %></option><% }) %></select></label>
+      <label>SKU / product code<input name="sku" value="<%= product?.sku||'' %>" placeholder="e.g. OS-CLK-012"></label>
+      <label>Brand<input name="brand" value="<%= product?.brand||'OSIRA' %>" placeholder="OSIRA"></label>
+      <label>Product size <select id="clockSize"><option value="8 inch">8 inch</option><option value="10 inch">10 inch</option><option value="12 inch" selected>12 inch</option><option value="14 inch">14 inch</option><option value="16 inch">16 inch</option><option value="18 inch">18 inch</option><option value="Custom size">Custom size</option></select><small>Updates the Size / Diameter specification below.</small></label>
+      <label>Shape <select id="clockShape"><option>Round</option><option>Square</option><option>Rectangle</option><option>Oval</option><option>Custom</option></select></label>
+    </div>
+  </section>
+  <section class="editor-card product-editor-card">
+    <div class="editor-section-heading"><span class="editor-step">02</span><div><h2>Product images</h2><p>Upload your main image and add as many gallery views as needed. Keep images clear and consistent.</p></div></div>
+    <div class="main-image-editor">
+      <div class="image-editor-preview" id="mainImagePreview"><% if(product?.image){ %><img src="<%= product.image %>" alt="Product preview"><% } else { %><span>IMAGE<br>PREVIEW</span><% } %></div>
+      <div class="image-editor-fields"><label>Main product image URL<input name="image" data-product-image-url id="mainImageUrl" value="<%= product?.image||'' %>" placeholder="/uploads/products/image.webp"></label><div class="upload-row"><input type="file" data-product-image-file accept="image/jpeg,image/png,image/webp,image/avif" aria-label="Choose main product image"><button type="button" class="admin-button" data-product-image-upload>Upload main image</button></div><small>JPG, PNG, WebP or AVIF · max 8 MB. The URL can also point to your image CDN.</small></div>
+    </div>
+    <div class="gallery-heading"><div><h3>Gallery images</h3><p>Side view, back view, dial detail, packaging and lifestyle photos.</p></div><button type="button" class="admin-secondary" id="addGalleryImage">＋ Add another image</button></div>
+    <div id="galleryRows" class="gallery-editor-list">
+      <% productImages.forEach((image,index)=>{ %><div class="gallery-editor-row"><span class="gallery-index"><%= index+1 %></span><input name="additionalImages" data-product-image-url value="<%= image %>" placeholder="Paste image URL or upload a file"><input type="file" data-product-image-file accept="image/jpeg,image/png,image/webp,image/avif" aria-label="Choose gallery image <%= index+1 %>"><button type="button" class="admin-secondary" data-product-image-upload>Upload</button><button type="button" class="icon-danger" data-remove-gallery aria-label="Remove image">×</button></div><% }) %>
+    </div>
+    <p class="inline-help">Up to 30 additional images per product. The first image above is the primary image; gallery images can be reordered by removing and re-adding them.</p>
+  </section>
+  <section class="editor-card product-editor-card">
+    <div class="editor-section-heading"><span class="editor-step">03</span><div><h2>Specifications</h2><p>Standard wall-clock attributes are pre-filled. Edit any value or add your own key–value pairs.</p></div></div>
+    <div class="spec-toolbar"><span id="specCount"><%= specRows.length %> specifications</span><button type="button" class="admin-secondary" id="addSpecification">＋ Add specification</button></div>
+    <div class="spec-table-wrap"><div class="spec-table-head"><span>Specification / key</span><span>Value</span><span></span></div><div id="specRows">
+      <% specRows.forEach(spec=>{ %><div class="spec-row"><input name="specKey" value="<%= spec.key %>" placeholder="e.g. Frame material" aria-label="Specification name"><input name="specValue" value="<%= spec.value %>" placeholder="Enter value" aria-label="Specification value"><button type="button" class="icon-danger" data-remove-spec aria-label="Remove specification">×</button></div><% }) %>
+    </div></div>
+    <div class="field-grid spec-extra-fields"><label>Short description<textarea name="shortDescription" rows="3" maxlength="300" placeholder="A concise summary for category cards and search results."><%= product?.shortDescription||'' %></textarea></label><label>Full product description <span class="required-mark">*</span><textarea name="description" rows="6" required placeholder="Describe the design, readability, use cases, finish and bulk-order suitability."><%= product?.description||'' %></textarea></label></div>
+  </section>
+  <section class="editor-card product-editor-card">
+    <div class="editor-section-heading"><span class="editor-step">04</span><div><h2>Pricing & availability</h2><p>Set public pricing and business-order quantities. Leave prices empty if you quote on request.</p></div></div>
+    <div class="field-grid">
+      <label>Retail / base price (₹)<input type="number" min="0" step="0.01" name="price" value="<%= product?.price??'' %>" placeholder="e.g. 299"></label>
+      <label>Bulk price per piece (₹)<input type="number" min="0" step="0.01" name="bulkPrice" value="<%= product?.bulkPrice??'' %>" placeholder="e.g. 225"></label>
+      <label>Minimum order quantity (MOQ)<input type="number" min="1" step="1" name="moq" value="<%= product?.moq||25 %>" required></label>
+      <label>Availability<select name="availability"><option value="InStock" <%= product?.availability!=='OutOfStock'?'selected':'' %>>Available for enquiry</option><option value="OutOfStock" <%= product?.availability==='OutOfStock'?'selected':'' %>>Currently unavailable</option></select></label>
+    </div>
+  </section>
+  <section class="editor-card product-editor-card">
+    <div class="editor-section-heading"><span class="editor-step">05</span><div><h2>Search engine optimisation</h2><p>Write a unique title and description for this product. Character guidance is shown as you type.</p></div></div>
+    <label>Meta title <span class="counter" id="metaTitleCount">0 / 70</span><input id="metaTitle" name="metaTitle" maxlength="70" value="<%= product?.metaTitle||'' %>" placeholder="Product name | OSIRA Wall Clocks"></label>
+    <label>Meta description <span class="counter" id="metaDescriptionCount">0 / 160</span><textarea id="metaDescription" name="metaDescription" maxlength="160" rows="3" placeholder="Summarise product value, use cases and wholesale enquiry options."><%= product?.metaDescription||'' %></textarea></label>
+    <label>Meta keywords<input name="metaKeywords" maxlength="300" value="<%= product?.metaKeywords||'' %>" placeholder="wall clock, wholesale wall clock, bulk wall clocks"></label>
+  </section>
+</div>
+<aside class="product-editor-aside">
+  <section class="editor-card publish-card"><p class="admin-kicker">PUBLISHING</p><h2>Visibility</h2><p class="aside-description">Control where this product appears on the storefront.</p>
+    <label class="switch-row"><span><strong>Active product</strong><small>Visible on the website</small></span><input type="checkbox" name="isActive" <%= product?.isActive!==false?'checked':'' %>></label>
+    <label class="switch-row"><span><strong>Featured</strong><small>Highlight in featured areas</small></span><input type="checkbox" name="isFeatured" <%= product?.isFeatured?'checked':'' %>></label>
+    <label class="switch-row"><span><strong>Bestseller</strong><small>Show bestseller label</small></span><input type="checkbox" name="isBestseller" <%= product?.isBestseller?'checked':'' %>></label>
+    <label class="switch-row"><span><strong>New arrival</strong><small>Highlight as a new product</small></span><input type="checkbox" name="isNewArrival" <%= product?.isNewArrival?'checked':'' %>></label>
+  </section>
+  <section class="editor-card completion-card"><p class="admin-kicker">QUICK CHECK</p><h2>Before saving</h2><ul><li>Product name and category are correct</li><li>Main image is sharp and representative</li><li>Specifications match the actual product</li><li>MOQ and prices are correct</li><li>SEO title and description are unique</li></ul><a href="/admin/products" class="admin-secondary full-width">Cancel and return</a></section>
+  <section class="editor-card preview-card"><p class="admin-kicker">LIVE PREVIEW</p><div class="mini-product-preview" id="miniProductPreview"><div class="mini-product-image" id="miniPreviewImage"><span>OSIRA</span></div><div class="mini-product-copy"><small id="miniPreviewCategory">WALL CLOCKS</small><strong id="miniPreviewName"><%= product?.name||'Your product name' %></strong><span id="miniPreviewPrice"><%= product?.price?'₹'+Number(product.price).toLocaleString('en-IN'):'Price on enquiry' %></span></div></div><small class="inline-help">Preview is indicative; the live storefront uses its own layout.</small></section>
+</aside>
+<div class="product-savebar"><a class="admin-secondary" href="/admin/products">Cancel</a><span>Review your details before publishing.</span><button class="admin-button" type="submit">Save product <span aria-hidden="true">→</span></button></div>
 </form>
 <script>
-document.querySelectorAll('[data-product-image-upload]').forEach(button=>{
-  button.addEventListener('click',async()=>{
-    const field=button.closest('label'),fileInput=field.querySelector('[data-product-image-file]'),urlInput=field.querySelector('[data-product-image-url]'),file=fileInput.files?.[0];
-    if(!file){alert('Choose an image first.');return;}
+(function(){
+  const form=document.getElementById('productEditor');
+  const gallery=document.getElementById('galleryRows');
+  const specs=document.getElementById('specRows');
+  const name=document.getElementById('productName');
+  const slug=document.getElementById('productSlug');
+  const category=document.getElementById('productCategory');
+  const size=document.getElementById('clockSize');
+  const shape=document.getElementById('clockShape');
+  let slugTouched=Boolean(slug.value);
+  const slugify=value=>value.toLowerCase().trim().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  name.addEventListener('input',()=>{if(!slugTouched)slug.value=slugify(name.value);document.getElementById('miniPreviewName').textContent=name.value||'Your product name';if(!document.getElementById('metaTitle').dataset.touched)document.getElementById('metaTitle').value=name.value?name.value+' | OSIRA Wall Clocks':'';updateCounters();});
+  slug.addEventListener('input',()=>{slugTouched=true;});
+  document.getElementById('metaTitle').addEventListener('input',e=>{e.target.dataset.touched='1';updateCounters();});
+  document.getElementById('metaDescription').addEventListener('input',updateCounters);
+  function updateCounters(){document.getElementById('metaTitleCount').textContent=document.getElementById('metaTitle').value.length+' / 70';document.getElementById('metaDescriptionCount').textContent=document.getElementById('metaDescription').value.length+' / 160';}
+  function addGalleryRow(value=''){
+    if(gallery.querySelectorAll('.gallery-editor-row').length>=30){alert('You can add up to 30 gallery images.');return;}
+    const row=document.createElement('div');row.className='gallery-editor-row';
+    row.innerHTML='<span class="gallery-index"></span><input name="additionalImages" data-product-image-url placeholder="Paste image URL or upload a file"><input type="file" data-product-image-file accept="image/jpeg,image/png,image/webp,image/avif" aria-label="Choose gallery image"><button type="button" class="admin-secondary" data-product-image-upload>Upload</button><button type="button" class="icon-danger" data-remove-gallery aria-label="Remove image">×</button>';
+    row.querySelector('[data-product-image-url]').value=value;gallery.appendChild(row);renumberGallery();row.querySelector('input[type=file]').focus();
+  }
+  function renumberGallery(){gallery.querySelectorAll('.gallery-editor-row').forEach((row,i)=>row.querySelector('.gallery-index').textContent=String(i+1).padStart(2,'0'));}
+  function addSpec(key='',value=''){const row=document.createElement('div');row.className='spec-row';row.innerHTML='<input name="specKey" placeholder="e.g. Frame material" aria-label="Specification name"><input name="specValue" placeholder="Enter value" aria-label="Specification value"><button type="button" class="icon-danger" data-remove-spec aria-label="Remove specification">×</button>';row.querySelector('[name=specKey]').value=key;row.querySelector('[name=specValue]').value=value;specs.appendChild(row);updateSpecCount();}
+  function updateSpecCount(){document.getElementById('specCount').textContent=specs.querySelectorAll('.spec-row').length+' specifications';}
+  document.getElementById('addGalleryImage').addEventListener('click',()=>addGalleryRow());
+  document.getElementById('addSpecification').addEventListener('click',()=>addSpec());
+  document.addEventListener('click',async event=>{
+    const removeGallery=event.target.closest('[data-remove-gallery]');
+    if(removeGallery){removeGallery.closest('.gallery-editor-row').remove();renumberGallery();return;}
+    const removeSpec=event.target.closest('[data-remove-spec]');
+    if(removeSpec){removeSpec.closest('.spec-row').remove();updateSpecCount();return;}
+    const upload=event.target.closest('[data-product-image-upload]');
+    if(!upload)return;
+    const row=upload.closest('.gallery-editor-row')||upload.closest('.image-editor-fields');
+    const fileInput=row.querySelector('[data-product-image-file]'),urlInput=row.querySelector('[data-product-image-url]'),file=fileInput.files&&fileInput.files[0];
+    if(!file){alert('Please choose an image file first.');return;}
     if(file.size>8*1024*1024){alert('Image must be 8 MB or smaller.');return;}
-    const data=new FormData();data.append('image',file);data.append('csrfToken',document.querySelector('[name="csrfToken"]').value);
-    const old=button.textContent;button.disabled=true;button.textContent='Uploading…';
-    try{const response=await fetch('/admin/products/upload-image',{method:'POST',body:data,credentials:'same-origin'});const result=await response.json();if(!response.ok)throw new Error(result.error||'Upload failed');urlInput.value=result.url;button.textContent='Uploaded ✓';}
-    catch(error){alert(error.message||'Image upload failed.');button.textContent=old;}
-    finally{button.disabled=false;}
+    const data=new FormData();data.append('image',file);data.append('csrfToken',form.querySelector('[name=csrfToken]').value);
+    const old=upload.textContent;upload.disabled=true;upload.textContent='Uploading…';
+    try{const response=await fetch('/admin/products/upload-image',{method:'POST',body:data,credentials:'same-origin'});const result=await response.json();if(!response.ok)throw new Error(result.error||'Upload failed');urlInput.value=result.url;urlInput.dispatchEvent(new Event('input',{bubbles:true}));upload.textContent='Uploaded ✓';if(urlInput.id==='mainImageUrl')renderMainImage(result.url);}
+    catch(error){alert(error.message||'Image upload failed.');upload.textContent=old;}
+    finally{upload.disabled=false;}
   });
-});
+  function renderMainImage(url){const box=document.getElementById('mainImagePreview');box.innerHTML=url?'<img alt="Product preview">':'<span>IMAGE<br>PREVIEW</span>';const img=box.querySelector('img');if(img)img.src=url;const mini=document.getElementById('miniPreviewImage');mini.innerHTML=url?'<img alt="Product thumbnail">':'<span>OSIRA</span>';if(url)mini.querySelector('img').src=url;}
+  document.getElementById('mainImageUrl').addEventListener('input',e=>renderMainImage(e.target.value));
+  document.querySelectorAll('[data-product-image-url]').forEach(input=>input.addEventListener('input',()=>{if(input.id==='mainImageUrl')renderMainImage(input.value);}));
+  document.querySelector('[name=price]').addEventListener('input',e=>{const value=e.target.value;document.getElementById('miniPreviewPrice').textContent=value?'₹'+Number(value).toLocaleString('en-IN'):'Price on enquiry';});
+  category.addEventListener('change',()=>{
+    const selected=category.options[category.selectedIndex];const label=(selected?.dataset.categoryName||'').toLowerCase();
+    if(label.includes('square'))shape.value='Square';else if(label.includes('rectangle'))shape.value='Rectangle';else if(label.includes('round'))shape.value='Round';
+    document.getElementById('miniPreviewCategory').textContent=selected?.textContent||'WALL CLOCKS';
+    if(!slugTouched&&name.value)slug.value=slugify(name.value);
+  });
+  size.addEventListener('change',()=>{const input=Array.from(specs.querySelectorAll('[name=specKey]')).find(el=>el.value.toLowerCase()==='size / diameter');if(input){const row=input.closest('.spec-row');row.querySelector('[name=specValue]').value=size.value;}});
+  shape.addEventListener('change',()=>{const input=Array.from(specs.querySelectorAll('[name=specKey]')).find(el=>el.value.toLowerCase()==='shape');if(input)input.closest('.spec-row').querySelector('[name=specValue]').value=shape.value;});
+  form.addEventListener('submit',event=>{
+    const keys=Array.from(specs.querySelectorAll('[name=specKey]')).map(el=>el.value.trim().toLowerCase()).filter(Boolean);
+    const duplicate=keys.find((key,index)=>keys.indexOf(key)!==index);
+    if(duplicate){event.preventDefault();alert('Duplicate specification key: '+duplicate+'. Please keep each key unique.');return;}
+    const invalid=Array.from(specs.querySelectorAll('.spec-row')).find(row=>(row.querySelector('[name=specKey]').value.trim()&&!row.querySelector('[name=specValue]').value.trim())||(!row.querySelector('[name=specKey]').value.trim()&&row.querySelector('[name=specValue]').value.trim()));
+    if(invalid){event.preventDefault();alert('Complete both the specification name and value, or remove the empty row.');invalid.querySelector('input').focus();return;}
+  });
+  renumberGallery();updateSpecCount();updateCounters();
+  if(!document.getElementById('metaTitle').value&&name.value)document.getElementById('metaTitle').value=name.value+' | OSIRA Wall Clocks';
+  if(!shape.value)shape.value='Round';
+  const existingSize=Array.from(specs.querySelectorAll('.spec-row')).find(row=>row.querySelector('[name=specKey]').value.toLowerCase()==='size / diameter');
+  if(existingSize){const match=Array.from(size.options).find(option=>option.value===existingSize.querySelector('[name=specValue]').value);if(match)size.value=match.value;}
+  const existingShape=Array.from(specs.querySelectorAll('.spec-row')).find(row=>row.querySelector('[name=specKey]').value.toLowerCase()==='shape');
+  if(existingShape){const match=Array.from(shape.options).find(option=>option.value===existingShape.querySelector('[name=specValue]').value);if(match)shape.value=match.value;}
+  if(document.getElementById('mainImageUrl').value)renderMainImage(document.getElementById('mainImageUrl').value);
+})();
 </script>
 <%- include('partials/footer') %>
