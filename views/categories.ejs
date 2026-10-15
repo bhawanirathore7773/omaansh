@@ -12,8 +12,13 @@
     <div class="category-grid category-grid-v2">
       <% categories.forEach((category,index)=>{ %>
       <a class="category-card category-card-v2" href="/categories/<%= category.slug %>">
-        <div class="collection-number"><%= String(index+1).padStart(2,'0') %></div>
-        <div class="category-card-content"><span class="collection-count"><%= category._count.products %> active products</span><h2><%= category.name %></h2><p><%= category.description %></p><span class="collection-link">Explore collection →</span></div>
+        <div class="collection-thumb">
+          <% const collectionImage = category.image || category.staticImagePath; if(collectionImage){ %>
+            <img src="<%= collectionImage %>" alt="<%= category.name %>" loading="lazy" width="360" height="270">
+          <% } else { %><div class="collection-thumb-placeholder" aria-label="<%= category.name %> collection image"><span>OSIRA</span><small>WALL CLOCKS</small></div><% } %>
+          <span class="collection-number"><%= String(index+1).padStart(2,'0') %></span>
+        </div>
+        <div class="category-card-content"><h2><%= category.name %></h2><span class="collection-count"><%= category._count.products %> products</span></div>
       </a>
       <% }) %>
     </div>
