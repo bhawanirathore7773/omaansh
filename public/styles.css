@@ -502,3 +502,28 @@ body>.footer{position:relative;flex-shrink:0;margin-top:auto}
  .drawer-backdrop{z-index:1200;cursor:pointer}
  .mobile-drawer .drawer-head{padding-right:0!important}
 }
+
+
+/* Final drawer header: the actual menu button moves into this header, above the drawer content */
+@media(max-width:800px){
+ .mobile-drawer .drawer-head>.menu-toggle.is-open{
+  position:relative!important;inset:auto!important;top:auto!important;right:auto!important;left:auto!important;
+  z-index:1305!important;display:flex!important;visibility:visible!important;opacity:1!important;
+  width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
+  flex:0 0 44px!important;margin:0 0 0 auto!important;padding:0!important;
+  align-items:center!important;justify-content:center!important;box-sizing:border-box!important;
+  border:1px solid #e1e5eb!important;border-radius:11px!important;background:#fff!important;
+  transform:none!important;box-shadow:none!important;pointer-events:auto!important
+ }
+ .mobile-drawer .drawer-head>.menu-toggle.is-open span{
+  position:absolute!important;left:11px!important;top:20px!important;display:block!important;
+  width:20px!important;height:2px!important;min-height:2px!important;margin:0!important;padding:0!important;
+  border-radius:2px!important;background:#101828!important;transform-origin:center!important;opacity:1!important
+ }
+ .mobile-drawer .drawer-head>.menu-toggle.is-open span:nth-child(1){transform:rotate(45deg)!important}
+ .mobile-drawer .drawer-head>.menu-toggle.is-open span:nth-child(2){transform:rotate(-45deg)!important}
+ .mobile-drawer .drawer-head>.menu-toggle.is-open span:nth-child(3){opacity:0!important;transform:scaleX(0)!important}
+ .mobile-drawer .drawer-head{position:relative!important;z-index:1304!important;overflow:visible!important;padding-right:0!important}
+ .mobile-drawer{z-index:1201!important}
+ .drawer-backdrop{z-index:1200!important}
+}
