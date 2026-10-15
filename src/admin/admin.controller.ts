@@ -115,6 +115,107 @@ export class AdminController {
     }
   }
 
+  private async renderContentEditor(type: 'services' | 'industries' | 'cities' | 'blog', id: number | null, req: Request, res: Response) {
+    const configs: Record<string, any> = {
+      services: {
+        title: 'Service page', kicker: 'WEBSITE CONTENT',
+        fields: [
+          {name:'name',label:'Service name',required:true},{name:'slug',label:'URL slug',required:true,help:'Lowercase words separated by hyphens.'},
+          {name:'iconClass',label:'Icon class',help:'Optional icon class used by the site.'},{name:'h1Heading',label:'Page H1 heading',required:true},
+          {name:'heroSubheading',label:'Hero subheading',type:'textarea',rows:2},{name:'heroImage',label:'Hero image URL'},
+          {name:'shortDescription',label:'Short description',type:'textarea',rows:3,required:true},{name:'fullDescription',label:'Full description',type:'textarea',rows:7,required:true},
+          {name:'processContent',label:'Process content',type:'textarea',rows:5},{name:'benefitsContent',label:'Benefits content',type:'textarea',rows:5},
+          {name:'metaTitle',label:'Meta title',maxlength:70},{name:'metaDescription',label:'Meta description',type:'textarea',rows:3,maxlength:160},{name:'metaKeywords',label:'Meta keywords'},
+          {name:'displayOrder',label:'Display order',type:'number'},{name:'isPublished',label:'Published on website',type:'checkbox'}
+        ]
+      },
+      industries: {
+        title: 'Industry page', kicker: 'WEBSITE CONTENT',
+        fields: [
+          {name:'industryName',label:'Industry name',required:true},{name:'slug',label:'URL slug',required:true},{name:'iconClass',label:'Icon class'},
+          {name:'h1Heading',label:'Page H1 heading',required:true},{name:'heroSubheading',label:'Hero subheading',type:'textarea',rows:2},{name:'heroImage',label:'Hero image URL'},
+          {name:'introContent',label:'Introduction',type:'textarea',rows:6,required:true},{name:'benefitsContent',label:'Benefits',type:'textarea',rows:5},
+          {name:'customizationContent',label:'Customization content',type:'textarea',rows:5},{name:'caseStudyContent',label:'Case study / examples',type:'textarea',rows:5},
+          {name:'metaTitle',label:'Meta title',maxlength:70},{name:'metaDescription',label:'Meta description',type:'textarea',rows:3,maxlength:160},{name:'metaKeywords',label:'Meta keywords'},
+          {name:'displayOrder',label:'Display order',type:'number'},{name:'isPublished',label:'Published on website',type:'checkbox'}
+        ]
+      },
+      cities: {
+        title: 'City landing page', kicker: 'LOCAL SEO',
+        fields: [
+          {name:'cityName',label:'City name',required:true},{name:'slug',label:'URL slug',required:true},{name:'state',label:'State / region'},
+          {name:'pageType',label:'Page type',type:'select',options:[['supplier','Supplier'],['manufacturer','Manufacturer']]},{name:'h1Heading',label:'Page H1 heading',required:true},
+          {name:'heroSubheading',label:'Hero subheading',type:'textarea',rows:2},{name:'heroImage',label:'Hero image URL'},
+          {name:'introContent',label:'Introduction',type:'textarea',rows:6,required:true},{name:'whyChooseContent',label:'Why choose us',type:'textarea',rows:5},
+          {name:'servicesContent',label:'Services / products',type:'textarea',rows:5},{name:'deliveryContent',label:'Delivery information',type:'textarea',rows:4},
+          {name:'industriesContent',label:'Industries served',type:'textarea',rows:4},{name:'closingContent',label:'Closing CTA content',type:'textarea',rows:4},
+          {name:'nearbyAreas',label:'Nearby areas (one per line)',type:'textarea',rows:3},{name:'deliveryTime',label:'Delivery estimate'},
+          {name:'metaTitle',label:'Meta title',maxlength:70},{name:'metaDescription',label:'Meta description',type:'textarea',rows:3,maxlength:160},{name:'metaKeywords',label:'Meta keywords'},
+          {name:'displayOrder',label:'Display order',type:'number'},{name:'isPublished',label:'Published on website',type:'checkbox'}
+        ]
+      },
+      blog: {
+        title: 'Blog article', kicker: 'CONTENT & SEO',
+        fields: [
+          {name:'title',label:'Article title',required:true},{name:'slug',label:'URL slug',required:true},{name:'category',label:'Category'},
+          {name:'featuredImage',label:'Featured image URL'},{name:'description',label:'Excerpt / description',type:'textarea',rows:4,required:true},
+          {name:'contentHtml',label:'Article content (HTML supported)',type:'textarea',rows:14,help:'Use clean headings, paragraphs, lists and links. Preview before publishing.'},
+          {name:'inlineImage1',label:'Inline image 1 URL'},{name:'inlineImage1Caption',label:'Inline image 1 caption'},
+          {name:'inlineImage2',label:'Inline image 2 URL'},{name:'inlineImage2Caption',label:'Inline image 2 caption'},
+          {name:'inlineImage3',label:'Inline image 3 URL'},{name:'inlineImage3Caption',label:'Inline image 3 caption'},
+          {name:'metaTitle',label:'Meta title',maxlength:70},{name:'metaDescription',label:'Meta description',type:'textarea',rows:3,maxlength:160},{name:'metaKeywords',label:'Meta keywords'},
+          {name:'isPublished',label:'Published on website',type:'checkbox'}
+        ]
+      }
+    };
+    const config = configs[type];
+    if (!config) return res.status(404).send('Content type not found');
+    let rows: any[] = [];
+    if (type === 'services') rows = await this.admin.listServicesAdmin();
+    if (type === 'industries') rows = await this.admin.listIndustriesAdmin();
+    if (type === 'cities') rows = await this.admin.listCitiesAdmin();
+    if (type === 'blog') rows = await this.admin.listBlogsAdmin();
+    const record = id === null ? null : rows.find((row) => row.id === id);
+    if (id !== null && !record) return res.status(404).send('Content record not found');
+    return res.render('admin/content-form', {
+      user: (req as any).adminUser, csrfToken: (req as any).adminCsrf,
+      type, record, fields: config.fields, editorTitle: config.title,
+      kicker: config.kicker, isNew: id === null,
+    });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('services/new')
+  async newService(@Req() req: Request, @Res() res: Response) { return this.renderContentEditor('services', null, req, res); }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('services/:id/edit')
+  async editService(@Param('id') id: string, @Req() req: Request, @Res() res: Response) { return this.renderContentEditor('services', Number(id), req, res); }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('industries/new')
+  async newIndustry(@Req() req: Request, @Res() res: Response) { return this.renderContentEditor('industries', null, req, res); }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('industries/:id/edit')
+  async editIndustry(@Param('id') id: string, @Req() req: Request, @Res() res: Response) { return this.renderContentEditor('industries', Number(id), req, res); }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('cities/new')
+  async newCity(@Req() req: Request, @Res() res: Response) { return this.renderContentEditor('cities', null, req, res); }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('cities/:id/edit')
+  async editCity(@Param('id') id: string, @Req() req: Request, @Res() res: Response) { return this.renderContentEditor('cities', Number(id), req, res); }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('blog/new')
+  async newBlog(@Req() req: Request, @Res() res: Response) { return this.renderContentEditor('blog', null, req, res); }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('blog/:id/edit')
+  async editBlog(@Param('id') id: string, @Req() req: Request, @Res() res: Response) { return this.renderContentEditor('blog', Number(id), req, res); }
+
   @UseGuards(AdminAuthGuard)
   @Get('services')
   async services(@Req() req: Request, @Res() res: Response) {
