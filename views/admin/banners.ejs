@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <div class="admin-heading"><div><p class="admin-kicker">HOMEPAGE</p><h1>Image carousel</h1><p>Upload any image, crop it to the live carousel frame, then save to publish.</p></div><div class="admin-heading-actions"><a class="admin-secondary" href="/" target="_blank" rel="noopener noreferrer">Preview website ↗</a><form method="post" action="/admin/banners/add"><input type="hidden" name="csrfToken" value="<%= csrfToken %>"><button class="admin-button" type="submit" <%= rows.length >= 20 ? 'disabled' : '' %>>＋ Add another slide</button></form></div></div>
 <% if (saved) { %><div class="admin-success">Banner images saved successfully.</div><% } %>
-<div class="banner-help"><strong>Choose the right banner frame</strong><span>Desktop: 1600 × 485 px · 3.3:1</span><span>Mobile: 1200 × 900 px · 4:3</span><small>You can choose any JPG, PNG, WebP or AVIF image. Before upload, a crop window lets you reposition and zoom the image to fit the exact frame. The cropped image is uploaded, so the preview and homepage proportions stay consistent.</small></div>
+<div class="banner-help"><strong>Choose the right banner frame</strong><span>Desktop: 1600 × 485 px · 3.3:1</span><span>Mobile: 1200 × 675 px · 16:9</span><small>You can choose any JPG, PNG, WebP or AVIF image. Before upload, a crop window lets you reposition and zoom the image to fit the exact frame. The cropped image is uploaded, so the preview and homepage proportions stay consistent.</small></div>
 <form method="post" action="/admin/banners/save" class="home-banner-admin-form">
   <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
   <% rows.forEach((banner, index) => { %>
@@ -18,7 +18,7 @@
     </div>
     <div class="field-grid">
       <label>Desktop banner image <span class="banner-dimensions">1600 × 485 px · 3.3:1 wide</span><input type="text" data-image-url name="banners[<%= index %>][desktopImage]" value="<%= banner.desktopImage || '' %>" placeholder="/uploads/banners/..."><input type="file" accept="image/*" data-image-file data-crop-type="desktop"><button class="admin-button upload-banner-button" type="button" data-open-crop data-crop-type="desktop">Choose & crop desktop image</button><small>Recommended output: 1600 × 485 px to match the desktop carousel frame. You can upload an image of any ratio and adjust the crop.</small></label>
-      <label>Mobile banner image <span class="banner-dimensions">1200 × 900 px · 4:3 landscape</span><input type="text" data-image-url name="banners[<%= index %>][mobileImage]" value="<%= banner.mobileImage || '' %>" placeholder="/uploads/banners/..."><input type="file" accept="image/*" data-image-file data-crop-type="mobile"><button class="admin-button upload-banner-button" type="button" data-open-crop data-crop-type="mobile">Choose & crop mobile image</button><small>Recommended output: 1200 × 900 px to match the mobile carousel frame. Mobile crop is separate so important content stays visible.</small></label>
+      <label>Mobile banner image <span class="banner-dimensions">1200 × 675 px · 16:9 landscape</span><input type="text" data-image-url name="banners[<%= index %>][mobileImage]" value="<%= banner.mobileImage || '' %>" placeholder="/uploads/banners/..."><input type="file" accept="image/*" data-image-file data-crop-type="mobile"><button class="admin-button upload-banner-button" type="button" data-open-crop data-crop-type="mobile">Choose & crop mobile image</button><small>Recommended output: 1200 × 675 px to match the mobile carousel frame. Mobile crop is separate so important content stays visible.</small></label>
     </div>
     <input type="hidden" name="banners[<%= index %>][backgroundColor]" value="<%= banner.backgroundColor || '#17212b' %>">
   </section>
@@ -63,12 +63,12 @@
       activePreview = button.closest('.home-banner-editor').querySelector('.banner-preview');
       activeType = button.dataset.cropType || 'desktop';
       const isMobile = activeType === 'mobile';
-      cropRatioLabel.textContent = isMobile ? '4:3 · Mobile' : '3.3:1 · Desktop';
-      cropDimensions.textContent = isMobile ? 'Output image: 1200 × 900 px' : 'Output image: 1600 × 485 px';
+      cropRatioLabel.textContent = isMobile ? '16:9 · Mobile' : '3.3:1 · Desktop';
+      cropDimensions.textContent = isMobile ? 'Output image: 1200 × 675 px' : 'Output image: 1600 × 485 px';
       cropImage.onload = () => {
         if (cropper) cropper.destroy();
         cropper = new Cropper(cropImage, {
-          aspectRatio: isMobile ? 4 / 3 : 3.3 / 1,
+          aspectRatio: isMobile ? 16 / 9 : 3.3 / 1,
           viewMode: 1,
           dragMode: 'move',
           autoCropArea: 0.92,
@@ -111,7 +111,7 @@
     const isMobile = activeType === 'mobile';
     const canvas = cropper.getCroppedCanvas({
       width: isMobile ? 1200 : 1600,
-      height: isMobile ? 900 : 485,
+      height: isMobile ? 675 : 485,
       imageSmoothingEnabled: true,
       imageSmoothingQuality: 'high',
       fillColor: '#ffffff'
