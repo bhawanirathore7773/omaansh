@@ -1,12 +1,18 @@
 <%- include('partials/header', {title: title + ' | OSIRA Admin', user}) %>
-<div class="admin-heading"><div><p class="admin-kicker"><%= kicker %></p><h1><%= title %></h1><p><%= description %></p></div></div>
+<div class="admin-heading">
+  <div><p class="admin-kicker"><%= kicker %></p><h1><%= title %></h1><p><%= description %></p></div>
+  <a class="admin-button" href="/admin/<%= type %>/new">＋ Add <%= type==='blog'?'article':type==='cities'?'city page':type==='industries'?'industry page':'service page' %></a>
+</div>
+<div class="content-list-summary"><span><strong><%= rows.length %></strong> total records</span><span>Use Edit to manage copy, images, SEO and publication status.</span></div>
 <div class="admin-content-grid">
   <% rows.forEach(row => { %>
   <article class="admin-content-card">
-    <div><span class="pill <%= (row.isPublished ?? true) ? 'pill-on' : 'pill-off' %>"><%= (row.isPublished ?? true) ? 'Published' : 'Draft' %></span><h2><%= row[nameField] %></h2><p><%= row.h1Heading || row.description || row.shortDescription || '' %></p></div>
-    <div class="admin-card-actions"><a class="admin-secondary" href="/<%= type === 'blog' ? 'blog' : type + '/' + row.slug %>" target="_blank">View ↗</a><span>Slug: /<%= type === 'blog' ? 'blog' : type %>/<%= row.slug %></span></div>
+    <div class="content-card-topline"><span class="pill <%= (row.isPublished ?? true) ? 'pill-on' : 'pill-off' %>"><%= (row.isPublished ?? true) ? 'Published' : 'Draft' %></span><span class="content-card-id">#<%= row.id %></span></div>
+    <div><h2><%= row[nameField] %></h2><p><%= row.h1Heading || row.description || row.shortDescription || row.introContent || '' %></p></div>
+    <div class="admin-card-actions"><a class="admin-secondary" href="/<%= type === 'blog' ? 'blog' : type + '/' + row.slug %>" target="_blank" rel="noopener">Preview ↗</a><a class="admin-button" href="/admin/<%= type %>/<%= row.id %>/edit">Edit content</a></div>
+    <div class="content-card-slug">/<%= type === 'blog' ? 'blog' : type %>/<%= row.slug %></div>
   </article>
   <% }) %>
-  <% if(!rows.length){ %><div class="admin-empty-card">No records found.</div><% } %>
+  <% if(!rows.length){ %><div class="admin-empty-card"><strong>No records yet</strong><p>Create your first page using the Add button above.</p><a class="admin-button" href="/admin/<%= type %>/new">＋ Create first page</a></div><% } %>
 </div>
 <%- include('partials/footer') %>
