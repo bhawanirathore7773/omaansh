@@ -611,7 +611,7 @@ body.filter-sheet-open{position:fixed!important;overflow:hidden!important;width:
   body.drawer-open>.site-header{
     position:sticky!important;
     top:0!important;
-    z-index:1202!important;
+    z-index:1199!important;
   }
   .nav-inner{min-height:66px}
   /* Outer section owns the page gutter; image and its background fill the
