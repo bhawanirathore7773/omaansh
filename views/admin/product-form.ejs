@@ -132,6 +132,7 @@ const specRows = parsedSpecs.length ? parsedSpecs : defaultSpecs;
   category.addEventListener('change',()=>{
     const selected=category.options[category.selectedIndex];const label=(selected?.dataset.categoryName||'').toLowerCase();
     if(label.includes('square'))shape.value='Square';else if(label.includes('rectangle'))shape.value='Rectangle';else if(label.includes('round'))shape.value='Round';
+    const shapeSpec=Array.from(specs.querySelectorAll('.spec-row')).find(row=>row.querySelector('[name=specKey]').value.toLowerCase()==='shape');if(shapeSpec)shapeSpec.querySelector('[name=specValue]').value=shape.value;
     document.getElementById('miniPreviewCategory').textContent=selected?.textContent||'WALL CLOCKS';
     if(!slugTouched&&name.value)slug.value=slugify(name.value);
   });
