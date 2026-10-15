@@ -488,3 +488,17 @@ body>.footer{position:relative;flex-shrink:0;margin-top:auto}
  .mobile-drawer .drawer-head>.menu-toggle.is-open span:nth-child(3){opacity:0;transform:scaleX(0)}
  .mobile-drawer .drawer-close{display:none!important}
 }
+
+
+/* Final mobile drawer control fix: keep the original header button anchored in place */
+@media(max-width:800px){
+ .site-header{position:relative;z-index:1202}
+ .nav-inner>.menu-toggle.is-open{position:fixed!important;top:15px!important;right:20px!important;left:auto!important;z-index:1205!important;width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;margin:0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;border:1px solid var(--line)!important;border-radius:11px!important;background:#fff!important;box-sizing:border-box!important;transform:none!important}
+ .nav-inner>.menu-toggle.is-open span{position:absolute!important;left:11px!important;top:20px!important;width:20px!important;height:2px!important;gap:0!important;margin:0!important;background:#101828!important;transform-origin:center!important;opacity:1!important}
+ .nav-inner>.menu-toggle.is-open span:nth-child(1){transform:rotate(45deg)!important}
+ .nav-inner>.menu-toggle.is-open span:nth-child(2){transform:rotate(-45deg)!important}
+ .nav-inner>.menu-toggle.is-open span:nth-child(3){opacity:0!important;transform:scaleX(0)!important}
+ .mobile-drawer{z-index:1201}
+ .drawer-backdrop{z-index:1200;cursor:pointer}
+ .mobile-drawer .drawer-head{padding-right:0!important}
+}
