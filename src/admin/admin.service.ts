@@ -131,7 +131,12 @@ export class AdminService {
   }
 
   async saveProduct(body: any, id?: number) {
-    const imageList = [1, 2, 3, 4].map(i => String(body['additionalImage' + i] || '').trim()).filter(Boolean).slice(0, 4);
+    const imageInput = body.additionalImages !== undefined ? body.additionalImages : [1, 2, 3, 4].map(i => body['additionalImage' + i]);
+    const imageList = (Array.isArray(imageInput) ? imageInput : [imageInput]).map((value: any) => String(value || '').trim()).filter(Boolean).slice(0, 30);
+    const specKeys = body.specKey === undefined ? [] : (Array.isArray(body.specKey) ? body.specKey : [body.specKey]);
+    const specValues = body.specValue === undefined ? [] : (Array.isArray(body.specValue) ? body.specValue : [body.specValue]);
+    const structuredSpecs = specKeys.map((key: any, index: number) => ({ key: String(key || '').trim(), value: String(specValues[index] || '').trim() })).filter((item: any) => item.key && item.value).map((item: any) => item.key + ': ' + item.value).join('\n');
+    const specifications = structuredSpecs || String(body.specifications || '').trim();
     const data: any = {
       name: String(body.name || '').trim(),
       slug: String(body.slug || '').trim().toLowerCase(),
@@ -144,7 +149,7 @@ export class AdminService {
       additionalImages: imageList,
       description: String(body.description || '').trim(),
       shortDescription: String(body.shortDescription || '').trim() || null,
-      specifications: String(body.specifications || '').trim() || null,
+      specifications: specifications || null,
       metaTitle: String(body.metaTitle || '').trim().slice(0, 70) || null,
       metaDescription: String(body.metaDescription || '').trim().slice(0, 160) || null,
       metaKeywords: String(body.metaKeywords || '').trim().slice(0, 300) || null,
