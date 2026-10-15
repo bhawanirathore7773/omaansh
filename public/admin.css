@@ -248,3 +248,27 @@ h1,h2,h3,.admin-brand{font-family:Manrope,"DM Sans",sans-serif}
 .content-editor-savebar>span{margin-right:auto;font-size:.68rem;color:#8792a0}
 @media(max-width:1100px){.content-editor-savebar{left:220px}}
 @media(max-width:760px){.admin-content-grid{grid-template-columns:1fr}.content-editor-savebar{left:0;padding:10px 13px calc(10px + env(safe-area-inset-bottom))}.content-editor-savebar>span{display:none}.content-editor-savebar .admin-button{margin-left:auto}.content-fields-grid{grid-template-columns:1fr}.content-field-wide{grid-column:auto}.content-list-summary{align-items:flex-start;flex-direction:column}.content-editor-tip{padding:13px}}
+
+
+/* Homepage banner editor: keep previews compact; never render uploaded artwork at natural size */
+.home-banner-admin-form{display:grid;gap:18px}
+.home-banner-editor{min-width:0;overflow:hidden}
+.banner-editor-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.banner-editor-heading>div{display:flex;align-items:center;gap:12px}
+.banner-number{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:#fff0e7;color:#c65c2b;font-size:.75rem;font-weight:900}
+.banner-editor-heading p{margin:0;color:var(--muted);font-size:.7rem}
+.toggle-field{display:flex!important;align-items:center;gap:9px!important;padding:9px 12px;border:1px solid #e6eaf0;border-radius:10px;background:#f8fafc}
+.toggle-field input{width:17px!important;height:17px!important;min-height:17px!important;accent-color:#e46e35}
+.banner-preview{position:relative;width:100%;height:clamp(150px,22vw,250px);max-height:250px;min-height:150px;overflow:hidden;border:1px solid #e3e8ef;border-radius:12px;background:var(--banner-bg,#f7f5ef);display:grid;place-items:center}
+.banner-preview picture{display:block;width:100%;height:100%;min-width:0;min-height:0}
+.banner-preview picture img,.banner-preview>img{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;object-position:center;background:var(--banner-bg,#f7f5ef)}
+.empty-banner-preview{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:150px;color:#6f7b8a}
+.empty-banner-preview strong{font-size:.9rem;color:#344154}
+.empty-banner-preview span{font-size:.75rem}
+.home-banner-editor .field-grid{align-items:start}
+.home-banner-editor label{min-width:0}
+.home-banner-editor input[type=file]{padding:8px;font-size:.7rem;min-height:42px}
+.upload-banner-button{width:100%;margin-top:2px}
+.banner-save-bar{position:sticky;bottom:12px;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;border:1px solid #e4e9f0;border-radius:13px;background:#ffffffed;backdrop-filter:blur(12px);box-shadow:0 8px 28px #17253614}
+.banner-save-bar p{margin:0;font-size:.74rem;color:#6f7b8a}
+@media(max-width:760px){.banner-preview{height:clamp(130px,42vw,190px);min-height:130px}.banner-save-bar{position:static;align-items:stretch;flex-direction:column}.banner-save-bar .admin-button{width:100%}.banner-editor-heading{align-items:flex-start;flex-direction:column}}
