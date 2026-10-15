@@ -27,7 +27,7 @@ export class SiteController {
         orderBy: { createdAt: 'desc' },
         take: 6,
       }),
-      this.prisma.homeBanner.findMany({ where: { isActive: true }, orderBy: { displayOrder: 'asc' }, take: 4 }),
+      this.prisma.homeBanner.findMany({ where: { isActive: true }, orderBy: { displayOrder: 'asc' } }),
     ]);
 
     const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
