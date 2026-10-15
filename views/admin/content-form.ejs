@@ -1,4 +1,5 @@
 <%- include('partials/header', {title:(isNew?'Add ':'Edit ')+editorTitle+' | OSIRA Admin', user}) %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <div class="admin-heading content-editor-heading">
   <div><p class="admin-kicker"><%= kicker %></p><h1><%= isNew?'Create '+editorTitle:'Edit '+editorTitle %></h1><p>Manage page copy, images, visibility and search metadata from one editor.</p></div>
   <div class="admin-heading-actions"><a class="admin-secondary" href="/admin/<%= type %>">← Back to <%= type==='blog'?'blog':type %></a><% if(record?.slug){ %><a class="admin-secondary" href="/<%= type==='blog'?'blog':type+'/'+record.slug %>" target="_blank" rel="noopener">Preview page ↗</a><% } %></div>
@@ -14,7 +15,7 @@
       <label class="content-field <%= isWide?'content-field-wide':'' %>"><span><%= field.label %><% if(field.required){ %> <b class="required-mark">*</b><% } %></span>
       <% if(field.type==='textarea'){ %><textarea name="<%= field.name %>" rows="<%= field.rows||4 %>" <%= field.required?'required':'' %> <%= field.maxlength?'maxlength="'+field.maxlength+'"':'' %> placeholder="<%= field.help||('Write '+field.label.toLowerCase()+'…') %>"><%= value??'' %></textarea>
       <% } else if(field.type==='select'){ %><select name="<%= field.name %>"><% (field.options||[]).forEach(option=>{ %><option value="<%= option[0] %>" <%= (value??option[0])===option[0]?'selected':'' %>><%= option[1] %></option><% }) %></select>
-      <% } else { %><input type="<%= field.type==='number'?'number':'text' %>" name="<%= field.name %>" value="<%= value??(field.name==='displayOrder'?0:field.name==='deliveryTime'?'3-5 business days':'') %>" <%= field.required?'required':'' %> <%= field.maxlength?'maxlength="'+field.maxlength+'"':'' %> placeholder="<%= field.help||field.label %>"><% } %>
+      <% } else { %><input type="<%= field.type==='number'?'number':'text' %>" name="<%= field.name %>" value="<%= value??(field.name==='displayOrder'?0:field.name==='deliveryTime'?'3-5 business days':'') %>" <%= field.required?'required':'' %> <%= field.maxlength?'maxlength="'+field.maxlength+'"':'' %> placeholder="<%= field.help||field.label %>"><% if (/Image/i.test(field.name)) { %><div class="content-image-upload"><input type="file" accept="image/*" data-content-image-file data-target-field="<%= field.name %>"><button class="admin-secondary" type="button" data-content-crop data-target-field="<%= field.name %>">Choose, crop & upload</button><small>Upload any image and crop it before saving. Hero/featured images: 1200 × 675 px (16:9). Inline images: 1200 × 900 px (4:3).</small></div><% } %><% } %>
       <% if(field.help && field.type!=='textarea'){ %><small><%= field.help %></small><% } %></label>
     <% }) %>
     </div>
@@ -31,11 +32,53 @@
     </div>
     <label class="content-publish-toggle"><span><strong>Publish this page</strong><small>When enabled, the page can be visible to visitors and search engines.</small></span><input type="checkbox" name="isPublished" <%= record?.isPublished!==false?'checked':'' %>></label>
   </section>
+  <div class="crop-modal" id="contentCropModal" aria-hidden="true"><div class="crop-dialog" role="dialog" aria-modal="true" aria-labelledby="contentCropTitle"><div class="crop-dialog-head"><div><p class="admin-kicker">IMAGE EDITOR</p><h2 id="contentCropTitle">Crop page image</h2><p id="contentCropDimensions">Adjust the image before upload.</p></div><button type="button" class="crop-close" data-content-cancel>×</button></div><div class="crop-stage"><img id="contentCropImage" alt="Page image crop preview"></div><div class="crop-dialog-foot"><span id="contentCropRatio">16:9</span><div><button type="button" class="admin-secondary" data-content-cancel>Cancel</button><button type="button" class="admin-button" id="contentCropUpload">Crop & upload</button></div></div><p class="crop-tip">Drag to reposition and zoom to choose the visible area.</p></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
   <div class="content-editor-savebar"><a class="admin-secondary" href="/admin/<%= type %>">Cancel</a><span><%= record?'Editing record #'+record.id:'New content draft' %></span><button class="admin-button" type="submit">Save <%= editorTitle.toLowerCase() %> →</button></div>
 </form>
 <script>
 (function(){
  const form=document.getElementById('contentEditor');
+ const cropModal=document.getElementById('contentCropModal');
+ const cropImage=document.getElementById('contentCropImage');
+ const cropUpload=document.getElementById('contentCropUpload');
+ let cropper=null, sourceFile=null, targetInput=null, sourceButton=null, ratio=16/9, targetWidth=1200, targetHeight=675;
+ document.querySelectorAll('[data-content-crop]').forEach(button=>button.addEventListener('click',()=>{
+   const name=button.dataset.targetField;
+   const fileInput=form.querySelector('[data-content-image-file][data-target-field="'+name+'"]');
+   const file=fileInput?.files?.[0];
+   if(!file){alert('Please choose an image first.');return;}
+   if(!file.type.startsWith('image/')){alert('Please choose an image file.');return;}
+   if(file.size>8*1024*1024){alert('Image must be 8 MB or smaller.');return;}
+   if(typeof Cropper==='undefined'){alert('Image editor failed to load. Refresh and try again.');return;}
+   sourceFile=file; sourceButton=button; targetInput=form.querySelector('[name="'+name+'"]');
+   const isInline=/inlineImage/i.test(name);
+   ratio=isInline?4/3:16/9; targetWidth=1200; targetHeight=isInline?900:675;
+   document.getElementById('contentCropRatio').textContent=isInline?'4:3 · Inline image':'16:9 · Hero / featured image';
+   document.getElementById('contentCropDimensions').textContent='Output: '+targetWidth+' × '+targetHeight+' px';
+   cropImage.onload=()=>{if(cropper)cropper.destroy();cropper=new Cropper(cropImage,{aspectRatio:ratio,viewMode:1,dragMode:'move',autoCropArea:.92,responsive:true,restore:false,guides:true,center:true,background:false,movable:true,zoomable:true,zoomOnWheel:true,minContainerWidth:280,minContainerHeight:260});};
+   cropImage.src=URL.createObjectURL(file);cropModal.classList.add('is-open');cropModal.setAttribute('aria-hidden','false');document.body.classList.add('crop-modal-open');
+ }));
+ function closeContentCrop(){cropModal.classList.remove('is-open');cropModal.setAttribute('aria-hidden','true');document.body.classList.remove('crop-modal-open');if(cropper){cropper.destroy();cropper=null;}if(cropImage.src.startsWith('blob:'))URL.revokeObjectURL(cropImage.src);sourceFile=null;targetInput=null;sourceButton=null;}
+ document.querySelectorAll('[data-content-cancel]').forEach(b=>b.addEventListener('click',closeContentCrop));
+ cropModal.addEventListener('click',e=>{if(e.target===cropModal)closeContentCrop();});
+ cropUpload.addEventListener('click',async()=>{
+   if(!cropper||!sourceFile||!targetInput)return;
+   const canvas=cropper.getCroppedCanvas({width:targetWidth,height:targetHeight,imageSmoothingEnabled:true,imageSmoothingQuality:'high',fillColor:'#fff'});
+   if(!canvas){alert('Could not crop image. Try another file.');return;}
+   cropUpload.disabled=true;cropUpload.textContent='Preparing…';
+   try{
+     const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('Could not prepare image.')),'image/jpeg',.92));
+     const cropped=new File([blob],(sourceFile.name.replace(/\\.[^.]+$/,'')||'page-image')+'-crop.jpg',{type:'image/jpeg'});
+     const data=new FormData();data.append('image',cropped);data.append('csrfToken',form.querySelector('[name="csrfToken"]').value);
+     const response=await fetch('/admin/products/upload-image',{method:'POST',body:data,credentials:'same-origin'});
+     const result=await response.json();if(!response.ok)throw new Error(result.error||'Upload failed');
+     targetInput.value=result.url;targetInput.dispatchEvent(new Event('change',{bubbles:true}));
+     closeContentCrop();sourceButton.textContent='Uploaded ✓ · Crop another';
+   }catch(error){alert(error.message||'Unable to upload image.');}
+   finally{cropUpload.disabled=false;cropUpload.textContent='Crop & upload';}
+ });
+
  const nameField=form.querySelector('[name="name"],[name="title"],[name="industryName"],[name="cityName"]');
  const slugField=form.querySelector('[name="slug"]');
  if(nameField&&slugField&&!slugField.value){nameField.addEventListener('input',()=>{if(!slugField.dataset.touched)slugField.value=nameField.value.toLowerCase().trim().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');});slugField.addEventListener('input',()=>slugField.dataset.touched='1');}
