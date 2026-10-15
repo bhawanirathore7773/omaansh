@@ -1,23 +1,42 @@
 <%- include('partials/header', {title:'OSIRA Admin Dashboard', user}) %>
-<div class="admin-heading"><div><p class="admin-kicker">OVERVIEW</p><h1>Business dashboard</h1><p>Track catalogue health and move incoming enquiries through the sales pipeline.</p></div><div class="admin-heading-actions"><a class="admin-button" href="/admin/banners">Manage homepage banners</a><a class="admin-button" href="/admin/enquiries">Open enquiries</a></div></div>
-<section class="admin-stats">
-<a href="/admin/products"><strong><%= data.products %></strong><span>Active products</span></a>
-<a href="/admin/categories"><strong><%= data.categories %></strong><span>Collections</span></a>
-<a href="/admin/enquiries"><strong><%= data.enquiries %></strong><span>Total enquiries</span></a>
-<a href="/admin/enquiries?status=new"><strong><%= data.newEnquiries %></strong><span>New</span></a>
-<a href="/admin/enquiries?status=contacted"><strong><%= data.contactedEnquiries %></strong><span>Contacted</span></a>
-<a href="/admin/enquiries?status=quoted"><strong><%= data.quotedEnquiries %></strong><span>Quoted</span></a>
-<a href="/admin/enquiries?status=won"><strong><%= data.wonEnquiries %></strong><span>Won</span></a>
-<a href="/blog"><strong><%= data.blogs %></strong><span>Published guides</span></a>
+<div class="dashboard-welcome">
+  <div><p class="admin-kicker">OSIRA CONTROL CENTER</p><h1>Good work starts with a clear view.</h1><p>Manage your catalogue, website content and incoming business enquiries from one workspace.</p></div>
+  <div class="dashboard-welcome-actions"><a class="admin-secondary" href="/" target="_blank" rel="noopener">Preview website ↗</a><a class="admin-button" href="/admin/products/new">＋ Add product</a></div>
+</div>
+<section class="dashboard-section-head"><div><h2>Business snapshot</h2><p>Live totals from your current website database.</p></div><span class="dashboard-live"><i></i> Connected workspace</span></section>
+<section class="admin-stats dashboard-stat-grid">
+  <a href="/admin/products" class="stat-card stat-primary"><span class="stat-icon">▦</span><span class="stat-label">Active products</span><strong><%= data.products %></strong><small>Manage catalogue →</small></a>
+  <a href="/admin/categories" class="stat-card"><span class="stat-icon">▤</span><span class="stat-label">Collections</span><strong><%= data.categories %></strong><small>Organise products →</small></a>
+  <a href="/admin/enquiries" class="stat-card"><span class="stat-icon">↗</span><span class="stat-label">All enquiries</span><strong><%= data.enquiries %></strong><small>View lead pipeline →</small></a>
+  <a href="/admin/enquiries?status=new" class="stat-card stat-attention"><span class="stat-icon">✦</span><span class="stat-label">Needs attention</span><strong><%= data.newEnquiries %></strong><small>New enquiries →</small></a>
 </section>
-<section class="admin-panel">
-<div><p class="admin-kicker">SALES FLOW</p><h2>Enquiry pipeline</h2><p>Use the enquiry board to qualify requirements, record follow-up notes and move leads from new to quoted, won or closed.</p></div>
-<div class="admin-actions"><a class="admin-button" href="/admin/enquiries?status=new">Review new leads</a><a class="admin-secondary" href="/products">Open catalogue</a></div>
+<section class="dashboard-work-grid">
+  <div class="dashboard-panel sales-panel">
+    <div class="panel-heading"><div><p class="admin-kicker">SALES PIPELINE</p><h2>Enquiry progress</h2><p>Follow each lead from first contact to a confirmed order.</p></div><a href="/admin/enquiries" class="text-action">Open enquiries ↗</a></div>
+    <div class="pipeline-list">
+      <a href="/admin/enquiries?status=new"><span class="pipeline-symbol pipeline-new">✦</span><span class="pipeline-copy"><strong>New</strong><small>Needs first response</small></span><b><%= data.newEnquiries %></b></a>
+      <a href="/admin/enquiries?status=contacted"><span class="pipeline-symbol pipeline-contacted">↗</span><span class="pipeline-copy"><strong>Contacted</strong><small>Conversation started</small></span><b><%= data.contactedEnquiries %></b></a>
+      <a href="/admin/enquiries?status=quoted"><span class="pipeline-symbol pipeline-quoted">₹</span><span class="pipeline-copy"><strong>Quoted</strong><small>Price shared with buyer</small></span><b><%= data.quotedEnquiries %></b></a>
+      <a href="/admin/enquiries?status=won"><span class="pipeline-symbol pipeline-won">✓</span><span class="pipeline-copy"><strong>Won</strong><small>Converted to business</small></span><b><%= data.wonEnquiries %></b></a>
+    </div>
+    <div class="panel-footer-note">Tip: update lead status and add follow-up notes in the Enquiries section.</div>
+  </div>
+  <div class="dashboard-panel">
+    <div class="panel-heading"><div><p class="admin-kicker">QUICK ACTIONS</p><h2>Get things done</h2><p>Common tasks, one click away.</p></div></div>
+    <div class="quick-action-list">
+      <a href="/admin/products/new"><span class="quick-action-icon">＋</span><span><strong>Add a new product</strong><small>Images, pricing, specifications & SEO</small></span><b>→</b></a>
+      <a href="/admin/banners"><span class="quick-action-icon">▧</span><span><strong>Update homepage carousel</strong><small>Manage desktop and mobile banners</small></span><b>→</b></a>
+      <a href="/admin/enquiries?status=new"><span class="quick-action-icon">↗</span><span><strong>Respond to new leads</strong><small>Keep wholesale buyers moving</small></span><b>→</b></a>
+      <a href="/admin/settings"><span class="quick-action-icon">⚙</span><span><strong>Edit website details</strong><small>Contact, WhatsApp, address & SEO</small></span><b>→</b></a>
+    </div>
+  </div>
 </section>
-<section class="admin-quick-grid">
-<a href="/admin/services"><strong>Services</strong><span><%= data.services %> published pages</span></a>
-<a href="/admin/industries"><strong>Industries</strong><span><%= data.industries %> published pages</span></a>
-<a href="/admin/cities"><strong>City SEO</strong><span><%= data.cities %> published pages</span></a>
-<a href="/admin/blog"><strong>Content</strong><span><%= data.blogs %> published guides</span></a>
+<section class="dashboard-section-head content-section-head"><div><h2>Website content</h2><p>Manage the pages that help customers discover your business.</p></div></section>
+<section class="admin-quick-grid dashboard-content-grid">
+  <a href="/admin/services"><span class="content-tile-icon">◇</span><strong>Services</strong><span><%= data.services %> published pages</span><b>Manage →</b></a>
+  <a href="/admin/industries"><span class="content-tile-icon">▥</span><strong>Industries</strong><span><%= data.industries %> published pages</span><b>Manage →</b></a>
+  <a href="/admin/cities"><span class="content-tile-icon">⌖</span><strong>City landing pages</strong><span><%= data.cities %> published pages</span><b>Manage →</b></a>
+  <a href="/admin/blog"><span class="content-tile-icon">≡</span><strong>Blog & SEO</strong><span><%= data.blogs %> published guides</span><b>Manage →</b></a>
 </section>
+<section class="dashboard-bottom-banner"><div><span class="banner-spark">✦</span><div><h2>Keep your storefront up to date</h2><p>Review product details, image quality, enquiry response times and page metadata regularly.</p></div></div><a class="admin-button" href="/admin/products">Review catalogue →</a></section>
 <%- include('partials/footer') %>
