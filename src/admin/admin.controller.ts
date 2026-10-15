@@ -268,6 +268,19 @@ export class AdminController {
   }
 
   @UseGuards(AdminAuthGuard)
+  @Post('banners/add')
+  async addBanner(@Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    try {
+      await this.admin.createHomeBanner();
+      return res.redirect(303, '/admin/banners');
+    } catch (error) {
+      return res.status(400).send(error instanceof Error ? error.message : 'Unable to add slide');
+    }
+  }
+
+  @UseGuards(AdminAuthGuard)
   @Get('banners')
   async banners(@Req() req: Request, @Res() res: Response) {
     const rows = await this.admin.listHomeBanners();
