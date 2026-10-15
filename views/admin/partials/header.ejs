@@ -3,19 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title><%= title || 'OSIRA Admin' %></title>
 <meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#101820">
+<title><%= title || 'OSIRA Admin' %></title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/admin.css">
 </head>
 <body class="admin-shell">
 <header class="admin-topbar">
-  <a class="admin-brand" href="/admin">OSIRA <span>ADMIN</span></a>
-  <div class="admin-user"><span><%= user?.name || 'Admin' %></span><form method="post" action="/admin/logout"><button type="submit">Sign out</button></form></div>
+  <button type="button" class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle admin navigation" aria-expanded="false">☰</button>
+  <a class="admin-brand" href="/admin"><span class="brand-mark">O</span><span class="brand-word">OSIRA<small>CONTROL CENTER</small></span></a>
+  <div class="admin-topbar-right"><a class="view-site-link" href="/" target="_blank" rel="noopener">View website <span aria-hidden="true">↗</span></a><span class="topbar-divider"></span><div class="admin-user"><span class="admin-avatar"><%= String((user?.name||'A').trim().charAt(0)).toUpperCase() %></span><span class="admin-user-name"><strong><%= user?.name || 'Admin' %></strong><small><%= user?.email || 'Administrator' %></small></span><form method="post" action="/admin/logout"><button type="submit">Sign out</button></form></div></div>
 </header>
 <div class="admin-layout">
-<aside class="admin-sidebar">
-  <a href="/admin">Overview</a>
-  <a href="/admin/products">Products</a><a href="/admin/categories">Collections</a><a href="/admin/enquiries">Enquiries</a>
-  <a href="/products" target="_blank">View website ↗</a>
+<aside class="admin-sidebar" id="adminSidebar">
+  <div class="sidebar-label">WORKSPACE</div>
+  <a href="/admin" class="<%= (typeof title!=='undefined'&&title.includes('Dashboard'))?'is-active':'' %>"><span class="nav-icon">⌂</span><span>Overview</span></a>
+  <div class="sidebar-label">COMMERCE</div>
+  <a href="/admin/products"><span class="nav-icon">▦</span><span>Products</span></a>
+  <a href="/admin/categories"><span class="nav-icon">▤</span><span>Collections</span></a>
+  <a href="/admin/enquiries"><span class="nav-icon">↗</span><span>Enquiries & leads</span></a>
+  <div class="sidebar-label">WEBSITE CONTENT</div>
+  <a href="/admin/banners"><span class="nav-icon">▧</span><span>Homepage banners</span></a>
+  <a href="/admin/services"><span class="nav-icon">◇</span><span>Services</span></a>
+  <a href="/admin/industries"><span class="nav-icon">▥</span><span>Industries</span></a>
+  <a href="/admin/cities"><span class="nav-icon">⌖</span><span>City landing pages</span></a>
+  <a href="/admin/blog"><span class="nav-icon">≡</span><span>Blog & SEO content</span></a>
+  <div class="sidebar-label">CONFIGURATION</div>
+  <a href="/admin/settings"><span class="nav-icon">⚙</span><span>Site settings</span></a>
+  <div class="sidebar-bottom"><span class="sidebar-status"></span><span>Admin workspace</span><small>Secure session · 12 hours</small></div>
 </aside>
+<div class="admin-mobile-scrim" id="adminMobileScrim"></div>
 <main class="admin-main">
