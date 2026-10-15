@@ -589,3 +589,10 @@ body.filter-sheet-open{position:fixed!important;overflow:hidden!important;width:
 .about-cta{display:flex;justify-content:space-between;align-items:center;gap:25px;background:#101820;color:#fff;border-radius:18px;margin-bottom:45px}
 .about-cta .kicker{color:#f3b78f}.about-cta .btn{white-space:nowrap}
 @media(max-width:700px){.catalogue-hero{padding-top:22px!important;padding-bottom:10px!important}.catalogue-intro h1{font-size:2.1rem!important}.catalogue-intro p{font-size:.82rem}.catalogue-body{padding-top:10px!important}.collections-hero{padding-top:25px!important;padding-bottom:18px!important}.collections-hero p{font-size:.82rem}.about-hero{padding-top:38px;padding-bottom:25px}.about-hero h1{font-size:2.65rem}.about-hero>p{font-size:.95rem;line-height:1.65}.about-value-grid{grid-template-columns:1fr;padding-top:10px;gap:10px}.about-value-grid article{padding:19px}.about-value-grid h2{margin:14px 0 8px}.about-location{grid-template-columns:1fr;gap:18px}.about-cta{display:grid;padding:24px!important}.about-cta .btn{width:100%}}
+
+
+/* Keep the hero carousel landscape 4:3 on mobile as well as desktop */
+@media(max-width:800px){
+ .home-banner-track,.home-banner-slide{aspect-ratio:4/3!important;min-height:0!important;height:auto!important}
+ .home-banner-slide{height:100%!important}
+}
