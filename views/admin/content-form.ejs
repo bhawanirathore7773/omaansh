@@ -1,0 +1,44 @@
+<%- include('partials/header', {title:(isNew?'Add ':'Edit ')+editorTitle+' | OSIRA Admin', user}) %>
+<div class="admin-heading content-editor-heading">
+  <div><p class="admin-kicker"><%= kicker %></p><h1><%= isNew?'Create '+editorTitle:'Edit '+editorTitle %></h1><p>Manage page copy, images, visibility and search metadata from one editor.</p></div>
+  <div class="admin-heading-actions"><a class="admin-secondary" href="/admin/<%= type %>">← Back to <%= type==='blog'?'blog':type %></a><% if(record?.slug){ %><a class="admin-secondary" href="/<%= type==='blog'?'blog':type+'/'+record.slug %>" target="_blank" rel="noopener">Preview page ↗</a><% } %></div>
+</div>
+<div class="content-editor-tip"><span>✦</span><div><strong>Editing tip</strong><p>Use specific, useful copy. Keep URL slugs stable after a page has been indexed, and write a unique meta title and description for every published page.</p></div></div>
+<form method="post" action="/admin/<%= type %>/save" class="content-editor-form" id="contentEditor">
+  <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
+  <% if(record){ %><input type="hidden" name="id" value="<%= record.id %>"><% } %>
+  <section class="editor-card content-editor-card">
+    <div class="editor-section-heading"><span class="editor-step">01</span><div><h2>Page content</h2><p>Enter the main content visitors will see on this page.</p></div></div>
+    <div class="content-fields-grid">
+    <% fields.filter(field=>!['metaTitle','metaDescription','metaKeywords','isPublished','displayOrder'].includes(field.name)).forEach(field=>{ const value=record?.[field.name]; const isWide=field.type==='textarea'||['title','name','industryName','cityName','h1Heading','introContent','fullDescription','contentHtml','description','closingContent'].includes(field.name); %>
+      <label class="content-field <%= isWide?'content-field-wide':'' %>"><span><%= field.label %><% if(field.required){ %> <b class="required-mark">*</b><% } %></span>
+      <% if(field.type==='textarea'){ %><textarea name="<%= field.name %>" rows="<%= field.rows||4 %>" <%= field.required?'required':'' %> <%= field.maxlength?'maxlength="'+field.maxlength+'"':'' %> placeholder="<%= field.help||('Write '+field.label.toLowerCase()+'…') %>"><%= value??'' %></textarea>
+      <% } else if(field.type==='select'){ %><select name="<%= field.name %>"><% (field.options||[]).forEach(option=>{ %><option value="<%= option[0] %>" <%= (value??option[0])===option[0]?'selected':'' %>><%= option[1] %></option><% }) %></select>
+      <% } else { %><input type="<%= field.type==='number'?'number':'text' %>" name="<%= field.name %>" value="<%= value??(field.name==='displayOrder'?0:field.name==='deliveryTime'?'3-5 business days':'') %>" <%= field.required?'required':'' %> <%= field.maxlength?'maxlength="'+field.maxlength+'"':'' %> placeholder="<%= field.help||field.label %>"><% } %>
+      <% if(field.help && field.type!=='textarea'){ %><small><%= field.help %></small><% } %></label>
+    <% }) %>
+    </div>
+  </section>
+  <section class="editor-card content-editor-card">
+    <div class="editor-section-heading"><span class="editor-step">02</span><div><h2>SEO & publishing</h2><p>Control search snippets, display order and publication state.</p></div></div>
+    <div class="content-fields-grid">
+    <% fields.filter(field=>['metaTitle','metaDescription','metaKeywords','displayOrder'].includes(field.name)).forEach(field=>{ const value=record?.[field.name]; %>
+      <label class="content-field <%= field.type==='textarea'?'content-field-wide':'' %>"><span><%= field.label %></span>
+      <% if(field.type==='textarea'){ %><textarea name="<%= field.name %>" rows="<%= field.rows||3 %>" <%= field.maxlength?'maxlength="'+field.maxlength+'"':'' %> placeholder="<%= field.label %>"><%= value??'' %></textarea>
+      <% } else { %><input type="<%= field.type==='number'?'number':'text' %>" name="<%= field.name %>" value="<%= value??(field.name==='displayOrder'?0:'') %>" <%= field.maxlength?'maxlength="'+field.maxlength+'"':'' %> placeholder="<%= field.label %>"><% } %>
+      <% if(field.maxlength){ %><small>Recommended maximum: <%= field.maxlength %> characters.</small><% } %></label>
+    <% }) %>
+    </div>
+    <label class="content-publish-toggle"><span><strong>Publish this page</strong><small>When enabled, the page can be visible to visitors and search engines.</small></span><input type="checkbox" name="isPublished" <%= record?.isPublished!==false?'checked':'' %>></label>
+  </section>
+  <div class="content-editor-savebar"><a class="admin-secondary" href="/admin/<%= type %>">Cancel</a><span><%= record?'Editing record #'+record.id:'New content draft' %></span><button class="admin-button" type="submit">Save <%= editorTitle.toLowerCase() %> →</button></div>
+</form>
+<script>
+(function(){
+ const form=document.getElementById('contentEditor');
+ const nameField=form.querySelector('[name="name"],[name="title"],[name="industryName"],[name="cityName"]');
+ const slugField=form.querySelector('[name="slug"]');
+ if(nameField&&slugField&&!slugField.value){nameField.addEventListener('input',()=>{if(!slugField.dataset.touched)slugField.value=nameField.value.toLowerCase().trim().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');});slugField.addEventListener('input',()=>slugField.dataset.touched='1');}
+})();
+</script>
+<%- include('partials/footer') %>
