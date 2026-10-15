@@ -40,6 +40,8 @@ Required environment variables:
 NODE_ENV=production
 PORT=3000
 SITE_URL=https://omaansh.com
+# Optional: use a dedicated persistent directory if your Hostinger plan provides one
+# OSIRA_UPLOADS_DIR=/home/your-hostinger-user/.osira-uploads
 DATABASE_URL=mysql://USER:PASSWORD@HOST:3306/DATABASE
 ADMIN_EMAIL=admin@omaansh.com
 ADMIN_PASSWORD=YOUR_STRONG_ADMIN_PASSWORD
