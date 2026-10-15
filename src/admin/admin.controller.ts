@@ -4,6 +4,7 @@ import { diskStorage } from 'multer';
 import { mkdirSync } from 'fs';
 import { extname, join } from 'path';
 import { randomUUID } from 'crypto';
+import { uploadDirectory } from '../upload-storage';
 import { Request, Response } from 'express';
 import { AdminService } from './admin.service';
 import { AdminAuthGuard } from './admin-auth.guard';
@@ -59,7 +60,7 @@ export class AdminController {
   @UseInterceptors(FileInterceptor('image', {
     storage: diskStorage({
       destination: (_req, _file, cb) => {
-        const destination = join(process.cwd(), 'public', 'uploads', 'products');
+        const destination = join(uploadDirectory, 'products');
         mkdirSync(destination, { recursive: true });
         cb(null, destination);
       },
@@ -247,7 +248,7 @@ export class AdminController {
   @UseInterceptors(FileInterceptor('image', {
     storage: diskStorage({
       destination: (_req, _file, cb) => {
-        const destination = join(process.cwd(), 'public', 'uploads', 'banners');
+        const destination = join(uploadDirectory, 'banners');
         mkdirSync(destination, { recursive: true });
         cb(null, destination);
       },
