@@ -1,1 +1,20 @@
-</main></div></body></html>
+</main></div>
+<script>
+(function(){
+  const toggle=document.getElementById('mobileNavToggle');
+  const scrim=document.getElementById('adminMobileScrim');
+  const close=()=>{document.body.classList.remove('nav-open');if(toggle)toggle.setAttribute('aria-expanded','false');};
+  if(toggle)toggle.addEventListener('click',()=>{const open=document.body.classList.toggle('nav-open');toggle.setAttribute('aria-expanded',String(open));});
+  if(scrim)scrim.addEventListener('click',close);
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')close();});
+  const path=window.location.pathname;
+  document.querySelectorAll('.admin-sidebar a').forEach(link=>{
+    const href=link.getAttribute('href');
+    if(!href||href==='/products'||href==='/')return;
+    if((href==='/admin'&&path==='/admin')||(href!=='/admin'&&path.startsWith(href)&&href!=='/admin/products')||(href==='/admin/products'&&path.startsWith('/admin/products'))){
+      link.classList.add('is-active');
+    }
+  });
+})();
+</script>
+</body></html>
