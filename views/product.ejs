@@ -4,7 +4,7 @@
 
   <section class="product-hero section">
     <div class="gallery">
-      <% const imgs=[product.image,...(Array.isArray(product.additionalImages)?product.additionalImages:[])].filter(Boolean).slice(0,5); const mainProductImage=imgs[0]; %>
+      <% const imgs=[product.image,...(Array.isArray(product.additionalImages)?product.additionalImages:[])].filter(Boolean).slice(0,31); const mainProductImage=imgs[0]; %>
       <div class="main-image">
         <% if(mainProductImage){ %><img id="mainImage" src="<%= mainProductImage %>" alt="<%= product.name %> wall clock by OSIRA" width="1000" height="800"><% } else { %><div class="product-image-empty"><span>OSIRA</span><small>Product image coming soon</small></div><% } %>
       </div>
