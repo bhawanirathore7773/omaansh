@@ -298,3 +298,11 @@ h1,h2,h3,.admin-brand{font-family:Manrope,"DM Sans",sans-serif}
 .crop-tip{margin:12px 0 0;color:#8490a0;font-size:.68rem;line-height:1.5}
 body.crop-modal-open{overflow:hidden}
 @media(max-width:600px){.crop-modal{padding:8px}.crop-dialog{padding:15px;border-radius:14px;max-height:calc(100vh - 16px)}.crop-stage{height:48vh;min-height:230px}.crop-dialog-foot{align-items:stretch;flex-direction:column}.crop-dialog-foot>div{display:grid;grid-template-columns:1fr 1.4fr}.crop-dialog-foot button{padding:0 10px}.banner-help{align-items:flex-start;flex-direction:column;gap:8px}.banner-help strong,.banner-help small{width:auto}}
+
+
+/* Content page image upload and crop controls */
+.content-image-upload{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;margin-top:9px;padding:10px;border:1px solid #e5eaf0;border-radius:10px;background:#f8fafc}
+.content-image-upload input[type=file]{min-width:0;width:100%;font-size:.7rem}
+.content-image-upload button{min-height:38px;white-space:nowrap;font-size:.7rem}
+.content-image-upload small{grid-column:1/-1;color:#7c8796;font-size:.68rem;line-height:1.5}
+@media(max-width:650px){.content-image-upload{grid-template-columns:1fr}.content-image-upload small{grid-column:auto}.content-image-upload button{width:100%}}
