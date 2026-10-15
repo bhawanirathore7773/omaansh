@@ -147,11 +147,13 @@ const specRows = parsedSpecs.length ? parsedSpecs : defaultSpecs;
   });
   renumberGallery();updateSpecCount();updateCounters();
   if(!document.getElementById('metaTitle').value&&name.value)document.getElementById('metaTitle').value=name.value+' | OSIRA Wall Clocks';
-  if(!shape.value)shape.value='Round';
+  const selectedCategoryName=(category.options[category.selectedIndex]?.dataset.categoryName||'').toLowerCase();
+  if(selectedCategoryName.includes('square'))shape.value='Square';else if(selectedCategoryName.includes('rectangle'))shape.value='Rectangle';else if(selectedCategoryName.includes('round'))shape.value='Round';
   const existingSize=Array.from(specs.querySelectorAll('.spec-row')).find(row=>row.querySelector('[name=specKey]').value.toLowerCase()==='size / diameter');
   if(existingSize){const match=Array.from(size.options).find(option=>option.value===existingSize.querySelector('[name=specValue]').value);if(match)size.value=match.value;}
   const existingShape=Array.from(specs.querySelectorAll('.spec-row')).find(row=>row.querySelector('[name=specKey]').value.toLowerCase()==='shape');
-  if(existingShape){const match=Array.from(shape.options).find(option=>option.value===existingShape.querySelector('[name=specValue]').value);if(match)shape.value=match.value;}
+  if(existingShape && <%= parsedSpecs.length > 0 ? 'true' : 'false' %>){const match=Array.from(shape.options).find(option=>option.value===existingShape.querySelector('[name=specValue]').value);if(match)shape.value=match.value;}
+  if(existingShape)existingShape.querySelector('[name=specValue]').value=shape.value;
   if(document.getElementById('mainImageUrl').value)renderMainImage(document.getElementById('mainImageUrl').value);
 })();
 </script>
