@@ -151,7 +151,7 @@
     } finally {
       cropButton.disabled = false;
       cropButton.textContent = 'Crop & upload';
-      if (activeButton) activeButton.disabled = false;
+      document.querySelectorAll('[data-open-crop]').forEach(button => { button.disabled = false; });
     }
   });
 })();
