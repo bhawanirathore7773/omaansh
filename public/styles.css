@@ -689,3 +689,45 @@ body.filter-sheet-open{position:fixed!important;overflow:hidden!important;width:
     transform-origin:center center!important;
   }
 }
+
+
+/* Desktop homepage hero: balanced, premium-height carousel.
+   Keep the mobile 4:3 layout unchanged and let the artwork fill the frame. */
+@media(min-width:801px){
+  .home-banner-section{
+    width:100%;
+    max-width:1300px;
+    padding:0 24px;
+    margin:0 auto 42px;
+  }
+  .home-banner-carousel{
+    width:100%;
+    max-width:none;
+    border-radius:18px;
+  }
+  .home-banner-track{
+    aspect-ratio:2.25/1!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:500px;
+  }
+  .home-banner-slide{
+    aspect-ratio:auto!important;
+    min-height:0!important;
+    height:100%!important;
+  }
+  .home-banner-image-link,
+  .home-banner-picture{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+  }
+  .home-banner-picture img{
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    transform:none!important;
+  }
+}
