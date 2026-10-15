@@ -751,19 +751,23 @@ body.filter-sheet-open{position:fixed!important;overflow:hidden!important;width:
   }
 }
 
-/* Definitive desktop carousel sizing override.
-   Explicit height (not aspect-ratio) wins over earlier 4:3 rules. */
+/* Desktop carousel uses the same 3.3:1 frame as the admin crop editor.
+   This keeps image cropping and the actual visible carousel dimensions aligned. */
 @media screen and (min-width: 801px) {
   body .home-banner-section .home-banner-carousel {
-    height: clamp(280px, 28vw, 380px) !important;
-    aspect-ratio: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 3.3 / 1 !important;
+    max-height: none !important;
+    overflow: hidden !important;
   }
   body .home-banner-section .home-banner-carousel .home-banner-track {
     display: block !important;
+    width: 100% !important;
     height: 100% !important;
     min-height: 0 !important;
     max-height: none !important;
-    aspect-ratio: auto !important;
+    aspect-ratio: 3.3 / 1 !important;
     position: relative !important;
   }
   body .home-banner-section .home-banner-carousel .home-banner-slide,
@@ -777,6 +781,7 @@ body.filter-sheet-open{position:fixed!important;overflow:hidden!important;width:
     height: 100% !important;
     width: 100% !important;
     object-fit: cover !important;
+    object-position: center !important;
     transform: none !important;
   }
 }
