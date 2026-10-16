@@ -379,6 +379,9 @@ model ResellerMaterial {
   name String @db.VarChar(180)
   slug String @unique @db.VarChar(200)
   componentType String @default("Component") @db.VarChar(100)
+  category String @default("components") @db.VarChar(80)
+  isFeatured Boolean @default(false)
+  isRecommended Boolean @default(false)
   shortDescription String @db.VarChar(300)
   description String @db.Text
   image String? @db.VarChar(500)
