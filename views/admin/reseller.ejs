@@ -1,0 +1,25 @@
+<%- include('partials/header', {title:'Reseller Programme CMS', user}) %>
+<div class="admin-page-heading reseller-admin-heading"><div><p class="admin-kicker">WHOLESALE CONTENT</p><h1>Reseller programme</h1><p>Manage the public reseller guide, hero image and component catalogue. Uploaded images are stored with the persistent media uploads.</p></div><a class="admin-button" href="/admin/reseller-materials/new">＋ Add component</a></div>
+<% if(saved){ %><div class="admin-alert admin-alert-success">Reseller content saved successfully.</div><% } %>
+<form class="reseller-admin-form" method="post" action="/admin/reseller/settings/save">
+<input type="hidden" name="csrfToken" value="<%= csrfToken %>">
+<section class="admin-form-card reseller-admin-card"><div class="reseller-admin-section-title"><span class="reseller-admin-icon">✦</span><div><h2>Page content</h2><p>These fields control the public /reseller page.</p></div></div>
+<div class="reseller-admin-grid">
+<label>Eyebrow<input name="eyebrow" maxlength="120" value="<%= settings.eyebrow %>"></label>
+<label>Hero heading<input name="heroTitle" maxlength="220" value="<%= settings.heroTitle %>" required></label>
+<label class="field-span-2">Hero description<textarea name="heroDescription" rows="3" required><%= settings.heroDescription %></textarea></label>
+<label class="field-span-2">Hero image URL<input id="resellerHeroImage" name="heroImage" value="<%= settings.heroImage || '' %>" placeholder="/uploads/reseller-materials/hero.webp"><span class="reseller-upload-row"><input type="file" accept="image/jpeg,image/png,image/webp,image/avif" data-reseller-file="resellerHeroImage"><button type="button" class="admin-secondary" data-reseller-upload="resellerHeroImage">Upload hero image</button></span><small>Use the upload control or paste a URL. JPG, PNG, WebP or AVIF, up to 8 MB.</small></label>
+<label>Intro section heading<input name="introTitle" maxlength="220" value="<%= settings.introTitle %>"></label>
+<label>Quality section heading<input name="qualityTitle" maxlength="220" value="<%= settings.qualityTitle %>"></label>
+<label class="field-span-2">Intro description<textarea name="introDescription" rows="3"><%= settings.introDescription %></textarea></label>
+<label class="field-span-2">Quality and accuracy note<textarea name="qualityDescription" rows="3"><%= settings.qualityDescription %></textarea></label>
+<label class="field-span-2">Default WhatsApp enquiry message<textarea name="whatsappIntro" rows="2"><%= settings.whatsappIntro %></textarea></label>
+<label class="reseller-publish-toggle"><input type="checkbox" name="isPublished" <%= settings.isPublished ? 'checked' : '' %>><span><strong>Publish reseller page</strong><small>Uncheck to hide the page content from search and users once route visibility is wired to this setting.</small></span></label>
+</div><div class="reseller-admin-actions"><button class="admin-button" type="submit">Save page content</button></div></section>
+</form>
+<section class="admin-form-card reseller-admin-card"><div class="reseller-admin-section-title"><span class="reseller-admin-icon">▦</span><div><h2>Component library</h2><p><%= materials.length %> components. Add as many components and gallery images as required.</p></div><a class="admin-secondary" href="/reseller" target="_blank" rel="noopener">Preview public page ↗</a></div>
+<div class="reseller-admin-material-list">
+<% materials.forEach(m=>{ %><article class="reseller-admin-material"><div class="reseller-admin-thumb"><% if(m.image){ %><img src="<%= m.image %>" alt="" loading="lazy"><% } else { %><span>OSIRA</span><% } %></div><div class="reseller-admin-material-copy"><strong><%= m.name %></strong><small><%= m.componentType %> · /reseller/materials/<%= m.slug %></small><span class="reseller-admin-status <%= m.isPublished ? 'published' : '' %>"><%= m.isPublished ? 'Published' : 'Draft' %></span></div><a class="admin-secondary reseller-admin-edit" href="/admin/reseller-materials/<%= m.id %>/edit">✎ Edit</a></article><% }) %>
+<% if(!materials.length){ %><p>No components yet. Add the first component to start the library.</p><% } %>
+</div></section>
+<%- include('partials/footer') %>
