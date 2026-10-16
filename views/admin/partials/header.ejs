@@ -17,7 +17,7 @@
   <div class="admin-topbar-right"><a class="view-site-link" href="/" target="_blank" rel="noopener">View website <span aria-hidden="true">↗</span></a><span class="topbar-divider"></span><div class="admin-user"><span class="admin-avatar"><%= String((user?.name||'A').trim().charAt(0)).toUpperCase() %></span><span class="admin-user-name"><strong><%= user?.name || 'Admin' %></strong><small><%= user?.email || 'Administrator' %></small></span><form method="post" action="/admin/logout"><button type="submit">Sign out</button></form></div></div>
 </header>
 <div class="admin-layout">
-<aside class="admin-sidebar" id="adminSidebar">
+<aside class="admin-sidebar" id="adminSidebar"><div class="admin-sidebar-mobile-head"><span>OSIRA MENU</span><button type="button" id="closeAdminNav" aria-label="Close navigation">×</button></div>
   <div class="sidebar-label">WORKSPACE</div>
   <a href="/admin" class="<%= (typeof title!=='undefined'&&title.includes('Dashboard'))?'is-active':'' %>"><span class="nav-icon">⌂</span><span>Overview</span></a>
   <div class="sidebar-label">COMMERCE</div>
