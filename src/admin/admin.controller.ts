@@ -342,6 +342,77 @@ export class AdminController {
   }
 
   @UseGuards(AdminAuthGuard)
+  @Get('reseller')
+  async resellerAdmin(@Req() req: Request, @Res() res: Response) {
+    const [settings, materials] = await Promise.all([
+      this.admin.getResellerPageSettings(),
+      this.admin.listResellerMaterialsAdmin(),
+    ]);
+    return res.render('admin/reseller', { user: (req as any).adminUser, settings, materials, csrfToken: (req as any).adminCsrf, saved: req.query.saved === '1' });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('reseller/settings/save')
+  async saveResellerSettings(@Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    await this.admin.saveResellerPageSettings(body);
+    return res.redirect(303, '/admin/reseller?saved=1');
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('reseller-materials/new')
+  async newResellerMaterial(@Req() req: Request, @Res() res: Response) {
+    return res.render('admin/reseller-material-form', { user: (req as any).adminUser, material: null, csrfToken: (req as any).adminCsrf });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('reseller-materials/:id/edit')
+  async editResellerMaterial(@Param('id') id: string, @Req() req: Request, @Res() res: Response) {
+    const material = await this.admin.getResellerMaterialAdmin(Number(id));
+    if (!material) return res.status(404).send('Reseller component not found');
+    return res.render('admin/reseller-material-form', { user: (req as any).adminUser, material, csrfToken: (req as any).adminCsrf });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('reseller-materials/save')
+  async saveResellerMaterial(@Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    try {
+      await this.admin.saveResellerMaterial(body, body.id ? Number(body.id) : undefined);
+      return res.redirect(303, '/admin/reseller?saved=1');
+    } catch (error) {
+      return res.status(400).send(error instanceof Error ? error.message : 'Unable to save reseller component');
+    }
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('reseller-materials/upload-image')
+  @UseInterceptors(FileInterceptor('image', {
+    storage: diskStorage({
+      destination: (_req, _file, cb) => {
+        const destination = join(uploadDirectory, 'reseller-materials');
+        mkdirSync(destination, { recursive: true });
+        cb(null, destination);
+      },
+      filename: (_req, file, cb) => cb(null, `${Date.now()}-${randomUUID()}${extname(file.originalname).toLowerCase()}`),
+    }),
+    limits: { fileSize: 8 * 1024 * 1024, files: 1 },
+    fileFilter: (_req, file, cb) => {
+      const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
+      if (!allowed.includes(file.mimetype)) return cb(new BadRequestException('Use JPG, PNG, WebP or AVIF image files.') as any, false);
+      cb(null, true);
+    },
+  }))
+  async uploadResellerMaterialImage(@UploadedFile() file: Express.Multer.File, @Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).json({ error: 'Invalid CSRF token' });
+    if (!file) return res.status(400).json({ error: 'Select a JPG, PNG, WebP or AVIF image up to 8 MB.' });
+    return res.json({ url: `/uploads/reseller-materials/${file.filename}` });
+  }
+
+  @UseGuards(AdminAuthGuard)
   @Get('settings')
   async settings(@Req() req: Request, @Res() res: Response) {
     return res.render('admin/settings', { user: (req as any).adminUser, settings: await this.admin.getSiteSettings(), csrfToken: (req as any).adminCsrf, saved: req.query.saved === '1' });
