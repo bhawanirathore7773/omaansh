@@ -104,6 +104,50 @@ export class AdminController {
   }
 
   @UseGuards(AdminAuthGuard)
+  @Get('categories')
+  async categories(@Req() req: Request, @Res() res: Response) {
+    return res.render('admin/categories', {
+      user: (req as any).adminUser,
+      rows: await this.admin.listCategoriesAdmin(),
+    });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('categories/new')
+  async newCategory(@Req() req: Request, @Res() res: Response) {
+    return res.render('admin/category-form', {
+      user: (req as any).adminUser,
+      category: null,
+      csrfToken: (req as any).adminCsrf,
+    });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Get('categories/:id/edit')
+  async editCategory(@Param('id') id: string, @Req() req: Request, @Res() res: Response) {
+    const category = await this.admin.getCategoryAdmin(Number(id));
+    if (!category) return res.status(404).send('Collection not found');
+    return res.render('admin/category-form', {
+      user: (req as any).adminUser,
+      category,
+      csrfToken: (req as any).adminCsrf,
+    });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('categories/save')
+  async saveCategory(@Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    try {
+      await this.admin.saveCategory(body, body.id ? Number(body.id) : undefined);
+      return res.redirect(303, '/admin/categories');
+    } catch (error) {
+      return res.status(400).send(error instanceof Error ? error.message : 'Unable to save collection');
+    }
+  }
+
+  @UseGuards(AdminAuthGuard)
   @Post('products/save')
   async saveProduct(@Body() body: any, @Req() req: Request, @Res() res: Response) {
     const session = (req as any).adminSession;
