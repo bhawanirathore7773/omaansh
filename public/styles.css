@@ -1290,3 +1290,6 @@ body.drawer-open { overflow:hidden !important; }
  .drawer-reseller-cta { margin-bottom:8px !important; }
  .drawer-footnote { padding-bottom:12px !important; }
 }
+/* Category pages deliberately use two balanced product columns on desktop and mobile. */
+.reseller-category-products .reseller-material-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:18px !important; }
+@media(max-width:600px){.reseller-category-products .reseller-material-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px !important}.reseller-category-products .reseller-material-card-body{padding:11px}.reseller-category-products .reseller-material-card h3{font-size:.85rem}.reseller-category-products .reseller-material-card p{font-size:.7rem}.reseller-category-products .reseller-tag-list{gap:4px}.reseller-category-products .reseller-badge{font-size:.49rem;padding:5px 6px;right:6px;top:6px}.reseller-category-products .reseller-material-type{left:6px;top:6px;font-size:.49rem;padding:5px 6px;max-width:65%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
