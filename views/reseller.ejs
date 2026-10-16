@@ -24,10 +24,11 @@
 
   <section class="section" id="components">
     <div class="reseller-section-head"><div><span class="reseller-eyebrow">THE COMPONENT LIBRARY</span><h2><%= settings.introTitle %></h2><p><%= settings.introDescription %></p></div></div>
+    <div class="reseller-category-shortcuts"><a href="/reseller/glass"><span>◌</span><strong>Clock glass</strong><small>Explore glass types →</small></a><a href="/reseller/movement"><span>◷</span><strong>Movements</strong><small>Compare mechanism options →</small></a><a href="/reseller/body"><span>▣</span><strong>Body & back</strong><small>Explore case components →</small></a></div>
     <div class="reseller-material-grid">
       <% materials.forEach(material => { const sizes = Array.isArray(material.sizes) ? material.sizes : []; const colors = Array.isArray(material.colors) ? material.colors : []; %>
       <a class="reseller-material-card" href="/reseller/materials/<%= material.slug %>">
-        <div class="reseller-material-photo"><img src="<%= material.image || 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=900&q=80' %>" alt="<%= material.name %>" loading="lazy" width="600" height="450"><span class="reseller-material-type"><%= material.componentType %></span></div>
+        <div class="reseller-material-photo"><img src="<%= material.image || 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=900&q=80' %>" alt="<%= material.name %>" loading="lazy" width="600" height="450"><span class="reseller-material-type"><%= material.componentType %></span><% if(material.isFeatured){ %><span class="reseller-badge reseller-badge-featured">FEATURED</span><% } else if(material.isRecommended){ %><span class="reseller-badge reseller-badge-recommended">RECOMMENDED</span><% } %></div>
         <div class="reseller-material-card-body"><h3><%= material.name %></h3><p><%= material.shortDescription %></p>
           <div class="reseller-tag-list"><% sizes.slice(0,3).forEach(size => { %><span class="reseller-tag"><%= size %></span><% }) %><% colors.slice(0,2).forEach(color => { %><span class="reseller-tag"><%= color %></span><% }) %></div>
           <span class="reseller-card-link">View specifications <span aria-hidden="true">↗</span></span>
