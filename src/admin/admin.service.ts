@@ -316,6 +316,9 @@ export class AdminService {
     const data: any = {
       name, slug,
       componentType: text(body.componentType || 'Component').slice(0, 100),
+      category: text(body.category || 'components').toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'components',
+      isFeatured: body.isFeatured === 'on' || body.isFeatured === true,
+      isRecommended: body.isRecommended === 'on' || body.isRecommended === true,
       shortDescription: text(body.shortDescription).slice(0, 300),
       description: text(body.description),
       image: text(body.image).slice(0, 500) || null,
