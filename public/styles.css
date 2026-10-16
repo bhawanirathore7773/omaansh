@@ -888,3 +888,40 @@ body .catalogue-grid .product-media img {
  .product-status-badge { left:7px; top:7px; padding:4px 6px; font-size:.52rem; }
  .product-image-label { right:7px !important; top:7px !important; font-size:.48rem !important; max-width:55%; }
 }
+
+
+/* OSIRA collection cards: square, image-first, minimal overlays. */
+.collections-hero { padding-bottom:24px !important; }
+.collections-hero h1 { max-width:780px; }
+.collections-hero p { max-width:650px; }
+.collection-hero-link { display:inline-flex; align-items:center; gap:8px; margin-top:12px; font-size:.92rem; font-weight:650; text-decoration:underline; text-underline-offset:4px; }
+.collections-grid-section { padding-top:10px !important; }
+.category-grid-v2 { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:18px !important; }
+.category-card-v2 { display:block !important; min-height:0 !important; padding:0 !important; overflow:hidden; border:1px solid #e7e7e7 !important; border-radius:16px !important; background:#fff !important; }
+.category-card-v2 .collection-thumb { position:relative; width:100%; aspect-ratio:1/1 !important; overflow:hidden; background:#f1eee8; }
+.category-card-v2 .collection-thumb>img { display:block; width:100%; height:100%; object-fit:cover; transition:transform .35s ease; }
+.category-card-v2:hover .collection-thumb>img { transform:scale(1.035); }
+.collection-explore { position:absolute; top:10px; right:10px; z-index:2; display:inline-flex; align-items:center; gap:6px; padding:7px 9px; border:1px solid rgba(255,255,255,.6); border-radius:7px; background:rgba(255,255,255,.92); color:#182331; font-size:.65rem; font-weight:800; line-height:1; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+.collection-title-glass { position:absolute; left:10px; right:10px; bottom:31px; z-index:2; padding:11px 12px; border:1px solid rgba(255,255,255,.35); border-radius:10px; background:rgba(17,24,32,.43); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px); }
+.collection-title-glass h2 { margin:0 !important; color:#fff; font-size:1.02rem !important; line-height:1.2; letter-spacing:-.015em; font-weight:750; text-shadow:0 1px 5px rgba(0,0,0,.18); }
+.collection-brand-note { position:absolute; left:12px; bottom:11px; z-index:2; color:#fff; font-size:.54rem; font-weight:850; letter-spacing:.13em; line-height:1; text-shadow:0 1px 5px rgba(0,0,0,.7); }
+.collection-card-content,.category-card-v2 .category-card-content { display:none !important; }
+.collection-number { display:none !important; }
+@media(max-width:800px) {
+ .category-grid-v2 { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:12px !important; }
+ .collections-hero { padding-bottom:20px !important; }
+ .collections-hero h1 { font-size:clamp(2.2rem,8vw,3.4rem); line-height:.98; }
+ .collections-hero p { font-size:.95rem; line-height:1.55; }
+ .collection-title-glass { left:8px; right:8px; bottom:29px; padding:9px 10px; }
+ .collection-title-glass h2 { font-size:.88rem !important; }
+ .collection-explore { top:8px; right:8px; padding:6px 7px; font-size:.58rem; }
+ .collection-brand-note { left:10px; bottom:10px; font-size:.48rem; }
+}
+@media(max-width:380px) {
+ .category-grid-v2 { gap:8px !important; }
+ .collection-title-glass { left:6px; right:6px; bottom:25px; padding:8px; }
+ .collection-title-glass h2 { font-size:.78rem !important; }
+ .collection-explore { top:6px; right:6px; }
+ .collection-brand-note { left:8px; bottom:8px; font-size:.43rem; }
+}
+@media(prefers-reduced-motion:reduce) { .category-card-v2 .collection-thumb>img { transition:none; } }
