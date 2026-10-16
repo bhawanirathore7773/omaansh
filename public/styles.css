@@ -1008,3 +1008,105 @@ body .catalogue-grid .product-media img {
  .collections-page .category-card-v2 .collection-title-glass { left:7px !important; right:7px !important; bottom:7px !important; padding:8px 9px !important; }
  .collections-page .category-card-v2 .collection-title-glass h2 { font-size:.78rem !important; }
 }
+
+
+/* HOMEPAGE collections are .category-card-visual, not .category-card-v2.
+   Keep these overrides last so legacy homepage glass-card rules cannot win. */
+#collections .category-grid > .category-card-visual {
+  position: relative !important;
+  display: block !important;
+  isolation: isolate !important;
+  min-height: 0 !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 16px !important;
+  background: #f1eee8 !important;
+}
+#collections .category-grid > .category-card-visual > img {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+}
+#collections .category-grid > .category-card-visual::before {
+  content: none !important;
+  display: none !important;
+}
+#collections .category-grid > .category-card-visual > .card-index {
+  display: none !important;
+}
+#collections .category-grid > .category-card-visual > .category-card-copy {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+#collections .category-grid > .category-card-visual .category-card-copy > span {
+  display: none !important;
+}
+#collections .category-grid > .category-card-visual .category-card-copy > strong {
+  position: absolute !important;
+  left: 9px !important;
+  right: 9px !important;
+  bottom: 9px !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 9px 11px !important;
+  border: 1px solid rgba(255,255,255,.28) !important;
+  border-radius: 8px !important;
+  background: rgba(18,25,33,.58) !important;
+  color: #fff !important;
+  font-size: .9rem !important;
+  line-height: 1.2 !important;
+  font-weight: 750 !important;
+  text-shadow: 0 1px 5px rgba(0,0,0,.2) !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+}
+#collections .category-grid > .category-card-visual .category-card-copy > b {
+  position: absolute !important;
+  top: 9px !important;
+  right: 9px !important;
+  bottom: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  margin: 0 !important;
+  padding: 6px 8px !important;
+  border: 1px solid rgba(255,255,255,.7) !important;
+  border-radius: 7px !important;
+  background: rgba(255,255,255,.92) !important;
+  color: #182331 !important;
+  font-size: .58rem !important;
+  line-height: 1 !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08) !important;
+}
+#collections .category-grid > .category-card-visual .category-card-copy > b i {
+  font-size: .8rem !important;
+}
+@media(max-width:800px) {
+  #collections .category-grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 12px !important; }
+  #collections .category-grid > .category-card-visual { aspect-ratio: 1 / 1 !important; min-height: 0 !important; }
+  #collections .category-grid > .category-card-visual .category-card-copy > strong {
+    left: 7px !important; right: 7px !important; bottom: 7px !important; padding: 8px 9px !important; font-size: .78rem !important;
+  }
+  #collections .category-grid > .category-card-visual .category-card-copy > b {
+    top: 7px !important; right: 7px !important; padding: 5px 6px !important; font-size: .52rem !important;
+  }
+}
