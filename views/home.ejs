@@ -111,7 +111,7 @@
         <a class="product-card" href="/products/<%= product.slug %>">
           <div class="product-media">
             <% if (product.image) { %><img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy" width="800" height="600"><% } else { %><img src="https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=900&q=82" alt="Wall clock product image" loading="lazy" width="800" height="600"><% } %>
-            <span class="product-image-label">OSIRA · WALL CLOCKS</span>
+            <% if(product.isFeatured){ %><span class="product-status-badge featured">Featured</span><% } else if(product.isNewArrival){ %><span class="product-status-badge new">New arrival</span><% } else if(product.isBestseller){ %><span class="product-status-badge bestseller">Bestseller</span><% } %><span class="product-image-label">OSIRA · WALL CLOCKS</span>
           </div>
           <div class="product-body"><span class="product-category-label"><%= product.category?.name || 'Wall Clock' %></span><h2><%= product.name %></h2>
             <ul class="product-quick-specs">
