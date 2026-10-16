@@ -1,4 +1,4 @@
-import { Controller, Get, Header, Query, Render, Param } from '@nestjs/common';
+import { Controller, Get, Header, Query, Render, Param, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Controller()
@@ -86,6 +86,7 @@ export class SiteController {
     if (!settings) {
       settings = await this.prisma.resellerPageSettings.create({ data: { id: 1 } });
     }
+    if (!settings.isPublished) throw new NotFoundException('Reseller programme is not published.');
     let count = await this.prisma.resellerMaterial.count();
     if (count === 0) {
       const demo: any[] = [
@@ -119,6 +120,7 @@ export class SiteController {
       this.prisma.resellerPageSettings.findUnique({ where: { id: 1 } }),
       this.prisma.resellerMaterial.findFirst({ where: { slug, isPublished: true } }),
     ]);
+    if (settings && !settings.isPublished) throw new NotFoundException('Reseller programme is not published.');
     if (!material) {
       return { site, settings: settings || { whatsappIntro: 'Hello OSIRA, please share reseller component details.' }, material: null, pageTitle: 'Component not found | OSIRA', metaDescription: 'This component is not currently available.', canonical: undefined };
     }
