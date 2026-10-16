@@ -1,1 +1,59 @@
-<%- include('partials/header', {title:(category?'Edit':'Add')+' Collection | OSIRA Admin', user}) %><div class="admin-heading"><div><p class="admin-kicker">STRUCTURE</p><h1><%= category?'Edit collection':'Add collection' %></h1></div></div><form method="post" action="/admin/categories/save" class="editor-card single-editor"><input type="hidden" name="csrfToken" value="<%= (typeof csrfToken!=='undefined'&&csrfToken)||'' %>"><% if(category){ %><input type="hidden" name="id" value="<%= category.id %>"><% } %><label>Name<input name="name" required value="<%= category?.name||'' %>"></label><label>Slug<input name="slug" required value="<%= category?.slug||'' %>"></label><label>Description<textarea name="description" rows="6"><%= category?.description||'' %></textarea></label><div class="field-grid"><label>H1 heading<input name="h1Heading" value="<%= category?.h1Heading||'' %>"></label><label>Display order<input type="number" name="displayOrder" value="<%= category?.displayOrder||0 %>"></label><label>Image URL<input name="image" value="<%= category?.image||'' %>"></label><label>Static image path<input name="staticImagePath" value="<%= category?.staticImagePath||'' %>"></label><label>Meta title<input name="metaTitle" maxlength="70" value="<%= category?.metaTitle||'' %>"></label><label>Meta description<input name="metaDescription" maxlength="160" value="<%= category?.metaDescription||'' %>"></label></div><label>SEO content<textarea name="seoContent" rows="8"><%= category?.seoContent||'' %></textarea></label><label>Meta keywords<input name="metaKeywords" value="<%= category?.metaKeywords||'' %>"></label><label><input type="checkbox" name="isFeatured" <%= category?.isFeatured?'checked':'' %>> Featured collection</label><button class="admin-button" type="submit">Save collection</button></form><%- include('partials/footer') %>
+<%- include('partials/header', {title:(category?'Edit':'Add')+' Collection | OSIRA Admin', user}) %>
+<div class="admin-heading"><div><p class="admin-kicker">STRUCTURE</p><h1><%= category?'Edit collection':'Add collection' %></h1><p>Manage the collection artwork, page content and SEO settings.</p></div><a class="admin-secondary" href="/admin/categories">← Back to collections</a></div>
+<form method="post" action="/admin/categories/save" class="editor-card single-editor category-editor-form" id="categoryEditorForm">
+  <input type="hidden" name="csrfToken" value="<%= (typeof csrfToken!=='undefined'&&csrfToken)||'' %>">
+  <% if(category){ %><input type="hidden" name="id" value="<%= category.id %>"><% } %>
+  <section class="category-editor-section"><h2>Collection details</h2><p class="category-editor-help">Keep the collection name and URL slug clear and descriptive.</p>
+    <label>Name<input name="name" required value="<%= category?.name||'' %>" maxlength="200"></label>
+    <label>Slug<input name="slug" required value="<%= category?.slug||'' %>" maxlength="220"></label>
+    <label>Description<textarea name="description" rows="4"><%= category?.description||'' %></textarea></label>
+    <div class="field-grid"><label>H1 heading<input name="h1Heading" value="<%= category?.h1Heading||'' %>" maxlength="200"></label><label>Display order<input type="number" name="displayOrder" value="<%= category?.displayOrder||0 %>"></label></div>
+  </section>
+  <section class="category-editor-section"><h2>Collection image</h2><p class="category-editor-help">Upload an image or paste an existing image URL. A square or 4:3 image works well for collection thumbnails.</p>
+    <div class="category-image-preview" id="categoryImagePreview"><% if(category?.image || category?.staticImagePath){ %><img src="<%= category.image || category.staticImagePath %>" alt="Collection image preview"><% } else { %><span>COLLECTION IMAGE PREVIEW</span><% } %></div>
+    <label>Image URL<input id="categoryImageUrl" name="image" value="<%= category?.image||'' %>" placeholder="/uploads/products/your-image.webp"></label>
+    <div class="category-image-upload"><input type="file" id="categoryImageFile" accept="image/jpeg,image/png,image/webp,image/avif"><button type="button" class="admin-secondary" id="uploadCategoryImage">Upload image</button></div>
+    <small class="category-editor-help" id="categoryUploadStatus">JPG, PNG, WebP or AVIF · maximum 8 MB.</small>
+    <label>Static image path (optional)<input name="staticImagePath" value="<%= category?.staticImagePath||'' %>" placeholder="/images/collections/plastic-clocks.webp"></label>
+  </section>
+  <section class="category-editor-section"><h2>Search engine optimisation</h2>
+    <label>Meta title<input name="metaTitle" maxlength="70" value="<%= category?.metaTitle||'' %>"><small>Recommended: up to 60–70 characters.</small></label>
+    <label>Meta description<textarea name="metaDescription" rows="3" maxlength="160"><%= category?.metaDescription||'' %></textarea></label>
+    <label>Meta keywords<input name="metaKeywords" value="<%= category?.metaKeywords||'' %>"></label>
+    <label>SEO content<textarea name="seoContent" rows="8"><%= category?.seoContent||'' %></textarea></label>
+    <label class="category-feature-toggle"><input type="checkbox" name="isFeatured" <%= category?.isFeatured?'checked':'' %>><span><strong>Featured collection</strong><small>Highlight this collection in featured collection areas.</small></span></label>
+  </section>
+  <div class="category-editor-actions"><a class="admin-secondary" href="/admin/categories">Cancel</a><button class="admin-button" type="submit">Save collection</button></div>
+</form>
+<script>
+(function(){
+ const form=document.getElementById('categoryEditorForm');
+ const url=document.getElementById('categoryImageUrl');
+ const file=document.getElementById('categoryImageFile');
+ const button=document.getElementById('uploadCategoryImage');
+ const preview=document.getElementById('categoryImagePreview');
+ const status=document.getElementById('categoryUploadStatus');
+ function renderPreview(value){
+   preview.innerHTML='';
+   if(value){const img=document.createElement('img');img.alt='Collection image preview';img.src=value;img.onerror=()=>{preview.innerHTML='<span>Image preview unavailable</span>';};preview.appendChild(img);}
+   else preview.innerHTML='<span>COLLECTION IMAGE PREVIEW</span>';
+ }
+ url.addEventListener('input',()=>renderPreview(url.value.trim()));
+ button.addEventListener('click',async()=>{
+   const selected=file.files&&file.files[0];
+   if(!selected){status.textContent='Choose an image file first.';return;}
+   if(selected.size>8*1024*1024){status.textContent='Image must be 8 MB or smaller.';return;}
+   const data=new FormData();data.append('image',selected);data.append('csrfToken',form.querySelector('[name=csrfToken]').value);
+   button.disabled=true;button.textContent='Uploading…';status.textContent='Uploading image…';
+   try{
+     const response=await fetch('/admin/products/upload-image',{method:'POST',body:data,credentials:'same-origin'});
+     const result=await response.json();
+     if(!response.ok)throw new Error(result.error||'Upload failed');
+     url.value=result.url;renderPreview(result.url);status.textContent='Image uploaded. Save the collection to apply it.';
+     button.textContent='Uploaded ✓';
+   }catch(error){status.textContent=error.message||'Image upload failed.';button.textContent='Try again';}
+   finally{button.disabled=false;}
+ });
+})();
+</script>
+<%- include('partials/footer') %>
