@@ -2,30 +2,30 @@
 <main class="collections-page">
   <section class="section collections-hero">
     <span class="kicker">OSIRA COLLECTIONS</span>
-    <h1>Wall clock collections organised around real buying needs.</h1>
-    <p>Compare practical, decorative, promotional and custom wall clock ranges. Select a collection to see available products, specifications and business-order options.</p>
+    <h1>Find the right wall clock collection.</h1>
+    <p>Explore wall clocks for homes, businesses, retail displays and custom orders.</p>
+    <a class="collection-hero-link" href="#browse-collections">View collections <span aria-hidden="true">→</span></a>
   </section>
-  <section class="section collections-grid-section">
-    <div class="collection-index">
-      <span class="kicker">BROWSE COLLECTIONS</span><span><%= categories.length %> collections</span>
-    </div>
+  <section class="section collections-grid-section" id="browse-collections">
+    <div class="collection-index"><span class="kicker">BROWSE COLLECTIONS</span><span><%= categories.length %> collections</span></div>
     <div class="category-grid category-grid-v2">
       <% categories.forEach((category,index)=>{ %>
-      <a class="category-card category-card-v2" href="/categories/<%= category.slug %>">
+      <a class="category-card category-card-v2" href="/categories/<%= category.slug %>" aria-label="Explore <%= category.name %>">
         <div class="collection-thumb">
           <% const collectionImage = category.image || category.staticImagePath; if(collectionImage){ %>
-            <img src="<%= collectionImage %>" alt="<%= category.name %>" loading="lazy" width="360" height="270">
-          <% } else { %><div class="collection-thumb-placeholder" aria-label="<%= category.name %> collection image"><span>OSIRA</span><small>WALL CLOCKS</small></div><% } %>
-          <span class="collection-number"><%= String(index+1).padStart(2,'0') %></span>
+            <img src="<%= collectionImage %>" alt="<%= category.name %> wall clock collection" loading="lazy" width="600" height="600">
+          <% } else { %><div class="collection-thumb-placeholder"><span>OSIRA</span><small>WALL CLOCKS</small></div><% } %>
+          <span class="collection-explore">Explore <span aria-hidden="true">↗</span></span>
+          <div class="collection-title-glass"><h2><%= category.name %></h2></div>
+          <span class="collection-brand-note">OSIRA · WALL CLOCKS</span>
         </div>
-        <div class="category-card-content"><h2><%= category.name %></h2><span class="collection-count"><%= category._count.products %> products</span></div>
       </a>
       <% }) %>
     </div>
   </section>
   <section class="section collection-buying-note">
     <div><span class="kicker">NEED HELP CHOOSING?</span><h2>Start with your application, quantity and preferred size.</h2></div>
-    <div><p>For wholesale, corporate gifting, promotional branding or custom requirements, tell us what the clocks are for and approximately how many you need. We can then confirm the suitable current options.</p><a class="btn primary" href="/#enquiry">Request a quotation</a></div>
+    <div><p>For wholesale, corporate gifting, promotional branding or custom requirements, tell us what the clocks are for and approximately how many you need. We can then confirm the suitable current option.</p><a class="btn primary" href="/#enquiry">Request a quotation</a></div>
   </section>
 </main>
 <%- include('partials/footer', { site }) %>
