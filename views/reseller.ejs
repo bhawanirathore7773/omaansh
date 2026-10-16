@@ -1,0 +1,68 @@
+<%- include('partials/header') %>
+<main class="reseller-page">
+  <section class="section reseller-hero">
+    <div class="reseller-hero-copy">
+      <span class="reseller-eyebrow"><span aria-hidden="true">✳</span> <%= settings.eyebrow %></span>
+      <h1><%= settings.heroTitle %></h1>
+      <p><%= settings.heroDescription %></p>
+      <div class="reseller-hero-actions">
+        <a class="reseller-btn reseller-btn-primary" href="#components">Explore components <span aria-hidden="true">↓</span></a>
+        <a class="reseller-btn" href="https://wa.me/<%= (site?.whatsappNumber || '919509912556').replace(/[^0-9]/g,'') %>?text=<%= encodeURIComponent(settings.whatsappIntro) %>" target="_blank" rel="noopener noreferrer">Talk to wholesale team <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="reseller-hero-visual">
+      <img src="<%= settings.heroImage || 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=1400&q=85' %>" alt="Wall clock components and product construction" width="900" height="675" fetchpriority="high">
+      <span class="reseller-hero-chip"><span aria-hidden="true">◈</span> Components · Fit · Finish · Movement</span>
+    </div>
+  </section>
+
+  <section class="section reseller-trust-strip" aria-label="Reseller programme benefits">
+    <div class="reseller-trust-item"><span class="reseller-trust-icon" aria-hidden="true">◉</span><div><strong>Understand each component</strong><small>Review purpose, fit and finish before discussing a bulk order.</small></div></div>
+    <div class="reseller-trust-item"><span class="reseller-trust-icon" aria-hidden="true">↔</span><div><strong>Compare common sizes</strong><small>Explore 8, 10 and 12 inch size families where applicable.</small></div></div>
+    <div class="reseller-trust-item"><span class="reseller-trust-icon" aria-hidden="true">✓</span><div><strong>Confirm before ordering</strong><small>Ask our team to verify current specification, MOQ and pricing.</small></div></div>
+  </section>
+
+  <section class="section" id="components">
+    <div class="reseller-section-head"><div><span class="reseller-eyebrow">THE COMPONENT LIBRARY</span><h2><%= settings.introTitle %></h2><p><%= settings.introDescription %></p></div></div>
+    <div class="reseller-material-grid">
+      <% materials.forEach(material => { const sizes = Array.isArray(material.sizes) ? material.sizes : []; const colors = Array.isArray(material.colors) ? material.colors : []; %>
+      <a class="reseller-material-card" href="/reseller/materials/<%= material.slug %>">
+        <div class="reseller-material-photo"><img src="<%= material.image || 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=900&q=80' %>" alt="<%= material.name %>" loading="lazy" width="600" height="450"><span class="reseller-material-type"><%= material.componentType %></span></div>
+        <div class="reseller-material-card-body"><h3><%= material.name %></h3><p><%= material.shortDescription %></p>
+          <div class="reseller-tag-list"><% sizes.slice(0,3).forEach(size => { %><span class="reseller-tag"><%= size %></span><% }) %><% colors.slice(0,2).forEach(color => { %><span class="reseller-tag"><%= color %></span><% }) %></div>
+          <span class="reseller-card-link">View specifications <span aria-hidden="true">↗</span></span>
+        </div>
+      </a>
+      <% }) %>
+      <% if (!materials.length) { %><div class="reseller-empty"><h3>Component details are being updated.</h3><p>Contact our team to discuss available wholesale options.</p></div><% } %>
+    </div>
+  </section>
+
+  <section class="section reseller-info-band">
+    <div><span class="reseller-eyebrow">A BETTER WAY TO SOURCE</span><h2><%= settings.qualityTitle %></h2><p><%= settings.qualityDescription %></p></div>
+    <div class="reseller-check-list">
+      <div><b aria-hidden="true">01</b><span><strong>Body, back and bezel:</strong> confirm construction, diameter, mounting and finish together.</span></div>
+      <div><b aria-hidden="true">02</b><span><strong>Glass and dial:</strong> check fit, clarity, print quality and compatibility with the selected body.</span></div>
+      <div><b aria-hidden="true">03</b><span><strong>Movement and hands:</strong> confirm shaft length, hand fitting, clearance and tick/sweep behaviour.</span></div>
+      <div><b aria-hidden="true">04</b><span><strong>Wholesale terms:</strong> request current MOQ, available colours, sample options, packing and dispatch details.</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="reseller-section-head"><div><span class="reseller-eyebrow">HOW IT WORKS</span><h2>From a component question to a clear quotation.</h2></div></div>
+    <div class="reseller-steps">
+      <article class="reseller-step"><span>01</span><h3>Choose a component</h3><p>Open a component card and review the available guide, typical sizes, colours and fitment checks.</p></article>
+      <article class="reseller-step"><span>02</span><h3>Share your requirement</h3><p>Tell us the intended clock size, component, finish, expected quantity and delivery location.</p></article>
+      <article class="reseller-step"><span>03</span><h3>Confirm the details</h3><p>Our team can confirm current availability, exact specifications, MOQ, pricing and sample options.</p></article>
+    </div>
+    <div class="reseller-faq">
+      <div class="reseller-section-head"><div><span class="reseller-eyebrow">GOOD TO KNOW</span><h2>Before placing a wholesale order</h2></div></div>
+      <details><summary>Are all components available separately?</summary><p>Not necessarily. Availability depends on the component, model and current sourcing/production plan. Ask the OSIRA team to confirm which parts can be supplied separately.</p></details>
+      <details><summary>Are 8, 10 and 12 inch options available for every part?</summary><p>These are common size families in the guide, not a promise that every component is available in every size. Check compatibility and current options for the exact model.</p></details>
+      <details><summary>Can I select colours, styles or movement types?</summary><p>Some options depend on the selected model, order quantity and production availability. Request a written confirmation before committing to a reseller order.</p></details>
+      <details><summary>Does this page show final prices and certified material grades?</summary><p>No. This is an introductory component guide. Final pricing, material grade, dimensions, performance claims, MOQ and warranty terms must be confirmed for the specific item.</p></details>
+    </div>
+  </section>
+  <section class="section"><div class="reseller-final-cta"><div><h2>Building a resale or distribution business?</h2><p>Send us the component, clock sizes, finish preferences and approximate quantity. We’ll help you identify what to confirm next.</p></div><a class="reseller-btn reseller-btn-primary" href="https://wa.me/<%= (site?.whatsappNumber || '919509912556').replace(/[^0-9]/g,'') %>?text=<%= encodeURIComponent(settings.whatsappIntro) %>" target="_blank" rel="noopener noreferrer">Discuss wholesale options <span aria-hidden="true">↗</span></a></div></section>
+</main>
+<%- include('partials/footer', { site }) %>
