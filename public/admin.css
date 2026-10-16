@@ -306,3 +306,49 @@ body.crop-modal-open{overflow:hidden}
 .content-image-upload button{min-height:38px;white-space:nowrap;font-size:.7rem}
 .content-image-upload small{grid-column:1/-1;color:#7c8796;font-size:.68rem;line-height:1.5}
 @media(max-width:650px){.content-image-upload{grid-template-columns:1fr}.content-image-upload small{grid-column:auto}.content-image-upload button{width:100%}}
+
+
+/* Mobile admin drawer: constrain navigation content to the actual sidebar width. */
+@media (max-width: 760px) {
+  body.admin-shell { overflow-x: hidden; }
+  body.admin-shell .admin-layout { position: relative; width: 100%; min-width: 0; overflow-x: clip; }
+  body.admin-shell .admin-sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    box-sizing: border-box !important;
+    width: min(310px, 86vw) !important;
+    max-width: 86vw !important;
+    padding: 22px 14px calc(28px + env(safe-area-inset-bottom)) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    transform: translateX(-105%);
+    background: #101b27 !important;
+  }
+  body.admin-shell.nav-open .admin-sidebar { transform: translateX(0) !important; }
+  body.admin-shell .admin-sidebar .sidebar-label,
+  body.admin-shell .admin-sidebar > a,
+  body.admin-shell .admin-sidebar .sidebar-bottom {
+    display: flex !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex: 0 0 auto !important;
+  }
+  body.admin-shell .admin-sidebar > a {
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 13px 12px !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    border-radius: 10px !important;
+  }
+  body.admin-shell .admin-sidebar > a .nav-icon { flex: 0 0 22px; width: 22px; text-align: center; }
+  body.admin-shell .admin-sidebar > a > span:last-child { min-width: 0; flex: 1 1 auto; }
+  body.admin-shell .admin-sidebar .sidebar-label { padding: 18px 12px 7px !important; white-space: normal; }
+  body.admin-shell .admin-mobile-scrim { z-index: 1490 !important; }
+  body.admin-shell .admin-sidebar { z-index: 1500 !important; }
+  body.admin-shell .admin-topbar { z-index: 1510 !important; }
+}
