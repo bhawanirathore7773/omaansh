@@ -193,6 +193,10 @@ export class AdminService {
       isNewArrival: body.isNewArrival === 'on',
     };
     if (!data.name || !data.slug || !Number.isInteger(data.categoryId) || !data.description) throw new Error('Product name, slug, category and description are required.');
+    // Only one product can own each merchandising slot. Selecting a new item
+    // automatically clears the previous Featured / New Arrival assignment.
+    if (data.isFeatured) await this.prisma.product.updateMany({ where: { isFeatured: true, ...(id ? { id: { not: id } } : {}) }, data: { isFeatured: false } });
+    if (data.isNewArrival) await this.prisma.product.updateMany({ where: { isNewArrival: true, ...(id ? { id: { not: id } } : {}) }, data: { isNewArrival: false } });
     return id ? this.prisma.product.update({ where: { id }, data }) : this.prisma.product.create({ data });
   }
 
