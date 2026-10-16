@@ -357,3 +357,42 @@ model Enquiry {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+
+model ResellerPageSettings {
+  id Int @id @default(1)
+  eyebrow String @default("OSIRA RESELLER PROGRAMME") @db.VarChar(120)
+  heroTitle String @default("Build your wall clock business with the right components.") @db.VarChar(220)
+  heroDescription String @default("Explore clock components, sizes, finishes and movement options. Review the basics, then ask our team about current availability and wholesale requirements.") @db.Text
+  heroImage String? @db.VarChar(500)
+  introTitle String @default("Understand the parts before you buy in bulk.") @db.VarChar(220)
+  introDescription String @default("A wall clock is a combination of visible finish and functional components. Explore each component to understand common options and what to confirm before placing a wholesale order.") @db.Text
+  qualityTitle String @default("Choose with clarity, not guesswork.") @db.VarChar(220)
+  qualityDescription String @default("Specifications and availability can vary by model and production batch. Use this guide as a starting point and confirm exact material, fit, movement, finish, packing and MOQ with our team before ordering.") @db.Text
+  whatsappIntro String @default("Hello OSIRA, I am interested in reseller / wholesale wall clock components. Please share current options, specifications, MOQ and pricing.") @db.Text
+  isPublished Boolean @default(true)
+  updatedAt DateTime @updatedAt
+}
+
+model ResellerMaterial {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(180)
+  slug String @unique @db.VarChar(200)
+  componentType String @default("Component") @db.VarChar(100)
+  shortDescription String @db.VarChar(300)
+  description String @db.Text
+  image String? @db.VarChar(500)
+  gallery Json?
+  sizes Json?
+  colors Json?
+  styles Json?
+  movementTypes Json?
+  specifications Json?
+  qualityPoints Json?
+  orderingNotes String? @db.Text
+  displayOrder Int @default(0)
+  isPublished Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([isPublished, displayOrder])
+}
