@@ -825,3 +825,22 @@ body.filter-sheet-open{position:fixed!important;overflow:hidden!important;width:
 @media screen and (max-width: 700px) {
   .home-banner-editor .banner-preview.image-only-preview { aspect-ratio: 16 / 9 !important; }
 }
+
+
+/* Final product-card image ratio: square thumbnails across home and catalogue grids. */
+body .product-card .product-media,
+body .catalogue-grid .product-media {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+}
+body .product-card .product-media img,
+body .catalogue-grid .product-media img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+}
