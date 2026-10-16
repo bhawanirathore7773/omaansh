@@ -1244,3 +1244,49 @@ body.drawer-open { overflow:hidden !important; }
  .reseller-detail-panel { padding:15px; }
  .reseller-spec-table th,.reseller-spec-table td { padding:10px 7px; font-size:.75rem; }
 }
+
+:root { --reseller-charcoal:#202329; --reseller-warm:#F7F5F0; --reseller-gold:#B88743; }
+.reseller-page { --accent:var(--reseller-gold); }
+.reseller-hero-visual,.reseller-material-photo,.reseller-detail-image { background:var(--reseller-warm); }
+.reseller-eyebrow { color:var(--reseller-gold); }
+.reseller-btn-primary { background:var(--reseller-charcoal); border-color:var(--reseller-charcoal); }
+.reseller-material-card { border-radius:14px; }
+.reseller-material-photo { aspect-ratio:1/1; }
+.reseller-material-photo img { transition:transform .25s ease; }
+.reseller-material-card:hover .reseller-material-photo img { transform:scale(1.035); }
+.reseller-badge { position:absolute; right:10px; top:10px; z-index:2; display:inline-flex; align-items:center; padding:7px 9px; border-radius:7px; font-size:.59rem; line-height:1; letter-spacing:.08em; font-weight:900; box-shadow:0 3px 12px #20232916; }
+.reseller-badge-featured { background:var(--reseller-charcoal); color:#fff; }
+.reseller-badge-recommended { background:#f8eddc; color:#79551e; border:1px solid #e9d2ab; }
+.reseller-detail-badge { position:static; margin:12px 0 0; width:max-content; }
+.reseller-category-shortcuts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:22px 0 28px; }
+.reseller-category-shortcuts a { display:grid; grid-template-columns:40px minmax(0,1fr); align-items:center; column-gap:12px; padding:15px; border:1px solid #e5e2dc; border-radius:13px; background:var(--reseller-warm); text-decoration:none; }
+.reseller-category-shortcuts a>span { grid-row:span 2; display:grid; place-items:center; width:40px; height:40px; border-radius:10px; background:#fff; color:var(--reseller-gold); font-size:1.2rem; }
+.reseller-category-shortcuts strong { font-size:.82rem; }
+.reseller-category-shortcuts small { margin-top:4px; color:#727783; font-size:.68rem; }
+.reseller-category-hero { padding-top:42px; padding-bottom:28px; }
+.reseller-category-hero h1 { margin:16px 0 10px; font-size:clamp(2.5rem,6vw,4.6rem); letter-spacing:-.06em; line-height:.98; }
+.reseller-category-hero p { max-width:700px; color:#6b7280; line-height:1.75; }
+.reseller-category-filters { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+.reseller-category-filters span { padding:8px 11px; border:1px solid #e5e2dc; border-radius:999px; background:var(--reseller-warm); color:#4b5058; font-size:.69rem; font-weight:750; }
+.reseller-back-link { display:inline-flex; margin-bottom:20px; color:#626875; font-size:.78rem; font-weight:800; text-decoration:none; }
+.reseller-empty { grid-column:1/-1; padding:28px; border:1px solid #e6e2da; border-radius:15px; background:var(--reseller-warm); }
+.reseller-empty p { color:#687080; line-height:1.7; }
+.reseller-full-btn { width:100%; margin-top:18px; }
+.reseller-detail-short { color:#333a45 !important; font-size:1.05rem; font-weight:750; }
+@media(max-width:600px) {
+ .reseller-category-shortcuts { grid-template-columns:1fr; gap:9px; margin:18px 0 22px; }
+ .reseller-category-shortcuts a { padding:12px; }
+ .reseller-category-hero { padding-top:24px; }
+ .reseller-category-hero h1 { font-size:2.65rem; }
+ .reseller-material-photo { aspect-ratio:1/1 !important; }
+}
+@media(max-width:800px) {
+ .site-header:has(.menu-toggle.is-open) { z-index:1230 !important; background:transparent !important; border-color:transparent !important; box-shadow:none !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
+ .site-header:has(.menu-toggle.is-open) .brand,
+ .site-header:has(.menu-toggle.is-open) nav,
+ .site-header:has(.menu-toggle.is-open) .nav-cta { visibility:hidden !important; }
+ .menu-toggle.is-open { z-index:1240 !important; }
+ .mobile-drawer { position:fixed !important; top:0 !important; right:0 !important; bottom:0 !important; height:100vh !important; height:100dvh !important; max-height:100dvh !important; overflow-x:hidden !important; overflow-y:auto !important; -webkit-overflow-scrolling:touch !important; overscroll-behavior:contain !important; padding-top:max(20px,env(safe-area-inset-top)) !important; padding-bottom:max(28px,env(safe-area-inset-bottom)) !important; }
+ .drawer-reseller-cta { margin-bottom:8px !important; }
+ .drawer-footnote { padding-bottom:12px !important; }
+}
