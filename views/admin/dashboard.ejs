@@ -5,10 +5,10 @@
 </div>
 <section class="dashboard-section-head"><div><h2>Business snapshot</h2><p>Live totals from your current website database.</p></div><span class="dashboard-live"><i></i> Connected workspace</span></section>
 <section class="admin-stats dashboard-stat-grid">
-  <a href="/admin/products" class="stat-card stat-primary"><span class="stat-icon">▦</span><span class="stat-label">Active products</span><strong><%= data.products %></strong><small>Manage catalogue →</small></a>
-  <a href="/admin/categories" class="stat-card"><span class="stat-icon">▤</span><span class="stat-label">Collections</span><strong><%= data.categories %></strong><small>Organise products →</small></a>
-  <a href="/admin/enquiries" class="stat-card"><span class="stat-icon">↗</span><span class="stat-label">All enquiries</span><strong><%= data.enquiries %></strong><small>View lead pipeline →</small></a>
-  <a href="/admin/enquiries?status=new" class="stat-card stat-attention"><span class="stat-icon">✦</span><span class="stat-label">Needs attention</span><strong><%= data.newEnquiries %></strong><small>New enquiries →</small></a>
+  <a href="/admin/products" class="stat-card stat-primary"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span><span class="stat-label">Active products</span><strong><%= data.products %></strong><small>Manage catalogue →</small></a>
+  <a href="/admin/categories" class="stat-card"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M8 4v16M16 4v16M4 9h16M4 15h16"/></svg></span><span class="stat-label">Collections</span><strong><%= data.categories %></strong><small>Organise products →</small></a>
+  <a href="/admin/enquiries" class="stat-card"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span><span class="stat-label">All enquiries</span><strong><%= data.enquiries %></strong><small>View lead pipeline →</small></a>
+  <a href="/admin/enquiries?status=new" class="stat-card stat-attention"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="m12 3 2.25 6.75L21 12l-6.75 2.25L12 21l-2.25-6.75L3 12l6.75-2.25L12 3Z"/></svg></span><span class="stat-label">Needs attention</span><strong><%= data.newEnquiries %></strong><small>New enquiries →</small></a>
 </section>
 <section class="dashboard-work-grid">
   <div class="dashboard-panel sales-panel">
