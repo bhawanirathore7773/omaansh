@@ -1,1 +1,22 @@
-<%- include('partials/header', {title:'Collections | OSIRA Admin', user}) %><div class="admin-heading"><div><p class="admin-kicker">STRUCTURE</p><h1>Collections</h1><p>Organise products and collection-level SEO.</p></div><a class="admin-button" href="/admin/categories/new">+ Add collection</a></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Collection</th><th>Products</th><th>Featured</th><th>Action</th></tr></thead><tbody><% rows.forEach(row=>{ %><tr><td><strong><%= row.name %></strong><small>/<%= row.slug %></small></td><td><%= row._count.products %></td><td><%= row.isFeatured?'Yes':'No' %></td><td><a class="table-link" href="/admin/categories/<%= row.id %>/edit">Edit</a></td></tr><% }) %></tbody></table></div><%- include('partials/footer') %>
+<%- include('partials/header', {title:'Collections | OSIRA Admin', user}) %>
+<div class="admin-heading collection-admin-heading">
+  <div><p class="admin-kicker">STRUCTURE</p><h1>Collections</h1><p>Organise products and collection-level SEO.</p></div>
+  <a class="admin-button" href="/admin/categories/new">+ Add collection</a>
+</div>
+<div class="collection-admin-list" aria-label="Collections">
+  <% rows.forEach(row=>{ %>
+    <article class="collection-admin-row">
+      <div class="collection-admin-identity">
+        <div class="collection-admin-thumb">
+          <% if(row.image || row.staticImagePath){ %><img src="<%= row.image || row.staticImagePath %>" alt="" loading="lazy"><% } else { %><span>OSIRA</span><% } %>
+        </div>
+        <div class="collection-admin-name"><strong><%= row.name %></strong><span>/<%= row.slug %></span></div>
+      </div>
+      <div class="collection-admin-meta"><span class="collection-admin-meta-label">Products</span><strong><%= row._count.products %></strong></div>
+      <div class="collection-admin-meta"><span class="collection-admin-meta-label">Visibility</span><span class="collection-admin-status <%= row.isFeatured?'is-featured':'' %>"><%= row.isFeatured?'Featured collection':'Standard collection' %></span></div>
+      <a class="collection-edit-icon" href="/admin/categories/<%= row.id %>/edit" aria-label="Edit <%= row.name %>" title="Edit collection"><span aria-hidden="true">✎</span><span class="collection-edit-text">Edit</span></a>
+    </article>
+  <% }) %>
+  <% if(!rows.length){ %><div class="admin-empty collection-admin-empty">No collections yet. Add your first collection to get started.</div><% } %>
+</div>
+<%- include('partials/footer') %>
