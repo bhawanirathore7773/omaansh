@@ -3,9 +3,12 @@
 (function(){
   const toggle=document.getElementById('mobileNavToggle');
   const scrim=document.getElementById('adminMobileScrim');
+  const closeButton=document.getElementById('closeAdminNav');
   const close=()=>{document.body.classList.remove('nav-open');if(toggle)toggle.setAttribute('aria-expanded','false');};
   if(toggle)toggle.addEventListener('click',()=>{const open=document.body.classList.toggle('nav-open');toggle.setAttribute('aria-expanded',String(open));});
   if(scrim)scrim.addEventListener('click',close);
+  if(closeButton)closeButton.addEventListener('click',close);
+  document.querySelectorAll('.admin-sidebar a').forEach(link=>link.addEventListener('click',()=>{if(window.matchMedia('(max-width: 760px)').matches)close();}));
   document.addEventListener('keydown',event=>{if(event.key==='Escape')close();});
   const path=window.location.pathname;
   document.querySelectorAll('.admin-sidebar a').forEach(link=>{
