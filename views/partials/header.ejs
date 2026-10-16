@@ -15,7 +15,7 @@
   <% if (pageUrl) { %><meta property="og:url" content="<%= pageUrl %>"><% } %>
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/styles.css?v=20261016-collections-fix2">
+  <link rel="stylesheet" href="/styles.css?v=20261016-reseller-menu-1">
   <% if (typeof schemaJsonLd !== 'undefined' && schemaJsonLd) { %><script type="application/ld+json"><%- JSON.stringify(schemaJsonLd).replace(/</g, "\u003c") %></script><% } %>
 </head>
 <body>
@@ -37,19 +37,47 @@
     <a href="/">Home <span>↗</span></a><a href="/products">Wall Clocks <span>↗</span></a><a href="/categories">Collections <span>↗</span></a><a href="/services">Services <span>↗</span></a><a href="/industries">Industries <span>↗</span></a><a href="/blog">Buying Guides <span>↗</span></a><a href="/about">About OSIRA <span>↗</span></a><a href="/cities/jaipur">Jaipur <span>↗</span></a>
   </nav>
   <a class="drawer-cta" href="/#enquiry">Start an enquiry <span>→</span></a>
+  <a class="drawer-reseller-cta" href="/reseller"><span class="drawer-reseller-icon" aria-hidden="true">↗</span><span><strong>Become a reseller</strong><small>Explore components, sizes and wholesale options</small></span><span aria-hidden="true">→</span></a>
   <p class="drawer-footnote">Wall clocks for retail, workplaces and business orders.</p>
 </aside>
 <script>
 (() => {
- const toggle=document.querySelector('.menu-toggle'), drawer=document.querySelector('.mobile-drawer'), backdrop=document.querySelector('.drawer-backdrop');
+ const toggle=document.querySelector('.menu-toggle');
+ const drawer=document.querySelector('.mobile-drawer');
+ const backdrop=document.querySelector('.drawer-backdrop');
  if(!toggle||!drawer||!backdrop)return;
- const drawerHead=drawer.querySelector('.drawer-head');
- const navInner=document.querySelector('.nav-inner');
- const open=()=>{drawerHead.appendChild(toggle);drawer.classList.add('is-open');toggle.classList.add('is-open');backdrop.hidden=false;requestAnimationFrame(()=>backdrop.classList.add('is-visible'));toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','Close navigation menu');drawer.setAttribute('aria-hidden','false');document.body.classList.add('drawer-open');};
- const close=()=>{drawer.classList.remove('is-open');toggle.classList.remove('is-open');navInner.appendChild(toggle);backdrop.classList.remove('is-visible');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open navigation menu');drawer.setAttribute('aria-hidden','true');document.body.classList.remove('drawer-open');window.setTimeout(()=>{if(!backdrop.classList.contains('is-visible'))backdrop.hidden=true;},280);};
+ let savedScrollY=0;
+ const open=()=>{
+   const rect=toggle.getBoundingClientRect();
+   savedScrollY=window.scrollY||window.pageYOffset||0;
+   toggle.style.setProperty('--menu-toggle-left',rect.left+'px');
+   toggle.style.setProperty('--menu-toggle-top',rect.top+'px');
+   document.body.style.setProperty('--drawer-lock-top',(-savedScrollY)+'px');
+   document.body.classList.add('drawer-open');
+   toggle.classList.add('is-open');
+   drawer.classList.add('is-open');
+   backdrop.hidden=false;
+   requestAnimationFrame(()=>backdrop.classList.add('is-visible'));
+   toggle.setAttribute('aria-expanded','true');
+   toggle.setAttribute('aria-label','Close navigation menu');
+   drawer.setAttribute('aria-hidden','false');
+ };
+ const close=()=>{
+   drawer.classList.remove('is-open');
+   toggle.classList.remove('is-open');
+   backdrop.classList.remove('is-visible');
+   toggle.setAttribute('aria-expanded','false');
+   toggle.setAttribute('aria-label','Open navigation menu');
+   drawer.setAttribute('aria-hidden','true');
+   document.body.classList.remove('drawer-open');
+   document.body.style.removeProperty('--drawer-lock-top');
+   window.scrollTo(0,savedScrollY);
+   window.setTimeout(()=>{if(!backdrop.classList.contains('is-visible'))backdrop.hidden=true;},280);
+ };
  toggle.addEventListener('click',()=>drawer.classList.contains('is-open')?close():open());
  backdrop.addEventListener('click',close);
  drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
- document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('is-open'))close();});
+ window.addEventListener('resize',()=>{if(drawer.classList.contains('is-open')){const rect=toggle.getBoundingClientRect();toggle.style.setProperty('--menu-toggle-left',rect.left+'px');toggle.style.setProperty('--menu-toggle-top',rect.top+'px');}});
 })();
 </script>
