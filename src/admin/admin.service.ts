@@ -114,7 +114,39 @@ export class AdminService {
   }
 
 
-  async listCategoriesAdmin() { return this.prisma.category.findMany({ orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }] }); }
+  async listCategoriesAdmin() {
+    return this.prisma.category.findMany({
+      include: { _count: { select: { products: true } } },
+      orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }],
+    });
+  }
+
+  async getCategoryAdmin(id: number) {
+    return this.prisma.category.findUnique({ where: { id } });
+  }
+
+  async saveCategory(body: any, id?: number) {
+    const name = String(body.name || '').trim();
+    const slug = String(body.slug || '').trim().toLowerCase();
+    if (!name || !slug) throw new Error('Collection name and slug are required.');
+    const data: any = {
+      name: name.slice(0, 200),
+      slug: slug.slice(0, 220),
+      description: String(body.description || '').trim(),
+      image: String(body.image || '').trim().slice(0, 500) || null,
+      staticImagePath: String(body.staticImagePath || '').trim().slice(0, 300) || null,
+      h1Heading: String(body.h1Heading || '').trim().slice(0, 200) || null,
+      displayOrder: Number.isFinite(Number(body.displayOrder)) ? Number(body.displayOrder) : 0,
+      metaTitle: String(body.metaTitle || '').trim().slice(0, 70) || null,
+      metaDescription: String(body.metaDescription || '').trim().slice(0, 160) || null,
+      metaKeywords: String(body.metaKeywords || '').trim().slice(0, 300) || null,
+      seoContent: String(body.seoContent || '').trim() || null,
+      isFeatured: body.isFeatured === 'on' || body.isFeatured === true,
+    };
+    return id
+      ? this.prisma.category.update({ where: { id }, data })
+      : this.prisma.category.create({ data });
+  }
 
   async listProductsAdmin(query?: string) {
     const q = String(query || '').trim();
