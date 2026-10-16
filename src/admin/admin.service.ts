@@ -267,6 +267,74 @@ export class AdminService {
     return this.prisma.siteSettings.upsert({where:{id:1},update:data,create:{id:1,...data}});
   }
 
+  async getResellerPageSettings() {
+    return this.prisma.resellerPageSettings.upsert({ where: { id: 1 }, update: {}, create: { id: 1 } });
+  }
+
+  async saveResellerPageSettings(body: any) {
+    const text = (value: any, fallback = '') => String(value ?? fallback).trim();
+    const data: any = {
+      eyebrow: text(body.eyebrow, 'OSIRA RESELLER PROGRAMME').slice(0, 120),
+      heroTitle: text(body.heroTitle).slice(0, 220),
+      heroDescription: text(body.heroDescription),
+      heroImage: text(body.heroImage).slice(0, 500) || null,
+      introTitle: text(body.introTitle).slice(0, 220),
+      introDescription: text(body.introDescription),
+      qualityTitle: text(body.qualityTitle).slice(0, 220),
+      qualityDescription: text(body.qualityDescription),
+      whatsappIntro: text(body.whatsappIntro).slice(0, 5000),
+      isPublished: body.isPublished === 'on' || body.isPublished === true,
+    };
+    return this.prisma.resellerPageSettings.upsert({ where: { id: 1 }, update: data, create: { id: 1, ...data } });
+  }
+
+  async listResellerMaterialsAdmin() {
+    return this.prisma.resellerMaterial.findMany({ orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }] });
+  }
+
+  async getResellerMaterialAdmin(id: number) {
+    return this.prisma.resellerMaterial.findUnique({ where: { id } });
+  }
+
+  async saveResellerMaterial(body: any, id?: number) {
+    const text = (value: any) => String(value ?? '').trim();
+    const list = (value: any) => text(value).split(/\r?\n|,/).map((item: string) => item.trim()).filter(Boolean).slice(0, 100);
+    const jsonList = (value: any) => {
+      try {
+        const parsed = JSON.parse(text(value) || '[]');
+        return Array.isArray(parsed) ? parsed.filter((item: any) => typeof item === 'string' && item.trim()).slice(0, 60) : [];
+      } catch { return []; }
+    };
+    const specs = text(body.specificationsText).split(/\r?\n/).map((line: string) => {
+      const at = line.indexOf(':');
+      return at > 0 ? { key: line.slice(0, at).trim(), value: line.slice(at + 1).trim() } : null;
+    }).filter((item: any) => item && item.key && item.value).slice(0, 50);
+    const gallery = jsonList(body.galleryJson).map((url: string) => url.trim()).filter(Boolean);
+    const slug = text(body.slug).toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 200);
+    const name = text(body.name).slice(0, 180);
+    if (!name || !slug) throw new Error('Component name and URL slug are required.');
+    const data: any = {
+      name, slug,
+      componentType: text(body.componentType || 'Component').slice(0, 100),
+      shortDescription: text(body.shortDescription).slice(0, 300),
+      description: text(body.description),
+      image: text(body.image).slice(0, 500) || null,
+      gallery: gallery as any,
+      sizes: list(body.sizesText) as any,
+      colors: list(body.colorsText) as any,
+      styles: list(body.stylesText) as any,
+      movementTypes: list(body.movementTypesText) as any,
+      specifications: specs as any,
+      qualityPoints: list(body.qualityPointsText) as any,
+      orderingNotes: text(body.orderingNotes) || null,
+      displayOrder: Number.isFinite(Number(body.displayOrder)) ? Number(body.displayOrder) : 0,
+      isPublished: body.isPublished === 'on' || body.isPublished === true,
+    };
+    return id
+      ? this.prisma.resellerMaterial.update({ where: { id }, data })
+      : this.prisma.resellerMaterial.create({ data });
+  }
+
   async createAdminIfConfigured() {
     const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
     const password = process.env.ADMIN_PASSWORD;
