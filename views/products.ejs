@@ -61,7 +61,7 @@
           <a class="product-card catalogue-product-card" href="/products/<%= product.slug %>" data-product-slug="<%= product.slug %>">
             <div class="product-media">
               <% if(product.image){ %><img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy" width="800" height="600"><% } else { %><div class="placeholder">OSIRA</div><% } %>
-              <% if(product.isBestseller){ %><span class="catalogue-badge">Bestseller</span><% } else if(product.isNewArrival){ %><span class="catalogue-badge new">New arrival</span><% } %>
+              <% if(product.isFeatured){ %><span class="product-status-badge featured">Featured</span><% } else if(product.isNewArrival){ %><span class="product-status-badge new">New arrival</span><% } else if(product.isBestseller){ %><span class="product-status-badge bestseller">Bestseller</span><% } %>
             </div>
             <div class="product-body">
               <span class="product-category-label"><%= product.category?.name || 'Wall Clock' %></span>
@@ -119,7 +119,7 @@
           data.items.forEach(p=>{
             const a=document.createElement('a');a.className='product-card catalogue-product-card';a.href='/products/'+encodeURIComponent(p.slug);a.dataset.productSlug=p.slug;
             const image=p.image?'<img src="'+escapeHtml(p.image)+'" alt="'+escapeHtml(p.name)+'" loading="lazy" width="800" height="600">':'<div class="placeholder">OSIRA</div>';
-            const badge=p.isBestseller?'<span class="catalogue-badge">Bestseller</span>':p.isNewArrival?'<span class="catalogue-badge new">New arrival</span>':'';
+            const badge=p.isFeatured?'<span class="product-status-badge featured">Featured</span>':p.isNewArrival?'<span class="product-status-badge new">New arrival</span>':p.isBestseller?'<span class="product-status-badge bestseller">Bestseller</span>':'';
             const price=p.price?'₹'+Number(p.price).toLocaleString('en-IN'):'Price on enquiry';
             const bulk=p.bulkPrice&&p.price&&Number(p.bulkPrice)<Number(p.price)?'<span class="catalogue-discount">'+Math.round((1-Number(p.bulkPrice)/Number(p.price))*100)+'% bulk saving</span>':p.bulkPrice||p.pricingTierTemplateId?'<span class="catalogue-discount">Bulk pricing</span>':'';
             a.innerHTML='<div class="product-media">'+image+badge+'</div><div class="product-body"><span class="product-category-label">'+escapeHtml(p.category?.name||'Wall Clock')+'</span><h2>'+escapeHtml(p.name)+'</h2><p>'+escapeHtml(p.shortDescription||'')+'</p>'+(p.sku?'<small class="catalogue-sku">SKU '+escapeHtml(p.sku)+'</small>':'')+'<div class="catalogue-price-line"><strong>'+price+'</strong>'+bulk+'</div><span class="catalogue-card-link">View details <b>↗</b></span></div>';
