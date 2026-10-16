@@ -1,0 +1,54 @@
+<%- include('partials/header', {title: material ? 'Edit reseller component' : 'Add reseller component', user}) %>
+<div class="admin-page-heading reseller-admin-heading"><div><p class="admin-kicker">COMPONENT LIBRARY</p><h1><%= material ? 'Edit component' : 'Add component' %></h1><p>Manage details, fitment, options, specifications and as many component images as you need.</p></div><a class="admin-secondary" href="/admin/reseller">← Reseller programme</a></div>
+<form id="resellerMaterialForm" class="reseller-admin-form" method="post" action="/admin/reseller-materials/save">
+<input type="hidden" name="csrfToken" value="<%= csrfToken %>"><% if(material){ %><input type="hidden" name="id" value="<%= material.id %>"><% } %>
+<input type="hidden" id="galleryJson" name="galleryJson" value="<%= JSON.stringify(Array.isArray(material?.gallery) ? material.gallery : []) %>">
+<section class="admin-form-card reseller-admin-card"><div class="reseller-admin-section-title"><span class="reseller-admin-icon">01</span><div><h2>Component identity</h2><p>Name and summary displayed in the public library.</p></div></div>
+<div class="reseller-admin-grid">
+<label>Component name<input name="name" required maxlength="180" value="<%= material?.name || '' %>" placeholder="e.g. Quartz Clock Movement"></label>
+<label>URL slug<input name="slug" required maxlength="200" value="<%= material?.slug || '' %>" placeholder="quartz-clock-movement"></label>
+<label>Component type<input name="componentType" maxlength="100" value="<%= material?.componentType || 'Component' %>" placeholder="Body, Glass, Movement..."></label>
+<label>Display order<input type="number" name="displayOrder" value="<%= material?.displayOrder ?? 0 %>"></label>
+<label class="field-span-2">Short description<input name="shortDescription" required maxlength="300" value="<%= material?.shortDescription || '' %>"></label>
+<label class="field-span-2">Full description<textarea name="description" rows="5" required><%= material?.description || '' %></textarea></label>
+<label class="reseller-publish-toggle"><input type="checkbox" name="isPublished" <%= material ? (material.isPublished ? 'checked' : '') : 'checked' %>><span><strong>Publish this component</strong><small>Only published components appear on the public reseller page.</small></span></label>
+</div></section>
+<section class="admin-form-card reseller-admin-card"><div class="reseller-admin-section-title"><span class="reseller-admin-icon">02</span><div><h2>Images & gallery</h2><p>Upload one cover image and add an unlimited number of supporting photos, material close-ups or finish examples.</p></div></div>
+<label class="reseller-admin-field">Cover image URL<input id="materialImage" name="image" value="<%= material?.image || '' %>" placeholder="/uploads/reseller-materials/cover.webp"><span class="reseller-upload-row"><input type="file" accept="image/jpeg,image/png,image/webp,image/avif" data-reseller-file="materialImage"><button type="button" class="admin-secondary" data-reseller-upload="materialImage">Upload cover</button></span></label>
+<div class="reseller-cover-preview" id="coverPreview"><% if(material?.image){ %><img src="<%= material.image %>" alt="Cover preview"><% } else { %><span>Cover image preview</span><% } %></div>
+<div class="reseller-gallery-admin-head"><div><strong>Supporting images</strong><small>Upload each photo or paste its image URL.</small></div><button class="admin-secondary" id="addGalleryImage" type="button">＋ Add image</button></div>
+<div id="resellerGalleryRows" class="reseller-gallery-admin">
+<% const existingGallery = Array.isArray(material?.gallery) ? material.gallery : []; existingGallery.forEach((url,index)=>{ %><div class="reseller-gallery-admin-row"><span class="reseller-gallery-count"><%= String(index+1).padStart(2,'0') %></span><input class="reseller-gallery-url" type="url" value="<%= url %>" placeholder="Image URL"><input class="reseller-gallery-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif"><button class="admin-secondary" type="button" data-upload-gallery>Upload</button><button class="reseller-remove-image" type="button" data-remove-gallery aria-label="Remove image">×</button></div><% }) %>
+</div><p class="reseller-form-note">Images are uploaded to persistent Hostinger media storage. Keep image files under 8 MB and use clear, well-lit photos of the actual part when available.</p>
+</section>
+<section class="admin-form-card reseller-admin-card"><div class="reseller-admin-section-title"><span class="reseller-admin-icon">03</span><div><h2>Options & specifications</h2><p>One item per line. These become tags, comparison rows and quality checklists.</p></div></div>
+<div class="reseller-admin-grid">
+<label>Size / fitment options<textarea name="sizesText" rows="4" placeholder="8 inch&#10;10 inch&#10;12 inch"><%= (Array.isArray(material?.sizes) ? material.sizes : []).join('\n') %></textarea></label>
+<label>Colours<textarea name="colorsText" rows="4" placeholder="Black&#10;White&#10;Gold-tone"><%= (Array.isArray(material?.colors) ? material.colors : []).join('\n') %></textarea></label>
+<label>Styles / finishes<textarea name="stylesText" rows="4" placeholder="Minimal&#10;Decorative&#10;Custom finish"><%= (Array.isArray(material?.styles) ? material.styles : []).join('\n') %></textarea></label>
+<label>Movement types (if applicable)<textarea name="movementTypesText" rows="4" placeholder="Standard quartz&#10;Sweep / silent (confirm availability)"><%= (Array.isArray(material?.movementTypes) ? material.movementTypes : []).join('\n') %></textarea></label>
+<label class="field-span-2">Specifications — one per line, format “Name: value”<textarea name="specificationsText" rows="6" placeholder="Fitment: Confirm for selected model&#10;Material: Confirm actual grade&#10;Finish: Model dependent"><%= (Array.isArray(material?.specifications) ? material.specifications : []).map(x => (x.key || '') + ': ' + (x.value || '')).join('\n') %></textarea></label>
+<label class="field-span-2">Quality checks — one per line<textarea name="qualityPointsText" rows="4" placeholder="Check finish consistency&#10;Confirm fit with selected body"><%= (Array.isArray(material?.qualityPoints) ? material.qualityPoints : []).join('\n') %></textarea></label>
+<label class="field-span-2">Ordering notes / caveats<textarea name="orderingNotes" rows="3"><%= material?.orderingNotes || '' %></textarea></label>
+</div></section>
+<div class="reseller-admin-savebar"><a class="admin-secondary" href="/admin/reseller">Cancel</a><span>Review exact specifications before publishing.</span><button class="admin-button" type="submit">Save component</button></div>
+</form>
+<script>
+(() => {
+ const form=document.getElementById('resellerMaterialForm');
+ const gallery=document.getElementById('resellerGalleryRows');
+ const hidden=document.getElementById('galleryJson');
+ const csrf=form.querySelector('[name="csrfToken"]').value;
+ const sync=()=>{hidden.value=JSON.stringify([...gallery.querySelectorAll('.reseller-gallery-url')].map(x=>x.value.trim()).filter(Boolean));gallery.querySelectorAll('.reseller-gallery-admin-row').forEach((row,i)=>row.querySelector('.reseller-gallery-count').textContent=String(i+1).padStart(2,'0'));};
+ const rowMarkup=(url='')=>{const row=document.createElement('div');row.className='reseller-gallery-admin-row';row.innerHTML='<span class="reseller-gallery-count"></span><input class="reseller-gallery-url" type="url" placeholder="Image URL"><input class="reseller-gallery-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif"><button class="admin-secondary" type="button" data-upload-gallery>Upload</button><button class="reseller-remove-image" type="button" data-remove-gallery aria-label="Remove image">×</button>';row.querySelector('.reseller-gallery-url').value=url;return row;};
+ const upload=async(file,target)=>{if(!file){alert('Please choose an image first.');return;}if(file.size>8*1024*1024){alert('Image must be 8 MB or smaller.');return;}const fd=new FormData();fd.append('image',file);fd.append('csrfToken',csrf);const response=await fetch('/admin/reseller-materials/upload-image',{method:'POST',body:fd,credentials:'same-origin'});const data=await response.json().catch(()=>({}));if(!response.ok||!data.url)throw new Error(data.error||'Upload failed.');target.value=data.url;target.dispatchEvent(new Event('input',{bubbles:true}));if(target.id==='materialImage'){const preview=document.getElementById('coverPreview');preview.innerHTML='<img src="'+data.url.replace(/"/g,'&quot;')+'" alt="Cover preview">';}sync();};
+ document.querySelectorAll('[data-reseller-upload]').forEach(button=>button.addEventListener('click',async()=>{const target=document.getElementById(button.dataset.resellerUpload);const file=document.querySelector('[data-reseller-file="'+button.dataset.resellerUpload+'"]')?.files?.[0];button.disabled=true;try{await upload(file,target);button.textContent='Uploaded ✓';}catch(e){alert(e.message);}finally{button.disabled=false;}}));
+ document.getElementById('addGalleryImage').addEventListener('click',()=>{gallery.appendChild(rowMarkup());sync();gallery.lastElementChild.querySelector('.reseller-gallery-url').focus();});
+ gallery.addEventListener('click',async event=>{const remove=event.target.closest('[data-remove-gallery]');if(remove){remove.closest('.reseller-gallery-admin-row').remove();sync();return;}const button=event.target.closest('[data-upload-gallery]');if(button){const row=button.closest('.reseller-gallery-admin-row');button.disabled=true;try{await upload(row.querySelector('.reseller-gallery-file').files[0],row.querySelector('.reseller-gallery-url'));button.textContent='Uploaded ✓';}catch(e){alert(e.message);}finally{button.disabled=false;}}});
+ gallery.addEventListener('input',sync);
+ form.addEventListener('submit',sync);
+ document.getElementById('materialImage').addEventListener('input',()=>{const url=document.getElementById('materialImage').value;const preview=document.getElementById('coverPreview');preview.innerHTML=url?'<img src="'+url.replace(/"/g,'&quot;')+'" alt="Cover preview">':'<span>Cover image preview</span>';});
+ sync();
+})();
+</script>
+<%- include('partials/footer') %>
