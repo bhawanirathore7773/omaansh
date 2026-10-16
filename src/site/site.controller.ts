@@ -106,8 +106,9 @@ export class SiteController {
     ];
     if ((await this.prisma.resellerMaterial.count()) < demo.length) {
       for (const item of demo) {
-        const exists = await this.prisma.resellerMaterial.findUnique({ where: { slug: item.slug }, select: { id: true } });
+        const exists = await this.prisma.resellerMaterial.findUnique({ where: { slug: item.slug }, select: { id: true, category: true } });
         if (!exists) await this.prisma.resellerMaterial.create({ data: item as any });
+        else if (exists.category === 'components' && item.category && item.category !== 'components') await this.prisma.resellerMaterial.update({ where: { id: exists.id }, data: { category: item.category } });
       }
     }
     const [site, materials] = await Promise.all([
