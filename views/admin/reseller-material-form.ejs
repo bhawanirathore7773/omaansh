@@ -7,10 +7,13 @@
 <div class="reseller-admin-grid">
 <label>Component name<input name="name" required maxlength="180" value="<%= material?.name || '' %>" placeholder="e.g. Quartz Clock Movement"></label>
 <label>URL slug<input name="slug" required maxlength="200" value="<%= material?.slug || '' %>" placeholder="quartz-clock-movement"></label>
+<label>Component group<select name="category"><% const cats=[["components","General components"],["glass","Clock glass"],["movement","Clock movements"],["body","Body & back cover"],["ring","Bezel / outer ring"],["dial","Dial / face plate"],["hands","Hands & markers"]]; cats.forEach(([value,label])=>{ %><option value="<%= value %>" <%= (material?.category || "components")===value ? "selected" : "" %>><%= label %></option><% }) %></select><small>Group decides which collection page this component appears in.</small></label>
 <label>Component type<input name="componentType" maxlength="100" value="<%= material?.componentType || 'Component' %>" placeholder="Body, Glass, Movement..."></label>
 <label>Display order<input type="number" name="displayOrder" value="<%= material?.displayOrder ?? 0 %>"></label>
 <label class="field-span-2">Short description<input name="shortDescription" required maxlength="300" value="<%= material?.shortDescription || '' %>"></label>
 <label class="field-span-2">Full description<textarea name="description" rows="5" required><%= material?.description || '' %></textarea></label>
+<label class="reseller-publish-toggle"><input type="checkbox" name="isFeatured" <%= material?.isFeatured ? 'checked' : '' %>><span><strong>Featured component</strong><small>Show a FEATURED badge and prioritise this card.</small></span></label>
+<label class="reseller-publish-toggle"><input type="checkbox" name="isRecommended" <%= material?.isRecommended ? 'checked' : '' %>><span><strong>Recommended option</strong><small>Show a RECOMMENDED badge and prioritise this card.</small></span></label>
 <label class="reseller-publish-toggle"><input type="checkbox" name="isPublished" <%= material ? (material.isPublished ? 'checked' : '') : 'checked' %>><span><strong>Publish this component</strong><small>Only published components appear on the public reseller page.</small></span></label>
 </div></section>
 <section class="admin-form-card reseller-admin-card"><div class="reseller-admin-section-title"><span class="reseller-admin-icon">02</span><div><h2>Images & gallery</h2><p>Upload one cover image and add an unlimited number of supporting photos, material close-ups or finish examples.</p></div></div>
