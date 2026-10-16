@@ -14,7 +14,7 @@
 <label class="field-span-2">Intro description<textarea name="introDescription" rows="3"><%= settings.introDescription %></textarea></label>
 <label class="field-span-2">Quality and accuracy note<textarea name="qualityDescription" rows="3"><%= settings.qualityDescription %></textarea></label>
 <label class="field-span-2">Default WhatsApp enquiry message<textarea name="whatsappIntro" rows="2"><%= settings.whatsappIntro %></textarea></label>
-<label class="reseller-publish-toggle"><input type="checkbox" name="isPublished" <%= settings.isPublished ? 'checked' : '' %>><span><strong>Publish reseller page</strong><small>Uncheck to hide the page content from search and users once route visibility is wired to this setting.</small></span></label>
+<label class="reseller-publish-toggle"><input type="checkbox" name="isPublished" <%= settings.isPublished ? 'checked' : '' %>><span><strong>Publish reseller page</strong><small>Uncheck to hide the public reseller guide until you are ready to publish it.</small></span></label>
 </div><div class="reseller-admin-actions"><button class="admin-button" type="submit">Save page content</button></div></section>
 </form>
 <section class="admin-form-card reseller-admin-card"><div class="reseller-admin-section-title"><span class="reseller-admin-icon">▦</span><div><h2>Component library</h2><p><%= materials.length %> components. Add as many components and gallery images as required.</p></div><a class="admin-secondary" href="/reseller" target="_blank" rel="noopener">Preview public page ↗</a></div>
