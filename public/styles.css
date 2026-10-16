@@ -957,3 +957,54 @@ body .catalogue-grid .product-media img {
     padding: 4px 6px !important; font-size: .46rem !important;
   }
 }
+
+
+/* FINAL collection-card override: square image with only a compact title at the bottom. */
+.collections-page .category-grid-v2 > .category-card-v2 .collection-thumb {
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background: #f1eee8 !important;
+}
+.collections-page .category-grid-v2 > .category-card-v2 .collection-thumb > img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+.collections-page .category-card-v2 .collection-title-glass {
+  position: absolute !important;
+  left: 9px !important; right: 9px !important; bottom: 9px !important; top: auto !important;
+  z-index: 3 !important;
+  margin: 0 !important; padding: 9px 11px !important;
+  border: 1px solid rgba(255,255,255,.28) !important;
+  border-radius: 8px !important;
+  background: rgba(18,25,33,.58) !important;
+  backdrop-filter: blur(5px) !important; -webkit-backdrop-filter: blur(5px) !important;
+}
+.collections-page .category-card-v2 .collection-title-glass h2 {
+  display: block !important; margin: 0 !important; padding: 0 !important;
+  color: #fff !important; font-size: .92rem !important; line-height: 1.2 !important;
+  font-weight: 750 !important; letter-spacing: -.01em !important;
+}
+.collections-page .category-card-v2 .collection-thumb > p,
+.collections-page .category-card-v2 .collection-thumb > small,
+.collections-page .category-card-v2 .collection-thumb > .collection-description,
+.collections-page .category-card-v2 .collection-thumb > .collection-number,
+.collections-page .category-card-v2 .collection-thumb > .collection-brand-note { display:none !important; }
+.collections-page .category-card-v2 .collection-explore {
+  position: absolute !important; top: 8px !important; right: 8px !important; bottom: auto !important;
+  z-index: 4 !important; padding: 6px 8px !important; font-size: .58rem !important;
+}
+@media(max-width:800px) {
+ .collections-page .category-grid-v2 { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:12px !important; }
+ .collections-page .category-card-v2 .collection-title-glass { left:7px !important; right:7px !important; bottom:7px !important; padding:8px 9px !important; }
+ .collections-page .category-card-v2 .collection-title-glass h2 { font-size:.78rem !important; }
+}
