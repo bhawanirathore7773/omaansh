@@ -433,3 +433,13 @@ body.crop-modal-open{overflow:hidden}
   .category-editor-actions { display:grid; grid-template-columns:1fr 1fr; }
   .category-editor-actions>* { justify-content:center; }
 }
+
+
+/* Use consistent inline SVG icons in the business snapshot. */
+.admin-stats .stat-icon { flex:0 0 44px; width:44px; height:44px; min-width:44px; min-height:44px; display:grid; place-items:center; padding:0; line-height:1; overflow:hidden; }
+.admin-stats .stat-icon svg { display:block; width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.admin-stats .stat-card { min-width:0; }
+@media(max-width:480px) {
+ .admin-stats .stat-icon { width:40px; height:40px; min-width:40px; min-height:40px; flex-basis:40px; }
+ .admin-stats .stat-icon svg { width:20px; height:20px; }
+}
