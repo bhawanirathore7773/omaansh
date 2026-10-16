@@ -302,7 +302,7 @@ export class AdminService {
     const jsonList = (value: any) => {
       try {
         const parsed = JSON.parse(text(value) || '[]');
-        return Array.isArray(parsed) ? parsed.filter((item: any) => typeof item === 'string' && item.trim()).slice(0, 60) : [];
+        return Array.isArray(parsed) ? parsed.filter((item: any) => typeof item === 'string' && item.trim()).slice(0, 500) : [];
       } catch { return []; }
     };
     const specs = text(body.specificationsText).split(/\r?\n/).map((line: string) => {
