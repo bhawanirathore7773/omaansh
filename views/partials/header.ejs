@@ -52,9 +52,8 @@
  const preventBackgroundScroll=(event)=>{if(!drawer.contains(event.target))event.preventDefault();};
  const open=()=>{
    savedScrollY=window.scrollY||window.pageYOffset||0;
-   // iOS Safari: fixed-body scroll locking must preserve the exact scroll offset.
-   // Without a negative top offset, the page jumps to document top behind the drawer.
-   document.documentElement.style.setProperty('--drawer-lock-top',(-savedScrollY)+'px');
+   // Keep the document in its natural scroll position. Fixed-positioning the body
+   // causes iOS Safari to shift the page when the drawer opens.
    const rect=toggle.getBoundingClientRect();
    document.documentElement.style.setProperty('--menu-toggle-left',rect.left+'px');
    document.documentElement.style.setProperty('--menu-toggle-top',rect.top+'px');
@@ -63,6 +62,7 @@
    document.documentElement.style.overflow='hidden';
    document.body.style.overflow='hidden';
    document.body.classList.add('drawer-open');
+   // Lock scrolling without changing the body's position or scroll origin.
    // Move the same button out of the header stacking context so its X stays
    // above the drawer while the original header is dimmed behind the overlay.
    document.body.appendChild(toggle);
@@ -87,7 +87,6 @@
    document.body.style.overflow=previousBodyOverflow;
    document.documentElement.style.removeProperty('--menu-toggle-left');
    document.documentElement.style.removeProperty('--menu-toggle-top');
-   document.documentElement.style.removeProperty('--drawer-lock-top');
    document.removeEventListener('touchmove',preventBackgroundScroll);
    if(originalParent)originalParent.insertBefore(toggle,originalNext&&originalNext.parentNode===originalParent?originalNext:null);
    window.scrollTo(0,savedScrollY);
