@@ -35,4 +35,46 @@
   </section>
 <% } %>
 </main>
+<script>
+(() => {
+ const root=document.querySelector('[data-product-gallery]');
+ if(!root)return;
+ const data=root.querySelector('[data-gallery-images]');
+ const main=root.querySelector('[data-gallery-main]');
+ const stage=root.querySelector('[data-gallery-stage]');
+ const thumbs=root.querySelector('[data-gallery-thumbnails]');
+ const progress=root.querySelector('[data-gallery-progress]');
+ const count=root.querySelector('[data-gallery-count]');
+ let images=[];
+ try { images=JSON.parse(data?.textContent||'[]').filter(x=>typeof x==='string'&&x.trim()); } catch {}
+ if(!images.length&&main?.src)images=[main.src];
+ let active=0,startX=0,startY=0;
+ const render=(next,focusThumb=false)=>{
+   if(!images.length||!main)return;
+   active=(next+images.length)%images.length;
+   main.src=images[active];
+   main.alt='<%= material.name.replace(/'/g, '&#39;') %> — image '+(active+1);
+   count.textContent=(active+1)+' / '+images.length;
+   [...thumbs.children].forEach((button,i)=>{button.classList.toggle('is-active',i===active);button.setAttribute('aria-current',i===active?'true':'false');});
+   [...progress.children].forEach((dot,i)=>{dot.classList.toggle('is-active',i===active);});
+   if(focusThumb)thumbs.children[active]?.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});
+ };
+ images.forEach((src,i)=>{
+   const button=document.createElement('button');
+   button.type='button';button.className='reseller-gallery-thumb';button.setAttribute('aria-label','Show image '+(i+1));
+   const image=document.createElement('img');image.src=src;image.alt='';image.loading=i>3?'lazy':'eager';button.appendChild(image);
+   button.addEventListener('click',()=>render(i));thumbs.appendChild(button);
+   const dot=document.createElement('button');dot.type='button';dot.className='reseller-gallery-dot';dot.setAttribute('aria-label','Show image '+(i+1));dot.addEventListener('click',()=>render(i,true));progress.appendChild(dot);
+ });
+ root.querySelector('[data-gallery-prev]')?.addEventListener('click',()=>render(active-1,true));
+ root.querySelector('[data-gallery-next]')?.addEventListener('click',()=>render(active+1,true));
+ stage?.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();render(active-1,true)}else if(e.key==='ArrowRight'){e.preventDefault();render(active+1,true)}});
+ stage?.addEventListener('touchstart',e=>{const t=e.changedTouches[0];startX=t.clientX;startY=t.clientY;},{passive:true});
+ stage?.addEventListener('touchend',e=>{const t=e.changedTouches[0];const dx=t.clientX-startX,dy=t.clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.15)render(active+(dx<0?1:-1),true);},{passive:true});
+ stage?.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'){startX=e.clientX;startY=e.clientY;}});
+ stage?.addEventListener('pointerup',e=>{if(e.pointerType==='mouse'){const dx=e.clientX-startX,dy=e.clientY-startY;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.15)render(active+(dx<0?1:-1),true);}});
+ if(images.length<=1){root.classList.add('is-single-image');}
+ render(0);
+})();
+</script>
 <%- include('partials/footer', { site }) %>
