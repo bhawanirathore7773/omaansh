@@ -1702,3 +1702,32 @@ body.drawer-open { overflow:hidden !important; }
     align-self:center!important;
   }
 }
+
+
+/* Final measured correction from iPhone screenshot:
+   reduce the drawer's top inset so MENU and its divider sit level with the
+   floating close control; soften the page dimming so the background remains
+   recognizable. This intentionally supersedes the earlier 58px/82px rules. */
+@media (max-width:800px){
+  body.drawer-open>.mobile-drawer,
+  .mobile-drawer{
+    padding-top:31px!important;
+  }
+  .mobile-drawer .drawer-head{
+    margin-top:0!important;
+    margin-bottom:18px!important;
+    padding-top:0!important;
+    padding-bottom:10px!important;
+    min-height:44px!important;
+    height:44px!important;
+  }
+  .drawer-backdrop{
+    background:rgba(16,24,40,.25)!important;
+    backdrop-filter:blur(2px)!important;
+    -webkit-backdrop-filter:blur(2px)!important;
+  }
+  body.drawer-open>.site-header{
+    filter:blur(1px)!important;
+    background:rgba(255,255,255,.68)!important;
+  }
+}
