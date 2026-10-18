@@ -5,7 +5,17 @@
 <% } else { const gallery = Array.isArray(material.gallery) ? material.gallery : []; const sizes = Array.isArray(material.sizes) ? material.sizes : []; const colors = Array.isArray(material.colors) ? material.colors : []; const styles = Array.isArray(material.styles) ? material.styles : []; const movementTypes = Array.isArray(material.movementTypes) ? material.movementTypes : []; const specs = Array.isArray(material.specifications) ? material.specifications : []; const qualityPoints = Array.isArray(material.qualityPoints) ? material.qualityPoints : []; const whatsappText = (settings.whatsappIntro || 'Hello OSIRA, please share reseller component details.') + '\nComponent: ' + material.name + '\nPlease confirm current availability, MOQ, pricing and exact specifications.'; %>
   <section class="section reseller-detail-hero">
     <div><a class="reseller-back-link" href="/reseller">← All reseller components</a><span class="reseller-eyebrow"><%= material.componentType %></span><% if(material.isFeatured){ %><span class="reseller-badge reseller-badge-featured reseller-detail-badge">✦ FEATURED</span><% } else if(material.isRecommended){ %><span class="reseller-badge reseller-badge-recommended reseller-detail-badge">✓ RECOMMENDED</span><% } %><h1><%= material.name %></h1><p class="reseller-detail-short"><%= material.shortDescription %></p><p><%= material.description %></p><div class="reseller-hero-actions"><a class="reseller-btn reseller-btn-primary" href="https://wa.me/<%= (site?.whatsappNumber || '919509912556').replace(/[^0-9]/g,'') %>?text=<%= encodeURIComponent(whatsappText) %>" target="_blank" rel="noopener noreferrer">Ask about this component <span aria-hidden="true">↗</span></a><a class="reseller-btn" href="/reseller">Explore other components</a></div></div>
-    <div class="reseller-detail-image"><img src="<%= material.image || (gallery[0] || 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=1200&q=82') %>" alt="<%= material.name %>" width="900" height="675" fetchpriority="high"></div>
+    <div class="reseller-product-gallery" data-product-gallery>
+      <div class="reseller-detail-image" data-gallery-stage tabindex="0" role="region" aria-label="Product images. Swipe left or right to change image.">
+        <img data-gallery-main src="<%= material.image || (gallery[0] || 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=1200&q=82') %>" alt="<%= material.name %>" width="900" height="675" fetchpriority="high">
+        <button class="reseller-gallery-arrow reseller-gallery-prev" type="button" data-gallery-prev aria-label="Previous image">‹</button>
+        <button class="reseller-gallery-arrow reseller-gallery-next" type="button" data-gallery-next aria-label="Next image">›</button>
+        <span class="reseller-gallery-count" data-gallery-count>1 / 1</span>
+      </div>
+      <div class="reseller-gallery-thumbnails" data-gallery-thumbnails aria-label="Choose product image"></div>
+      <div class="reseller-gallery-progress" data-gallery-progress aria-label="Current image"></div>
+      <script type="application/json" data-gallery-images><%- JSON.stringify([material.image, ...gallery].filter((image,index,all)=>typeof image==='string' && image.trim() && all.indexOf(image)===index)) %></script>
+    </div>
   </section>
   <% if (gallery.length) { %><section class="section"><div class="reseller-gallery"><% gallery.forEach((image,index)=>{ %><img src="<%= image %>" alt="<%= material.name %> detail view <%= index+1 %>" loading="lazy" width="400" height="400"><% }) %></div></section><% } %>
   <section class="section reseller-detail-content">
