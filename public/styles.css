@@ -1798,3 +1798,48 @@ body.drawer-open { overflow:hidden !important; }
     align-self:center!important;
   }
 }
+
+
+/* Mobile drawer: keep the title + divider pinned while only the menu body scrolls.
+   The toggle is moved to body by header.ejs, so align the title row using the
+   captured toggle top coordinate and remove inherited spacing from older patches. */
+@media (max-width:800px){
+  body.drawer-open > .mobile-drawer,
+  .mobile-drawer.is-open{
+    padding-top:var(--menu-toggle-top,12px)!important;
+    padding-bottom:max(28px,env(safe-area-inset-bottom))!important;
+  }
+  body.drawer-open > .mobile-drawer > .drawer-head,
+  .mobile-drawer.is-open > .drawer-head{
+    position:sticky!important;
+    top:0!important;
+    z-index:1302!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    height:44px!important;
+    min-height:44px!important;
+    margin:0 0 14px!important;
+    padding:0 0 8px!important;
+    box-sizing:content-box!important;
+    background:#fff!important;
+    border-bottom:1px solid var(--line)!important;
+  }
+  body.drawer-open > .mobile-drawer > .drawer-head .drawer-title,
+  .mobile-drawer.is-open > .drawer-head .drawer-title{
+    display:block!important;
+    margin:0!important;
+    padding:0!important;
+    line-height:1!important;
+    transform:translateY(-4px)!important;
+    align-self:center!important;
+  }
+  body.drawer-open > .mobile-drawer > .drawer-kicker,
+  body.drawer-open > .mobile-drawer > nav,
+  body.drawer-open > .mobile-drawer > .drawer-cta,
+  body.drawer-open > .mobile-drawer > .drawer-reseller-cta,
+  body.drawer-open > .mobile-drawer > .drawer-footnote{
+    position:relative;
+    z-index:1;
+  }
+}
