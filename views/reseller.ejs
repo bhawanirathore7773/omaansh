@@ -24,18 +24,13 @@
 
   <section class="section" id="components">
     <div class="reseller-section-head"><div><span class="reseller-eyebrow">THE COMPONENT LIBRARY</span><h2><%= settings.introTitle %></h2><p><%= settings.introDescription %></p></div></div>
-    <div class="reseller-category-shortcuts"><a href="/reseller/glass"><span>◌</span><strong>Clock glass</strong><small>Explore glass types →</small></a><a href="/reseller/movement"><span>◷</span><strong>Movements</strong><small>Compare mechanism options →</small></a><a href="/reseller/body"><span>▣</span><strong>Body & back</strong><small>Explore case components →</small></a></div>
-    <div class="reseller-material-grid">
-      <% materials.forEach(material => { const sizes = Array.isArray(material.sizes) ? material.sizes : []; const colors = Array.isArray(material.colors) ? material.colors : []; %>
-      <a class="reseller-material-card" href="/reseller/materials/<%= material.slug %>">
-        <div class="reseller-material-photo"><img src="<%= material.image || 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=900&q=80' %>" alt="<%= material.name %>" loading="lazy" width="600" height="450"><span class="reseller-material-type"><%= material.componentType %></span><% if(material.isFeatured){ %><span class="reseller-badge reseller-badge-featured">FEATURED</span><% } else if(material.isRecommended){ %><span class="reseller-badge reseller-badge-recommended">RECOMMENDED</span><% } %></div>
-        <div class="reseller-material-card-body"><h3><%= material.name %></h3><p><%= material.shortDescription %></p>
-          <div class="reseller-tag-list"><% sizes.slice(0,3).forEach(size => { %><span class="reseller-tag"><%= size %></span><% }) %><% colors.slice(0,2).forEach(color => { %><span class="reseller-tag"><%= color %></span><% }) %></div>
-          <span class="reseller-card-link">View specifications <span aria-hidden="true">↗</span></span>
-        </div>
-      </a>
-      <% }) %>
-      <% if (!materials.length) { %><div class="reseller-empty"><h3>Component details are being updated.</h3><p>Contact our team to discuss available wholesale options.</p></div><% } %>
+    <div class="reseller-category-shortcuts reseller-category-directory">
+      <a href="/reseller/glass"><img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=82" alt="Clock glass component" loading="lazy"><span class="reseller-directory-copy"><strong>Clock glass</strong><small>Clear, tinted and shaped lens options</small><b>Explore category ↗</b></span></a>
+      <a href="/reseller/movement"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=900&q=82" alt="Clock movement components" loading="lazy"><span class="reseller-directory-copy"><strong>Clock movements</strong><small>Quartz, sweep and model-specific options</small><b>Explore category ↗</b></span></a>
+      <a href="/reseller/body"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=900&q=82" alt="Clock body and back cover" loading="lazy"><span class="reseller-directory-copy"><strong>Body & back cover</strong><small>Explore case construction and fitment</small><b>Explore category ↗</b></span></a>
+      <a href="/reseller/ring"><img src="https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?auto=format&fit=crop&w=900&q=82" alt="Clock bezel and outer ring" loading="lazy"><span class="reseller-directory-copy"><strong>Bezel & outer ring</strong><small>Profiles, finishes and compatible sizes</small><b>Explore category ↗</b></span></a>
+      <a href="/reseller/dial"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=82" alt="Clock dial face plate" loading="lazy"><span class="reseller-directory-copy"><strong>Dial & face plate</strong><small>Printed and custom dial enquiries</small><b>Explore category ↗</b></span></a>
+      <a href="/reseller/hands"><img src="https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=900&q=82" alt="Clock hands and markers" loading="lazy"><span class="reseller-directory-copy"><strong>Hands & markers</strong><small>Match hands with dial and movement</small><b>Explore category ↗</b></span></a>
     </div>
   </section>
 
