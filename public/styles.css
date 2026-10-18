@@ -1673,3 +1673,32 @@ body.drawer-open { overflow:hidden !important; }
     min-width:44px!important;min-height:44px!important;
   }
 }
+
+
+/* Override cleanup for mobile drawer header. Older drawer patches applied a
+   large top padding (82px / safe-area + 72px), pushing MENU far below the X.
+   This final rule intentionally resets those conflicting declarations. */
+@media(max-width:800px){
+  .mobile-drawer{
+    padding-top:24px!important;
+    padding-bottom:max(28px,env(safe-area-inset-bottom))!important;
+  }
+  .mobile-drawer .drawer-head{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    height:44px!important;
+    min-height:44px!important;
+    margin:0 0 18px!important;
+    padding:0 0 10px!important;
+    box-sizing:content-box!important;
+    border-bottom:1px solid var(--line)!important;
+  }
+  .mobile-drawer .drawer-title{
+    display:block!important;
+    margin:0!important;
+    padding:0!important;
+    line-height:1!important;
+    align-self:center!important;
+  }
+}
