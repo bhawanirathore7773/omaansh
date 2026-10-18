@@ -15,7 +15,7 @@
   <% if (pageUrl) { %><meta property="og:url" content="<%= pageUrl %>"><% } %>
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/styles.css?v=20261018-menu-fix-2">
+  <link rel="stylesheet" href="/styles.css?v=20261018-menu-fix-4">
   <% if (typeof schemaJsonLd !== 'undefined' && schemaJsonLd) { %><script type="application/ld+json"><%- JSON.stringify(schemaJsonLd).replace(/</g, "\u003c") %></script><% } %>
 </head>
 <body>
@@ -46,10 +46,17 @@
  const drawer=document.querySelector('.mobile-drawer');
  const backdrop=document.querySelector('.drawer-backdrop');
  if(!toggle||!drawer||!backdrop)return;
- let savedScrollY=0;
+ let savedScrollY=0, previousHtmlOverflow='', previousBodyOverflow='';
+ const preventBackgroundScroll=(event)=>{if(!drawer.contains(event.target))event.preventDefault();};
  const open=()=>{
    savedScrollY=window.scrollY||window.pageYOffset||0;
-   document.body.style.setProperty('--drawer-lock-top',(-savedScrollY)+'px');
+   const rect=toggle.getBoundingClientRect();
+   document.documentElement.style.setProperty('--menu-toggle-left',rect.left+'px');
+   document.documentElement.style.setProperty('--menu-toggle-top',rect.top+'px');
+   previousHtmlOverflow=document.documentElement.style.overflow;
+   previousBodyOverflow=document.body.style.overflow;
+   document.documentElement.style.overflow='hidden';
+   document.body.style.overflow='hidden';
    document.body.classList.add('drawer-open');
    toggle.classList.add('is-open');
    drawer.classList.add('is-open');
@@ -58,6 +65,7 @@
    toggle.setAttribute('aria-expanded','true');
    toggle.setAttribute('aria-label','Close navigation menu');
    drawer.setAttribute('aria-hidden','false');
+   document.addEventListener('touchmove',preventBackgroundScroll,{passive:false});
  };
  const close=()=>{
    drawer.classList.remove('is-open');
@@ -67,7 +75,11 @@
    toggle.setAttribute('aria-label','Open navigation menu');
    drawer.setAttribute('aria-hidden','true');
    document.body.classList.remove('drawer-open');
-   document.body.style.removeProperty('--drawer-lock-top');
+   document.documentElement.style.overflow=previousHtmlOverflow;
+   document.body.style.overflow=previousBodyOverflow;
+   document.documentElement.style.removeProperty('--menu-toggle-left');
+   document.documentElement.style.removeProperty('--menu-toggle-top');
+   document.removeEventListener('touchmove',preventBackgroundScroll);
    window.scrollTo(0,savedScrollY);
    window.setTimeout(()=>{if(!backdrop.classList.contains('is-visible'))backdrop.hidden=true;},280);
  };
