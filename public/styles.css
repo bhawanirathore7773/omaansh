@@ -1887,3 +1887,31 @@ body.drawer-open { overflow:hidden !important; }
     padding:0!important;
   }
 }
+
+
+/* 2026-10-18 authoritative iOS drawer scroll fix.
+   Do not position:fixed the body: it changes the visible page origin in Safari.
+   Keep the document in normal flow and lock only scrolling while the overlay is open. */
+@media (max-width:800px){
+  html:has(body.drawer-open){overflow:hidden!important;overscroll-behavior:none!important;}
+  body.drawer-open{
+    position:static!important;
+    top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+    width:100%!important;height:auto!important;min-height:0!important;
+    overflow:hidden!important;overscroll-behavior:none!important;
+    transform:none!important;
+  }
+  body.drawer-open main,
+  body.drawer-open>.site-header{touch-action:auto!important;}
+  body.drawer-open>.site-header{
+    position:sticky!important;
+    top:0!important;
+    transform:none!important;
+  }
+  body.drawer-open>.mobile-drawer{
+    position:fixed!important;top:0!important;right:0!important;bottom:0!important;
+    height:100dvh!important;max-height:100dvh!important;
+    overflow-x:hidden!important;overflow-y:auto!important;
+    overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;
+  }
+}
