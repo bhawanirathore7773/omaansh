@@ -1843,3 +1843,47 @@ body.drawer-open { overflow:hidden !important; }
     z-index:1;
   }
 }
+
+
+/* Drawer heading cap: opaque white header covers the top edge of the drawer,
+   with MENU vertically balanced against the fixed close control. */
+@media (max-width:800px){
+  body.drawer-open > .mobile-drawer,
+  .mobile-drawer.is-open{
+    padding-top:var(--menu-toggle-top,12px)!important;
+  }
+  body.drawer-open > .mobile-drawer > .drawer-head,
+  .mobile-drawer.is-open > .drawer-head{
+    position:sticky!important;
+    top:0!important;
+    z-index:10!important;
+    height:44px!important;
+    min-height:44px!important;
+    margin:0 0 14px!important;
+    padding:0 0 8px!important;
+    background:#fff!important;
+    background-color:#fff!important;
+    isolation:isolate!important;
+    border-bottom:1px solid var(--line)!important;
+    box-shadow:0 8px 12px rgba(255,255,255,.96)!important;
+  }
+  body.drawer-open > .mobile-drawer > .drawer-head::before,
+  .mobile-drawer.is-open > .drawer-head::before{
+    content:""!important;
+    position:absolute!important;
+    left:-1px!important;
+    right:-1px!important;
+    top:-100vh!important;
+    height:100vh!important;
+    background:#fff!important;
+    z-index:-1!important;
+    pointer-events:none!important;
+  }
+  body.drawer-open > .mobile-drawer > .drawer-head .drawer-title,
+  .mobile-drawer.is-open > .drawer-head .drawer-title{
+    transform:translateY(2px)!important;
+    line-height:1!important;
+    margin:0!important;
+    padding:0!important;
+  }
+}
