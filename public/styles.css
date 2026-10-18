@@ -1364,3 +1364,109 @@ body.drawer-open { overflow:hidden !important; }
  .reseller-category-products .reseller-material-card p{font-size:.72rem}
  .reseller-gallery-thumb{flex-basis:66px;width:66px;height:66px}
 }
+
+/* Mobile drawer hotfix: the menu toggle stays at the viewport's top-right.
+   Older rules positioned it from a stale header rectangle, moving it left/down
+   when the page was scrolled. This final block intentionally supersedes them. */
+@media (max-width:800px){
+  .site-header:has(.menu-toggle.is-open){
+    position:relative!important;
+    z-index:1304!important;
+    overflow:visible!important;
+    transform:none!important;
+  }
+  .site-header:has(.menu-toggle.is-open) .menu-toggle.is-open,
+  .nav-inner>.menu-toggle.is-open{
+    position:fixed!important;
+    top:14px!important;
+    right:16px!important;
+    bottom:auto!important;
+    left:auto!important;
+    inset-block-start:14px!important;
+    inset-inline-end:16px!important;
+    inset-block-end:auto!important;
+    inset-inline-start:auto!important;
+    z-index:1405!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    flex-direction:column!important;
+    gap:0!important;
+    width:44px!important;
+    min-width:44px!important;
+    max-width:44px!important;
+    height:44px!important;
+    min-height:44px!important;
+    max-height:44px!important;
+    margin:0!important;
+    padding:0!important;
+    flex:0 0 44px!important;
+    box-sizing:border-box!important;
+    opacity:1!important;
+    visibility:visible!important;
+    transform:none!important;
+    border:1px solid #dfe4eb!important;
+    border-radius:12px!important;
+    background:#fff!important;
+    box-shadow:0 4px 16px rgba(16,24,40,.12)!important;
+    pointer-events:auto!important;
+  }
+  .site-header:has(.menu-toggle.is-open) .menu-toggle.is-open span,
+  .nav-inner>.menu-toggle.is-open span{
+    position:absolute!important;
+    display:block!important;
+    left:11px!important;
+    right:auto!important;
+    top:20px!important;
+    width:20px!important;
+    min-width:20px!important;
+    max-width:20px!important;
+    height:2px!important;
+    min-height:2px!important;
+    max-height:2px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:2px!important;
+    background:#101828!important;
+    opacity:1!important;
+    transform-origin:center!important;
+    transition:transform .22s ease,opacity .18s ease!important;
+  }
+  .nav-inner>.menu-toggle.is-open span:nth-child(1),
+  .site-header:has(.menu-toggle.is-open) .menu-toggle.is-open span:nth-child(1){
+    transform:rotate(45deg)!important;
+  }
+  .nav-inner>.menu-toggle.is-open span:nth-child(2),
+  .site-header:has(.menu-toggle.is-open) .menu-toggle.is-open span:nth-child(2){
+    transform:rotate(-45deg)!important;
+    opacity:1!important;
+  }
+  .nav-inner>.menu-toggle.is-open span:nth-child(3),
+  .site-header:has(.menu-toggle.is-open) .menu-toggle.is-open span:nth-child(3){
+    transform:scaleX(0)!important;
+    opacity:0!important;
+  }
+  .mobile-drawer{
+    z-index:1201!important;
+    position:fixed!important;
+    top:0!important;
+    right:0!important;
+    bottom:0!important;
+    height:100vh!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  .drawer-backdrop{z-index:1200!important}
+  body.drawer-open{overflow:hidden!important;overscroll-behavior:none!important}
+  body.drawer-open main,
+  body.drawer-open>.site-header{touch-action:none}
+}
+@media(max-width:390px){
+  .site-header:has(.menu-toggle.is-open) .menu-toggle.is-open,
+  .nav-inner>.menu-toggle.is-open{right:16px!important;top:14px!important;left:auto!important}
+}
