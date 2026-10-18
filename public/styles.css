@@ -1731,3 +1731,35 @@ body.drawer-open { overflow:hidden !important; }
     background:rgba(255,255,255,.68)!important;
   }
 }
+
+
+/* Position the drawer heading from the exact viewport coordinates captured
+   from the original hamburger button by the menu script. Do not guess with
+   fixed top padding: Safari's visible viewport changes as browser chrome moves. */
+@media(max-width:800px){
+  .mobile-drawer{
+    padding-top:var(--menu-toggle-top,12px)!important;
+  }
+  .mobile-drawer .drawer-head{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    height:44px!important;
+    min-height:44px!important;
+    margin:0 0 12px!important;
+    padding:0 0 8px!important;
+    box-sizing:content-box!important;
+    border-bottom:1px solid var(--line)!important;
+  }
+  .mobile-drawer .drawer-title{
+    margin:0!important;
+    padding:0!important;
+    line-height:1!important;
+    align-self:center!important;
+  }
+  .drawer-backdrop{
+    background:rgba(16,24,40,.25)!important;
+    backdrop-filter:blur(2px)!important;
+    -webkit-backdrop-filter:blur(2px)!important;
+  }
+}
