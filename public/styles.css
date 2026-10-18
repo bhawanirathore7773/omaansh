@@ -1552,3 +1552,56 @@ body.drawer-open { overflow:hidden !important; }
   .drawer-backdrop{position:fixed!important;inset:0!important;z-index:1200!important}
   body.drawer-open{position:static!important;top:auto!important;left:auto!important;right:auto!important;width:auto!important;overflow:hidden!important;overscroll-behavior:none!important}
 }
+
+
+/* Final drawer layering: overlay and drawer cover the complete viewport,
+   header remains visible only as a blurred backdrop, and the X sits above all. */
+@media(max-width:800px){
+  body.drawer-open>.site-header,
+  .site-header:has(.menu-toggle.is-open){
+    position:relative!important;
+    top:auto!important;left:auto!important;right:auto!important;
+    z-index:1000!important;
+    background:rgba(255,255,255,.78)!important;
+    border-bottom:1px solid rgba(225,229,235,.7)!important;
+    box-shadow:none!important;
+    filter:blur(2px)!important;
+    pointer-events:none!important;
+  }
+  .drawer-backdrop{
+    position:fixed!important;inset:0!important;z-index:1200!important;
+    background:rgba(16,24,40,.42)!important;
+    backdrop-filter:blur(5px)!important;-webkit-backdrop-filter:blur(5px)!important;
+  }
+  .mobile-drawer{
+    position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:auto!important;
+    z-index:1300!important;width:min(82vw,420px)!important;
+    height:100vh!important;height:100dvh!important;max-height:100dvh!important;
+    box-sizing:border-box!important;overflow-x:hidden!important;overflow-y:auto!important;
+    padding-top:max(20px,env(safe-area-inset-top))!important;
+    padding-bottom:max(28px,env(safe-area-inset-bottom))!important;
+    transform:translateX(105%)!important;visibility:hidden!important;
+    transition:transform .28s cubic-bezier(.2,.75,.25,1),visibility .28s ease!important;
+  }
+  .mobile-drawer.is-open{transform:translateX(0)!important;visibility:visible!important}
+  body>.menu-toggle.is-open{
+    position:fixed!important;top:var(--menu-toggle-top,12px)!important;left:var(--menu-toggle-left,auto)!important;
+    right:auto!important;bottom:auto!important;z-index:1405!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;
+    gap:0!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;
+    margin:0!important;padding:0!important;box-sizing:border-box!important;transform:none!important;
+    border:1px solid #dfe4eb!important;border-radius:12px!important;background:#fff!important;
+    box-shadow:0 4px 16px rgba(16,24,40,.16)!important;opacity:1!important;visibility:visible!important;
+    pointer-events:auto!important;
+  }
+  body>.menu-toggle.is-open span{
+    position:absolute!important;left:11px!important;top:20px!important;right:auto!important;
+    display:block!important;width:20px!important;height:2px!important;min-height:2px!important;
+    margin:0!important;padding:0!important;border:0!important;border-radius:2px!important;
+    background:#101828!important;opacity:1!important;transform-origin:center!important;
+  }
+  body>.menu-toggle.is-open span:nth-child(1){transform:rotate(45deg)!important}
+  body>.menu-toggle.is-open span:nth-child(2){transform:rotate(-45deg)!important}
+  body>.menu-toggle.is-open span:nth-child(3){opacity:0!important;transform:scaleX(0)!important}
+  body.drawer-open{position:static!important;top:auto!important;left:auto!important;right:auto!important;width:auto!important;overflow:hidden!important}
+}
