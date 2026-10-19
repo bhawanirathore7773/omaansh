@@ -136,6 +136,36 @@
     </div>
   </section>
 
+  <% (homeProductSections || []).forEach(section => { const sectionProducts = (section.products || []).map(item => item.product).filter(product => product && product.isActive); if (sectionProducts.length) { %>
+  <section class="section home-merchandising-section" id="home-section-<%= section.slug %>">
+    <div class="section-head">
+      <div>
+        <% if (section.eyebrow) { %><span class="kicker"><%= section.eyebrow %></span><% } %>
+        <h2><%= section.title %></h2>
+        <% if (section.description) { %><p><%= section.description %></p><% } %>
+      </div>
+      <a class="home-section-see-all" href="/products?section=<%= encodeURIComponent(section.slug) %>">See all <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="product-grid home-section-product-grid">
+      <% sectionProducts.slice(0, 6).forEach(product => { %>
+      <a class="product-card" href="/products/<%= product.slug %>">
+        <div class="product-media">
+          <% if (product.image) { %><img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy" width="800" height="800"><% } else { %><div class="placeholder">OSIRA</div><% } %>
+          <% if (product.isNewArrival) { %><span class="product-status-badge new">New arrival</span><% } else if (product.isBestseller) { %><span class="product-status-badge bestseller">Bestseller</span><% } else if (product.isFeatured) { %><span class="product-status-badge featured">Featured</span><% } %>
+          <span class="product-image-label">OSIRA · WALL CLOCKS</span>
+        </div>
+        <div class="product-body">
+          <span class="product-category-label"><%= product.category?.name || 'Wall Clocks' %></span>
+          <h3><%= product.name %></h3>
+          <div class="product-card-bottom"><strong><%= product.price ? 'From ₹' + Number(product.price).toLocaleString('en-IN') : 'Request current price' %></strong><span class="product-explore">View details ↗</span></div>
+        </div>
+      </a>
+      <% }) %>
+    </div>
+    <% if (sectionProducts.length > 6) { %><div class="home-section-mobile-all"><a href="/products?section=<%= encodeURIComponent(section.slug) %>">Explore all <%= sectionProducts.length %> products →</a></div><% } %>
+  </section>
+  <% } }) %>
+
   <section class="section seo-home">
     <div class="seo-home-grid">
       <div><span class="kicker">WHY OSIRA</span><h2>Built around the way businesses actually buy wall clocks.</h2></div>
