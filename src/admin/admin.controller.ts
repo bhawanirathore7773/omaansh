@@ -81,6 +81,32 @@ export class AdminController {
   }
 
   @UseGuards(AdminAuthGuard)
+  @Get('home-sections')
+  async homeProductSections(@Req() req: Request, @Res() res: Response) {
+    const data = await this.admin.listHomeProductSectionsAdmin();
+    return res.render('admin/home-sections', {
+      user: (req as any).adminUser,
+      csrfToken: (req as any).adminCsrf,
+      sections: data.sections,
+      products: data.products,
+      saved: req.query.saved === '1',
+    });
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('home-sections/save')
+  async saveHomeProductSections(@Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    try {
+      await this.admin.saveHomeProductSections(body);
+      return res.redirect(303, '/admin/home-sections?saved=1');
+    } catch (error) {
+      return res.status(400).send(error instanceof Error ? error.message : 'Unable to save homepage product sections');
+    }
+  }
+
+  @UseGuards(AdminAuthGuard)
   @Get('products')
   async products(@Req() req: Request, @Res() res: Response) {
     const q = typeof req.query.q === 'string' ? req.query.q : '';
