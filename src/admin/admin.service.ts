@@ -221,6 +221,71 @@ export class AdminService {
     return id?this.prisma.blog.update({where:{id},data}):this.prisma.blog.create({data});
   }
 
+  async ensureHomeProductSections() {
+    const count = await this.prisma.homeProductSection.count();
+    if (count === 0) {
+      await this.prisma.homeProductSection.createMany({ data: [
+        { title: 'New Arrivals', slug: 'new-arrivals', eyebrow: 'JUST ADDED', description: 'Explore the latest wall clock designs.', displayOrder: 1, isActive: true },
+        { title: 'Best for Branding', slug: 'best-for-branding', eyebrow: 'CUSTOM & PROMOTIONAL', description: 'Wall clocks to consider for logo branding, campaigns and corporate gifting.', displayOrder: 2, isActive: true },
+        { title: 'Best Sellers', slug: 'best-sellers', eyebrow: 'POPULAR CHOICES', description: 'Browse popular designs for retail, office and business orders.', displayOrder: 3, isActive: true },
+        { title: 'Decorative Wall Clocks', slug: 'decorative-wall-clocks', eyebrow: 'DESIGNED FOR SPACES', description: 'Decorative options for homes, workplaces and reception areas.', displayOrder: 4, isActive: true },
+        { title: 'Office & Corporate Clocks', slug: 'office-corporate-clocks', eyebrow: 'WORKPLACE FAVOURITES', description: 'Wall clocks for offices, institutions and corporate requirements.', displayOrder: 5, isActive: true },
+      ] });
+    }
+    return this.prisma.homeProductSection.findMany({
+      orderBy: [{ displayOrder: 'asc' }, { id: 'asc' }],
+      include: { products: { include: { product: { include: { category: true } } }, orderBy: { displayOrder: 'asc' } } },
+    });
+  }
+
+  async listHomeProductSectionsAdmin() {
+    await this.ensureHomeProductSections();
+    const [sections, products] = await Promise.all([
+      this.prisma.homeProductSection.findMany({
+        orderBy: [{ displayOrder: 'asc' }, { id: 'asc' }],
+        include: { products: { select: { productId: true } } },
+      }),
+      this.prisma.product.findMany({
+        orderBy: [{ isActive: 'desc' }, { name: 'asc' }],
+        include: { category: true },
+      }),
+    ]);
+    return { sections, products };
+  }
+
+  async saveHomeProductSections(body: any) {
+    const input = body?.sections;
+    const rows = input ? (Array.isArray(input) ? input : [input]) : [];
+    for (const row of rows.slice(0, 10)) {
+      const id = Number(row.id);
+      if (!Number.isInteger(id) || id < 1) continue;
+      const title = String(row.title || '').trim().slice(0, 160);
+      const slug = String(row.slug || '').trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 180);
+      if (!title || !slug) throw new Error('Every section needs a title and URL slug.');
+      const selected = row.productIds === undefined ? [] : (Array.isArray(row.productIds) ? row.productIds : [row.productIds]);
+      const productIds = [...new Set(selected.map((value: any) => Number(value)).filter((value: number) => Number.isInteger(value) && value > 0))];
+      const validProducts = productIds.length ? await this.prisma.product.findMany({ where: { id: { in: productIds } }, select: { id: true } }) : [];
+      await this.prisma.$transaction(async tx => {
+        await tx.homeProductSection.update({
+          where: { id },
+          data: {
+            title,
+            slug,
+            eyebrow: String(row.eyebrow || '').trim().slice(0, 100) || null,
+            description: String(row.description || '').trim().slice(0, 300) || null,
+            displayOrder: Number.isFinite(Number(row.displayOrder)) ? Number(row.displayOrder) : id,
+            isActive: row.isActive === 'on' || row.isActive === true,
+          },
+        });
+        await tx.homeProductSectionItem.deleteMany({ where: { sectionId: id } });
+        if (validProducts.length) await tx.homeProductSectionItem.createMany({
+          data: validProducts.map((product, index) => ({ sectionId: id, productId: product.id, displayOrder: productIds.indexOf(product.id) >= 0 ? productIds.indexOf(product.id) : index })),
+          skipDuplicates: true,
+        });
+      });
+    }
+  }
+
   async listHomeBanners() {
     return this.prisma.homeBanner.findMany({ orderBy: [{ displayOrder: 'asc' }, { id: 'asc' }] });
   }
