@@ -19,6 +19,15 @@
       <% if(field.help && field.type!=='textarea'){ %><small><%= field.help %></small><% } %></label>
     <% }) %>
     </div>
+    <% if(type==='services'){ const selectedProductIds=Array.isArray(record?.productIds)?record.productIds.map(Number):[]; %>
+    <div class="service-product-picker">
+      <div class="editor-section-heading"><span class="editor-step">+</span><div><h2>Products shown on this service page</h2><p>Select the wall clocks that belong to this service. Visitors will see these cards below the service content.</p></div></div>
+      <div class="service-product-picker-grid">
+        <% availableProducts.forEach(product=>{ %><label class="service-product-option"><input type="checkbox" name="productIds" value="<%= product.id %>" <%= selectedProductIds.includes(product.id)?'checked':'' %>><% if(product.image){ %><img src="<%= product.image %>" alt="" loading="lazy"><% }else{ %><span class="service-product-placeholder">OSIRA</span><% } %><span><strong><%= product.name %></strong><small><%= product.category?.name||'Wall Clock' %> · <%= product.isActive?'Active':'Inactive' %></small></span></label><% }) %>
+      </div>
+      <% if(!availableProducts.length){ %><p>No products found. Add wall clocks in Products first.</p><% } %>
+    </div>
+    <% } %>
   </section>
   <section class="editor-card content-editor-card">
     <div class="editor-section-heading"><span class="editor-step">02</span><div><h2>SEO & publishing</h2><p>Control search snippets, display order and publication state.</p></div></div>
