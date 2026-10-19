@@ -205,6 +205,7 @@ model ServicePage {
   fullDescription String @db.Text
   processContent String? @db.Text
   benefitsContent String? @db.Text
+  productIds Json?
   metaTitle String? @db.VarChar(70)
   metaDescription String? @db.VarChar(160)
   metaKeywords String? @db.VarChar(400)
