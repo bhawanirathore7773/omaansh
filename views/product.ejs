@@ -6,7 +6,7 @@
     <div class="gallery">
       <% const imgs=[product.image,...(Array.isArray(product.additionalImages)?product.additionalImages:[])].filter(Boolean).slice(0,31); const mainProductImage=imgs[0]; %>
       <div class="main-image">
-        <% if(mainProductImage){ %><img id="mainImage" src="<%= mainProductImage %>" alt="<%= product.name %> wall clock by OSIRA" width="1000" height="800"><% } else { %><div class="product-image-empty"><span>OSIRA</span><small>Product image coming soon</small></div><% } %>
+        <% if(mainProductImage){ %><img id="mainImage" src="<%= mainProductImage %>" alt="<%= product.name %> wall clock by OSIRA" width="1000" height="1000"><% if(imgs.length>1){ %><button class="product-gallery-arrow product-gallery-prev" type="button" data-product-gallery-prev aria-label="Previous product image">‹</button><button class="product-gallery-arrow product-gallery-next" type="button" data-product-gallery-next aria-label="Next product image">›</button><span class="product-gallery-count" data-product-gallery-count>1 / <%= imgs.length %></span><% } %><% } else { %><div class="product-image-empty"><span>OSIRA</span><small>Product image coming soon</small></div><% } %>
       </div>
       <% if(imgs.length>1){ %>
       <div class="thumbs" aria-label="Product images">
@@ -73,10 +73,16 @@
   (() => {
     const gallery=document.querySelector('.thumbs');
     const main=document.getElementById('mainImage');
-    gallery?.querySelectorAll('[data-gallery-image]').forEach(button=>button.addEventListener('click',()=>{
-      if(!main)return;main.src=button.dataset.galleryImage;
-      gallery.querySelectorAll('.thumb').forEach(item=>{const active=item===button;item.classList.toggle('active',active);item.setAttribute('aria-pressed',active?'true':'false');});
-    }));
+    const thumbs=Array.from(gallery?.querySelectorAll('[data-gallery-image]')||[]);
+    const count=document.querySelector('[data-product-gallery-count]');
+    let activeIndex=0,startX=0,startY=0;
+    const showImage=(index)=>{if(!main||!thumbs.length)return;activeIndex=(index+thumbs.length)%thumbs.length;main.src=thumbs[activeIndex].dataset.galleryImage;thumbs.forEach((button,i)=>{const active=i===activeIndex;button.classList.toggle('active',active);button.setAttribute('aria-pressed',active?'true':'false');});if(count)count.textContent=(activeIndex+1)+' / '+thumbs.length;};
+    thumbs.forEach((button,index)=>button.addEventListener('click',()=>showImage(index)));
+    document.querySelector('[data-product-gallery-prev]')?.addEventListener('click',()=>showImage(activeIndex-1));
+    document.querySelector('[data-product-gallery-next]')?.addEventListener('click',()=>showImage(activeIndex+1));
+    const stage=document.querySelector('.main-image');
+    stage?.addEventListener('touchstart',event=>{const touch=event.changedTouches[0];startX=touch.clientX;startY=touch.clientY;},{passive:true});
+    stage?.addEventListener('touchend',event=>{const touch=event.changedTouches[0],dx=touch.clientX-startX,dy=touch.clientY-startY;if(Math.abs(dx)>35&&Math.abs(dx)>Math.abs(dy)*1.2)showImage(activeIndex+(dx<0?1:-1));},{passive:true});
     const current={slug:<%- JSON.stringify(product.slug).replace(/</g,'\\u003c') %>,name:<%- JSON.stringify(product.name).replace(/</g,'\\u003c') %>,image:<%- JSON.stringify(product.image || '').replace(/</g,'\\u003c') %>,price:<%- JSON.stringify(product.price ? Number(product.price) : null) %>,category:<%- JSON.stringify(product.category?.name || 'Wall Clock').replace(/</g,'\\u003c') %>};
     let viewed=[];try{viewed=JSON.parse(localStorage.getItem('osiraRecentlyViewed')||'[]');if(!Array.isArray(viewed))viewed=[];}catch(_){viewed=[];}
     viewed=[current,...viewed.filter(item=>item.slug!==current.slug)].slice(0,7);
