@@ -263,7 +263,7 @@ export class AdminService {
       const slug = String(row.slug || '').trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 180);
       if (!title || !slug) throw new Error('Every section needs a title and URL slug.');
       const selected = row.productIds === undefined ? [] : (Array.isArray(row.productIds) ? row.productIds : [row.productIds]);
-      const productIds = [...new Set(selected.map((value: any) => Number(value)).filter((value: number) => Number.isInteger(value) && value > 0))];
+      const productIds: number[] = Array.from(new Set<number>(selected.map((value: unknown) => Number(value)).filter((value: number) => Number.isInteger(value) && value > 0)));
       const validProducts = productIds.length ? await this.prisma.product.findMany({ where: { id: { in: productIds } }, select: { id: true } }) : [];
       await this.prisma.$transaction(async tx => {
         await tx.homeProductSection.update({
