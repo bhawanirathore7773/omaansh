@@ -248,10 +248,11 @@ export class AdminController {
     if (type === 'blog') rows = await this.admin.listBlogsAdmin();
     const record = id === null ? null : rows.find((row) => row.id === id);
     if (id !== null && !record) return res.status(404).send('Content record not found');
+    const availableProducts = type === 'services' ? await this.admin.listProductsAdmin() : [];
     return res.render('admin/content-form', {
       user: (req as any).adminUser, csrfToken: (req as any).adminCsrf,
       type, record, fields: config.fields, editorTitle: config.title,
-      kicker: config.kicker, isNew: id === null,
+      kicker: config.kicker, isNew: id === null, availableProducts,
     });
   }
 
