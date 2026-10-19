@@ -18,7 +18,17 @@ export class SiteController {
         { title: 'Need a tailored business order?', subtitle: 'Tell us the preferred style, quantity, branding and delivery city for a quotation.', buttonLabel: 'Request a quotation', linkUrl: '/#enquiry', backgroundColor: '#303c35', displayOrder: 4, isActive: true },
       ] });
     }
-    const [site, categories, featuredProducts, banners] = await Promise.all([
+    const homeSectionCount = await this.prisma.homeProductSection.count();
+    if (homeSectionCount === 0) {
+      await this.prisma.homeProductSection.createMany({ data: [
+        { title: 'New Arrivals', slug: 'new-arrivals', eyebrow: 'JUST ADDED', description: 'Explore the latest wall clock designs.', displayOrder: 1, isActive: true },
+        { title: 'Best for Branding', slug: 'best-for-branding', eyebrow: 'CUSTOM & PROMOTIONAL', description: 'Wall clocks to consider for logo branding, campaigns and corporate gifting.', displayOrder: 2, isActive: true },
+        { title: 'Best Sellers', slug: 'best-sellers', eyebrow: 'POPULAR CHOICES', description: 'Browse popular designs for retail, office and business orders.', displayOrder: 3, isActive: true },
+        { title: 'Decorative Wall Clocks', slug: 'decorative-wall-clocks', eyebrow: 'DESIGNED FOR SPACES', description: 'Decorative options for homes, workplaces and reception areas.', displayOrder: 4, isActive: true },
+        { title: 'Office & Corporate Clocks', slug: 'office-corporate-clocks', eyebrow: 'WORKPLACE FAVOURITES', description: 'Wall clocks for offices, institutions and corporate requirements.', displayOrder: 5, isActive: true },
+      ], skipDuplicates: true });
+    }
+    const [site, categories, featuredProducts, banners, homeProductSections] = await Promise.all([
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
       this.prisma.category.findMany({ orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }], take: 8 }),
       this.prisma.product.findMany({
@@ -28,6 +38,17 @@ export class SiteController {
         take: 6,
       }),
       this.prisma.homeBanner.findMany({ where: { isActive: true }, orderBy: { displayOrder: 'asc' } }),
+      this.prisma.homeProductSection.findMany({
+        where: { isActive: true },
+        orderBy: [{ displayOrder: 'asc' }, { id: 'asc' }],
+        include: {
+          products: {
+            where: { product: { isActive: true } },
+            include: { product: { include: { category: true } } },
+            orderBy: { displayOrder: 'asc' },
+          },
+        },
+      }),
     ]);
 
     const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
@@ -72,6 +93,7 @@ export class SiteController {
       banners,
       schemaJsonLd: [organization, website],
       featuredProducts,
+      homeProductSections,
       enquirySent: enquiry === 'sent',
       pageTitle: site?.defaultMetaTitle || 'OSIRA | Wall Clock Manufacturer & Supplier in Jaipur',
       metaDescription: site?.defaultMetaDescription || 'OSIRA creates wall clocks and décor products for homes, workplaces and commercial spaces, with custom and business order support.',
