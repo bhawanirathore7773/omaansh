@@ -17,7 +17,6 @@
       <script type="application/json" data-gallery-images><%- JSON.stringify([material.image, ...gallery].filter((image,index,all)=>typeof image==='string' && image.trim() && all.indexOf(image)===index)) %></script>
     </div>
   </section>
-  <% if (gallery.length) { %><section class="section"><div class="reseller-gallery"><% gallery.forEach((image,index)=>{ %><img src="<%= image %>" alt="<%= material.name %> detail view <%= index+1 %>" loading="lazy" width="400" height="400"><% }) %></div></section><% } %>
   <section class="section reseller-detail-content">
     <div class="reseller-detail-panel"><h2>Specifications to confirm</h2>
       <% if (specs.length) { %><table class="reseller-spec-table"><tbody><% specs.forEach(spec=>{ %><tr><th><%= spec.key || 'Specification' %></th><td><%= spec.value || 'Confirm for selected model' %></td></tr><% }) %></tbody></table><% } else { %><p>Confirm exact dimensions, material grade, fitment and availability with the OSIRA team.</p><% } %>
