@@ -202,7 +202,10 @@ export class AdminService {
 
   async listServicesAdmin() { return this.prisma.servicePage.findMany({ orderBy: [{displayOrder:'asc'},{name:'asc'}] }); }
   async saveService(b:any,id?:number) {
-    const data:any={name:String(b.name||'').trim(),slug:String(b.slug||'').trim().toLowerCase(),iconClass:b.iconClass||null,h1Heading:String(b.h1Heading||b.name||''),heroSubheading:b.heroSubheading||null,heroImage:b.heroImage||null,shortDescription:String(b.shortDescription||''),fullDescription:String(b.fullDescription||''),processContent:b.processContent||null,benefitsContent:b.benefitsContent||null,metaTitle:b.metaTitle||null,metaDescription:b.metaDescription||null,metaKeywords:b.metaKeywords||null,isPublished:b.isPublished==='on',displayOrder:Number(b.displayOrder||0)};
+    const selected = b.productIds === undefined ? [] : (Array.isArray(b.productIds) ? b.productIds : [b.productIds]);
+    const productIds: number[] = Array.from(new Set<number>(selected.map((value: unknown) => Number(value)).filter((value: number) => Number.isInteger(value) && value > 0))).slice(0, 100);
+    const validProducts = productIds.length ? await this.prisma.product.findMany({ where: { id: { in: productIds }, isActive: true }, select: { id: true } }) : [];
+    const data:any={name:String(b.name||'').trim(),slug:String(b.slug||'').trim().toLowerCase(),iconClass:b.iconClass||null,h1Heading:String(b.h1Heading||b.name||''),heroSubheading:b.heroSubheading||null,heroImage:b.heroImage||null,shortDescription:String(b.shortDescription||''),fullDescription:String(b.fullDescription||''),processContent:b.processContent||null,benefitsContent:b.benefitsContent||null,productIds:validProducts.map(product=>product.id),metaTitle:b.metaTitle||null,metaDescription:b.metaDescription||null,metaKeywords:b.metaKeywords||null,isPublished:b.isPublished==='on',displayOrder:Number(b.displayOrder||0)};
     return id?this.prisma.servicePage.update({where:{id},data}):this.prisma.servicePage.create({data});
   }
   async listIndustriesAdmin() { return this.prisma.industryPage.findMany({ orderBy:[{displayOrder:'asc'},{industryName:'asc'}] }); }
