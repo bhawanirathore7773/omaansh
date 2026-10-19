@@ -1915,3 +1915,33 @@ body.drawer-open { overflow:hidden !important; }
     overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;
   }
 }
+
+
+/* Homepage product merchandising sections: reusable, responsive wall-clock rows. */
+.home-merchandising-section{padding-top:clamp(42px,6vw,88px);padding-bottom:clamp(42px,6vw,88px);border-top:1px solid var(--line)}
+.home-merchandising-section .section-head{align-items:flex-end;gap:24px;margin-bottom:28px}
+.home-merchandising-section .section-head h2{margin:8px 0 0}
+.home-merchandising-section .section-head p{max-width:620px;margin:12px 0 0;color:var(--muted)}
+.home-section-see-all{display:inline-flex;align-items:center;gap:10px;flex:0 0 auto;padding:12px 16px;border:1px solid var(--line);border-radius:999px;color:var(--ink);font-weight:700;text-decoration:none;white-space:nowrap;transition:background .2s ease,border-color .2s ease}
+.home-section-see-all:hover{background:var(--surface,#f7f5f1);border-color:var(--ink)}
+.home-section-product-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.home-merchandising-section .product-media{aspect-ratio:1/1;overflow:hidden;background:#f4f1ec}
+.home-merchandising-section .product-media>img{width:100%;height:100%;object-fit:cover;display:block}
+.home-merchandising-section .product-body h3{font-size:clamp(16px,1.5vw,21px);line-height:1.3;margin:7px 0 16px}
+.home-section-mobile-all{display:none}
+@media(min-width:1100px){.home-section-product-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}}
+@media(max-width:760px){
+  .home-merchandising-section{padding-top:42px;padding-bottom:42px}
+  .home-merchandising-section .section-head{align-items:flex-start;flex-direction:row;gap:12px;margin-bottom:20px}
+  .home-merchandising-section .section-head>div{min-width:0}
+  .home-merchandising-section .section-head h2{font-size:clamp(25px,6.5vw,34px);line-height:1.12}
+  .home-merchandising-section .section-head p{font-size:14px;line-height:1.55}
+  .home-section-see-all{font-size:13px;padding:10px 12px;gap:6px;margin-top:2px}
+  .home-section-product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .home-merchandising-section .product-body{padding:12px}
+  .home-merchandising-section .product-body h3{font-size:15px;line-height:1.3;margin:6px 0 12px}
+  .home-merchandising-section .product-category-label{font-size:10px}
+  .home-merchandising-section .product-card-bottom{align-items:flex-start;gap:8px;flex-direction:column}
+  .home-section-mobile-all{display:block;text-align:center;margin-top:20px}
+  .home-section-mobile-all a{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border:1px solid var(--line);border-radius:999px;color:var(--ink);font-weight:700;text-decoration:none}
+}
