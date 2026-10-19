@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async list(query?: string, categorySlug?: string, size?: string, application?: string, page = 1, limit = 24, minPrice?: string, maxPrice?: string, sort = 'recommended') {
+  async list(query?: string, categorySlug?: string, size?: string, application?: string, page = 1, limit = 24, minPrice?: string, maxPrice?: string, sort = 'recommended', sectionSlug?: string) {
     const safePage = Math.max(1, Number(page) || 1);
     const safeLimit = Math.min(48, Math.max(12, Number(limit) || 24));
     const where: any = { isActive: true };
@@ -19,6 +19,7 @@ export class ProductsService {
       ];
     }
     if (categorySlug) where.category = { slug: categorySlug };
+    if (sectionSlug?.trim()) where.homeSections = { some: { section: { slug: sectionSlug.trim(), isActive: true } } };
     const filters: any[] = [];
     if (size?.trim()) filters.push({ specifications: { contains: size.trim() } });
     if (application?.trim()) filters.push({ specifications: { contains: application.trim() } });
