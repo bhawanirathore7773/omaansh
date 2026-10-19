@@ -2,14 +2,14 @@
 <main class="catalogue-page">
   <section class="section catalogue-hero">
     <div class="catalogue-intro">
-      <span class="kicker">OSIRA WALL CLOCK CATALOGUE</span>
-      <h1>Find your wall clock.</h1>
-      <p>Search the range, refine by size or collection, and compare current products.</p>
+      <span class="kicker"><%= section ? section.title.toUpperCase() : "OSIRA WALL CLOCK CATALOGUE" %></span>
+      <h1><%= section ? section.title : "Find your wall clock." %></h1>
+      <p><%= section?.description || "Search the range, refine by size or collection, and compare current products." %></p>
     </div>
   </section>
 
   <section class="section catalogue-body">
-    <% const filterUrl = (omit) => { const params = new URLSearchParams(); if(q)params.set('q',q); if(category && omit!=='category')params.set('category',category); if(size && omit!=='size')params.set('size',size); if(application && omit!=='application')params.set('application',application); if(minPrice && omit!=='price')params.set('minPrice',minPrice); if(maxPrice && omit!=='price')params.set('maxPrice',maxPrice); if(sort && sort!=='recommended')params.set('sort',sort); return '/products'+(params.toString()?'?'+params.toString():''); }; %>
+    <% const filterUrl = (omit) => { const params = new URLSearchParams(); if(q)params.set('q',q); if(category && omit!=='category')params.set('category',category); if(size && omit!=='size')params.set('size',size); if(application && omit!=='application')params.set('application',application); if(minPrice && omit!=='price')params.set('minPrice',minPrice); if(maxPrice && omit!=='price')params.set('maxPrice',maxPrice); if(sort && sort!=='recommended')params.set('sort',sort); if(sectionSlug)params.set('section',sectionSlug); return '/products'+(params.toString()?'?'+params.toString():''); }; %>
     <div class="catalogue-toolbar">
       <div><strong id="catalogue-total"><%= total %></strong> products <span class="catalogue-results-note">for your business needs</span></div>
       <label class="catalogue-sort-label">Sort by <select id="catalogueSort" aria-label="Sort products">
@@ -25,6 +25,7 @@
         <label class="sr-only" for="catalogueSearch">Search wall clocks</label>
         <span aria-hidden="true">⌕</span>
         <input id="catalogueSearch" name="q" value="<%= q %>" placeholder="Search wall clocks, size, style or SKU">
+        <% if(sectionSlug){ %><input type="hidden" name="section" value="<%= sectionSlug %>"><% } %>
         <% if(category){ %><input type="hidden" name="category" value="<%= category %>"><% } %>
         <% if(size){ %><input type="hidden" name="size" value="<%= size %>"><% } %>
         <% if(application){ %><input type="hidden" name="application" value="<%= application %>"><% } %>
@@ -36,6 +37,7 @@
       <button type="button" class="catalogue-filter-trigger" id="openFilters" aria-haspopup="dialog" aria-controls="catalogueFilterSheet"><span class="filter-trigger-icon">☷</span> Filters <span class="filter-count" id="filterCount"><%= [category,size,application].filter(Boolean).length + ((minPrice || maxPrice) ? 1 : 0) %></span></button>
     </div>
     <div class="active-filter-chips" id="activeFilterChips">
+      <% if(section){ %><a href="/products" class="filter-chip">Section: <%= section.title %> ×</a><% } %>
       <% if(category){ const cat=categories.find(x=>x.slug===category); %><a href="<%= filterUrl('category') %>" class="filter-chip">Collection: <%= cat?.name || category %> ×</a><% } %>
       <% if(size){ %><a href="<%= filterUrl('size') %>" class="filter-chip">Size: <%= size %> ×</a><% } %>
       <% if(application){ %><a href="<%= filterUrl('application') %>" class="filter-chip">Application ×</a><% } %>
@@ -48,6 +50,7 @@
       <form class="filter-sheet-form" method="get" action="/products" id="catalogueFilterForm">
         <input type="hidden" name="q" value="<%= q %>">
         <input type="hidden" name="sort" value="<%= sort || 'recommended' %>">
+        <% if(sectionSlug){ %><input type="hidden" name="section" value="<%= sectionSlug %>"><% } %>
         <div class="filter-field"><label for="filterCategory">Collection</label><select id="filterCategory" name="category"><option value="">All collections</option><% categories.forEach(item => { %><option value="<%= item.slug %>" <%= category===item.slug?'selected':'' %>><%= item.name %></option><% }) %></select></div>
         <div class="filter-field"><label for="filterSize">Clock size</label><select id="filterSize" name="size"><option value="">Any size</option><% ['8 inch','10 inch','12 inch','14 inch','16 inch','18 inch','20 inch'].forEach(value=>{ %><option value="<%= value %>" <%= size===value?'selected':'' %>><%= value %></option><% }) %></select></div>
         <div class="filter-field"><label for="filterApplication">Application</label><select id="filterApplication" name="application"><option value="">Any application</option><% ['Corporate gifting, promotions','Office, reception, meeting room','Home, office, retail','Retail, gifting, décor'].forEach(value=>{ %><option value="<%= value %>" <%= application===value?'selected':'' %>><%= value %></option><% }) %></select></div>
@@ -77,9 +80,9 @@
       </div>
       <% if (currentPage < totalPages) { %><div class="catalogue-load-more-wrap"><button type="button" class="btn secondary catalogue-load-more" id="loadMoreProducts" data-page="<%= currentPage %>" data-total-pages="<%= totalPages %>">Load more wall clocks <span>↓</span></button><p>Showing <span id="shownCount"><%= products.length %></span> of <%= total %> products</p></div><% } %>
       <nav class="pagination catalogue-fallback-pagination" aria-label="Product pages">
-        <% if (currentPage > 1) { %><a href="?<%= new URLSearchParams({q,category,size,application,minPrice,maxPrice,sort,page:String(currentPage-1)}).toString() %>">← Previous</a><% } %>
+        <% if (currentPage > 1) { %><a href="?<%= new URLSearchParams({q,category,size,application,minPrice,maxPrice,sort,section:sectionSlug,page:String(currentPage-1)}).toString() %>">← Previous</a><% } %>
         <span>Page <%= currentPage %> / <%= totalPages %></span>
-        <% if (currentPage < totalPages) { %><a href="?<%= new URLSearchParams({q,category,size,application,minPrice,maxPrice,sort,page:String(currentPage+1)}).toString() %>">Next →</a><% } %>
+        <% if (currentPage < totalPages) { %><a href="?<%= new URLSearchParams({q,category,size,application,minPrice,maxPrice,sort,section:sectionSlug,page:String(currentPage+1)}).toString() %>">Next →</a><% } %>
       </nav>
     <% } else { %>
       <div class="empty-state"><h2>No matching wall clocks found.</h2><p>Try removing a filter or send your quantity, preferred style and delivery city.</p><a class="btn primary" href="/#enquiry">Request a quotation</a><a class="btn secondary" href="/products">Clear all filters</a></div>
