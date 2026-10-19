@@ -1,0 +1,57 @@
+<%- include('partials/header', {title:'Homepage Product Sections | OSIRA Admin', user}) %>
+<div class="admin-heading">
+  <div><p class="admin-kicker">STOREFRONT MERCHANDISING</p><h1>Homepage wall clock sections</h1><p>Choose the exact products shown in each homepage section. The first six selected products appear on the homepage; “See all” opens the full section catalogue.</p></div>
+  <a class="admin-secondary" href="/" target="_blank" rel="noopener">Preview website ↗</a>
+</div>
+<% if (saved) { %><div class="admin-notice admin-notice-success" role="status">Homepage sections saved successfully.</div><% } %>
+<div class="home-section-admin-intro">
+  <strong>How it works</strong>
+  <span>Set the section title and order, activate the section, then select as many active wall clock products as you want. Product selection and ordering are managed here—not by product badges.</span>
+</div>
+<form method="post" action="/admin/home-sections/save" class="home-sections-editor">
+  <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
+  <% sections.forEach((section, index) => { const selectedIds = section.products.map(item => item.productId); %>
+  <section class="home-section-admin-card">
+    <div class="home-section-admin-top">
+      <div><p class="admin-kicker">SECTION <%= String(index + 1).padStart(2, '0') %></p><h2><%= section.title %></h2><p><%= selectedIds.length %> selected products · first 6 shown on homepage</p></div>
+      <label class="home-section-active"><input type="checkbox" name="sections[<%= index %>][isActive]" <%= section.isActive ? 'checked' : '' %>><span>Show on homepage</span></label>
+    </div>
+    <input type="hidden" name="sections[<%= index %>][id]" value="<%= section.id %>">
+    <div class="home-section-fields">
+      <label>Section title<input name="sections[<%= index %>][title]" required maxlength="160" value="<%= section.title %>"></label>
+      <label>URL slug<input name="sections[<%= index %>][slug]" required maxlength="180" pattern="[a-zA-Z0-9-]+" value="<%= section.slug %>"><small>Used by See all; letters, numbers and hyphens only.</small></label>
+      <label>Small label / eyebrow<input name="sections[<%= index %>][eyebrow]" maxlength="100" value="<%= section.eyebrow || '' %>" placeholder="e.g. JUST ADDED"></label>
+      <label>Display order<input name="sections[<%= index %>][displayOrder]" type="number" step="1" value="<%= section.displayOrder %>"></label>
+      <label class="home-section-description">Short description<input name="sections[<%= index %>][description]" maxlength="300" value="<%= section.description || '' %>" placeholder="A short line under the heading"></label>
+    </div>
+    <div class="home-section-product-heading"><div><h3>Choose wall clocks</h3><p>Tick each product that belongs in this section. A product can be included in multiple sections.</p></div><input type="search" class="home-section-product-search" placeholder="Find a product…" aria-label="Search products in <%= section.title %>"></div>
+    <div class="home-section-product-grid">
+      <% products.forEach(product => { %>
+      <label class="home-section-product-option <%= product.isActive ? '' : 'is-inactive' %>" data-product-search="<%= (product.name + ' ' + (product.sku || '') + ' ' + product.category.name).toLowerCase() %>">
+        <input type="checkbox" name="sections[<%= index %>][productIds][]" value="<%= product.id %>" <%= selectedIds.includes(product.id) ? 'checked' : '' %>>
+        <span class="home-section-product-image"><% if (product.image) { %><img src="<%= product.image %>" alt="" loading="lazy"><% } else { %><span>OSIRA</span><% } %></span>
+        <span class="home-section-product-copy"><strong><%= product.name %></strong><small><%= product.category.name %><%= product.sku ? ' · ' + product.sku : '' %></small><small class="home-section-product-status"><%= product.isActive ? 'Active product' : 'Inactive — won’t show publicly' %></small></span>
+      </label>
+      <% }) %>
+    </div>
+    <p class="home-section-no-results" hidden>No products match that search.</p>
+  </section>
+  <% }) %>
+  <div class="home-sections-savebar"><span>Changes are published after you save.</span><button type="submit" class="admin-button">Save homepage sections →</button></div>
+</form>
+<script>
+(function(){
+  document.querySelectorAll('.home-section-admin-card').forEach(card=>{
+    const search=card.querySelector('.home-section-product-search');
+    const options=Array.from(card.querySelectorAll('.home-section-product-option'));
+    const empty=card.querySelector('.home-section-no-results');
+    if(!search)return;
+    search.addEventListener('input',()=>{
+      const q=search.value.trim().toLowerCase();let visible=0;
+      options.forEach(option=>{const match=!q||(option.dataset.productSearch||'').includes(q);option.hidden=!match;if(match)visible++;});
+      empty.hidden=visible>0;
+    });
+  });
+})();
+</script>
+<%- include('partials/footer') %>
