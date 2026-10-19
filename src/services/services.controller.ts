@@ -33,9 +33,14 @@ export class ServicesController {
       this.services.findBySlug(slug),
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
+    const selectedProductIds = Array.isArray(service.productIds) ? service.productIds.map(Number).filter(id => Number.isInteger(id) && id > 0) : [];
+    const serviceProducts = selectedProductIds.length ? await this.prisma.product.findMany({ where: { id: { in: selectedProductIds }, isActive: true }, include: { category: true } }) : [];
+    const productOrder = new Map(selectedProductIds.map((id, index) => [id, index]));
+    serviceProducts.sort((a, b) => (productOrder.get(a.id) ?? 999) - (productOrder.get(b.id) ?? 999));
     const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
     return {
       service,
+      serviceProducts,
       site,
       pageTitle: service.metaTitle || service.h1Heading + ' | OSIRA',
       metaDescription: service.metaDescription || service.shortDescription,
