@@ -33,4 +33,4 @@ jobs:
         run: npx prisma generate
 
       - name: Build NestJS
-        run: npm run build
+        run: npx nest build
