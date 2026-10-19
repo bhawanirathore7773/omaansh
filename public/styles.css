@@ -1945,3 +1945,36 @@ body.drawer-open { overflow:hidden !important; }
   .home-section-mobile-all{display:block;text-align:center;margin-top:20px}
   .home-section-mobile-all a{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border:1px solid var(--line);border-radius:999px;color:var(--ink);font-weight:700;text-decoration:none}
 }
+
+/* Product gallery: square presentation, swipe on touch screens, arrows on larger screens. */
+.product-page .main-image{position:relative!important;aspect-ratio:1/1!important;width:100%;height:auto!important;min-height:0!important;overflow:hidden;border-radius:20px;background:#f4f2ed;touch-action:pan-y;}
+.product-page .main-image>img{display:block;width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;aspect-ratio:1/1!important;object-fit:contain!important;}
+.product-gallery-arrow{position:absolute;top:50%;z-index:2;transform:translateY(-50%);display:grid;place-items:center;width:42px;height:42px;border:1px solid rgba(255,255,255,.8);border-radius:50%;background:rgba(16,24,40,.58);color:#fff;font-size:28px;line-height:1;box-shadow:0 4px 16px rgba(16,24,40,.16);cursor:pointer;}
+.product-gallery-prev{left:12px}.product-gallery-next{right:12px}.product-gallery-count{position:absolute;right:12px;bottom:12px;padding:5px 9px;border-radius:999px;background:rgba(16,24,40,.68);color:#fff;font-size:12px;font-weight:700;}
+.product-page .thumbs{display:flex;gap:10px;overflow-x:auto;max-width:100%;padding:10px 2px 3px;scrollbar-width:thin;}
+.product-page .thumb{flex:0 0 92px;width:92px;height:92px;aspect-ratio:1/1;overflow:hidden;}
+.product-page .thumb img{width:100%;height:100%;object-fit:contain;display:block;}
+@media(max-width:600px){.product-page .main-image{border-radius:16px}.product-gallery-arrow,.product-gallery-count{display:none!important}.product-page .thumb{flex-basis:76px;width:76px;height:76px}.product-page .product-hero{gap:22px}.product-page .gallery{min-width:0}}
+
+/* Service tiles: reserve a clear number badge area and prevent copy collisions. */
+.services-visual-grid .service-image-card{min-width:0;min-height:390px;}
+.services-visual-grid .service-image-card .solution-number{z-index:2;line-height:1;min-width:48px;text-align:center;top:18px;left:18px;}
+.services-visual-grid .service-image-copy{position:relative;z-index:1;min-width:0;padding:28px 24px 24px;}
+.services-visual-grid .service-image-copy .kicker{display:block;line-height:1.45;overflow-wrap:anywhere;margin-top:12px;}
+.services-visual-grid .service-image-copy h2{max-width:100%;overflow-wrap:anywhere;}
+.services-visual-grid .service-image-copy p{margin-bottom:0;overflow-wrap:anywhere;}
+
+/* Image-led guides and responsive reseller labels. */
+.blog-card-v2{overflow:hidden;min-width:0;}
+.blog-card-image{width:100%;aspect-ratio:16/9;margin:-1px -1px 18px;overflow:hidden;border-radius:12px;background:#f1eee8;}
+.blog-card-image img{display:block;width:100%;height:100%;object-fit:cover;}
+.article-featured-image{width:100%;aspect-ratio:16/9;margin:28px 0 36px;overflow:hidden;border-radius:18px;background:#f1eee8;}
+.article-featured-image img{display:block;width:100%;height:100%;object-fit:cover;}
+.reseller-category-products .reseller-material-card{min-width:0;}
+.reseller-category-products .reseller-material-card-body{min-width:0;overflow-wrap:anywhere;}
+.reseller-category-products .reseller-material-card h3{line-height:1.25;overflow-wrap:anywhere;word-break:normal;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.reseller-category-products .reseller-material-card p{overflow-wrap:anywhere;}
+.reseller-detail-hero{gap:clamp(22px,4vw,48px)!important;align-items:start!important;}
+.reseller-detail-image{aspect-ratio:1/1!important;}
+.reseller-detail-image img{object-fit:contain!important;}
+@media(max-width:600px){.services-visual-grid .service-image-card{min-height:330px}.services-visual-grid .service-image-copy{padding:18px 16px 17px}.services-visual-grid .service-image-copy .kicker{font-size:.58rem;letter-spacing:.11em}.services-visual-grid .service-image-copy h2{font-size:1.35rem;line-height:1.12}.services-visual-grid .service-image-copy p{font-size:.78rem;line-height:1.5}.blog-card-image{margin-bottom:12px}.article-featured-image{margin:20px 0 26px}.reseller-detail-hero{gap:18px!important}.reseller-page .section{padding-top:38px;padding-bottom:38px}}
