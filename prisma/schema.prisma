@@ -105,6 +105,7 @@ model Product {
   updatedAt DateTime @updatedAt
   industries IndustryProduct[]
   banners BannerProduct[]
+  homeSections HomeProductSectionItem[]
   enquiries Enquiry[]
   @@index([isActive, isFeatured])
   @@index([categoryId])
@@ -398,4 +399,29 @@ model ResellerMaterial {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@index([isPublished, displayOrder])
+}
+
+
+model HomeProductSection {
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(160)
+  slug String @unique @db.VarChar(180)
+  eyebrow String? @db.VarChar(100)
+  description String? @db.VarChar(300)
+  displayOrder Int @default(0)
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  products HomeProductSectionItem[]
+  @@index([isActive, displayOrder])
+}
+
+model HomeProductSectionItem {
+  sectionId Int
+  productId Int
+  section HomeProductSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  displayOrder Int @default(0)
+  @@id([sectionId, productId])
+  @@index([productId])
 }
