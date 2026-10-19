@@ -19,7 +19,7 @@ export class ProductsService {
       ];
     }
     if (categorySlug) where.category = { slug: categorySlug };
-    if (sectionSlug?.trim()) where.homeSections = { some: { section: { slug: sectionSlug.trim(), isActive: true } } };
+    if (sectionSlug?.trim()) where.homeSections = { some: { section: { is: { slug: sectionSlug.trim(), isActive: true } } } };
     const filters: any[] = [];
     if (size?.trim()) filters.push({ specifications: { contains: size.trim() } });
     if (application?.trim()) filters.push({ specifications: { contains: application.trim() } });
