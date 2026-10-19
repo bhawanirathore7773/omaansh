@@ -230,7 +230,7 @@ export class AdminService {
         { title: 'Best Sellers', slug: 'best-sellers', eyebrow: 'POPULAR CHOICES', description: 'Browse popular designs for retail, office and business orders.', displayOrder: 3, isActive: true },
         { title: 'Decorative Wall Clocks', slug: 'decorative-wall-clocks', eyebrow: 'DESIGNED FOR SPACES', description: 'Decorative options for homes, workplaces and reception areas.', displayOrder: 4, isActive: true },
         { title: 'Office & Corporate Clocks', slug: 'office-corporate-clocks', eyebrow: 'WORKPLACE FAVOURITES', description: 'Wall clocks for offices, institutions and corporate requirements.', displayOrder: 5, isActive: true },
-      ] });
+      ], skipDuplicates: true });
     }
     return this.prisma.homeProductSection.findMany({
       orderBy: [{ displayOrder: 'asc' }, { id: 'asc' }],
