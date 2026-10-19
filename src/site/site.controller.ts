@@ -43,7 +43,7 @@ export class SiteController {
         orderBy: [{ displayOrder: 'asc' }, { id: 'asc' }],
         include: {
           products: {
-            where: { product: { isActive: true } },
+            where: { product: { is: { isActive: true } } },
             include: { product: { include: { category: true } } },
             orderBy: { displayOrder: 'asc' },
           },
