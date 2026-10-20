@@ -50,6 +50,14 @@ export class CitiesController {
         { '@type': 'ListItem', position: 2, name: 'Cities', item: (baseUrl || '') + '/cities' },
         { '@type': 'ListItem', position: 3, name: city.cityName, item: cityUrl }
       ]
+    },{
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        { '@type': 'Question', name: 'Can I enquire about bulk wall clocks in ' + city.cityName + '?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Share your quantity, preferred designs, use case and delivery city. Current availability and commercial terms can then be confirmed for the requirement.' } },
+        { '@type': 'Question', name: 'Can wall clocks be used for corporate gifting or branding?', acceptedAnswer: { '@type': 'Answer', text: 'OSIRA accepts enquiries for corporate gifting, promotional and custom-branded requirements. Logo options, artwork, minimum quantities and production timelines must be confirmed for each order.' } },
+        { '@type': 'Question', name: 'How do I confirm price and delivery time?', acceptedAnswer: { '@type': 'Answer', text: 'Send the product or collection, quantity and delivery PIN code. Pricing and dispatch estimates depend on the selected product and order details.' } }
+      ]
     }];
     return {
       city,
