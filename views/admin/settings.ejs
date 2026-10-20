@@ -9,6 +9,10 @@
 <div class="field-grid"><label>Locality<input name="locality" value="<%= settings?.locality || '' %>"></label><label>Region<input name="region" value="<%= settings?.region || '' %>"></label><label>Postal code<input name="postalCode" value="<%= settings?.postalCode || '' %>"></label><label>Country<input name="country" value="<%= settings?.country || 'IN' %>"></label></div>
 <div class="field-grid"><label>Phone<input name="primaryPhone" value="<%= settings?.primaryPhone || '' %>"></label><label>WhatsApp number<input name="whatsappNumber" value="<%= settings?.whatsappNumber || '' %>"></label><label>Email<input type="email" name="email" value="<%= settings?.email || '' %>"></label><label>GST number<input name="gstNumber" value="<%= settings?.gstNumber || '' %>"></label></div>
 </section>
+<section class="editor-card about-media-settings"><h2>About page photography</h2><p>Upload real company/factory/team photos. Desktop and mobile hero images can be different; leave a field empty if you want to use the page's default image treatment.</p>
+<% const aboutImages=[['aboutDesktopHeroImage','Desktop hero image','16:9'],['aboutMobileHeroImage','Mobile hero image','4:5'],['aboutFactoryImage','Manufacturing / workplace photo','4:3'],['aboutTeamImage','Team / owner photo','4:3'],['aboutQualityImage','Quality / packing photo','4:3']]; aboutImages.forEach(item=>{ %>
+<div class="about-media-field"><label><%= item[1] %><input type="url" name="<%= item[0] %>" value="<%= settings?.[item[0]] || '' %>" placeholder="Upload an image or paste its URL"></label><div class="about-media-upload"><input type="file" accept="image/jpeg,image/png,image/webp,image/avif" data-about-image-file data-target-field="<%= item[0] %>"><button class="admin-secondary" type="button" data-about-image-upload data-target-field="<%= item[0] %>">Upload image (<%= item[2] %>)</button></div><% if(settings?.[item[0]]){ %><img class="about-media-preview" src="<%= settings[item[0]] %>" alt="<%= item[1] %> preview" loading="lazy"><% } %></div>
+<% }) %></section>
 <section class="editor-card"><h2>SEO & location</h2>
 <label>Default SEO title<input name="defaultMetaTitle" maxlength="70" value="<%= settings?.defaultMetaTitle || '' %>"></label>
 <label>Default meta description<textarea name="defaultMetaDescription" maxlength="160" rows="4"><%= settings?.defaultMetaDescription || '' %></textarea></label>
@@ -17,4 +21,11 @@
 <label>Facebook<input name="facebookUrl" value="<%= settings?.facebookUrl || '' %>"></label><label>Instagram<input name="instagramUrl" value="<%= settings?.instagramUrl || '' %>"></label><label>YouTube<input name="youtubeUrl" value="<%= settings?.youtubeUrl || '' %>"></label><label>LinkedIn<input name="linkedinUrl" value="<%= settings?.linkedinUrl || '' %>" placeholder="https://www.linkedin.com/company/..."></label><label>IndiaMART<input name="indiamartUrl" value="<%= settings?.indiamartUrl || '' %>" placeholder="https://www.indiamart.com/..."></label>
 <button class="admin-button" type="submit">Save site settings</button>
 </section></form>
+
+<script>
+(()=>{const form=document.querySelector('form[action="/admin/settings/save"]');if(!form)return;
+document.querySelectorAll('[data-about-image-upload]').forEach(button=>button.addEventListener('click',async()=>{const field=button.dataset.targetField;const fileInput=document.querySelector('[data-about-image-file][data-target-field="'+field+'"]');const file=fileInput?.files?.[0];if(!file){alert('Please choose an image first.');return;}const data=new FormData();data.append('image',file);const csrf=form.querySelector('[name="csrfToken"]')?.value;if(csrf)data.append('csrfToken',csrf);button.disabled=true;button.textContent='Uploading…';try{const response=await fetch('/admin/products/upload-image',{method:'POST',body:data,credentials:'same-origin'});const result=await response.json();if(!response.ok)throw new Error(result.error||'Upload failed');const input=form.querySelector('[name="'+field+'"]');if(input)input.value=result.url;let preview=button.closest('.about-media-field').querySelector('.about-media-preview');if(!preview){preview=document.createElement('img');preview.className='about-media-preview';preview.alt='Image preview';button.closest('.about-media-field').appendChild(preview);}preview.src=result.url;button.textContent='Uploaded ✓';}catch(error){alert(error.message||'Unable to upload image.');button.textContent='Upload image';}finally{button.disabled=false;}}));
+})();
+</script>
+
 <%- include('partials/footer') %>
