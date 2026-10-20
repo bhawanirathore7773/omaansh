@@ -2181,3 +2181,21 @@ body.enquiry-modal-open{overflow:hidden}
 .about-media-upload input{max-width:100%;font-size:.82rem}
 .about-media-preview{display:block;width:min(100%,320px);aspect-ratio:16/9;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
 @media(prefers-reduced-motion:reduce){.about-purpose-grid article,.about-offerings-grid>a,.blog-card-v2{transition:none!important}}
+
+
+/* Prevent reseller category labels from being clipped on narrow cards. */
+.reseller-category-directory>a{height:auto!important;min-height:0!important;align-self:stretch!important}
+.reseller-category-directory>a>img{aspect-ratio:4/3!important;height:auto!important;flex:0 0 auto!important}
+.reseller-directory-copy{flex:1 0 auto!important;min-height:116px;min-width:0!important;overflow:visible!important;white-space:normal!important}
+.reseller-directory-copy strong,.reseller-directory-copy small,.reseller-directory-copy b{display:block;max-width:100%;overflow:visible!important;text-overflow:clip!important;white-space:normal!important;overflow-wrap:anywhere;word-break:normal;line-height:1.45}
+@media(max-width:600px){.reseller-directory-copy{min-height:108px;padding:11px!important;gap:6px!important}.reseller-directory-copy strong{font-size:.84rem!important}.reseller-directory-copy small{font-size:.68rem!important}.reseller-directory-copy b{font-size:.68rem!important}}
+.about-photo-gallery-section{padding-top:24px!important}
+.about-photo-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.about-photo-gallery figure{position:relative;min-width:0;aspect-ratio:4/3;margin:0;overflow:hidden;border-radius:18px;background:#eee9e0}
+.about-photo-gallery figure img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.about-photo-gallery figure:hover img{transform:scale(1.035)}
+.about-photo-gallery figure:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(16,24,40,.78));pointer-events:none}
+.about-photo-gallery figcaption{position:absolute;left:15px;right:15px;bottom:14px;z-index:1;display:grid;gap:4px;color:#fff}
+.about-photo-gallery figcaption strong{font-size:1rem;line-height:1.25}
+.about-photo-gallery figcaption span{font-size:.76rem;line-height:1.4;color:rgba(255,255,255,.82)}
+@media(max-width:700px){.about-photo-gallery{grid-template-columns:1fr}.about-photo-gallery figure{aspect-ratio:16/10}.about-photo-gallery figcaption{left:12px;right:12px;bottom:12px}.about-photo-gallery figcaption strong{font-size:.92rem}.about-photo-gallery figcaption span{font-size:.72rem}}
