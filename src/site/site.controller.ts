@@ -187,8 +187,8 @@ export class SiteController {
     const site = await this.prisma.siteSettings.findUnique({ where: { id: 1 } });
     return {
       site,
-      pageTitle: 'About OSIRA | Wall Clock Supplier for Business Orders',
-      metaDescription: 'Learn about OSIRA wall clocks for retail, wholesale, corporate gifting and custom business requirements.',
+      pageTitle: 'About OSIRA | Wall Clock Brand by Omaansh Industries, Jaipur',
+      metaDescription: 'Meet OSIRA, the wall clock brand of Omaansh Industries in Jaipur. Explore wholesale supply, corporate gifting and custom branding enquiries.',
       canonical: process.env.SITE_URL ? process.env.SITE_URL.replace(/\/$/, '') + '/about' : undefined,
     };
   }
