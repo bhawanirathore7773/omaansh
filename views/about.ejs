@@ -75,7 +75,7 @@
   </section>
 
   <section class="section about-contact-card">
-    <div><span class="kicker">VISIT / CONTACT</span><h2>Let’s discuss your wall-clock requirement.</h2><p><%= site?.streetAddress || '24, Shree Shyam Vatika, Gokulpura, Kalwar Road, Jaipur, Rajasthan 302012' %></p><div class="about-contact-links"><a href="tel:<%= site?.primaryPhone || '+91141616961' %>">Call <%= site?.primaryPhone || '+91 141 616961' %></a><a href="mailto:<%= site?.email || 'hello@omaansh.com' %>"><%= site?.email || 'hello@omaansh.com' %></a></div></div>
+    <div><span class="kicker">VISIT / CONTACT</span><h2>Let’s discuss your wall-clock requirement.</h2><p><%= site?.streetAddress || '24, Shree Shyam Vatika, Gokulpura, Kalwar Road, Jaipur, Rajasthan 302012' %></p><div class="about-legal-details"><span><strong>Legal business:</strong> Omaansh Industries</span><span><strong>Brand:</strong> OSIRA</span><span><strong>Business structure:</strong> Sole proprietorship</span><% if(site?.gstNumber){ %><span><strong>GSTIN:</strong> <%= site.gstNumber %></span><% } %></div><div class="about-contact-links"><a href="tel:<%= site?.primaryPhone || '+91141616961' %>">Call <%= site?.primaryPhone || '+91 141 616961' %></a><a href="mailto:<%= site?.email || 'hello@omaansh.com' %>"><%= site?.email || 'hello@omaansh.com' %></a></div></div>
     <div class="about-contact-actions"><a class="btn primary" href="/#enquiry">Request a quotation</a><a class="btn secondary" href="https://wa.me/<%= (site?.whatsappNumber || '919509912556').replace(/[^0-9]/g,'') %>?text=<%= encodeURIComponent('Hello OSIRA, I would like to discuss a wall clock requirement.') %>" target="_blank" rel="noopener noreferrer">WhatsApp OSIRA ↗</a></div>
   </section>
 </main>
