@@ -1,20 +1,73 @@
 <%- include('partials/header') %>
 <main class="about-page">
-  <section class="section about-hero">
-    <span class="kicker">ABOUT OSIRA</span>
-    <h1>Wall clocks for spaces that bring people together.</h1>
-    <p>OSIRA helps retailers, businesses and organisations source wall clocks for everyday use, gifting, promotion and custom programmes.</p>
-    <div class="actions"><a class="btn primary" href="/products">Explore wall clocks</a><a class="btn secondary" href="/#enquiry">Discuss a business order</a></div>
+  <section class="section about-story-hero">
+    <div class="about-story-copy">
+      <div class="breadcrumbs"><a href="/">Home</a><span>›</span>About OSIRA</div>
+      <span class="kicker">OMAANSH INDUSTRIES · EST. 2021 · JAIPUR</span>
+      <h1>Thoughtful wall clocks for everyday spaces and business needs.</h1>
+      <p class="about-lead">OSIRA is the wall-clock brand of Omaansh Industries, based in Jaipur, Rajasthan. We bring together practical product choices, decorative styles and enquiry-led support for retail, wholesale, corporate gifting and custom-branded requirements.</p>
+      <div class="actions"><a class="btn primary" href="/products">Explore wall clocks</a><button class="btn secondary" type="button" data-open-enquiry>Discuss a business order</button></div>
+      <div class="about-proof-pills"><span><b>01</b> Product-led guidance</span><span><b>02</b> Bulk enquiries</span><span><b>03</b> Custom order discussions</span></div>
+    </div>
+    <div class="about-story-visual">
+      <picture>
+        <% if(site?.aboutMobileHeroImage){ %><source media="(max-width:700px)" srcset="<%= site.aboutMobileHeroImage %>"><% } %>
+        <img src="<%= site?.aboutDesktopHeroImage || site?.aboutFactoryImage || 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=85' %>" alt="OSIRA business and workplace supply" width="1200" height="900" fetchpriority="high">
+      </picture>
+      <div class="about-image-note"><span class="about-note-icon" aria-hidden="true">◷</span><div><strong>Designed around real requirements</strong><span>Product, quantity, branding and delivery—discussed clearly before an order is confirmed.</span></div></div>
+    </div>
   </section>
-  <section class="section about-value-grid">
-    <article><span>01</span><h2>Built around your requirements</h2><p>Explore practical and decorative designs, then shortlist by size, style and application.</p></article>
-    <article><span>02</span><h2>Wholesale and bulk enquiries</h2><p>Share your quantity, target price and delivery needs to discuss suitable current options.</p></article>
-    <article><span>03</span><h2>Custom and promotional orders</h2><p>Discuss branding, artwork and product specifications for corporate gifting or promotional requirements.</p></article>
+
+  <section class="section about-facts-strip" aria-label="About OSIRA at a glance">
+    <div><span class="about-fact-icon" aria-hidden="true">⌂</span><strong>Jaipur, Rajasthan</strong><span>Business base</span></div>
+    <div><span class="about-fact-icon" aria-hidden="true">◷</span><strong>Since 2021</strong><span>OSIRA / Omaansh Industries</span></div>
+    <div><span class="about-fact-icon" aria-hidden="true">▦</span><strong>Business & retail</strong><span>Multiple buying needs</span></div>
+    <div><span class="about-fact-icon" aria-hidden="true">✳</span><strong>Custom enquiries</strong><span>Branding and OEM discussions</span></div>
   </section>
-  <section class="section about-location">
-    <div><span class="kicker">BUSINESS SUPPLY</span><h2>One catalogue. Multiple ways to source.</h2><p>From retail replenishment to office requirements and larger business orders, OSIRA keeps the focus on product fit, clear specifications and a practical quotation process.</p></div>
-    <div class="about-location-card"><strong><%= site?.businessName || 'OSIRA' %></strong><span><%= site?.locality || 'Jaipur' %><%= site?.region ? ', '+site.region : ', Rajasthan' %>, India</span><a href="/categories">Browse collections →</a></div>
+
+  <section class="section about-purpose-section">
+    <div class="about-section-heading"><span class="kicker">OUR PURPOSE</span><h2>Useful design. Clear communication. Lasting value.</h2><p>Our aim is to make wall clocks and décor easier to choose for the spaces and people they serve—while improving design, product understanding and the buying experience over time.</p></div>
+    <div class="about-purpose-grid">
+      <article><span class="about-card-icon" aria-hidden="true">◎</span><h3>Our mission</h3><p>To offer thoughtfully designed wall clocks and décor that balance everyday function, considered aesthetics and practical value for homes, workplaces and commercial spaces.</p></article>
+      <article><span class="about-card-icon" aria-hidden="true">↗</span><h3>Our vision</h3><p>To build a trusted Indian brand recognised for creative product thinking, dependable communication and a customer-first approach to wall-clock supply.</p></article>
+      <article><span class="about-card-icon" aria-hidden="true">◇</span><h3>Our promise</h3><p>To help buyers clarify product style, size, branding and quantity before confirming current availability, pricing and delivery terms.</p></article>
+    </div>
   </section>
-  <section class="section about-cta"><div><span class="kicker">LET'S TALK REQUIREMENTS</span><h2>Tell us what you need to source.</h2></div><a class="btn primary" href="/#enquiry">Start an enquiry →</a></section>
+
+  <section class="section about-capability-section">
+    <div class="about-capability-image">
+      <img src="<%= site?.aboutFactoryImage || 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=85' %>" alt="Manufacturing and product-work environment" width="1000" height="800" loading="lazy">
+      <span class="about-photo-caption">Manufacturing / workplace image</span>
+    </div>
+    <div class="about-capability-copy"><span class="kicker">FROM JAIPUR TO BUSINESS BUYERS</span><h2>Product options with a practical route to quotation.</h2><p>Different buyers need different things. A retailer may be comparing designs and replenishment needs; an office may be sourcing functional clocks; a business may need branded clocks for a campaign, event or gift programme.</p><p>OSIRA helps bring those details into one conversation, so the next step is based on the actual order rather than assumptions.</p>
+      <ul class="about-check-list"><li><span>✓</span> Browse product styles and collections</li><li><span>✓</span> Discuss quantity and intended application</li><li><span>✓</span> Share artwork or branding requirements</li><li><span>✓</span> Confirm specifications and commercial terms before ordering</li></ul>
+      <a class="text-link" href="/services">Explore business services →</a>
+    </div>
+  </section>
+
+  <section class="section about-offerings-section">
+    <div class="about-section-heading"><span class="kicker">HOW WE CAN HELP</span><h2>One brand, several ways to source.</h2><p>Choose the route that best fits your requirement. Product availability, minimum quantities and lead times are confirmed for the specific order.</p></div>
+    <div class="about-offerings-grid">
+      <a href="/categories"><span aria-hidden="true">▦</span><div><h3>Wall clock collections</h3><p>Explore designs by collection and product type.</p><b>Browse collections ↗</b></div></a>
+      <a href="/services/wholesale-wall-clocks"><span aria-hidden="true">▤</span><div><h3>Wholesale supply</h3><p>Discuss assortment, quantity and repeat requirements.</p><b>Explore wholesale ↗</b></div></a>
+      <a href="/services/corporate-gifting"><span aria-hidden="true">◇</span><div><h3>Corporate gifting</h3><p>Plan wall-clock gifts for teams, events and organisations.</p><b>Explore gifting ↗</b></div></a>
+      <a href="/services/custom-oem-wall-clocks"><span aria-hidden="true">✳</span><div><h3>Custom branding & OEM</h3><p>Discuss logo artwork, custom presentation and private-label needs.</p><b>Explore custom options ↗</b></div></a>
+    </div>
+  </section>
+
+  <section class="section about-team-section">
+    <div class="about-team-copy"><span class="kicker">PEOPLE & PARTNERSHIP</span><h2>Good orders start with the right questions.</h2><p>We believe a useful buying conversation begins with the details: where the clock will be used, which style is needed, how many pieces are required, whether branding is involved and where the order must be delivered.</p><p>Share those details with our team and we can guide the discussion toward relevant options and the information needed for a clear quotation.</p><button class="btn primary" type="button" data-open-enquiry>Talk to our team →</button></div>
+    <div class="about-team-photo"><img src="<%= site?.aboutTeamImage || 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1000&q=85' %>" alt="Team collaboration" width="900" height="700" loading="lazy"><span class="about-photo-caption">Team / owner photo can be managed in admin</span></div>
+  </section>
+
+  <section class="section about-values-band">
+    <div><span class="kicker">WHAT GUIDES US</span><h2>Principles behind the product and the experience.</h2></div>
+    <div class="about-values-list"><article><span>01</span><div><h3>Quality-minded</h3><p>Pay attention to product details and confirm the relevant specifications.</p></div></article><article><span>02</span><div><h3>Customer-focused</h3><p>Start with the buyer’s use case, quantity and constraints.</p></div></article><article><span>03</span><div><h3>Practical innovation</h3><p>Keep exploring useful styles, customisation and product presentation.</p></div></article><article><span>04</span><div><h3>Honest communication</h3><p>Confirm availability, pricing, delivery and order terms before commitment.</p></div></article></div>
+  </section>
+
+  <section class="section about-contact-card">
+    <div><span class="kicker">VISIT / CONTACT</span><h2>Let’s discuss your wall-clock requirement.</h2><p><%= site?.streetAddress || '24, Shree Shyam Vatika, Gokulpura, Kalwar Road, Jaipur, Rajasthan 302012' %></p><div class="about-contact-links"><a href="tel:<%= site?.primaryPhone || '+91141616961' %>">Call <%= site?.primaryPhone || '+91 141 616961' %></a><a href="mailto:<%= site?.email || 'hello@omaansh.com' %>"><%= site?.email || 'hello@omaansh.com' %></a></div></div>
+    <div class="about-contact-actions"><a class="btn primary" href="/#enquiry">Request a quotation</a><a class="btn secondary" href="https://wa.me/<%= (site?.whatsappNumber || '919509912556').replace(/[^0-9]/g,'') %>?text=<%= encodeURIComponent('Hello OSIRA, I would like to discuss a wall clock requirement.') %>" target="_blank" rel="noopener noreferrer">WhatsApp OSIRA ↗</a></div>
+  </section>
 </main>
 <%- include('partials/footer', { site }) %>
