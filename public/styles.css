@@ -2217,3 +2217,49 @@ body.enquiry-modal-open{overflow:hidden}
 .article-body th,.article-body td{padding:10px 12px;border:1px solid var(--line);text-align:left}
 
 .about-legal-details{display:flex;flex-wrap:wrap;gap:8px 16px;margin:16px 0;color:var(--muted);font-size:.8rem}.about-legal-details strong{color:var(--ink)}
+
+
+/* FIX: reseller directory copy inherited the 40px icon width from the shortcut-card rule. */
+.reseller-category-directory .reseller-directory-copy{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  flex:1 1 auto!important;
+  grid-row:auto!important;
+  grid-column:auto!important;
+  padding:16px!important;
+  text-align:left!important;
+  overflow:visible!important;
+  white-space:normal!important;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+  box-sizing:border-box!important;
+}
+.reseller-category-directory .reseller-directory-copy strong,
+.reseller-category-directory .reseller-directory-copy small,
+.reseller-category-directory .reseller-directory-copy b{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  white-space:normal!important;
+  word-break:normal!important;
+  overflow-wrap:break-word!important;
+  text-overflow:clip!important;
+  overflow:visible!important;
+  line-height:1.45!important;
+}
+.reseller-category-directory .reseller-directory-copy strong{font-size:.98rem!important;line-height:1.25!important;margin:0 0 5px!important;color:var(--ink,#101828)!important}
+.reseller-category-directory .reseller-directory-copy small{font-size:.78rem!important;color:var(--muted,#667085)!important;margin:0 0 12px!important}
+.reseller-category-directory .reseller-directory-copy b{font-size:.76rem!important;color:#a9572c!important;margin-top:auto!important}
+@media(max-width:600px){
+ .reseller-category-directory .reseller-directory-copy{padding:13px!important}
+ .reseller-category-directory .reseller-directory-copy strong{font-size:.92rem!important}
+ .reseller-category-directory .reseller-directory-copy small{font-size:.72rem!important}
+ .reseller-category-directory .reseller-directory-copy b{font-size:.7rem!important}
+}
