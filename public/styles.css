@@ -2208,3 +2208,10 @@ body.enquiry-modal-open{overflow:hidden}
 .about-photo-gallery figure .about-photo-placeholder{position:absolute;inset:0}
 
 .floating-whatsapp svg{display:block;width:30px;height:30px;fill:currentColor}
+
+
+.category-detail-hero-v2 .category-detail-copy{padding:20px 0 24px!important}
+@media(max-width:600px){.category-detail-hero-v2 .category-detail-copy{padding:14px 0 18px!important}.category-detail-hero-v2 .breadcrumbs{margin-bottom:14px!important}}
+.article-body h1{font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.12;letter-spacing:-.035em;color:var(--ink);margin:28px 0 14px}
+.article-body table{display:block;max-width:100%;overflow-x:auto;border-collapse:collapse}
+.article-body th,.article-body td{padding:10px 12px;border:1px solid var(--line);text-align:left}
