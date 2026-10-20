@@ -440,6 +440,7 @@ export class AdminController {
   }
 
   @UseGuards(AdminAuthGuard)
+  @UseGuards(AdminAuthGuard)
   @Get('settings')
   async settings(@Req() req: Request, @Res() res: Response) {
     return res.render('admin/settings', { user: (req as any).adminUser, settings: await this.admin.getSiteSettings(), csrfToken: (req as any).adminCsrf, saved: req.query.saved === '1' });
@@ -481,6 +482,7 @@ export class AdminController {
     return res.redirect(303, '/admin/blog');
   }
 
+  @UseGuards(AdminAuthGuard)
   @UseGuards(AdminAuthGuard)
   @Post('settings/save')
   async settingsSave(@Body() b: any, @Req() req: Request, @Res() res: Response) {
