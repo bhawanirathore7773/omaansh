@@ -2206,3 +2206,5 @@ body.enquiry-modal-open{overflow:hidden}
 .about-photo-placeholder strong{font-size:1.08rem;line-height:1.25}
 .about-photo-placeholder small{max-width:300px;color:var(--muted);font-size:.78rem;line-height:1.55}
 .about-photo-gallery figure .about-photo-placeholder{position:absolute;inset:0}
+
+.floating-whatsapp svg{display:block;width:30px;height:30px;fill:currentColor}
