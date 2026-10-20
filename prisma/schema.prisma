@@ -281,6 +281,11 @@ model SiteSettings {
   defaultMetaDescription String @default("OSIRA creates wall clocks and décor products for homes, workplaces and commercial spaces, with custom and business order support.") @db.VarChar(160)
   googleVerification String? @db.VarChar(200)
   bingVerification String? @db.VarChar(200)
+  aboutDesktopHeroImage String? @db.VarChar(500)
+  aboutMobileHeroImage String? @db.VarChar(500)
+  aboutFactoryImage String? @db.VarChar(500)
+  aboutTeamImage String? @db.VarChar(500)
+  aboutQualityImage String? @db.VarChar(500)
 }
 
 
