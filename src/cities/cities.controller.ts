@@ -55,8 +55,8 @@ export class CitiesController {
       city,
       site,
       schemaJsonLd,
-      pageTitle: city.metaTitle || city.h1Heading + ' | OSIRA',
-      metaDescription: city.metaDescription || city.heroSubheading || city.introContent.slice(0, 155),
+      pageTitle: city.slug === 'jaipur' ? 'Wall Clock Manufacturer in Jaipur | OSIRA' : (city.metaTitle || city.h1Heading + ' | OSIRA'),
+      metaDescription: city.slug === 'jaipur' ? 'Explore wall clocks for retail, offices, corporate gifting and custom branding from OSIRA, the Jaipur-based wall clock brand of Omaansh Industries.' : (city.metaDescription || city.heroSubheading || city.introContent.slice(0, 155)),
       canonical: baseUrl ? baseUrl + '/cities/' + city.slug : undefined,
     };
   }
