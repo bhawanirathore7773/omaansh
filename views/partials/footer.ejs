@@ -52,6 +52,36 @@
     <span>© <%= new Date().getFullYear() %> <%= site?.businessName || 'OSIRA' %>. All rights reserved.</span>
     <span>Wall clock manufacturer &amp; supplier in Jaipur</span>
   </div>
+
 </footer>
+<div class="global-enquiry-modal" id="globalEnquiryModal" aria-hidden="true">
+  <button class="global-enquiry-backdrop" type="button" data-close-enquiry aria-label="Close enquiry form"></button>
+  <section class="global-enquiry-dialog" role="dialog" aria-modal="true" aria-labelledby="globalEnquiryTitle">
+    <button class="global-enquiry-close" type="button" data-close-enquiry aria-label="Close enquiry form">×</button>
+    <span class="kicker">OSIRA · BULK & BUSINESS ORDERS</span><h2 id="globalEnquiryTitle">Tell us what you need.</h2>
+    <p>Share the quantity and delivery city. Our team can follow up to confirm suitable options.</p>
+    <form class="enquiry-form global-enquiry-form" method="post" action="/enquiries">
+      <input type="text" name="name" placeholder="Your name" autocomplete="name" required>
+      <input type="tel" name="phone" placeholder="Phone number" autocomplete="tel" required>
+      <input type="email" name="email" placeholder="Email (optional)" autocomplete="email">
+      <input type="text" name="city" placeholder="Delivery city" autocomplete="address-level2" required>
+      <textarea name="message" rows="4" placeholder="Quantity, size, style, branding or other requirement" required></textarea>
+      <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn primary" type="submit">Send requirement →</button>
+    </form>
+  </section>
+</div>
+<a class="floating-whatsapp" href="https://wa.me/<%= (site?.whatsappNumber || '919509912556').replace(/[^0-9]/g,'') %>?text=<%= encodeURIComponent('Hello OSIRA, I would like to enquire about wall clocks and bulk orders.') %>" target="_blank" rel="noopener noreferrer" aria-label="Chat with OSIRA on WhatsApp" title="Chat on WhatsApp"><span aria-hidden="true">◉</span></a>
+<script>
+(()=> {
+ const modal=document.getElementById('globalEnquiryModal'); if(!modal)return;
+ const open=()=>{modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.classList.add('enquiry-modal-open');};
+ const close=()=>{modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('enquiry-modal-open');};
+ document.querySelectorAll('[data-open-enquiry]').forEach(el=>el.addEventListener('click',event=>{event.preventDefault();open();}));
+ modal.querySelectorAll('[data-close-enquiry]').forEach(el=>el.addEventListener('click',close));
+ document.addEventListener('keydown',event=>{if(event.key==='Escape')close();});
+ document.querySelectorAll('a[href="/#enquiry"],a[href="#enquiry"]').forEach(el=>el.addEventListener('click',event=>{if(!el.closest('.footer')){event.preventDefault();open();}}));
+})();
+</script>
 </body>
 </html>
