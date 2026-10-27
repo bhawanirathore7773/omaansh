@@ -94,6 +94,19 @@ export class AdminController {
   }
 
   @UseGuards(AdminAuthGuard)
+  @Post('home-sections/add')
+  async addHomeProductSection(@Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    try {
+      await this.admin.createHomeProductSection();
+      return res.redirect(303, '/admin/home-sections');
+    } catch (error) {
+      return res.status(400).send(error instanceof Error ? error.message : 'Unable to add homepage section');
+    }
+  }
+
+  @UseGuards(AdminAuthGuard)
   @Post('home-sections/save')
   async saveHomeProductSections(@Body() body: any, @Req() req: Request, @Res() res: Response) {
     const session = (req as any).adminSession;
