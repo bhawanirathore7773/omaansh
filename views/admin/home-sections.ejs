@@ -8,6 +8,7 @@
   <strong>How it works</strong>
   <span>Set the section title and order, activate the section, then select as many active wall clock products as you want. Product selection and ordering are managed here—not by product badges.</span>
 </div>
+<div class="home-sections-addbar"><p>Add another independently managed homepage product section. Every section must use a unique position.</p><form method="post" action="/admin/home-sections/add"><input type="hidden" name="csrfToken" value="<%= csrfToken %>"><button class="admin-button" type="submit">＋ Add another section</button></form></div>
 <form method="post" action="/admin/home-sections/save" class="home-sections-editor">
   <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
   <% sections.forEach((section, index) => { const selectedIds = section.products.map(item => item.productId); %>
@@ -21,7 +22,7 @@
       <label>Section title<input name="sections[<%= index %>][title]" required maxlength="160" value="<%= section.title %>"></label>
       <label>URL slug<input name="sections[<%= index %>][slug]" required maxlength="180" pattern="[a-zA-Z0-9-]+" value="<%= section.slug %>"><small>Used by See all; letters, numbers and hyphens only.</small></label>
       <label>Small label / eyebrow<input name="sections[<%= index %>][eyebrow]" maxlength="100" value="<%= section.eyebrow || '' %>" placeholder="e.g. JUST ADDED"></label>
-      <label>Display order<input name="sections[<%= index %>][displayOrder]" type="number" step="1" value="<%= section.displayOrder %>"></label>
+      <label class="home-section-position-control">Homepage position<select name="sections[<%= index %>][displayOrder]" data-position-select required><% sections.forEach((other, positionIndex) => { const position=positionIndex+1; %><option value="<%= position %>" <%= Number(section.displayOrder)===position ? "selected" : "" %>><%= position===1?"1 · First":position===2?"2 · Second":position===3?"3 · Third":position+" · Position" %></option><% }) %></select></label>
       <label class="home-section-description">Short description<input name="sections[<%= index %>][description]" maxlength="300" value="<%= section.description || '' %>" placeholder="A short line under the heading"></label>
     </div>
     <div class="home-section-product-heading"><div><h3>Choose wall clocks</h3><p>Tick each product that belongs in this section. A product can be included in multiple sections.</p></div><input type="search" class="home-section-product-search" placeholder="Find a product…" aria-label="Search products in <%= section.title %>"></div>
@@ -41,6 +42,9 @@
 </form>
 <script>
 (function(){
+  const positionSelects=Array.from(document.querySelectorAll("[data-position-select]"));
+  function syncPositions(){const used=new Set(positionSelects.map(s=>s.value));positionSelects.forEach(select=>{Array.from(select.options).forEach(option=>{option.disabled=option.value!==select.value&&used.has(option.value);});});}
+  positionSelects.forEach(select=>select.addEventListener("change",()=>{syncPositions();}));syncPositions();
   document.querySelectorAll('.home-section-admin-card').forEach(card=>{
     const search=card.querySelector('.home-section-product-search');
     const options=Array.from(card.querySelectorAll('.home-section-product-option'));
