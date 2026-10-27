@@ -256,10 +256,21 @@ export class AdminService {
     return { sections, products };
   }
 
+  async createHomeProductSection() {
+    const count = await this.prisma.homeProductSection.count();
+    if (count >= 10) throw new Error('You can manage up to 10 homepage sections.');
+    const base = count + 1;
+    const title = 'New wall clock section ' + base;
+    const slug = 'wall-clock-section-' + Date.now().toString(36);
+    return this.prisma.homeProductSection.create({
+      data: { title, slug, eyebrow: 'EXPLORE OSIRA', description: 'Add a short description for this collection.', displayOrder: base, isActive: false },
+    });
+  }
+
   async saveHomeProductSections(body: any) {
     const input = body?.sections;
     const rows = input ? (Array.isArray(input) ? input : [input]) : [];
-    for (const row of rows.slice(0, 10)) {
+    const activeRows = rows.slice(0, 10).filter((row: any) => Number.isInteger(Number(row.id)) && Number(row.id) > 0);\n    const positions = activeRows.map((row: any) => Number(row.displayOrder));\n    if (positions.some((position: number) => !Number.isInteger(position) || position < 1 || position > 10)) throw new Error('Choose a homepage position between 1 and 10 for every section.');\n    if (new Set(positions).size !== positions.length) throw new Error('Homepage section positions must be unique. Please choose a different position for each section.');\n    for (const row of rows.slice(0, 10)) {
       const id = Number(row.id);
       if (!Number.isInteger(id) || id < 1) continue;
       const title = String(row.title || '').trim().slice(0, 160);
