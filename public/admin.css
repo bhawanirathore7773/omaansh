@@ -859,3 +859,40 @@ body.admin-shell .admin-sidebar{overscroll-behavior:contain}
    line-height:1!important;
  }
 }
+
+
+/* Fix the actual dashboard content-tile icon class (Services / Industries / Cities / Blog). */
+body.admin-shell .admin-quick-grid.dashboard-content-grid a>.content-tile-icon{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  align-self:flex-start!important;
+  flex:0 0 76px!important;
+  width:76px!important;
+  min-width:76px!important;
+  max-width:76px!important;
+  height:76px!important;
+  min-height:76px!important;
+  max-height:76px!important;
+  box-sizing:border-box!important;
+  padding:0!important;
+  margin:0 0 12px!important;
+  border-radius:20px!important;
+  font-family:inherit!important;
+  font-size:30px!important;
+  font-weight:600!important;
+  line-height:1!important;
+  text-align:center!important;
+  vertical-align:middle!important;
+}
+body.admin-shell .admin-quick-grid.dashboard-content-grid a>.content-tile-icon::before,
+body.admin-shell .admin-quick-grid.dashboard-content-grid a>.content-tile-icon::after{
+  box-sizing:border-box;
+}
+@media(max-width:480px){
+ body.admin-shell .admin-quick-grid.dashboard-content-grid a>.content-tile-icon{
+  flex-basis:76px!important;width:76px!important;min-width:76px!important;max-width:76px!important;
+  height:76px!important;min-height:76px!important;max-height:76px!important;
+  font-size:30px!important;margin:0 0 12px!important;border-radius:20px!important;
+ }
+}
