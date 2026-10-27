@@ -22,7 +22,7 @@
       <label>Section title<input name="sections[<%= index %>][title]" required maxlength="160" value="<%= section.title %>"></label>
       <label>URL slug<input name="sections[<%= index %>][slug]" required maxlength="180" pattern="[a-zA-Z0-9-]+" value="<%= section.slug %>"><small>Used by See all; letters, numbers and hyphens only.</small></label>
       <label>Small label / eyebrow<input name="sections[<%= index %>][eyebrow]" maxlength="100" value="<%= section.eyebrow || '' %>" placeholder="e.g. JUST ADDED"></label>
-      <label class="home-section-position-control">Homepage position<select name="sections[<%= index %>][displayOrder]" data-position-select required><% sections.forEach((other, positionIndex) => { const position=positionIndex+1; %><option value="<%= position %>" <%= Number(section.displayOrder)===position ? "selected" : "" %>><%= position===1?"1 · First":position===2?"2 · Second":position===3?"3 · Third":position+" · Position" %></option><% }) %></select></label>
+      <label class="home-section-position-control">Homepage position<select name="sections[<%= index %>][displayOrder]" data-position-select data-section-id="<%= section.id %>" required><% sections.forEach((other, positionIndex) => { const position=positionIndex+1; %><option value="<%= position %>" <%= Number(section.displayOrder)===position ? "selected" : "" %>><%= position===1?"1 · First":position===2?"2 · Second":position===3?"3 · Third":position+" · Position" %></option><% }) %></select></label>
       <label class="home-section-description">Short description<input name="sections[<%= index %>][description]" maxlength="300" value="<%= section.description || '' %>" placeholder="A short line under the heading"></label>
     </div>
     <div class="home-section-product-heading"><div><h3>Choose wall clocks</h3><p>Tick each product that belongs in this section. A product can be included in multiple sections.</p></div><input type="search" class="home-section-product-search" placeholder="Find a product…" aria-label="Search products in <%= section.title %>"></div>
@@ -43,8 +43,20 @@
 <script>
 (function(){
   const positionSelects=Array.from(document.querySelectorAll("[data-position-select]"));
-  function syncPositions(){const used=new Set(positionSelects.map(s=>s.value));positionSelects.forEach(select=>{Array.from(select.options).forEach(option=>{option.disabled=option.value!==select.value&&used.has(option.value);});});}
-  positionSelects.forEach(select=>select.addEventListener("change",()=>{syncPositions();}));syncPositions();
+  // Moving a section into an occupied position shifts the intervening sections automatically.
+  positionSelects.forEach(select=>select.dataset.previousValue=select.value);
+  positionSelects.forEach(select=>select.addEventListener("change",()=>{
+    const oldPosition=Number(select.dataset.previousValue), newPosition=Number(select.value);
+    if(!Number.isInteger(oldPosition)||!Number.isInteger(newPosition)||oldPosition===newPosition){select.dataset.previousValue=select.value;return;}
+    positionSelects.forEach(other=>{
+      if(other===select)return;
+      const current=Number(other.value);
+      if(newPosition<oldPosition && current>=newPosition && current<oldPosition)other.value=String(current+1);
+      else if(newPosition>oldPosition && current>oldPosition && current<=newPosition)other.value=String(current-1);
+      other.dataset.previousValue=other.value;
+    });
+    select.dataset.previousValue=select.value;
+  }));
   document.querySelectorAll('.home-section-admin-card').forEach(card=>{
     const search=card.querySelector('.home-section-product-search');
     const options=Array.from(card.querySelectorAll('.home-section-product-option'));
