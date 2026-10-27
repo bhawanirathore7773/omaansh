@@ -678,3 +678,10 @@ body.crop-modal-open{overflow:hidden}
 .home-sections-addbar p{margin:0;color:var(--muted);font-size:.8rem;line-height:1.5}
 .home-section-position-control{display:grid;gap:6px;max-width:260px;color:#344054;font-size:.76rem;font-weight:800}
 .home-section-position-control select{width:100%;min-height:44px;border:1px solid #d0d5dd;border-radius:10px;background:#fff;padding:0 12px;font:inherit;color:var(--ink)}
+
+/* Use crisp icon glyphs in the control centre's shortcut cards */
+.quick-action-icon,.admin-content-card .content-card-icon,.admin-quick-grid .quick-icon{display:grid;place-items:center;width:44px;height:44px;min-width:44px;border-radius:13px;background:#f1f4f8;color:#596b80;font-size:1.15rem;font-weight:800;line-height:1;overflow:hidden}
+.quick-action-icon svg,.admin-content-card .content-card-icon svg,.admin-quick-grid .quick-icon svg{display:block;width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.quick-action-list a{min-width:0}
+.quick-action-list a>span,.quick-action-list a>div{min-width:0}
+@media(max-width:760px){.quick-action-icon,.admin-content-card .content-card-icon,.admin-quick-grid .quick-icon{width:42px;height:42px;min-width:42px;border-radius:12px}.quick-action-list a{gap:10px}.quick-action-list a strong{font-size:.78rem;line-height:1.35}.quick-action-list a small{line-height:1.45;overflow-wrap:anywhere}}
