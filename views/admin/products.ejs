@@ -1,6 +1,12 @@
 <%- include('partials/header', {title:'Products | OSIRA Admin', user}) %>
-<div class="admin-heading"><div><p class="admin-kicker">CATALOGUE</p><h1>Products</h1><p>Manage your active and inactive wall clock products.</p></div><a class="admin-button" href="/admin/products/new">+ Add product</a></div>
-<form class="admin-search" method="get" action="/admin/products"><input name="q" value="<%= q %>" placeholder="Search product or SKU"><button>Search</button></form>
-<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>MOQ</th><th>Visibility</th><th>Action</th></tr></thead><tbody>
-<% rows.forEach(row=>{ %><tr><td><strong><%= row.name %></strong><small><%= row.sku || 'No SKU' %></small></td><td><%= row.category.name %></td><td><%= row.price != null ? '₹'+row.price : '—' %></td><td><%= row.moq %></td><td><span class="pill <%= row.isActive?'pill-on':'pill-off' %>"><%= row.isActive?'Active':'Hidden' %></span></td><td><a class="table-link" href="/admin/products/<%= row.id %>/edit">Edit</a></td></tr><% }) %>
-<% if(!rows.length){ %><tr><td colspan="6" class="admin-empty">No products found.</td></tr><% } %></tbody></table></div><%- include('partials/footer') %>
+<div class="admin-heading"><div><p class="admin-kicker">CATALOGUE</p><h1>Products</h1><p>Manage your active and inactive wall clock products.</p></div><a class="admin-button" href="/admin/products/new"><span aria-hidden="true">＋</span> Add product</a></div>
+<form class="admin-search" method="get" action="/admin/products"><input name="q" value="<%= q %>" placeholder="Search product or SKU" aria-label="Search product or SKU"><button type="submit"><span aria-hidden="true">⌕</span> Search</button></form>
+<div class="admin-product-list">
+<% rows.forEach(row=>{ %><article class="admin-product-card">
+<div class="admin-product-thumb"><% if(row.image){ %><img src="<%= row.image %>" alt="" loading="lazy"><% }else{ %><span>OSIRA</span><% } %></div>
+<div class="admin-product-info"><h2><%= row.name %></h2><span class="admin-product-meta"><%= row.sku || 'No SKU assigned' %></span><span class="admin-product-meta"><%= row.category.name %></span><div class="admin-product-tags"><span class="pill <%= row.isActive?'pill-on':'pill-off' %>"><%= row.isActive?'● Active':'○ Hidden' %></span><span class="pill"><%= row.moq %> MOQ</span></div><strong><%= row.price != null ? '₹'+row.price : 'Price on enquiry' %></strong></div>
+<div class="admin-product-actions"><a class="primary" href="/admin/products/<%= row.id %>/edit"><span aria-hidden="true">✎</span> Edit product</a><a href="/products/<%= row.slug %>" target="_blank" rel="noopener"><span aria-hidden="true">↗</span> View</a></div>
+</article><% }) %>
+<% if(!rows.length){ %><div class="admin-empty-card"><strong>No products found</strong><p>Try another product name or SKU, or add a new product.</p><a class="admin-button" href="/admin/products/new">＋ Add product</a></div><% } %>
+</div>
+<%- include('partials/footer') %>
