@@ -896,3 +896,27 @@ body.admin-shell .admin-quick-grid.dashboard-content-grid a>.content-tile-icon::
   font-size:30px!important;margin:0 0 12px!important;border-radius:20px!important;
  }
 }
+
+
+/* Compact dashboard content icons: smaller tile, icon stays centered. */
+body.admin-shell .admin-quick-grid.dashboard-content-grid a>.content-tile-icon{
+  flex:0 0 48px!important;
+  width:48px!important;
+  min-width:48px!important;
+  max-width:48px!important;
+  height:48px!important;
+  min-height:48px!important;
+  max-height:48px!important;
+  padding:0!important;
+  margin:0 0 10px!important;
+  border-radius:14px!important;
+  font-size:21px!important;
+  line-height:1!important;
+}
+@media(max-width:480px){
+ body.admin-shell .admin-quick-grid.dashboard-content-grid a>.content-tile-icon{
+  flex-basis:48px!important;width:48px!important;min-width:48px!important;max-width:48px!important;
+  height:48px!important;min-height:48px!important;max-height:48px!important;
+  font-size:21px!important;margin:0 0 10px!important;border-radius:14px!important;
+ }
+}
