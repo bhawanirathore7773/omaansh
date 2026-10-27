@@ -758,3 +758,42 @@ body.admin-shell .admin-sidebar{overscroll-behavior:contain}
  body.admin-shell .admin-mobile-scrim{z-index:110!important;inset:0!important}
  body.admin-shell.nav-open .mobile-nav-toggle{z-index:71!important}
 }
+
+/* Final mobile drawer header alignment: flush to the top, with safe button gutters. */
+@media(max-width:760px){
+ body.admin-shell .admin-sidebar{
+   padding-top:10px!important;
+   padding-left:0!important;
+   padding-right:0!important;
+   box-sizing:border-box!important;
+ }
+ body.admin-shell .admin-sidebar-mobile-head{
+   position:sticky!important;
+   top:0!important;
+   display:flex!important;
+   align-items:center!important;
+   justify-content:space-between!important;
+   gap:12px!important;
+   width:100%!important;
+   min-height:68px!important;
+   margin:0 0 8px!important;
+   padding:8px 16px 12px!important;
+   box-sizing:border-box!important;
+ }
+ body.admin-shell .admin-sidebar-mobile-head>*{min-width:0}
+ body.admin-shell .admin-sidebar-mobile-head button,
+ body.admin-shell #closeAdminNav{
+   flex:0 0 44px!important;
+   width:44px!important;
+   min-width:44px!important;
+   height:44px!important;
+   margin:0 4px 0 0!important;
+   border-radius:14px!important;
+   box-sizing:border-box!important;
+ }
+ body.admin-shell .admin-sidebar-mobile-head :is(h1,h2,h3,.admin-sidebar-title){
+   margin:0!important;
+   padding:0!important;
+   overflow-wrap:anywhere;
+ }
+}
