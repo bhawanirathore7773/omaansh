@@ -1,13 +1,16 @@
 <%- include('partials/header', {title:'Enquiries | OSIRA Admin', user}) %>
 <div class="admin-heading"><div><p class="admin-kicker">LEADS</p><h1>Enquiries</h1><p>Review requirements, contact details and sales-stage notes.</p></div></div>
-<div class="admin-filter-bar">
+<nav class="admin-filter-bar" aria-label="Filter enquiries">
 <a class="<%= !status ? 'active' : '' %>" href="/admin/enquiries">All</a><a class="<%= status==='new' ? 'active' : '' %>" href="/admin/enquiries?status=new">New</a><a class="<%= status==='contacted' ? 'active' : '' %>" href="/admin/enquiries?status=contacted">Contacted</a><a class="<%= status==='quoted' ? 'active' : '' %>" href="/admin/enquiries?status=quoted">Quoted</a><a class="<%= status==='won' ? 'active' : '' %>" href="/admin/enquiries?status=won">Won</a><a class="<%= status==='lost' ? 'active' : '' %>" href="/admin/enquiries?status=lost">Lost</a><a class="<%= status==='closed' ? 'active' : '' %>" href="/admin/enquiries?status=closed">Closed</a>
+</nav>
+<div class="admin-enquiry-list">
+<% if (!rows.length) { %><div class="admin-empty-card"><strong>No enquiries in this stage</strong><p>New enquiries from the website will appear here.</p></div><% } %>
+<% rows.forEach(row => { %><article class="admin-enquiry-card">
+<div class="admin-enquiry-head"><div><h2><%= row.name %></h2><p><%= row.city %> · Lead #<%= row.id %></p></div><span class="pill <%= row.status==='won'?'pill-on':row.status==='new'?'pill-off':'' %>"><%= row.status %></span></div>
+<div class="admin-enquiry-contact"><a href="tel:<%= row.phone %>"><span aria-hidden="true">☎</span> <%= row.phone %></a><% if(row.email){ %><a href="mailto:<%= row.email %>"><span aria-hidden="true">✉</span> <%= row.email %></a><% } %></div>
+<div class="admin-enquiry-requirement"><span class="admin-enquiry-label">Requirement</span><%= row.message %></div>
+<div class="admin-enquiry-foot"><span><%= row.product?.name || 'General enquiry' %></span><time datetime="<%= new Date(row.createdAt).toISOString() %>"><%= new Date(row.createdAt).toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit'}) %></time></div>
+<form method="post" action="/admin/enquiries/<%= row.id %>/status" class="status-form"><input type="hidden" name="csrfToken" value="<%= csrfToken %>"><label class="admin-enquiry-label" for="lead-status-<%= row.id %>">Update status</label><select id="lead-status-<%= row.id %>" name="status"><% ['new','contacted','quoted','won','lost','closed'].forEach(s => { %><option value="<%= s %>" <%= row.status===s?'selected':'' %>><%= s.charAt(0).toUpperCase()+s.slice(1) %></option><% }) %></select><input name="notes" value="<%= row.notes || '' %>" placeholder="Follow-up note (optional)" aria-label="Follow-up note"><button type="submit">✓ Save update</button></form>
+</article><% }) %>
 </div>
-<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Lead</th><th>Requirement</th><th>Product</th><th>Received</th><th>Pipeline</th></tr></thead><tbody>
-<% if (!rows.length) { %><tr><td colspan="5" class="admin-empty">No enquiries in this stage.</td></tr><% } %>
-<% rows.forEach(row => { %><tr>
-<td><strong><%= row.name %></strong><small><a href="tel:<%= row.phone %>"><%= row.phone %></a></small><% if(row.email){ %><small><a href="mailto:<%= row.email %>"><%= row.email %></a></small><% } %><small><%= row.city %></small></td>
-<td class="requirement-cell"><%= row.message %></td><td><%= row.product?.name || 'General enquiry' %></td><td><%= new Date(row.createdAt).toLocaleString('en-IN') %></td>
-<td><form method="post" action="/admin/enquiries/<%= row.id %>/status" class="status-form"><input type="hidden" name="csrfToken" value="<%= csrfToken %>"><select name="status"><% ['new','contacted','quoted','won','lost','closed'].forEach(s => { %><option value="<%= s %>" <%= row.status===s?'selected':'' %>><%= s %></option><% }) %></select><input name="notes" value="<%= row.notes || '' %>" placeholder="Follow-up note"><button type="submit">Save</button></form></td>
-</tr><% }) %></tbody></table></div>
 <%- include('partials/footer') %>
