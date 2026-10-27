@@ -748,3 +748,13 @@ body.admin-shell .admin-sidebar{overscroll-behavior:contain}
  body.admin-shell .admin-main{scroll-margin-top:76px}
 }
 @media(prefers-reduced-motion:reduce){body.admin-shell .admin-sidebar,body.admin-shell>.admin-topbar{transition:none}}
+
+/* Mobile drawer must overlay the topbar and lock the page behind it. */
+@media(max-width:760px){
+ body.admin-shell.nav-open{overflow:hidden!important;overscroll-behavior:none}
+ body.admin-shell.nav-open>.admin-topbar{z-index:70!important}
+ body.admin-shell .admin-sidebar{top:0!important;bottom:0!important;height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;z-index:120!important;padding-top:calc(18px + env(safe-area-inset-top))!important}
+ body.admin-shell .admin-sidebar-mobile-head{top:0!important;padding-top:8px!important}
+ body.admin-shell .admin-mobile-scrim{z-index:110!important;inset:0!important}
+ body.admin-shell.nav-open .mobile-nav-toggle{z-index:71!important}
+}
