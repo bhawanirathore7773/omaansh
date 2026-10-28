@@ -15,7 +15,7 @@
   <section class="home-section-admin-card">
     <div class="home-section-admin-top">
       <div><p class="admin-kicker">SECTION <%= String(index + 1).padStart(2, '0') %></p><h2><%= section.title %></h2><p><%= selectedIds.length %> selected products · first 6 shown on homepage</p></div>
-      <label class="home-section-active"><input type="checkbox" name="sections[<%= index %>][isActive]" <%= section.isActive ? 'checked' : '' %>><span>Show on homepage</span></label>
+      <div class="home-section-top-actions"><label class="home-section-active"><input type="checkbox" name="sections[<%= index %>][isActive]" <%= section.isActive ? 'checked' : '' %>><span>Show on homepage</span></label><button type="button" class="admin-danger-button" data-delete-url="/admin/home-sections/<%= section.id %>/delete" data-delete-message="Permanently delete this homepage section and its product assignments?">Delete section</button></div>
     </div>
     <input type="hidden" name="sections[<%= index %>][id]" value="<%= section.id %>">
     <div class="home-section-fields">
@@ -42,6 +42,12 @@
 </form>
 <script>
 (function(){
+  document.querySelectorAll('[data-delete-url]').forEach(button=>button.addEventListener('click',()=>{
+    if(!confirm((button.dataset.deleteMessage||'Permanently delete this item?')+' This action cannot be undone.'))return;
+    const form=document.createElement('form');form.method='post';form.action=button.dataset.deleteUrl;
+    const token=document.createElement('input');token.type='hidden';token.name='csrfToken';token.value=document.querySelector('.home-sections-editor [name="csrfToken"]').value;form.appendChild(token);
+    document.body.appendChild(form);form.submit();
+  }));
   const positionSelects=Array.from(document.querySelectorAll("[data-position-select]"));
   // Moving a section into an occupied position shifts the intervening sections automatically.
   positionSelects.forEach(select=>select.dataset.previousValue=select.value);
