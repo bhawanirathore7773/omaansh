@@ -90,6 +90,7 @@ export class AdminController {
       sections: data.sections,
       products: data.products,
       saved: req.query.saved === '1',
+      deleted: req.query.deleted === '1',
     });
   }
 
@@ -123,7 +124,7 @@ export class AdminController {
   @Get('products')
   async products(@Req() req: Request, @Res() res: Response) {
     const q = typeof req.query.q === 'string' ? req.query.q : '';
-    return res.render('admin/products', { user: (req as any).adminUser, csrfToken: (req as any).adminCsrf, rows: await this.admin.listProductsAdmin(q), q });
+    return res.render('admin/products', { user: (req as any).adminUser, csrfToken: (req as any).adminCsrf, rows: await this.admin.listProductsAdmin(q), q, deleted: req.query.deleted === '1' });
   }
 
   @UseGuards(AdminAuthGuard)
@@ -149,6 +150,7 @@ export class AdminController {
       user: (req as any).adminUser,
       csrfToken: (req as any).adminCsrf,
       rows: await this.admin.listCategoriesAdmin(),
+      deleted: req.query.deleted === '1',
     });
   }
 
@@ -325,25 +327,25 @@ export class AdminController {
   @UseGuards(AdminAuthGuard)
   @Get('services')
   async services(@Req() req: Request, @Res() res: Response) {
-    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Services', kicker: 'SERVICES', description: 'Manage service pages.', rows: await this.admin.listServicesAdmin(), type: 'services', nameField: 'name', csrfToken: (req as any).adminCsrf });
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Services', kicker: 'SERVICES', description: 'Manage service pages.', rows: await this.admin.listServicesAdmin(), type: 'services', nameField: 'name', csrfToken: (req as any).adminCsrf, deleted: req.query.deleted === '1' });
   }
 
   @UseGuards(AdminAuthGuard)
   @Get('industries')
   async industries(@Req() req: Request, @Res() res: Response) {
-    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Industries', kicker: 'INDUSTRIES', description: 'Manage industry landing pages.', rows: await this.admin.listIndustriesAdmin(), type: 'industries', nameField: 'industryName', csrfToken: (req as any).adminCsrf });
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Industries', kicker: 'INDUSTRIES', description: 'Manage industry landing pages.', rows: await this.admin.listIndustriesAdmin(), type: 'industries', nameField: 'industryName', csrfToken: (req as any).adminCsrf, deleted: req.query.deleted === '1' });
   }
 
   @UseGuards(AdminAuthGuard)
   @Get('cities')
   async cities(@Req() req: Request, @Res() res: Response) {
-    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Cities', kicker: 'LOCAL SEO', description: 'Manage city landing pages.', rows: await this.admin.listCitiesAdmin(), type: 'cities', nameField: 'cityName', csrfToken: (req as any).adminCsrf });
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Cities', kicker: 'LOCAL SEO', description: 'Manage city landing pages.', rows: await this.admin.listCitiesAdmin(), type: 'cities', nameField: 'cityName', csrfToken: (req as any).adminCsrf, deleted: req.query.deleted === '1' });
   }
 
   @UseGuards(AdminAuthGuard)
   @Get('blog')
   async blog(@Req() req: Request, @Res() res: Response) {
-    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Blog', kicker: 'CONTENT', description: 'Manage SEO guides and articles.', rows: await this.admin.listBlogsAdmin(), type: 'blog', nameField: 'title', csrfToken: (req as any).adminCsrf });
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Blog', kicker: 'CONTENT', description: 'Manage SEO guides and articles.', rows: await this.admin.listBlogsAdmin(), type: 'blog', nameField: 'title', csrfToken: (req as any).adminCsrf, deleted: req.query.deleted === '1' });
   }
 
 
@@ -390,7 +392,7 @@ export class AdminController {
   @Get('banners')
   async banners(@Req() req: Request, @Res() res: Response) {
     const rows = await this.admin.listHomeBanners();
-    return res.render('admin/banners', { user: (req as any).adminUser, rows, csrfToken: (req as any).adminCsrf, saved: req.query.saved === '1' });
+    return res.render('admin/banners', { user: (req as any).adminUser, rows, csrfToken: (req as any).adminCsrf, saved: req.query.saved === '1', deleted: req.query.deleted === '1' });
   }
 
   @UseGuards(AdminAuthGuard)
@@ -409,7 +411,7 @@ export class AdminController {
       this.admin.getResellerPageSettings(),
       this.admin.listResellerMaterialsAdmin(),
     ]);
-    return res.render('admin/reseller', { user: (req as any).adminUser, settings, materials, csrfToken: (req as any).adminCsrf, saved: req.query.saved === '1' });
+    return res.render('admin/reseller', { user: (req as any).adminUser, settings, materials, csrfToken: (req as any).adminCsrf, saved: req.query.saved === '1', deleted: req.query.deleted === '1' });
   }
 
   @UseGuards(AdminAuthGuard)
@@ -539,7 +541,7 @@ export class AdminController {
   async enquiries(@Req() req: Request, @Res() res: Response) {
     const status = typeof req.query.status === 'string' ? req.query.status : undefined;
     const rows = await this.admin.recentEnquiries(status);
-    return res.render('admin/enquiries', { user: (req as any).adminUser, rows, status: status || '', csrfToken: (req as any).adminCsrf });
+    return res.render('admin/enquiries', { user: (req as any).adminUser, rows, status: status || '', csrfToken: (req as any).adminCsrf, deleted: req.query.deleted === '1' });
   }
 
   @UseGuards(AdminAuthGuard)
