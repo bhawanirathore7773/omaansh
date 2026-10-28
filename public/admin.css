@@ -921,3 +921,21 @@ body.admin-shell .admin-quick-grid.dashboard-content-grid a>.content-tile-icon{
   font-size:21px!important;margin:0 0 10px!important;border-radius:14px!important;
  }
 }
+
+
+/* Product action bar refinement: balanced actions and an intentionally secondary destructive action. */
+.admin-product-actions{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;flex-wrap:wrap!important}
+.admin-product-actions>a,.admin-product-actions>form{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;margin:0!important}
+.admin-product-actions>a{min-height:42px!important;box-sizing:border-box!important}
+.admin-product-actions>form .admin-danger-button,
+.admin-product-actions button.admin-danger-button{appearance:none!important;-webkit-appearance:none!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:42px!important;min-width:94px!important;padding:0 14px!important;border:1px solid #f2b8b5!important;border-radius:11px!important;background:#fff!important;color:#b42318!important;font-family:inherit!important;font-size:.76rem!important;font-weight:800!important;line-height:1!important;box-shadow:none!important;cursor:pointer!important}
+.admin-product-actions>form .admin-danger-button:hover,
+.admin-product-actions button.admin-danger-button:hover{background:#fff1f0!important;border-color:#e98b85!important;color:#912018!important}
+.admin-product-actions>form .admin-danger-button:focus-visible{outline:3px solid rgba(180,35,24,.18)!important;outline-offset:2px!important}
+.admin-product-actions>form .admin-danger-button:active{transform:translateY(1px)}
+@media(max-width:760px){
+ .admin-product-actions{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,.62fr)!important;gap:9px!important}
+ .admin-product-actions>a,.admin-product-actions>form{width:100%!important;min-width:0!important}
+ .admin-product-actions>a.primary{grid-column:1/-1}
+ .admin-product-actions>form .admin-danger-button{width:100%!important;min-width:0!important}
+}
