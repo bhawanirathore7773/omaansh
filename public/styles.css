@@ -2541,3 +2541,20 @@ body.enquiry-modal-open{overflow:hidden}
     padding-bottom: 34px !important;
   }
 }
+
+
+/* HARD FIX — homepage hero must start directly under the site header.
+   Deliberately targets the actual markup in views/home.ejs and resets
+   the shorthand padding from the original .hero rule at every viewport. */
+html body main > section.hero.hero-home {
+  margin-block-start: 0 !important;
+  padding-block-start: 6px !important;
+}
+html body main > section.hero.hero-home:first-child {
+  margin-top: 0 !important;
+}
+@media (min-width: 901px) {
+  html body main > section.hero.hero-home {
+    padding-top: 6px !important;
+  }
+}
