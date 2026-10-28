@@ -1,5 +1,6 @@
 <%- include('partials/header', {title:'Enquiries | OSIRA Admin', user}) %>
 <div class="admin-heading"><div><p class="admin-kicker">LEADS</p><h1>Enquiries</h1><p>Review requirements, contact details and sales-stage notes.</p></div></div>
+<% if (deleted) { %><div class="admin-notice admin-notice-success" role="status">Enquiry deleted successfully.</div><% } %>
 <nav class="admin-filter-bar" aria-label="Filter enquiries">
 <a class="<%= !status ? 'active' : '' %>" href="/admin/enquiries">All</a><a class="<%= status==='new' ? 'active' : '' %>" href="/admin/enquiries?status=new">New</a><a class="<%= status==='contacted' ? 'active' : '' %>" href="/admin/enquiries?status=contacted">Contacted</a><a class="<%= status==='quoted' ? 'active' : '' %>" href="/admin/enquiries?status=quoted">Quoted</a><a class="<%= status==='won' ? 'active' : '' %>" href="/admin/enquiries?status=won">Won</a><a class="<%= status==='lost' ? 'active' : '' %>" href="/admin/enquiries?status=lost">Lost</a><a class="<%= status==='closed' ? 'active' : '' %>" href="/admin/enquiries?status=closed">Closed</a>
 </nav>
