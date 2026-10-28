@@ -9,7 +9,7 @@
   <article class="admin-content-card">
     <div class="content-card-topline"><span class="pill <%= (row.isPublished ?? true) ? 'pill-on' : 'pill-off' %>"><%= (row.isPublished ?? true) ? 'Published' : 'Draft' %></span><span class="content-card-id">#<%= row.id %></span></div>
     <div><h2><%= row[nameField] %></h2><p><%= row.h1Heading || row.description || row.shortDescription || row.introContent || '' %></p></div>
-    <div class="admin-card-actions"><a class="admin-secondary" href="/<%= type === 'blog' ? 'blog' : type + '/' + row.slug %>" target="_blank" rel="noopener">Preview ↗</a><a class="admin-button" href="/admin/<%= type %>/<%= row.id %>/edit">Edit content</a></div>
+    <div class="admin-card-actions"><a class="admin-secondary" href="/<%= type === 'blog' ? 'blog' : type + '/' + row.slug %>" target="_blank" rel="noopener">Preview ↗</a><a class="admin-button" href="/admin/<%= type %>/<%= row.id %>/edit">Edit content</a><form method="post" action="/admin/<%= type %>/<%= row.id %>/delete" onsubmit="return confirm('Are you sure you want to permanently delete this <%= type === 'blog' ? 'article' : type === 'cities' ? 'city page' : type === 'industries' ? 'industry page' : 'service page' %>? This cannot be undone.')"><input type="hidden" name="csrfToken" value="<%= csrfToken %>"><button type="submit" class="admin-danger-button">Delete</button></form></div>
     <div class="content-card-slug">/<%= type === 'blog' ? 'blog' : type %>/<%= row.slug %></div>
   </article>
   <% }) %>
