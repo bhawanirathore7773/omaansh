@@ -421,6 +421,32 @@ export class AdminService {
       : this.prisma.resellerMaterial.create({ data });
   }
 
+
+  async deleteAdminRecord(type: string, id: number) {
+    if (!Number.isInteger(id) || id < 1) throw new Error('Invalid record ID.');
+    switch (type) {
+      case 'products':
+        await this.prisma.product.delete({ where: { id } });
+        return;
+      case 'categories': {
+        const category = await this.prisma.category.findUnique({ where: { id }, include: { _count: { select: { products: true } } } });
+        if (!category) throw new Error('Collection not found.');
+        if (category._count.products > 0) throw new Error('This collection still contains products. Move or delete those products first.');
+        await this.prisma.category.delete({ where: { id } });
+        return;
+      }
+      case 'services': await this.prisma.servicePage.delete({ where: { id } }); return;
+      case 'industries': await this.prisma.industryPage.delete({ where: { id } }); return;
+      case 'cities': await this.prisma.cityPage.delete({ where: { id } }); return;
+      case 'blog': await this.prisma.blog.delete({ where: { id } }); return;
+      case 'home-sections': await this.prisma.homeProductSection.delete({ where: { id } }); return;
+      case 'banners': await this.prisma.homeBanner.delete({ where: { id } }); return;
+      case 'enquiries': await this.prisma.enquiry.delete({ where: { id } }); return;
+      case 'reseller-materials': await this.prisma.resellerMaterial.delete({ where: { id } }); return;
+      default: throw new Error('Deleting this record type is not supported.');
+    }
+  }
+
   async createAdminIfConfigured() {
     const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
     const password = process.env.ADMIN_PASSWORD;
