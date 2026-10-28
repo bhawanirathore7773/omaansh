@@ -5,7 +5,7 @@
 <% rows.forEach(row=>{ %><article class="admin-product-card">
 <div class="admin-product-thumb"><% if(row.image){ %><img src="<%= row.image %>" alt="" loading="lazy"><% }else{ %><span>OSIRA</span><% } %></div>
 <div class="admin-product-info"><h2><%= row.name %></h2><span class="admin-product-meta"><%= row.sku || 'No SKU assigned' %></span><span class="admin-product-meta"><%= row.category.name %></span><div class="admin-product-tags"><span class="pill <%= row.isActive?'pill-on':'pill-off' %>"><%= row.isActive?'● Active':'○ Hidden' %></span><span class="pill"><%= row.moq %> MOQ</span></div><strong><%= row.price != null ? '₹'+row.price : 'Price on enquiry' %></strong></div>
-<div class="admin-product-actions"><a class="primary" href="/admin/products/<%= row.id %>/edit"><span aria-hidden="true">✎</span> Edit product</a><a href="/products/<%= row.slug %>" target="_blank" rel="noopener"><span aria-hidden="true">↗</span> View</a></div>
+<div class="admin-product-actions"><a class="primary" href="/admin/products/<%= row.id %>/edit"><span aria-hidden="true">✎</span> Edit product</a><a href="/products/<%= row.slug %>" target="_blank" rel="noopener"><span aria-hidden="true">↗</span> View</a><form method="post" action="/admin/products/<%= row.id %>/delete" onsubmit="return confirm('Are you sure you want to permanently delete this product? This cannot be undone.')"><input type="hidden" name="csrfToken" value="<%= csrfToken %>"><button type="submit" class="admin-danger-button">Delete</button></form></div>
 </article><% }) %>
 <% if(!rows.length){ %><div class="admin-empty-card"><strong>No products found</strong><p>Try another product name or SKU, or add a new product.</p><a class="admin-button" href="/admin/products/new">＋ Add product</a></div><% } %>
 </div>
