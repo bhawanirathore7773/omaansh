@@ -3,6 +3,7 @@
   <div><p class="admin-kicker">STRUCTURE</p><h1>Collections</h1><p>Organise products and collection-level SEO.</p></div>
   <a class="admin-button" href="/admin/categories/new">+ Add collection</a>
 </div>
+<% if (deleted) { %><div class="admin-notice admin-notice-success" role="status">Collection deleted successfully.</div><% } %>
 <div class="collection-admin-list" aria-label="Collections">
   <% rows.forEach(row=>{ %>
     <article class="collection-admin-row">
