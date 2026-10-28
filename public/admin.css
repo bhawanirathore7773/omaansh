@@ -939,3 +939,15 @@ body.admin-shell .admin-quick-grid.dashboard-content-grid a>.content-tile-icon{
  .admin-product-actions>a.primary{grid-column:1/-1}
  .admin-product-actions>form .admin-danger-button{width:100%!important;min-width:0!important}
 }
+
+
+/* Square product imagery in both the upload editor and the live storefront preview. */
+.main-image-editor{grid-template-columns:minmax(120px,160px) minmax(0,1fr)!important;align-items:start!important}
+.image-editor-preview{width:100%!important;max-width:160px!important;height:auto!important;aspect-ratio:1 / 1!important;min-height:0!important;border-radius:14px!important;background:#f8fafc!important}
+.image-editor-preview img{display:block!important;width:100%!important;height:100%!important;min-height:0!important;object-fit:contain!important;object-position:center!important;padding:8px!important;box-sizing:border-box!important}
+.mini-product-image{width:100%!important;height:auto!important;aspect-ratio:1 / 1!important;min-height:0!important;max-height:none!important;background:#f7f8fa!important}
+.mini-product-image img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;padding:10px!important;box-sizing:border-box!important}
+@media(max-width:760px){
+ .main-image-editor{grid-template-columns:100px minmax(0,1fr)!important;align-items:start!important}
+ .image-editor-preview{width:100%!important;max-width:100px!important;height:auto!important;aspect-ratio:1 / 1!important}
+}
