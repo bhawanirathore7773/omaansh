@@ -2523,3 +2523,21 @@ body.enquiry-modal-open{overflow:hidden}
   .guides-hero h1, .solutions-hero h1 { font-size:clamp(2.7rem,5.4vw,3.6rem) !important; }
   .product-page .product-hero { grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important; gap:22px !important; }
 }
+
+
+/* FINAL OVERRIDE: keep the homepage hero close to the sticky header.
+   High-specificity selector intentionally wins over legacy .hero rules. */
+@media (min-width: 701px) {
+  body > main > section.hero.hero-home,
+  main > section.hero.hero-home {
+    margin-top: 0 !important;
+    padding-top: 12px !important;
+  }
+}
+@media (min-width: 901px) {
+  body > main > section.hero.hero-home,
+  main > section.hero.hero-home {
+    padding-top: 10px !important;
+    padding-bottom: 34px !important;
+  }
+}
