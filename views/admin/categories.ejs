@@ -14,7 +14,7 @@
       </div>
       <div class="collection-admin-meta"><span class="collection-admin-meta-label">Products</span><strong><%= row._count.products %></strong></div>
       <div class="collection-admin-meta"><span class="collection-admin-meta-label">Visibility</span><span class="collection-admin-status <%= row.isFeatured?'is-featured':'' %>"><%= row.isFeatured?'Featured collection':'Standard collection' %></span></div>
-      <a class="collection-edit-icon" href="/admin/categories/<%= row.id %>/edit" aria-label="Edit <%= row.name %>" title="Edit collection"><span aria-hidden="true">✎</span><span class="collection-edit-text">Edit</span></a>
+      <div class="collection-admin-actions"><a class="collection-edit-icon" href="/admin/categories/<%= row.id %>/edit" aria-label="Edit <%= row.name %>" title="Edit collection"><span aria-hidden="true">✎</span><span class="collection-edit-text">Edit</span></a><form method="post" action="/admin/categories/<%= row.id %>/delete" onsubmit="return confirm('Delete this collection? Collections that still contain products cannot be deleted.')"><input type="hidden" name="csrfToken" value="<%= csrfToken %>"><button type="submit" class="admin-danger-button" <%= row._count.products > 0 ? 'disabled title="Move or delete products first"' : '' %>>Delete</button></form></div>
     </article>
   <% }) %>
   <% if(!rows.length){ %><div class="admin-empty collection-admin-empty">No collections yet. Add your first collection to get started.</div><% } %>
