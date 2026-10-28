@@ -7,7 +7,7 @@
   <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
   <% rows.forEach((banner, index) => { %>
   <section class="editor-card home-banner-editor">
-    <div class="banner-editor-heading"><div><span class="banner-number">0<%= index + 1 %></span><div><h2>Banner <%= index + 1 %></h2><p>Slide <%= index + 1 %> of <%= rows.length %></p></div></div><label class="toggle-field"><input type="checkbox" name="banners[<%= index %>][isActive]" <%= banner.isActive ? 'checked' : '' %>> Show on homepage</label></div>
+    <div class="banner-editor-heading"><div><span class="banner-number">0<%= index + 1 %></span><div><h2>Banner <%= index + 1 %></h2><p>Slide <%= index + 1 %> of <%= rows.length %></p></div></div><div class="banner-admin-actions"><label class="toggle-field"><input type="checkbox" name="banners[<%= index %>][isActive]" <%= banner.isActive ? 'checked' : '' %>> Show on homepage</label><button type="button" class="admin-danger-button" data-delete-url="/admin/banners/<%= banner.id %>/delete" data-delete-message="Permanently delete banner <%= index + 1 %>?">Delete slide</button></div></div>
     <input type="hidden" name="banners[<%= index %>][id]" value="<%= banner.id %>">
     <input type="hidden" name="banners[<%= index %>][title]" value="<%= banner.title || ('OSIRA banner ' + (index + 1)) %>">
     <input type="hidden" name="banners[<%= index %>][subtitle]" value="">
@@ -36,6 +36,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 <script>
 (() => {
+  document.querySelectorAll('[data-delete-url]').forEach(button=>button.addEventListener('click',()=>{
+    if(!confirm((button.dataset.deleteMessage||'Permanently delete this item?')+' This action cannot be undone.'))return;
+    const form=document.createElement('form');form.method='post';form.action=button.dataset.deleteUrl;
+    const token=document.createElement('input');token.type='hidden';token.name='csrfToken';token.value=document.querySelector('.home-banner-admin-form [name="csrfToken"]').value;form.appendChild(token);
+    document.body.appendChild(form);form.submit();
+  }));
   const modal = document.getElementById('bannerCropModal');
   const cropImage = document.getElementById('bannerCropImage');
   const cropButton = document.getElementById('cropUploadButton');
