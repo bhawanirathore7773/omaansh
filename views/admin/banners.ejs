@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <div class="admin-heading"><div><p class="admin-kicker">HOMEPAGE</p><h1>Image carousel</h1><p>Upload any image, crop it to the live carousel frame, then save to publish.</p></div><div class="admin-heading-actions"><a class="admin-secondary" href="/" target="_blank" rel="noopener noreferrer">Preview website ↗</a><form method="post" action="/admin/banners/add"><input type="hidden" name="csrfToken" value="<%= csrfToken %>"><button class="admin-button" type="submit" <%= rows.length >= 20 ? 'disabled' : '' %>>＋ Add another slide</button></form></div></div>
 <% if (saved) { %><div class="admin-success">Banner images saved successfully.</div><% } %>
+<% if (deleted) { %><div class="admin-notice admin-notice-success" role="status">Banner deleted successfully.</div><% } %>
 <div class="banner-help"><strong>Choose the right banner frame</strong><span>Desktop: 1600 × 485 px · 3.3:1</span><span>Mobile: 1200 × 675 px · 16:9</span><small>You can choose any JPG, PNG, WebP or AVIF image. Before upload, a crop window lets you reposition and zoom the image to fit the exact frame. The cropped image is uploaded, so the preview and homepage proportions stay consistent.</small></div>
 <form method="post" action="/admin/banners/save" class="home-banner-admin-form">
   <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
