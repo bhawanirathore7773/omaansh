@@ -211,7 +211,7 @@ export class AdminController {
       products: '/admin/products', categories: '/admin/categories', services: '/admin/services',
       industries: '/admin/industries', cities: '/admin/cities', blog: '/admin/blog',
       'home-sections': '/admin/home-sections', banners: '/admin/banners',
-      enquiries: '/admin/enquiries', 'reseller-materials': '/admin/reseller-materials',
+      enquiries: '/admin/enquiries', 'reseller-materials': '/admin/reseller',
     };
     if (!destinations[type]) return res.status(404).send('Delete action is not available for this section.');
     try {
