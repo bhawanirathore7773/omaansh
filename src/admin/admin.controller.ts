@@ -199,6 +199,26 @@ export class AdminController {
     }
   }
 
+  @UseGuards(AdminAuthGuard)
+  @Post(':type/:id/delete')
+  async deleteAdminRecord(@Param('type') type: string, @Param('id') id: string, @Body() body: any, @Req() req: Request, @Res() res: Response) {
+    const session = (req as any).adminSession;
+    if (!(await this.admin.verifyCsrf(session.id, body.csrfToken))) return res.status(403).send('Invalid CSRF token');
+    const destinations: Record<string, string> = {
+      products: '/admin/products', categories: '/admin/categories', services: '/admin/services',
+      industries: '/admin/industries', cities: '/admin/cities', blog: '/admin/blog',
+      'home-sections': '/admin/home-sections', banners: '/admin/banners',
+      enquiries: '/admin/enquiries', 'reseller-materials': '/admin/reseller-materials',
+    };
+    if (!destinations[type]) return res.status(404).send('Delete action is not available for this section.');
+    try {
+      await this.admin.deleteAdminRecord(type, Number(id));
+      return res.redirect(303, destinations[type] + '?deleted=1');
+    } catch (error) {
+      return res.status(400).send(error instanceof Error ? error.message : 'Unable to delete record.');
+    }
+  }
+
   private async renderContentEditor(type: 'services' | 'industries' | 'cities' | 'blog', id: number | null, req: Request, res: Response) {
     const configs: Record<string, any> = {
       services: {
