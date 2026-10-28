@@ -123,7 +123,7 @@ export class AdminController {
   @Get('products')
   async products(@Req() req: Request, @Res() res: Response) {
     const q = typeof req.query.q === 'string' ? req.query.q : '';
-    return res.render('admin/products', { user: (req as any).adminUser, rows: await this.admin.listProductsAdmin(q), q });
+    return res.render('admin/products', { user: (req as any).adminUser, csrfToken: (req as any).adminCsrf, rows: await this.admin.listProductsAdmin(q), q });
   }
 
   @UseGuards(AdminAuthGuard)
@@ -147,6 +147,7 @@ export class AdminController {
   async categories(@Req() req: Request, @Res() res: Response) {
     return res.render('admin/categories', {
       user: (req as any).adminUser,
+      csrfToken: (req as any).adminCsrf,
       rows: await this.admin.listCategoriesAdmin(),
     });
   }
@@ -324,25 +325,25 @@ export class AdminController {
   @UseGuards(AdminAuthGuard)
   @Get('services')
   async services(@Req() req: Request, @Res() res: Response) {
-    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Services', kicker: 'SERVICES', description: 'Manage service pages.', rows: await this.admin.listServicesAdmin(), type: 'services', nameField: 'name' });
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Services', kicker: 'SERVICES', description: 'Manage service pages.', rows: await this.admin.listServicesAdmin(), type: 'services', nameField: 'name', csrfToken: (req as any).adminCsrf });
   }
 
   @UseGuards(AdminAuthGuard)
   @Get('industries')
   async industries(@Req() req: Request, @Res() res: Response) {
-    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Industries', kicker: 'INDUSTRIES', description: 'Manage industry landing pages.', rows: await this.admin.listIndustriesAdmin(), type: 'industries', nameField: 'industryName' });
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Industries', kicker: 'INDUSTRIES', description: 'Manage industry landing pages.', rows: await this.admin.listIndustriesAdmin(), type: 'industries', nameField: 'industryName', csrfToken: (req as any).adminCsrf });
   }
 
   @UseGuards(AdminAuthGuard)
   @Get('cities')
   async cities(@Req() req: Request, @Res() res: Response) {
-    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Cities', kicker: 'LOCAL SEO', description: 'Manage city landing pages.', rows: await this.admin.listCitiesAdmin(), type: 'cities', nameField: 'cityName' });
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Cities', kicker: 'LOCAL SEO', description: 'Manage city landing pages.', rows: await this.admin.listCitiesAdmin(), type: 'cities', nameField: 'cityName', csrfToken: (req as any).adminCsrf });
   }
 
   @UseGuards(AdminAuthGuard)
   @Get('blog')
   async blog(@Req() req: Request, @Res() res: Response) {
-    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Blog', kicker: 'CONTENT', description: 'Manage SEO guides and articles.', rows: await this.admin.listBlogsAdmin(), type: 'blog', nameField: 'title' });
+    return res.render('admin/content-list', { user: (req as any).adminUser, title: 'Blog', kicker: 'CONTENT', description: 'Manage SEO guides and articles.', rows: await this.admin.listBlogsAdmin(), type: 'blog', nameField: 'title', csrfToken: (req as any).adminCsrf });
   }
 
 
