@@ -16,7 +16,7 @@ export class CitiesController {
       this.cities.list(),
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     return {
       cities,
       site,
@@ -33,7 +33,7 @@ export class CitiesController {
       this.cities.findBySlug(slug),
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     const cityUrl = baseUrl ? baseUrl + '/cities/' + city.slug : '/cities/' + city.slug;
     const schemaJsonLd = [{
       '@context': 'https://schema.org',
