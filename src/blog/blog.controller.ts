@@ -16,7 +16,7 @@ export class BlogController {
       this.blog.list(),
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     return {
       posts,
       site,
@@ -33,7 +33,7 @@ export class BlogController {
       this.blog.findBySlug(slug),
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     const articleUrl = baseUrl ? baseUrl + '/blog/' + post.slug : '/blog/' + post.slug;
     const schemaJsonLd = [{
       '@context': 'https://schema.org',
