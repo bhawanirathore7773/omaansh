@@ -88,7 +88,6 @@ export class SiteController {
       name: 'OSIRA',
       legalName: 'Omaansh Industries',
       url: siteUrl,
-      image: siteUrl ? siteUrl + '/favicon.svg' : undefined,
       telephone: site?.primaryPhone || undefined,
       email: site?.email || undefined,
       address: postalAddress,
@@ -117,8 +116,8 @@ export class SiteController {
       homeProductSections,
       enquirySent: enquiry === 'sent',
       pageTitle: site?.defaultMetaTitle || 'Wall Clock Manufacturer in Jaipur | OSIRA',
-      metaDescription: site?.defaultMetaDescription || 'OSIRA by Omaansh Industries supplies wall clocks in Jaipur for wholesale, corporate gifting and custom branding. Enquire about business orders.',
-      canonical: baseUrl || undefined,
+      metaDescription: site?.defaultMetaDescription && site.defaultMetaDescription !== 'OSIRA creates wall clocks and décor products for homes, workplaces and commercial spaces, with custom and business order support.' ? site.defaultMetaDescription : 'OSIRA by Omaansh Industries supplies wall clocks in Jaipur for wholesale, corporate gifting and custom branding. Enquire about business orders.',
+      canonical: baseUrl ? baseUrl + '/' : undefined,
     };
   }
 
