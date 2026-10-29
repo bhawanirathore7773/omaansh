@@ -13,7 +13,7 @@ export class CategoriesController {
       this.categories.list(),
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     return {
       categories, site,
       pageTitle: 'Wall Clock Collections | OSIRA Jaipur',
@@ -29,7 +29,7 @@ export class CategoriesController {
       this.categories.findBySlug(slug),
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     const categoryUrl = baseUrl ? baseUrl + '/categories/' + category.slug : '/categories/' + category.slug;
     const schemaJsonLd = [
       {

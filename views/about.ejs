@@ -10,16 +10,17 @@
       <div class="about-proof-pills"><span><b>01</b> Product-led guidance</span><span><b>02</b> Bulk enquiries</span><span><b>03</b> Custom order discussions</span></div>
     </div>
     <div class="about-story-visual">
+      <% if(site?.aboutDesktopHeroImage || site?.aboutFactoryImage){ %>
       <picture>
         <% if(site?.aboutMobileHeroImage){ %><source media="(max-width:700px)" srcset="<%= site.aboutMobileHeroImage %>"><% } %>
-        <img src="<%= site?.aboutDesktopHeroImage || site?.aboutFactoryImage || 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=85' %>" alt="OSIRA business and workplace supply" width="1200" height="900" fetchpriority="high">
+        <img src="<%= site?.aboutDesktopHeroImage || site?.aboutFactoryImage %>" alt="OSIRA wall clock business" width="1200" height="900" fetchpriority="high">
       </picture>
+      <% } else { %><div class="about-brand-visual" role="img" aria-label="OSIRA wall clocks, Jaipur"><strong>OSIRA</strong><span>Wall clocks · Jaipur</span></div><% } %>
       <div class="about-image-note"><span class="about-note-icon" aria-hidden="true">◷</span><div><strong>Designed around real requirements</strong><span>Product, quantity, branding and delivery—discussed clearly before an order is confirmed.</span></div></div>
     </div>
   </section>
 
   <section class="section about-facts-strip" aria-label="About OSIRA at a glance">
-    <div><span class="about-fact-icon" aria-hidden="true">♧</span><strong><%= site?.employeeCount || '10' %>-person team</strong><span>Approximate team size</span></div>
     <div><span class="about-fact-icon" aria-hidden="true">◷</span><strong>Since 2021</strong><span>OSIRA / Omaansh Industries</span></div>
     <div><span class="about-fact-icon" aria-hidden="true">▦</span><strong>Approx. 4,000 sq. ft.</strong><span>Facility footprint</span></div>
     <div><span class="about-fact-icon" aria-hidden="true">✳</span><strong>Up to 1 lakh / month</strong><span>Stated production capacity</span></div>
@@ -36,8 +37,7 @@
 
   <section class="section about-capability-section">
     <div class="about-capability-image">
-      <% if(site?.aboutFactoryImage){ %><img src="<%= site.aboutFactoryImage %>" alt="Omaansh Industries manufacturing facility in Jaipur" width="1000" height="800" loading="lazy"><% }else{ %><div class="about-photo-placeholder"><span aria-hidden="true">⌂</span><strong>Manufacturing & workplace</strong><small>Upload a real facility photo in Admin → Site Settings.</small></div><% } %>
-      <span class="about-photo-caption">Manufacturing / workplace image</span>
+      <% if(site?.aboutFactoryImage){ %><img src="<%= site.aboutFactoryImage %>" alt="Omaansh Industries manufacturing facility in Jaipur" width="1000" height="800" loading="lazy"><% } else { %><div class="about-brand-visual" role="img" aria-label="OSIRA wall clocks"><strong>OSIRA</strong><span>Wall clocks · Jaipur</span></div><% } %>
     </div>
     <div class="about-capability-copy"><span class="kicker">FROM JAIPUR TO BUSINESS BUYERS</span><h2>Product options with a practical route to quotation.</h2><p>Different buyers need different things. A retailer may be comparing designs and replenishment needs; an office may be sourcing functional clocks; a business may need branded clocks for a campaign, event or gift programme.</p><p>OSIRA helps bring those details into one conversation, so the next step is based on the actual order rather than assumptions.</p>
       <ul class="about-check-list"><li><span>✓</span> Browse product styles and collections</li><li><span>✓</span> Discuss quantity and intended application</li><li><span>✓</span> Share artwork or branding requirements</li><li><span>✓</span> Confirm specifications and commercial terms before ordering</li></ul>
@@ -45,14 +45,16 @@
     </div>
   </section>
 
+  <% if(site?.aboutFactoryImage || site?.aboutQualityImage || site?.aboutTeamImage){ %>
   <section class="section about-photo-gallery-section">
-    <div class="about-section-heading"><span class="kicker">BEHIND THE PRODUCT</span><h2>Show the people, process and care behind the brand.</h2><p>Replace these image slots with current company photography from the admin settings. Real photos help buyers understand the business and its working environment.</p></div>
+    <div class="about-section-heading"><span class="kicker">BEHIND THE PRODUCT</span><h2>A closer look at OSIRA</h2><p>Company photography from the OSIRA team.</p></div>
     <div class="about-photo-gallery">
-      <figure><% if(site?.aboutFactoryImage){ %><img src="<%= site.aboutFactoryImage %>" alt="Omaansh Industries manufacturing facility" width="800" height="600" loading="lazy"><% }else{ %><div class="about-photo-placeholder"><span aria-hidden="true">⌂</span><strong>Manufacturing & workplace</strong><small>Upload a real facility photo</small></div><% } %><figcaption><strong>Manufacturing & workplace</strong><span>Show the facility and work environment</span></figcaption></figure>
-      <figure><% if(site?.aboutQualityImage){ %><img src="<%= site.aboutQualityImage %>" alt="Omaansh Industries quality and packing work" width="800" height="600" loading="lazy"><% }else{ %><div class="about-photo-placeholder"><span aria-hidden="true">✓</span><strong>Quality & packing</strong><small>Upload a real inspection or packing photo</small></div><% } %><figcaption><strong>Quality & packing</strong><span>Show actual inspection or dispatch preparation</span></figcaption></figure>
-      <figure><% if(site?.aboutTeamImage){ %><img src="<%= site.aboutTeamImage %>" alt="Omaansh Industries team" width="800" height="600" loading="lazy"><% }else{ %><div class="about-photo-placeholder"><span aria-hidden="true">♧</span><strong>People & partnership</strong><small>Upload a real team photo</small></div><% } %><figcaption><strong>People & partnership</strong><span>Introduce the real team behind OSIRA</span></figcaption></figure>
+      <% if(site?.aboutFactoryImage){ %><figure><img src="<%= site.aboutFactoryImage %>" alt="Omaansh Industries manufacturing facility" width="800" height="600" loading="lazy"><figcaption><strong>Manufacturing & workplace</strong></figcaption></figure><% } %>
+      <% if(site?.aboutQualityImage){ %><figure><img src="<%= site.aboutQualityImage %>" alt="Omaansh Industries quality and packing work" width="800" height="600" loading="lazy"><figcaption><strong>Quality & packing</strong></figcaption></figure><% } %>
+      <% if(site?.aboutTeamImage){ %><figure><img src="<%= site.aboutTeamImage %>" alt="Omaansh Industries team" width="800" height="600" loading="lazy"><figcaption><strong>OSIRA team</strong></figcaption></figure><% } %>
     </div>
   </section>
+  <% } %>
 
   <section class="section about-offerings-section">
     <div class="about-section-heading"><span class="kicker">HOW WE CAN HELP</span><h2>One brand, several ways to source.</h2><p>Choose the route that best fits your requirement. Product availability, minimum quantities and lead times are confirmed for the specific order.</p></div>
@@ -66,7 +68,7 @@
 
   <section class="section about-team-section">
     <div class="about-team-copy"><span class="kicker">PEOPLE & PARTNERSHIP</span><h2>Good orders start with the right questions.</h2><p>We believe a useful buying conversation begins with the details: where the clock will be used, which style is needed, how many pieces are required, whether branding is involved and where the order must be delivered.</p><p>Share those details with our team and we can guide the discussion toward relevant options and the information needed for a clear quotation.</p><button class="btn primary" type="button" data-open-enquiry>Talk to our team →</button></div>
-    <div class="about-team-photo"><% if(site?.aboutTeamImage){ %><img src="<%= site.aboutTeamImage %>" alt="Omaansh Industries team in Jaipur" width="900" height="700" loading="lazy"><% }else{ %><div class="about-photo-placeholder"><span aria-hidden="true">♧</span><strong>People & partnership</strong><small>Upload a real owner or team photo in Admin → Site Settings.</small></div><% } %><span class="about-photo-caption">Team / owner photo can be managed in admin</span></div>
+    <% if(site?.aboutTeamImage){ %><div class="about-team-photo"><img src="<%= site.aboutTeamImage %>" alt="Omaansh Industries team in Jaipur" width="900" height="700" loading="lazy"></div><% } %>
   </section>
 
   <section class="section about-values-band">

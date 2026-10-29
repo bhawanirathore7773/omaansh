@@ -51,36 +51,56 @@ export class SiteController {
       }),
     ]);
 
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     const siteUrl = baseUrl || undefined;
+    const postalAddress = site ? {
+      '@type': 'PostalAddress',
+      streetAddress: site.streetAddress,
+      addressLocality: site.locality,
+      addressRegion: site.region,
+      postalCode: site.postalCode,
+      addressCountry: site.country || 'IN'
+    } : undefined;
+    const geo = site?.latitude && site?.longitude ? {
+      '@type': 'GeoCoordinates',
+      latitude: site.latitude,
+      longitude: site.longitude
+    } : undefined;
+    const sameAs = [site?.facebookUrl, site?.instagramUrl, site?.youtubeUrl, site?.linkedinUrl, site?.indiamartUrl].filter(Boolean);
     const organization = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
-      name: site?.businessName || 'OSIRA',
+      '@id': siteUrl ? siteUrl + '#organization' : undefined,
+      name: 'Omaansh Industries',
+      legalName: 'Omaansh Industries',
+      brand: { '@type': 'Brand', name: 'OSIRA' },
       url: siteUrl,
       logo: siteUrl ? siteUrl + '/favicon.svg' : undefined,
       telephone: site?.primaryPhone || undefined,
       email: site?.email || undefined,
-      address: site ? {
-        '@type': 'PostalAddress',
-        streetAddress: site.streetAddress,
-        addressLocality: site.locality,
-        addressRegion: site.region,
-        postalCode: site.postalCode,
-        addressCountry: site.country || 'IN'
-      } : undefined,
-      geo: site?.latitude && site?.longitude ? {
-        '@type': 'GeoCoordinates',
-        latitude: site.latitude,
-        longitude: site.longitude
-      } : undefined,
-      sameAs: [site?.facebookUrl, site?.instagramUrl, site?.youtubeUrl, site?.linkedinUrl, site?.indiamartUrl].filter(Boolean)
+      address: postalAddress,
+      sameAs
+    };
+    const localBusiness = {
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      '@id': siteUrl ? siteUrl + '#localbusiness' : undefined,
+      name: 'OSIRA',
+      legalName: 'Omaansh Industries',
+      url: siteUrl,
+      telephone: site?.primaryPhone || undefined,
+      email: site?.email || undefined,
+      address: postalAddress,
+      geo,
+      parentOrganization: { '@id': siteUrl ? siteUrl + '#organization' : undefined },
+      sameAs
     };
     const website = {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: site?.businessName || 'OSIRA',
+      name: 'OSIRA',
       url: siteUrl,
+      publisher: { '@id': siteUrl ? siteUrl + '#organization' : undefined },
       potentialAction: {
         '@type': 'SearchAction',
         target: siteUrl ? siteUrl + '/products?q={search_term_string}' : '/products?q={search_term_string}',
@@ -91,13 +111,13 @@ export class SiteController {
       site,
       categories,
       banners,
-      schemaJsonLd: [organization, website],
+      schemaJsonLd: [organization, localBusiness, website],
       featuredProducts,
       homeProductSections,
       enquirySent: enquiry === 'sent',
-      pageTitle: site?.defaultMetaTitle || 'OSIRA | Wall Clock Manufacturer & Supplier in Jaipur',
-      metaDescription: site?.defaultMetaDescription || 'OSIRA creates wall clocks and décor products for homes, workplaces and commercial spaces, with custom and business order support.',
-      canonical: process.env.SITE_URL || undefined,
+      pageTitle: site?.defaultMetaTitle || 'Wall Clock Manufacturer in Jaipur | OSIRA',
+      metaDescription: site?.defaultMetaDescription && site.defaultMetaDescription !== 'OSIRA creates wall clocks and décor products for homes, workplaces and commercial spaces, with custom and business order support.' ? site.defaultMetaDescription : 'OSIRA by Omaansh Industries supplies wall clocks in Jaipur for wholesale, corporate gifting and custom branding. Enquire about business orders.',
+      canonical: baseUrl ? baseUrl + '/' : undefined,
     };
   }
 
@@ -137,7 +157,7 @@ export class SiteController {
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
       this.prisma.resellerMaterial.findMany({ where: { isPublished: true }, orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }] }),
     ]);
-    const base = (process.env.SITE_URL || 'https://omaansh.com').replace(/\/$/, '');
+    const base = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     return {
       site, settings, materials,
       pageTitle: 'Wall Clock Components & Wholesale Reseller Programme | OSIRA',
@@ -162,7 +182,7 @@ export class SiteController {
       site, settings: settings || { whatsappIntro: 'Hello OSIRA, please share reseller component details.' }, material,
       pageTitle: material.name + ' | Wall Clock Component Guide | OSIRA',
       metaDescription: material.shortDescription,
-      canonical: (process.env.SITE_URL || 'https://omaansh.com').replace(/\/$/, '') + '/reseller/materials/' + material.slug,
+      canonical: (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '') + '/reseller/materials/' + material.slug,
     };
   }
 
@@ -178,7 +198,7 @@ export class SiteController {
     ]);
     if (settings && !settings.isPublished) throw new NotFoundException();
     const title = slug.split('-').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join(' ');
-    return { site, settings: settings || { whatsappIntro: 'Hello OSIRA, please share reseller component details.' }, materials, categorySlug: slug, categoryTitle: title, pageTitle: title + ' | Wall Clock Components | OSIRA', metaDescription: 'Explore ' + title.toLowerCase() + ' options for wall clocks. Compare component types, sizes, features and ask OSIRA about wholesale availability.', canonical: (process.env.SITE_URL || 'https://omaansh.com').replace(/\/$/, '') + '/reseller/' + slug };
+    return { site, settings: settings || { whatsappIntro: 'Hello OSIRA, please share reseller component details.' }, materials, categorySlug: slug, categoryTitle: title, pageTitle: title + ' | Wall Clock Components | OSIRA', metaDescription: 'Explore ' + title.toLowerCase() + ' options for wall clocks. Compare component types, sizes, features and ask OSIRA about wholesale availability.', canonical: (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '') + '/reseller/' + slug };
   }
 
   @Get('about')
@@ -189,22 +209,22 @@ export class SiteController {
       site,
       pageTitle: 'About OSIRA | Wall Clock Brand by Omaansh Industries, Jaipur',
       metaDescription: 'Meet OSIRA, the wall clock brand of Omaansh Industries in Jaipur. Explore wholesale supply, corporate gifting and custom branding enquiries.',
-      canonical: process.env.SITE_URL ? process.env.SITE_URL.replace(/\/$/, '') + '/about' : undefined,
+      canonical: (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '') + '/about',
     };
   }
 
   @Get('robots.txt')
   @Header('Content-Type', 'text/plain; charset=utf-8')
   robots() {
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     return ['User-agent: *', 'Allow: /', 'Disallow: /admin', 'Disallow: /api', 'Sitemap: ' + (baseUrl ? baseUrl + '/sitemap.xml' : '/sitemap.xml')].join('\n');
   }
 
   @Get('sitemap.xml')
   @Header('Content-Type', 'application/xml; charset=utf-8')
   async sitemap() {
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
-    const [products, categories, services, industries, cities, blogs, resellerMaterials] = await Promise.all([
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
+    const [products, categories, services, industries, cities, blogs, resellerMaterials, resellerSettings] = await Promise.all([
       this.prisma.product.findMany({ where: { isActive: true }, select: { slug: true, updatedAt: true } }),
       this.prisma.category.findMany({ select: { slug: true, updatedAt: true } }),
       this.prisma.servicePage.findMany({ where: { isPublished: true }, select: { slug: true, updatedAt: true } }),
@@ -212,6 +232,7 @@ export class SiteController {
       this.prisma.cityPage.findMany({ where: { isPublished: true }, select: { slug: true, updatedAt: true } }),
       this.prisma.blog.findMany({ where: { isPublished: true }, select: { slug: true, updatedAt: true } }),
       this.prisma.resellerMaterial.findMany({ where: { isPublished: true }, select: { slug: true, updatedAt: true } }),
+      this.prisma.resellerPageSettings.findUnique({ where: { id: 1 }, select: { isPublished: true } }),
     ]);
     const urls: Array<[string, Date]> = [
       ['', new Date()], ['/products', new Date()], ['/categories', new Date()], ['/about', new Date()],
@@ -221,9 +242,11 @@ export class SiteController {
       ...industries.map(x => ['/industries/' + x.slug, x.updatedAt] as [string, Date]),
       ...cities.map(x => ['/cities/' + x.slug, x.updatedAt] as [string, Date]),
       ...blogs.map(x => ['/blog/' + x.slug, x.updatedAt] as [string, Date]),
-      ['/reseller', new Date()],
-      ...resellerMaterials.map(x => ['/reseller/materials/' + x.slug, x.updatedAt] as [string, Date]),
     ];
+    if (resellerSettings?.isPublished) {
+      urls.push(['/reseller', new Date()]);
+      urls.push(...resellerMaterials.map(x => ['/reseller/materials/' + x.slug, x.updatedAt] as [string, Date]));
+    }
     const xml = urls.map(([path, updatedAt]) => {
       const loc = (baseUrl ? baseUrl : '') + (path || '/');
       return '<url><loc>' + loc.replace(/&/g, '&amp;') + '</loc><lastmod>' + new Date(updatedAt).toISOString() + '</lastmod></url>';
