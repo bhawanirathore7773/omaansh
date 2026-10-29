@@ -210,7 +210,7 @@ export class SiteController {
       site,
       pageTitle: 'About OSIRA | Wall Clock Brand by Omaansh Industries, Jaipur',
       metaDescription: 'Meet OSIRA, the wall clock brand of Omaansh Industries in Jaipur. Explore wholesale supply, corporate gifting and custom branding enquiries.',
-      canonical: process.env.SITE_URL ? process.env.SITE_URL.replace(/\/$/, '') + '/about' : undefined,
+      canonical: (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '') + '/about',
     };
   }
 
