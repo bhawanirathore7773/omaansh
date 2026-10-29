@@ -34,7 +34,8 @@ export class CitiesController {
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
     const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
-    const cityUrl = baseUrl ? baseUrl + '/cities/' + city.slug : '/cities/' + city.slug;
+    if (city.slug === 'jaipur') city.h1Heading = 'Bulk Wall Clocks in Jaipur for Retail & Business Orders';
+    const cityUrl = baseUrl + '/cities/' + city.slug;
     const schemaJsonLd = [{
       '@context': 'https://schema.org',
       '@type': 'WebPage',
@@ -63,8 +64,8 @@ export class CitiesController {
       city,
       site,
       schemaJsonLd,
-      pageTitle: city.slug === 'jaipur' ? 'Wall Clock Manufacturer in Jaipur | OSIRA' : (city.metaTitle || city.h1Heading + ' | OSIRA'),
-      metaDescription: city.slug === 'jaipur' ? 'Explore wall clocks for retail, offices, corporate gifting and custom branding from OSIRA, the Jaipur-based wall clock brand of Omaansh Industries.' : (city.metaDescription || city.heroSubheading || city.introContent.slice(0, 155)),
+      pageTitle: city.slug === 'jaipur' ? 'Bulk Wall Clocks in Jaipur | OSIRA' : (city.metaTitle || city.h1Heading + ' | OSIRA'),
+      metaDescription: city.slug === 'jaipur' ? 'Explore bulk wall clocks in Jaipur for retailers, offices, corporate gifting and custom branding. Ask OSIRA about current designs and order requirements.' : (city.metaDescription || city.heroSubheading || city.introContent.slice(0, 155)),
       canonical: baseUrl ? baseUrl + '/cities/' + city.slug : undefined,
     };
   }
