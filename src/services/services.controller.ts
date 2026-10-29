@@ -16,7 +16,7 @@ export class ServicesController {
       this.services.list(),
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     return {
       services,
       site,
@@ -37,7 +37,7 @@ export class ServicesController {
     const serviceProducts = selectedProductIds.length ? await this.prisma.product.findMany({ where: { id: { in: selectedProductIds }, isActive: true }, include: { category: true } }) : [];
     const productOrder = new Map(selectedProductIds.map((id, index) => [id, index]));
     serviceProducts.sort((a, b) => (productOrder.get(a.id) ?? 999) - (productOrder.get(b.id) ?? 999));
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     return {
       service,
       serviceProducts,
