@@ -51,7 +51,7 @@ export class SiteController {
       }),
     ]);
 
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     const siteUrl = baseUrl || undefined;
     const organization = {
       '@context': 'https://schema.org',
@@ -97,7 +97,7 @@ export class SiteController {
       enquirySent: enquiry === 'sent',
       pageTitle: site?.defaultMetaTitle || 'OSIRA | Wall Clock Manufacturer & Supplier in Jaipur',
       metaDescription: site?.defaultMetaDescription || 'OSIRA creates wall clocks and décor products for homes, workplaces and commercial spaces, with custom and business order support.',
-      canonical: process.env.SITE_URL || undefined,
+      canonical: baseUrl || undefined,
     };
   }
 
@@ -137,7 +137,7 @@ export class SiteController {
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
       this.prisma.resellerMaterial.findMany({ where: { isPublished: true }, orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }] }),
     ]);
-    const base = (process.env.SITE_URL || 'https://omaansh.com').replace(/\/$/, '');
+    const base = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     return {
       site, settings, materials,
       pageTitle: 'Wall Clock Components & Wholesale Reseller Programme | OSIRA',
@@ -162,7 +162,7 @@ export class SiteController {
       site, settings: settings || { whatsappIntro: 'Hello OSIRA, please share reseller component details.' }, material,
       pageTitle: material.name + ' | Wall Clock Component Guide | OSIRA',
       metaDescription: material.shortDescription,
-      canonical: (process.env.SITE_URL || 'https://omaansh.com').replace(/\/$/, '') + '/reseller/materials/' + material.slug,
+      canonical: (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '') + '/reseller/materials/' + material.slug,
     };
   }
 
@@ -178,7 +178,7 @@ export class SiteController {
     ]);
     if (settings && !settings.isPublished) throw new NotFoundException();
     const title = slug.split('-').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join(' ');
-    return { site, settings: settings || { whatsappIntro: 'Hello OSIRA, please share reseller component details.' }, materials, categorySlug: slug, categoryTitle: title, pageTitle: title + ' | Wall Clock Components | OSIRA', metaDescription: 'Explore ' + title.toLowerCase() + ' options for wall clocks. Compare component types, sizes, features and ask OSIRA about wholesale availability.', canonical: (process.env.SITE_URL || 'https://omaansh.com').replace(/\/$/, '') + '/reseller/' + slug };
+    return { site, settings: settings || { whatsappIntro: 'Hello OSIRA, please share reseller component details.' }, materials, categorySlug: slug, categoryTitle: title, pageTitle: title + ' | Wall Clock Components | OSIRA', metaDescription: 'Explore ' + title.toLowerCase() + ' options for wall clocks. Compare component types, sizes, features and ask OSIRA about wholesale availability.', canonical: (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '') + '/reseller/' + slug };
   }
 
   @Get('about')
@@ -196,14 +196,14 @@ export class SiteController {
   @Get('robots.txt')
   @Header('Content-Type', 'text/plain; charset=utf-8')
   robots() {
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     return ['User-agent: *', 'Allow: /', 'Disallow: /admin', 'Disallow: /api', 'Sitemap: ' + (baseUrl ? baseUrl + '/sitemap.xml' : '/sitemap.xml')].join('\n');
   }
 
   @Get('sitemap.xml')
   @Header('Content-Type', 'application/xml; charset=utf-8')
   async sitemap() {
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     const [products, categories, services, industries, cities, blogs, resellerMaterials] = await Promise.all([
       this.prisma.product.findMany({ where: { isActive: true }, select: { slug: true, updatedAt: true } }),
       this.prisma.category.findMany({ select: { slug: true, updatedAt: true } }),
