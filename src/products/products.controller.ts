@@ -26,7 +26,7 @@ export class ProductsController {
       this.prisma.category.findMany({ orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }] }),
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     const params = new URLSearchParams();
     if (q) params.set('q', q); if (category) params.set('category', category);
     if (size) params.set('size', size); if (application) params.set('application', application);
@@ -48,7 +48,7 @@ export class ProductsController {
       this.products.findBySlug(slug), this.products.related(slug),
       this.prisma.siteSettings.findUnique({ where: { id: 1 } }),
     ]);
-    const baseUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+    const baseUrl = (process.env.SITE_URL || 'https://www.omaansh.com').replace(/\/$/, '');
     const productUrl = baseUrl ? baseUrl + '/products/' + product.slug : '/products/' + product.slug;
     const schemaJsonLd = [{
       '@context':'https://schema.org','@type':'Product',name:product.name,description:product.shortDescription || product.description,
